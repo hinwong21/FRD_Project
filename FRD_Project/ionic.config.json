@@ -1,0 +1,7 @@
+{
+  "name": "FRD_Project",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
