@@ -43,7 +43,7 @@ const Page: React.FC = () => {
       titleName = "記帳";
       fetchPage = <Accounting />;
       break;
-    case "Healthy":
+    case "Health":
       titleName = "生理健康";
       fetchPage = <Health />;
       break;
