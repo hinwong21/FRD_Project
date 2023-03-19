@@ -10,7 +10,6 @@ import {
 import { useParams } from "react-router";
 import { Accounting } from "../components/Accounting/Accounting";
 import { Calender } from "../components/Calender/Calender";
-import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
 import { Setting } from "../components/Set/Setting";
