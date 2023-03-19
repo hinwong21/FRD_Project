@@ -80,7 +80,7 @@ const appPages: AppPage[] = [
   {
     id: 6,
     title: "生理健康",
-    url: "/page/Healthy",
+    url: "/page/Health",
     iosIcon: medkitOutline,
     mdIcon: medkitSharp,
   },
