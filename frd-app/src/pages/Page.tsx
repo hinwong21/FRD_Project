@@ -1,11 +1,28 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useParams } from 'react-router';
-import ExploreContainer from '../components/ExploreContainer';
-import './Page.css';
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import { useParams } from "react-router";
+import ExploreContainer from "../components/ExploreContainer";
+import "./Page.css";
 
 const Page: React.FC = () => {
-
-  const { name } = useParams<{ name: string; }>();
+  const { name } = useParams<{ name: string }>();
+  console.log(name);
+  let titleName = "";
+  switch (name) {
+    case "Main":
+      titleName = "主頁";
+      break;
+    case "Calender":
+      titleName = "日曆";
+      break;
+  }
 
   return (
     <IonPage>

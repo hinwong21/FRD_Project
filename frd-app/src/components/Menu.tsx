@@ -8,13 +8,30 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
-} from '@ionic/react';
+} from "@ionic/react";
 
-import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
-import './Menu.css';
+import { useLocation } from "react-router-dom";
+import {
+  bookmarkOutline,
+  calendarOutline,
+  calendarSharp,
+  cashOutline,
+  cashSharp,
+  diamondOutline,
+  diamondSharp,
+  listCircleOutline,
+  listCircleSharp,
+  medkitOutline,
+  medkitSharp,
+  settingsOutline,
+  settingsSharp,
+  sunnyOutline,
+  sunnySharp,
+} from "ionicons/icons";
+import "./Menu.css";
 
 interface AppPage {
+  id: number;
   url: string;
   iosIcon: string;
   mdIcon: string;
@@ -23,59 +40,92 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    id: 1,
+    title: "主頁",
+    url: "/page/Main",
+    iosIcon: diamondOutline,
+    mdIcon: diamondSharp,
   },
   {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    id: 2,
+    title: "日曆",
+    url: "/page/Calender",
+    iosIcon: calendarOutline,
+    mdIcon: calendarSharp,
+  },
+
+  {
+    id: 3,
+    title: "待辦事項",
+    url: "/page/TodoList",
+    iosIcon: listCircleOutline,
+    mdIcon: listCircleSharp,
+  },
+
+  {
+    id: 4,
+    title: "天氣",
+    url: "/page/Weather",
+    iosIcon: sunnyOutline,
+    mdIcon: sunnySharp,
+  },
+
+  {
+    id: 5,
+    title: "記帳",
+    url: "/page/Accounting",
+    iosIcon: cashOutline,
+    mdIcon: cashSharp,
   },
   {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
+    id: 6,
+    title: "生理健康",
+    url: "/page/Healthy",
+    iosIcon: medkitOutline,
+    mdIcon: medkitSharp,
   },
   {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    id: 7,
+    title: "設定",
+    url: "/page/Setting",
+    iosIcon: settingsOutline,
+    mdIcon: settingsSharp,
   },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
-  }
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
+
+  console.log("location.pathname:", location.pathname);
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
+          {/* TODO Project name, PENDING */}
+          <IonListHeader>FRD Project</IonListHeader>
+          {/* TODO Show the user name or user ac here, set a variable here */}
           <IonNote>hi@ionicframework.com</IonNote>
           {appPages.map((appPage, index) => {
             return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+              <IonMenuToggle key={appPage.id} autoHide={false}>
+                <IonItem
+                  className={
+                    location.pathname === appPage.url ? "selected" : ""
+                  }
+                  routerLink={appPage.url}
+                  routerDirection="none"
+                  lines="none"
+                  detail={false}
+                >
+                  <IonIcon
+                    aria-hidden="true"
+                    slot="start"
+                    ios={appPage.iosIcon}
+                    md={appPage.mdIcon}
+                  />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
@@ -83,6 +133,7 @@ const Menu: React.FC = () => {
           })}
         </IonList>
 
+        {/* TODO Label Part, PENDING...Maybe Delete?  */}
         <IonList id="labels-list">
           <IonListHeader>Labels</IonListHeader>
           {labels.map((label, index) => (
