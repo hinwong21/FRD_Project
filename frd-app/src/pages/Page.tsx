@@ -9,12 +9,12 @@ import {
 } from "@ionic/react";
 import { useParams } from "react-router";
 import { Accounting } from "../components/Accounting/Accounting";
-import { Calender } from "../components/Calender/Calender";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
 import { Setting } from "../components/Set/Setting";
 import { Todolist } from "../components/TodoList/Todolist";
 import { Weather } from "../components/Weather/Weather";
+import  Calendar  from "../components/Calendar/Calendar"
 import "./Page.css";
 
 const Page: React.FC = () => {
@@ -29,7 +29,7 @@ const Page: React.FC = () => {
       break;
     case "Calender":
       titleName = "日曆";
-      fetchPage = <Calender />;
+      fetchPage = <Calendar />;
       break;
     case "TodoList":
       titleName = "待辦事項";
