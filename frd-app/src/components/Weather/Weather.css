@@ -1,0 +1,90 @@
+body {
+  background-color: #dbdcd4;
+}
+
+.page-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.weather-location {
+  font-size: 20px;
+  font-weight: bold;
+  color: #32393f;
+  margin: 10px;
+}
+
+.todayWeather-temp {
+  font-size: 60px;
+  color: #32393f;
+}
+
+.todayWeather-humidity {
+  margin: 10px;
+}
+
+.todayWeather-uvindex-container {
+  display: flex;
+}
+
+.todayWeather-uvindex-value {
+  margin-right: 10px;
+}
+
+.weather-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.nineDayWeather-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.dayWeather-header-container {
+  width: 90vw;
+  height: 30px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  background-color: #32393f;
+  color: #818a89;
+  border: solid #eae4b4 1px;
+  border-radius: 5;
+}
+
+.dayWeather-header {
+  margin-left: 10px;
+}
+
+.dayWeather {
+  width: 90vw;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #32393f;
+  color: white;
+  border: solid #eae4b4 1px;
+}
+
+.dayWeather-week {
+  width: 30vw;
+  margin: 10px;
+  margin-left: 20px;
+}
+
+.dayWeather-icon-container {
+  width: 30vw;
+}
+
+.dayWeather-icon {
+  height: 40px;
+  margin: 10px;
+}
+
+.dayWeather-temp {
+  letter-spacing: 2px;
+}
