@@ -15,8 +15,6 @@ import { useParams } from "react-router";
 // import { Todolist } from "../TodoList/Todolist";
 // import { Weather } from "../Weather/Weather";
 import { Calendar_zh } from "./Calendar_zh";
-import { TodoPreview } from "./TodoPreview";
-import { BriefWeather } from "./BriefWeather";
 import styles from "./Calendar.module.css"
 
 const Calendar: React.FC = () => {
