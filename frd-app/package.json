@@ -76,5 +76,7 @@
   "devDependencies": {
     "@types/bootstrap": "^5.2.6",
     "react-scripts": "5.0.1"
-  }
+  },
+  "main": "index.js",
+  "license": "MIT"
 }
