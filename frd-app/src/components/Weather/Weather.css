@@ -6,6 +6,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: 5vh;
 }
 
 .weather-location {
@@ -13,6 +14,7 @@ body {
   font-weight: bold;
   color: #32393f;
   margin: 10px;
+  margin-top: 30px;
 }
 
 .todayWeather-temp {
@@ -40,11 +42,11 @@ body {
 .nineDayWeather-container {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .dayWeather-header-container {
-  width: 90vw;
+  /* width: 700px; */
   height: 30px;
   font-size: 12px;
   display: flex;
@@ -60,7 +62,7 @@ body {
 }
 
 .dayWeather {
-  width: 90vw;
+  /* width: 700px; */
   height: 60px;
   display: flex;
   flex-direction: row;
@@ -71,13 +73,13 @@ body {
 }
 
 .dayWeather-week {
-  width: 30vw;
+  width: 100px;
   margin: 10px;
   margin-left: 20px;
 }
 
 .dayWeather-icon-container {
-  width: 30vw;
+  width: 100px;
 }
 
 .dayWeather-icon {
@@ -87,4 +89,5 @@ body {
 
 .dayWeather-temp {
   letter-spacing: 2px;
+  margin-right: 20px;
 }
