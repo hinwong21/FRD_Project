@@ -15,7 +15,7 @@ import { MainPage } from "../components/Main/MainPage";
 import { Setting } from "../components/Set/Setting";
 import { Todolist } from "../components/TodoList/Todolist";
 import { Weather } from "../components/Weather/Weather";
-import "./Page.css";
+import styles from "./Page.module.scss";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
