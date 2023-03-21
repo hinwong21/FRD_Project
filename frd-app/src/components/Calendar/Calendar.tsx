@@ -17,6 +17,7 @@ import { useParams } from "react-router";
 import { Calendar_zh } from "./Calendar_zh";
 import { TodoPreview } from "./TodoPreview";
 import { BriefWeather } from "./BriefWeather";
+import styles from "./Calendar.module.css"
 
 const Calendar: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -27,9 +28,9 @@ const Calendar: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <BriefWeather/>
+        <div className={styles.calendarWrapper}>
         <Calendar_zh/>
-        <TodoPreview/>
+        </div>
         {/* Fetch to the page that name equal to url */}
         {fetchPage}
       </IonContent>

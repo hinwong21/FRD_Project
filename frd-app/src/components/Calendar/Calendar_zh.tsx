@@ -1,6 +1,6 @@
 // import React from 'react'
 import FullCalendar from "@fullcalendar/react"
-import locale from '@fullcalendar/core/locales/zh-tw';
+// import locale from '@fullcalendar/core/locales/zh-tw';
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
@@ -17,16 +17,18 @@ export const Calendar_zh = () => {
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         initialView = "dayGridMonth"
         headerToolbar={{
-            start:"prev,next",
-            center:"title",
-            end:"dayGridMonth,timeGridWeek,listWeek"
+            start:"title",
+            // center:"",
+            end:"prev,dayGridMonth,timeGridWeek,listWeek,next"
         }}
         editable= {true}
-        locale= {locale}
-        contentHeight = {1000}
+        // locale= {locale}
+        contentHeight = {750}
         // dateClick = {handleDateClick}
         // droppable = {true}
+        selectable= {true}
         nowIndicator = {true}
+        longPressDelay = {500}
         events = {[
           {title:"hihihi", start:'2023-03-20', end:'2023-03-21',backgroundColor:"blue",textColor:"white"}
         ]}

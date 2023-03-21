@@ -67,7 +67,7 @@ const Page: React.FC = () => {
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">{titleName}</IonTitle>
+            <IonTitle size="large" className="titleName">{titleName}</IonTitle>
           </IonToolbar>
         </IonHeader>
         {/* Fetch to the page that name equal to url */}
