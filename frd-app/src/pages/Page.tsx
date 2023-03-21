@@ -9,7 +9,6 @@ import {
 } from "@ionic/react";
 import { useParams } from "react-router";
 import { Accounting } from "../components/Accounting/Accounting";
-import { Calender } from "../components/Calender/Calender";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
 import { Setting } from "../components/Set/Setting";
@@ -29,7 +28,7 @@ const Page: React.FC = () => {
       break;
     case "Calender":
       titleName = "日曆";
-      fetchPage = <Calender />;
+      fetchPage = <Calendar />;
       break;
     case "TodoList":
       titleName = "待辦事項";
@@ -67,7 +66,7 @@ const Page: React.FC = () => {
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">{titleName}</IonTitle>
+            <IonTitle size="large" className="titleName">{titleName}</IonTitle>
           </IonToolbar>
         </IonHeader>
         {/* Fetch to the page that name equal to url */}
