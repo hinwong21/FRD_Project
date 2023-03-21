@@ -12,14 +12,12 @@ body {
 .weather-location {
   font-size: 20px;
   font-weight: bold;
-  color: #32393f;
   margin: 10px;
   margin-top: 30px;
 }
 
 .todayWeather-temp {
   font-size: 60px;
-  color: #32393f;
 }
 
 .todayWeather-humidity {

@@ -27,11 +27,12 @@ type Data2 = {
 export function Weather() {
   const [data, setData] = useState<Data>();
   const [data2, setData2] = useState<Data2>();
+  const [data3, setData3] = useState(String);
 
   useEffect(() => {
     const todayWeather = async () => {
       let res = await fetch(
-        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc"
+        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
       );
 
       let json = await res.json();
@@ -61,7 +62,7 @@ export function Weather() {
   useEffect(() => {
     const nineDayWeather = async () => {
       let res = await fetch(
-        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc"
+        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en"
       );
 
       let json = await res.json();
@@ -78,18 +79,18 @@ export function Weather() {
       <IonPage>
         <IonContent fullscreen>
           <div className="page-container">
-            <div className="weather-location">香港</div>
+            <div className="weather-location">Hong Kong</div>
             {<div className="todayWeather-temp">{data?.temperature}°C</div>}
             {
               <div className="todayWeather-humidity">
-                濕度：{data?.humidity}%
+                Humidity：{data?.humidity}%
               </div>
             }
 
             <div className="todayWeather-uvindex-container">
               {
                 <div className="todayWeather-uvindex-value">
-                  紫外線指數：{data?.uvindexValue}
+                  Ultraviolet index：{data?.uvindexValue}
                 </div>
               }
               {<div>{data?.uvindexdesc}</div>}
@@ -97,7 +98,7 @@ export function Weather() {
 
             <div className="nineDayWeather-container">
               <div className="dayWeather-header-container">
-                <div className="dayWeather-header">9日天氣預測</div>
+                <div className="dayWeather-header">9-day Weather Forecast</div>
               </div>
               {data2?.nineDayWeather.map((forecastDate, index) => (
                 <div className="dayWeather" key={index}>
