@@ -1,3 +1,4 @@
+import { IonContent, IonPage } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import "./Weather.css";
 
@@ -74,44 +75,52 @@ export function Weather() {
 
   return (
     <>
-      <div className="page-container">
-        <div className="weather-location">香港</div>
-        {<div className="todayWeather-temp">{data?.temperature}°C</div>}
-        {<div className="todayWeather-humidity">濕度：{data?.humidity}%</div>}
+      <IonPage>
+        <IonContent fullscreen>
+          <div className="page-container">
+            <div className="weather-location">香港</div>
+            {<div className="todayWeather-temp">{data?.temperature}°C</div>}
+            {
+              <div className="todayWeather-humidity">
+                濕度：{data?.humidity}%
+              </div>
+            }
 
-        <div className="todayWeather-uvindex-container">
-          {
-            <div className="todayWeather-uvindex-value">
-              紫外線指數：{data?.uvindexValue}
+            <div className="todayWeather-uvindex-container">
+              {
+                <div className="todayWeather-uvindex-value">
+                  紫外線指數：{data?.uvindexValue}
+                </div>
+              }
+              {<div>{data?.uvindexdesc}</div>}
             </div>
-          }
-          {<div>{data?.uvindexdesc}</div>}
-        </div>
 
-        <div className="nineDayWeather-container">
-          <div className="dayWeather-header-container">
-            <div className="dayWeather-header">9日天氣預測</div>
+            <div className="nineDayWeather-container">
+              <div className="dayWeather-header-container">
+                <div className="dayWeather-header">9日天氣預測</div>
+              </div>
+              {data2?.nineDayWeather.map((forecastDate, index) => (
+                <div className="dayWeather" key={index}>
+                  <div className="dayWeather-week">
+                    {data2?.nineDayWeather[index].week}
+                  </div>
+                  <div className="dayWeather-icon-container">
+                    <img
+                      className="dayWeather-icon"
+                      src={`https://www.hko.gov.hk/images/HKOWxIconOutline/pic${data2?.nineDayWeather[index].ForecastIcon}.png`}
+                      alt="weather icon"
+                    />
+                  </div>
+                  <div className="dayWeather-temp">
+                    {data2?.nineDayWeather[index].forecastMintemp.value} -{" "}
+                    {data2?.nineDayWeather[index].forecastMaxtemp.value}°C
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          {data2?.nineDayWeather.map((forecastDate, index) => (
-            <div className="dayWeather" key={index}>
-              <div className="dayWeather-week">
-                {data2?.nineDayWeather[index].week}
-              </div>
-              <div className="dayWeather-icon-container">
-                <img
-                  className="dayWeather-icon"
-                  src={`https://www.hko.gov.hk/images/HKOWxIconOutline/pic${data2?.nineDayWeather[index].ForecastIcon}.png`}
-                  alt="weather icon"
-                />
-              </div>
-              <div className="dayWeather-temp">
-                {data2?.nineDayWeather[index].forecastMintemp.value} -{" "}
-                {data2?.nineDayWeather[index].forecastMaxtemp.value}°C
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        </IonContent>
+      </IonPage>
     </>
   );
 }
