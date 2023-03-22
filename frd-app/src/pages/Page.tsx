@@ -8,48 +8,51 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
+<<<<<<< HEAD
 import  Accounting  from "../components/Accounting/Accounting";
+=======
+import { Accounting } from "../components/Accounting/Accounting";
+import Calendar from "../components/Calendar/Calendar";
+import ExploreContainer from "../components/ExploreContainer";
+>>>>>>> origin
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
+import { Notes } from "../components/Notes/notes";
 import { Setting } from "../components/Set/Setting";
-import { DiaryConvertToJSON } from "../components/Notes/DiaryEditor";
 import { Weather } from "../components/Weather/Weather";
-import {Calendar} from "../components/Calendar/Calendar"
-import {Notes} from "../components/Notes/Notes"
-import styles from "./Page.module.scss";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
-  console.log(name);
-  let titleName = "";
+  // console.log(name);
+  // let titleName = "";
   let fetchPage = <></>;
   switch (name) {
     case "Main":
-      titleName = "主頁";
+      // titleName = "主頁";
       fetchPage = <MainPage />;
       break;
     case "Calender":
-      titleName = "日曆";
+      // titleName = "日曆";
       fetchPage = <Calendar />;
       break;
     case "TodoList":
-      titleName = "待辦事項";
+      // titleName = "待辦事項";
       fetchPage = <Notes />;
       break;
     case "Weather":
-      titleName = "天氣";
+      // titleName = "天氣";
       fetchPage = <Weather />;
       break;
     case "Accounting":
-      titleName = "記帳";
+      // titleName = "記帳";
       fetchPage = <Accounting />;
       break;
     case "Health":
-      titleName = "生理健康";
+      // titleName = "生理健康";
       fetchPage = <Health />;
       break;
     case "Setting":
-      titleName = "設定";
+      // titleName = "設定";
       fetchPage = <Setting />;
       break;
   }
@@ -61,16 +64,19 @@ const Page: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{titleName}</IonTitle>
+          <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large" className="titleName">{titleName}</IonTitle>
+            <IonTitle size="large" className="titleName">
+              {name}
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
+        {/* <ExploreContainer name={name} /> */}
         {/* Fetch to the page that name equal to url */}
         {fetchPage}
       </IonContent>

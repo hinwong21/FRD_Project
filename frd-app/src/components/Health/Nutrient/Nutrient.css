@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  /* margin-top: 5vh; */
+}
+
+.nutrient-header {
+  width: 100vw;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-search-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.food-search-result {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 200px;
+  margin: 10px;
+}
+
+.food-search-bar {
+  width: 200px;
+  height: 30px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 0%;
+  border-bottom-right-radius: 0%;
+  border: 1px solid black;
+}
+
+.food-search-bar:focus {
+  outline: none;
+}
+
+ul {
+  z-index: 9999;
+  position: absolute;
+  top: 18px;
+  right: -6px;
+}
+
+li {
+  width: 204px;
+  cursor: pointer;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  list-style: none;
+  background-color: white;
+  font-size: 12px;
+}
+
+.nutrient-addBtn {
+  width: 80px;
+  margin: 10px;
+}
+
+.intake-history-container {
+  width: 300px;
+  height: 200px;
+  background-color: #eae4b4;
+  overflow: scroll;
+}
+
+.intake-history {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px;
+  font-size: 12px;
+}
+
+.food-name {
+  margin-right: 10px;
+  width: 160px;
+  overflow: hidden;
+}
+
+.data-notice {
+  font-size: 10px;
+}

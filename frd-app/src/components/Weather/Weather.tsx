@@ -27,7 +27,6 @@ type Data2 = {
 export function Weather() {
   const [data, setData] = useState<Data>();
   const [data2, setData2] = useState<Data2>();
-  const [data3, setData3] = useState(String);
 
   useEffect(() => {
     const todayWeather = async () => {
