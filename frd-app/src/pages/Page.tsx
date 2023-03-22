@@ -51,6 +51,9 @@ const Page: React.FC = () => {
       // titleName = "設定";
       fetchPage = <Setting />;
       break;
+      case "Transaction":
+      fetchPage = <Transaction/>
+      break;
   }
 
   return (
