@@ -12,8 +12,10 @@ import { Accounting } from "../components/Accounting/Accounting";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
 import { Setting } from "../components/Set/Setting";
-import { Todolist } from "../components/TodoList/Todolist";
+import { DiaryConvertToJSON } from "../components/Notes/DiaryEditor";
 import { Weather } from "../components/Weather/Weather";
+import {Calendar} from "../components/Calendar/Calendar"
+import {Notes} from "../components/Notes/Notes"
 import styles from "./Page.module.scss";
 
 const Page: React.FC = () => {
@@ -32,7 +34,7 @@ const Page: React.FC = () => {
       break;
     case "TodoList":
       titleName = "待辦事項";
-      fetchPage = <Todolist />;
+      fetchPage = <Notes />;
       break;
     case "Weather":
       titleName = "天氣";
