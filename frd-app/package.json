@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@capacitor/preferences": "^4.0.2",
     "@fullcalendar/daygrid": "^6.1.4",
     "@fullcalendar/interaction": "^6.1.4",
     "@fullcalendar/list": "^6.1.4",
@@ -33,6 +34,7 @@
     "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "reactstrap": "^9.1.6",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "sass": "^1.59.3",
