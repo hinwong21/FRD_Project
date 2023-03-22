@@ -11,12 +11,87 @@ body {
 }
 
 .nutrient-header {
-  width: 100vw;
   height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.header-calories-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+}
+
+.calories-progressBar-container {
+  width: 300px;
+}
+
+.expected-calories-intake {
+  font-size: 12px;
+}
+
+.water-balance-container {
+  width: 300px;
+  height: 120px;
+  background-color: #08c4ff;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid rgb(202, 199, 199);
+}
+
+.water-balance-header {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.water-balance-main {
+  width: 280px;
+  height: 75px;
+  background-color: white;
+  margin: 10px;
+  color: black;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.water-intake-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.water-intake {
+  padding: 10px;
+}
+
+.water-minimum-intake {
+  margin-top: 3px;
+  font-size: 10px;
+  color: gray;
+}
+
+.water-intake-addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+  color: #08c4ff;
+  background-color: #ddf4fc;
+  border: transparent;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.water-progressBar-container {
+  width: 260px;
 }
 
 .food-search-container {
@@ -34,12 +109,11 @@ body {
 
 .food-search-bar {
   width: 200px;
-  height: 30px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-left-radius: 0%;
-  border-bottom-right-radius: 0%;
+  height: 20px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   border: 1px solid black;
+  font-size: 10px;
 }
 
 .food-search-bar:focus {
@@ -49,12 +123,12 @@ body {
 ul {
   z-index: 9999;
   position: absolute;
-  top: 18px;
-  right: -6px;
+  top: 20px;
+  right: 0px;
 }
 
 li {
-  width: 204px;
+  width: 200px;
   cursor: pointer;
   border-bottom: 1px solid;
   border-left: 1px solid;
@@ -78,16 +152,28 @@ li {
 
 .intake-history {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   margin: 10px;
   font-size: 12px;
 }
 
+.food-name-calories-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .food-name {
   margin-right: 10px;
-  width: 160px;
   overflow: hidden;
+}
+
+.food-nutrient {
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+  justify-content: space-between;
+  margin-top: 5px;
 }
 
 .data-notice {
