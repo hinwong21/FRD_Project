@@ -33,6 +33,7 @@
     "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "reactstrap": "^9.1.6",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "scss": "^0.2.4",
