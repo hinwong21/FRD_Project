@@ -1,0 +1,201 @@
+.test-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* .test1 {
+  height: 300px;
+  width: 200px;
+  background-color: #9d9b92;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 10px;
+}
+
+.test1-a {
+  width: 100px;
+  height: 150px;
+  background-color: #32393f;
+}
+
+.test1-b {
+  width: 100px;
+  height: 150px;
+  background-color: #5b6a67;
+}
+
+.test1-c {
+  width: 100px;
+  height: 150px;
+  background-color: #733b3a;
+}
+
+.test1-d {
+  width: 100px;
+  height: 150px;
+  background-color: #dbdcd4;
+}
+
+.test1-e {
+  width: 100px;
+  height: 150px;
+  background-color: #a8bab4;
+}
+
+.test2 {
+  height: 300px;
+  width: 200px;
+  background-color: #32393f;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 10px;
+}
+
+.test2-a {
+  width: 100px;
+  height: 150px;
+  background-color: #98aa9e;
+}
+
+.test2-c {
+  width: 100px;
+  height: 150px;
+  background-color: #733b3a;
+}
+
+.test2-d {
+  width: 100px;
+  height: 150px;
+  background-color: #dbdcd4;
+}
+
+.test2-b {
+  width: 100px;
+  height: 150px;
+  background-color: #5b6a67;
+}
+
+.test2-e {
+  width: 100px;
+  height: 150px;
+  background-color: #9d9b92;
+} */
+
+/* .test3 {
+  height: 300px;
+  width: 200px;
+  background-color: #98aa9e;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 10px;
+} */
+
+.test3 {
+  height: 300px;
+  width: 200px;
+  background-color: #ecedef;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 10px;
+}
+
+.test3-a {
+  width: 100px;
+  height: 150px;
+  background-color: #32393f;
+  background-color: #c7c9d8;
+  background-color: #b6bad6;
+}
+
+.test3-b {
+  width: 100px;
+  height: 150px;
+  background-color: #504845;
+  background-color: #b8c4b8;
+}
+
+.test3-c {
+  width: 100px;
+  height: 150px;
+  background-color: #c6967e;
+  background-color: #f0d1d9;
+  background-color: #d0bdcf;
+  /* background-color: #cbb6ca; */
+}
+
+.test3-d {
+  width: 100px;
+  height: 150px;
+  background-color: #dbdcd4;
+  background-color: #e1cca8;
+}
+
+.test3-e {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #6c81a1;
+}
+
+.test3-f {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #e3c2c2;
+}
+
+.test3-g {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #b6c1d2;
+}
+
+.test3-h {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #c8d7ec;
+}
+
+.test3-i {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #c2d3ad;
+}
+
+.test3-j {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #dfb097;
+}
+
+.test3-k {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #b5aaaa;
+}
+
+.test3-l {
+  width: 100px;
+  height: 150px;
+  background-color: #7e826f;
+  background-color: #cb9494;
+}
+
+/* .test4 {
+  height: 300px;
+  width: 200px;
+  background-color: #dbdcd4;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 10px;
+} */

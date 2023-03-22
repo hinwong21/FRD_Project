@@ -1,0 +1,20 @@
+.home {
+  background-color: #f0d1d9;
+  margin-left: 2%;
+}
+
+.container {
+  background-color: #ecedef;
+  background-color: #f0d1d9;
+}
+
+.innerBox {
+  display: flex;
+  flex-direction: row;
+}
+
+.miniBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
