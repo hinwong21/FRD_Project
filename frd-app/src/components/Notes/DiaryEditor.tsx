@@ -32,6 +32,7 @@ type Data = {
 export const DiaryEditor: React.FC = () => {
   const [content, setContent] = useState(contentStyle);
   const [data, setData] = useState<Data>();
+  const [value, setValue] = useState("")
 
   const contentState = convertFromRaw(content);
 
@@ -73,8 +74,26 @@ export const DiaryEditor: React.FC = () => {
     };
     todayWeather();
   }, []);
+
   
+
+  // const uploadCallback = (file: string | any, callback: any) => {
+  //   console.log(file);
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new window.FileReader();
+  //     console.log(reader);
+  //     reader.onloadend = async () => {
+  //       const form_data = new FormData();
+  //       form_data.append("file", file);
+  //       const res = await uploadFile(form_data);
+  //       setValue("thumbnail", res.data);
+  //       resolve({ data: { link: process.env.REACT_APP_API + res.data } });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   });
+  // };
   
+
   return (
     <>
       <div className={styles.weatherWrapper}>
@@ -88,15 +107,12 @@ export const DiaryEditor: React.FC = () => {
         />
       </div>
 
-      <FormGroup>
-        <Label>Header</Label>
-        <Input></Input>
-      </FormGroup>
 
       <Editor
         wrapperClassName="demo-wrapper"
         editorClassName="demo-editor"
         onContentStateChange={onContentStateChange}
+        placeholder = "Write your diary here..."
         toolbar={{
           options: [
             "inline",
@@ -104,9 +120,11 @@ export const DiaryEditor: React.FC = () => {
             "fontSize",
             "list",
             "textAlign",
+            "colorPicker",
             "history",
             "embedded",
             "emoji",
+            "remove",
             "image",
           ],
           inline: { inDropdown: true },
@@ -149,6 +167,12 @@ export const DiaryEditor: React.FC = () => {
             { text: "GRAPEFRUIT", value: "grapefruit", url: "grapefruit" },
             { text: "HONEYDEW", value: "honeydew", url: "honeydew" },
           ],
+          image:{
+            uploadEnabled: true,
+            inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+            urlEnabled: true,
+            // uploadCallback: uploadCallback,
+          }
         }}
       />
     </>
