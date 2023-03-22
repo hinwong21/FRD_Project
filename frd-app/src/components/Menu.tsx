@@ -56,7 +56,7 @@ const appPages: AppPage[] = [
 
   {
     id: 3,
-    title: "TodoList",
+    title: "Notes",
     url: "/page/TodoList",
     iosIcon: listCircleOutline,
     mdIcon: listCircleSharp,
