@@ -21,11 +21,8 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
-<<<<<<< HEAD
     "@types/redux": "^3.6.0",
-=======
     "bootstrap": "^5.2.3",
->>>>>>> refs/remotes/origin/main
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
     "moment": "^2.29.4",
@@ -80,11 +77,10 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@types/react-redux": "^7.1.25",
-=======
     "@types/bootstrap": "^5.2.6",
->>>>>>> refs/remotes/origin/main
+    "@types/draft-js": "^0.11.10",
+    "@types/react-draft-wysiwyg": "^1.13.4",
+    "@types/react-redux": "^7.1.25",
     "react-scripts": "5.0.1"
   },
   "main": "index.js",
