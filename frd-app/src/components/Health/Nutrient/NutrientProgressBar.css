@@ -1,0 +1,19 @@
+.progress-bar {
+  background-color: #ddd;
+  height: 5px;
+  width: 100%;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.nutrient-fill {
+  background-color: #733b3a;
+  border-radius: 5px;
+  height: 100%;
+  width: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.5s ease-in-out; /* Add a transition effect to the width */
+}
