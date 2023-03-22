@@ -4,6 +4,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import styles from "./Notes.module.css"
 import { IonTitle } from "@ionic/react";
 
+
 export const Notes: React.FC = () => {
   return (
     <> 
