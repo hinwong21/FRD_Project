@@ -8,16 +8,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
-<<<<<<< HEAD
 import  Accounting  from "../components/Accounting/Accounting";
-=======
-import { Accounting } from "../components/Accounting/Accounting";
 import Calendar from "../components/Calendar/Calendar";
-import ExploreContainer from "../components/ExploreContainer";
->>>>>>> origin
+// import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
-import { Notes } from "../components/Notes/notes";
+import  { Notes }  from "../components/Notes/Notes";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
 

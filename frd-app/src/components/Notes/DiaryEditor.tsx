@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Component } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import { convertFromRaw } from "draft-js";
-import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
+// import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "DiaryEditor.module.css";
 
