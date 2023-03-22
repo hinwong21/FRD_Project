@@ -1,0 +1,29 @@
+.dayWeatherIcon{
+     width: 200px;
+     padding-right: 30px;
+}
+
+.weatherWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* padding: 20px; */
+    width: 100%;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    border-radius: 10px;
+    background-color: rgba(55, 141, 194, 0.357);
+    font-size: 20px;
+    color: white;
+    background-image: url("./artem-anokhin-V4qjYCac7y8-unsplash.jpg");
+}
+
+.dateAndTemp{
+    padding-left: 30px;
+    padding-top: 20px;
+}
+
+.temperature{
+    font-size: 80px !important;
+}
+
