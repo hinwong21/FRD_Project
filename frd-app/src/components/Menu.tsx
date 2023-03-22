@@ -41,14 +41,14 @@ interface AppPage {
 const appPages: AppPage[] = [
   {
     id: 1,
-    title: "主頁",
+    title: "Main",
     url: "/page/Main",
     iosIcon: diamondOutline,
     mdIcon: diamondSharp,
   },
   {
     id: 2,
-    title: "日曆",
+    title: "Calender",
     url: "/page/Calender",
     iosIcon: calendarOutline,
     mdIcon: calendarSharp,
@@ -56,7 +56,7 @@ const appPages: AppPage[] = [
 
   {
     id: 3,
-    title: "備忘",
+    title: "TodoList",
     url: "/page/TodoList",
     iosIcon: listCircleOutline,
     mdIcon: listCircleSharp,
@@ -64,7 +64,7 @@ const appPages: AppPage[] = [
 
   {
     id: 4,
-    title: "天氣",
+    title: "Weather",
     url: "/page/Weather",
     iosIcon: sunnyOutline,
     mdIcon: sunnySharp,
@@ -72,21 +72,21 @@ const appPages: AppPage[] = [
 
   {
     id: 5,
-    title: "記帳",
+    title: "Accounting",
     url: "/page/Accounting",
     iosIcon: cashOutline,
     mdIcon: cashSharp,
   },
   {
     id: 6,
-    title: "生理健康",
+    title: "Health",
     url: "/page/Health",
     iosIcon: medkitOutline,
     mdIcon: medkitSharp,
   },
   {
     id: 7,
-    title: "設定",
+    title: "Setting",
     url: "/page/Setting",
     iosIcon: settingsOutline,
     mdIcon: settingsSharp,
