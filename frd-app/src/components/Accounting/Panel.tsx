@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Panel.module.scss";
 
-const num = [7, 8, 9, "+", 4, 5, 6, "-", 1, 2, 3, "x", 0, "AC", "=", "÷", "."];
+const num = [7, 8, 9, "+", 4, 5, 6, "-", 1, 2, 3, "x", "AC", ".", "=", "÷", 0, "delete"];
 
 
 type PanelProps = {
@@ -24,13 +24,15 @@ export function Panel(props: PanelProps) {
                     return <button className={styles.zeroBtn} key={idx} onClick={() => {
                         handler(element);
                     }}>{element}</button>
+                } else if (element === "delete") {
+                    return <button className={styles.delBtn} key={idx} onClick={() => {
+                        handler(element);
+                    }}>{element}</button>
                 } else {
                     return <button className={styles.regularBtn} key={idx} onClick={() => {
                         handler(element);
                     }}>{element}</button>
                 }
-
-
             }
             )
         }
