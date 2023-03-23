@@ -17,20 +17,34 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
 import {AddNotePopup} from "./AddNotePopup"
+import {DiaryEditor} from "./DiaryEditor";
 // import { useParams } from "react-router";
+let readMode = true;
+
 
 export const Notepad: React.FC = () => {
   //   const { name } = useParams<{ name: string }>();
   //   console.log(name);
   let titleName = "";
   let fetchPage = <></>;
+  
 
-  return (
-  <>
-  {/* fetch db/local storage to show all the notes */}
-  < AddNotePopup />
-  </>
-  );
+  if (readMode == true){
+    return (
+    <>
+    < AddNotePopup />
+    </>
+    )
+  } else {
+    return (
+    <>
+    </>
+    )
+    
+  }
+  
+  
+  
 };
 
 
