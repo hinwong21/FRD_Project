@@ -85,6 +85,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-tab-bar-background: #b6bcd2;
   --ion-card-background: #f0ebeb;
   --ion-text-color: #808289;
+  --ion-text-color: #6f7177;
 }
 
 @media (prefers-color-scheme: dark) {
