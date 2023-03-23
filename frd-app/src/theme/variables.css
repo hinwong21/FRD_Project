@@ -85,6 +85,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-tab-bar-background: #b6bcd2;
   --ion-card-background: #f0ebeb;
   --ion-text-color: #f3f3f3;
+  --ion-text-color: #808289;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -210,10 +211,8 @@ http://ionicframework.com/docs/theming/ */
    */
 
   .md body {
-    /* --ion-background-color: #121212; */
-    --ion-background-color: #f9ad14;
-    /* --ion-background-color-rgb: 18, 18, 18; */
-    --ion-background-color-rgb: 249, 173, 20;
+    --ion-background-color: #121212;
+    --ion-background-color-rgb: 18, 18, 18;
 
     --ion-text-color: #ffffff;
     --ion-text-color-rgb: 255, 255, 255;
