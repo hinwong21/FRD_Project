@@ -187,7 +187,7 @@ function Calculator(
 
             <IonList>
                 <IonItem>
-                    <IonSelect placeholder="Select fruit">
+                    <IonSelect placeholder="Select Genre">
                         <IonSelectOption value="income">Income</IonSelectOption>
                         <IonSelectOption value="food">Food</IonSelectOption>
                         <IonSelectOption value="drink">Drink</IonSelectOption>

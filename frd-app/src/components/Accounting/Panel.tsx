@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Panel.module.scss";
 import { useHistory } from 'react-router';
+import Accounting from "./Accounting";
 
 const num = [7, 8, 9, "+", 4, 5, 6, "-", 1, 2, 3, "x", "AC", ".", "=", "÷", 0, "⌫", "✔"];
 
@@ -18,7 +19,7 @@ export function Panel(props: PanelProps) {
 
     function clickSubmit() {
         // setEnter(true);
-        history.push('./Calculator')
+        history.push('./Accounting')
         console.log('clickSubmit');
 
     }

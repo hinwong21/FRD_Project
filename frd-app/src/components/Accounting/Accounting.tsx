@@ -15,12 +15,12 @@ const Accounting: React.FC = () => {
   // const tran = useHistory()
   const handleClick = () => {
     history.push('/Calculator')
-    console.log('cal');
+    // console.log('cal');
 
   }
   const goToTransaction = () => {
     history.push('/Transaction')
-    console.log('fei hui transaction');
+    // console.log('fei hui transaction');
 
   }
   return (
@@ -32,6 +32,7 @@ const Accounting: React.FC = () => {
           </div>
           <div className={style.main}>
             <Finance /></div>
+          {/* <Accounting /> */}
           {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
             {/* <Link to="/Calculator"></Link> */}
           {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
