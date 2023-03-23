@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
-import {AddNotePopup} from "./AddNotePopup"
+import { AddNotePopup } from "./AddNotePopup";
 import {DiaryEditor} from "./DiaryEditor";
 // import { useParams } from "react-router";
 let readMode = true;
@@ -46,7 +46,5 @@ export const Notepad: React.FC = () => {
   
   
 };
-
-
 
 export default Notepad;
