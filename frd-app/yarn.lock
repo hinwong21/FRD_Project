@@ -1270,6 +1270,7 @@
   dependencies:
     "prop-types" "^15.8.1"
 
+<<<<<<< HEAD
 "@fullcalendar/common@^5.11.4":
   "integrity" "sha512-wjy+EZgZIPWq1Z5qeB/pV2dmsXwzTJ2teNh5bjlVeHsvDYwERXSZEG2CdoF/NCTJaYeQY93xu1cj9Jw/0KXywA=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/common/-/common-5.11.4.tgz"
@@ -1277,6 +1278,8 @@
   dependencies:
     "tslib" "^2.1.0"
 
+=======
+>>>>>>> origin
 "@fullcalendar/core@~6.1.4":
   "integrity" "sha512-ZDD0Owv0LezAk14nsRNaOc9nbowItGmT0mnjOhEw+L6B8P5eads8yYaNA9itn70MWoOjiAG8xqD7Yk1iJGxqgQ=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.4.tgz"

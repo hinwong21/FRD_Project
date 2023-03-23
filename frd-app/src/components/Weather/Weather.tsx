@@ -1,5 +1,5 @@
 import { IonContent, IonPage } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Weather.css";
 
 type Data = {
@@ -35,7 +35,6 @@ export function Weather() {
       );
 
       let json = await res.json();
-      console.log(json);
 
       // define the change of uvIndex at night and morning
       let uvIndex = 0;
