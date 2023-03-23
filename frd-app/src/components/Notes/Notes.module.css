@@ -21,9 +21,8 @@ ion-popover {
     --background: rgba(40, 173, 218, 0.6);
   }
 
-  ion-item div {
-    display: flex;
-    justify-content: space-between;
+
+  .listItemText{
     margin-left: 10px;
   }
   

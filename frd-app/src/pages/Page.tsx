@@ -9,13 +9,17 @@ import {
 } from "@ionic/react";
 import { useParams } from "react-router";
 import  Accounting  from "../components/Accounting/Accounting";
+import Calculator from "../components/Accounting/Calculator";
+import { Transaction } from "../components/Accounting/Transaction";
 import Calendar from "../components/Calendar/Calendar";
 // import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
-import  { Notepad }   from "../components/Notes/Notepad";
+import { Notepad } from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
+
+import styles from "./Page.module.scss";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -52,7 +56,10 @@ const Page: React.FC = () => {
       fetchPage = <Setting />;
       break;
       case "Transaction":
-      // fetchPage = <Transaction/>
+      fetchPage = <Transaction />
+      break;
+      case "Calculator":
+      fetchPage = <Calculator />
       break;
   }
 

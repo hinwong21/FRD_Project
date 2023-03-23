@@ -1,12 +1,12 @@
 import React from "react";
-import Period from "./Period/Period";
+import PeriodMain from "./Period/PeriodMain";
 import { HealthNutrition } from "./Nutrient/HealthNutrition";
 import styles from "./Health.module.scss";
 
 export const Health = () => {
   return (
     <div>
-      <Period />
+      <PeriodMain />
       <HealthNutrition />
     </div>
   );
