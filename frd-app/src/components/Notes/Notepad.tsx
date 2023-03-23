@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
-import {AddNotePopup} from "./AddNotePopup"
+import { AddNotePopup } from "./AddNotePopup";
 // import { useParams } from "react-router";
 
 export const Notepad: React.FC = () => {
@@ -26,12 +26,10 @@ export const Notepad: React.FC = () => {
   let fetchPage = <></>;
 
   return (
-  <>
-  < AddNotePopup />
-  </>
+    <>
+      <AddNotePopup />
+    </>
   );
 };
-
-
 
 export default Notepad;
