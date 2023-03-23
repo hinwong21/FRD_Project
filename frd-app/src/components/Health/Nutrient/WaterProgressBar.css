@@ -4,11 +4,10 @@
   width: 100%;
   position: relative;
   border-radius: 5px;
-  margin-left: 10px;
   overflow: hidden;
 }
 
-.fill {
+.water-fill {
   background-color: #08c4ff;
   border-radius: 5px;
   height: 100%;

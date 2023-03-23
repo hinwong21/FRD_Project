@@ -1,0 +1,19 @@
+.panelContainer{
+    display: flex;
+    flex-wrap: wrap;
+    width: 480px;
+}
+
+.regularBtn{
+    width: 100px;
+    height: 100px;
+    margin: 10px 10px 10px 10px;
+    font-size:larger
+}
+.zeroBtn{
+    width: 100%;
+    height: 100px;
+    margin: 10px 10px 10px 10px;
+    font-size:larger
+}
+

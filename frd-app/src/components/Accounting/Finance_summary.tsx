@@ -3,11 +3,10 @@ import React from 'react'
 
 export const Finance_summary = () => {
     return (
-        <IonContent>
-            <IonItem>
-                <IonDatetime></IonDatetime>;
 
-            </IonItem>
-        </IonContent>
+            
+            <IonDatetime presentation="date"></IonDatetime>
+
+
     )
 }
