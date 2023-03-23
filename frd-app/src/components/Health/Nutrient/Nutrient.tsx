@@ -1,14 +1,10 @@
 // import { IonContent, IonPage } from "@ionic/react";
-import { type } from "os";
 import React, { useState, useCallback, useEffect } from "react";
+import { HealthNutrition } from "./HealthNutrition";
 import "./Nutrient.css";
-import { ProgressBar } from "./ProgressBar";
+import { WaterProgressBar } from "./WaterProgressBar";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";
-let age = 23;
-let weight = 60;
-let height = 170;
-let gender = "male";
 
 interface Food {
   fdcId: number;
@@ -22,26 +18,11 @@ type FoodNutrient = {
   fat: string;
 };
 
-type Intake = {
-  calories: number;
-  carbs: number;
-  protein: number;
-  fat: number;
-};
-
 export function Nutrient() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<Food[]>([]);
   const [foodNutrient, setFoodNutrient] = useState<FoodNutrient>();
   const [waterIntake, setWaterIntake] = useState<number>(0);
-  const [intake, setIntake] = useState<Intake>({
-    calories: 0,
-    carbs: 0,
-    protein: 0,
-    fat: 0,
-  });
-
-  useEffect(() => {});
 
   const handleSearch = useCallback(() => {
     if (searchQuery.length === 0) {
@@ -126,10 +107,10 @@ export function Nutrient() {
         // Update the state with the food name and calories
         setSearchQuery("");
         setFoodNutrient({
-          calories: `${caloriesNutrient.value} ${caloriesNutrient.unitName}`,
-          carbs: `${carbsNutrient.value} ${carbsNutrient.unitName}`,
-          protein: `${proteinNutrient.value} ${proteinNutrient.unitName}`,
-          fat: `${fatNutrient.value} ${fatNutrient.unitName}`,
+          calories: `${caloriesNutrient.value}`,
+          carbs: `${carbsNutrient.value}`,
+          protein: `${proteinNutrient.value}`,
+          fat: `${fatNutrient.value}`,
         });
       })
       .catch((error) => console.error(error));
@@ -140,47 +121,12 @@ export function Nutrient() {
     setWaterIntake(parseFloat(newWaterIntake));
   }
 
-  let caloriesDailyIntake;
-  if (gender === "male") {
-    caloriesDailyIntake = Math.round(
-      66.47 + 13.75 * weight + 5.003 * height - 6.755 * age
-    );
-  } else if (gender === "female") {
-    caloriesDailyIntake = Math.round(
-      655.1 + 9.563 * weight + 1.85 * height - 4.676 * age
-    );
-  } else {
-    caloriesDailyIntake = 2000;
-  }
-
-  let proteinDailyIntake = weight * 0.8;
-  let minimumFatDailyIntake = caloriesDailyIntake * 0.2;
-  let maximumFatDailyIntake = caloriesDailyIntake * 0.35;
-  let minimumCarbsDailyIntake = caloriesDailyIntake * 0.45;
-  let maximumCarbsDailyIntake = caloriesDailyIntake * 0.65;
-
   return (
     <>
       {/* <IonPage> */}
       {/* <IonContent fullscreen> */}
       <div className="page-container">
-        <div className="nutrient-header">
-          <div className="header-calories-container">
-            <div>
-              <div>1279 left</div>
-              <div>Daily calories intake: {caloriesDailyIntake}</div>
-            </div>
-            <div>
-              <div>0 eaten</div>
-            </div>
-          </div>
-          <div className="calories-progressBar-container">
-            <ProgressBar
-              dailyIntake={caloriesDailyIntake}
-              currentIntake={100}
-            />
-          </div>
-        </div>
+        <HealthNutrition />
 
         {/* Water balance */}
         <div className="water-balance-container">
@@ -199,9 +145,16 @@ export function Nutrient() {
               </button>
             </div>
             <div className="water-progressBar-container">
-              <ProgressBar dailyIntake={1.6} currentIntake={waterIntake} />
+              <WaterProgressBar dailyIntake={1.6} currentIntake={waterIntake} />
             </div>
           </div>
+        </div>
+
+        <div className="food-tracker-container">
+          <header>
+            <div>Food tracking</div>
+            <button className="add-mealBtn">Add meal</button>
+          </header>
         </div>
 
         <div className="food-search-container">
@@ -229,7 +182,7 @@ export function Nutrient() {
           </button>
         </div>
 
-        {/* {resultingClientExists.map(obj=><d></>} */}
+        {/* {result.map(obj=><d></>} */}
 
         <div className="intake-history-container">
           <div className="intake-history">
@@ -248,13 +201,15 @@ export function Nutrient() {
           <div className="intake-history">
             <div className="food-name-calories-container">
               <div className="food-name">Food: Apple</div>
-              <div className="nutrient">Calories: {foodNutrient?.calories}</div>
+              <div className="nutrient">
+                Calories: {foodNutrient?.calories} kcal
+              </div>
             </div>
 
             <div className="food-nutrient">
-              <div className="nutrient">Carbs: {foodNutrient?.carbs}</div>
-              <div className="nutrient">Protein: {foodNutrient?.protein}</div>
-              <div className="nutrient">Fat: {foodNutrient?.fat}</div>
+              <div className="nutrient">Carbs: {foodNutrient?.carbs}g</div>
+              <div className="nutrient">Protein: {foodNutrient?.protein}g</div>
+              <div className="nutrient">Fat: {foodNutrient?.fat}g</div>
             </div>
           </div>
         </div>

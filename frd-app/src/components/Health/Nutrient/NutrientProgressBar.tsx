@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "./ProgressBar.css"; // Import the CSS file for the progress bar
+import "./NutrientProgressBar.css"; // Import the CSS file for the progress bar
 
 type ProgressBarProps = {
   dailyIntake: number;
   currentIntake: number;
 };
 
-export function ProgressBar({
-  dailyIntake,
-  currentIntake,
-}: ProgressBarProps) {
+export function NutrientProgressBar({ dailyIntake, currentIntake }: ProgressBarProps) {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
@@ -23,7 +20,7 @@ export function ProgressBar({
   return (
     <>
       <div className="progress-bar">
-        <div className="fill" style={{ width: `${progress}%` }}></div>
+        <div className="nutrient-fill" style={{ width: `${progress}%` }}></div>
       </div>
     </>
   );
