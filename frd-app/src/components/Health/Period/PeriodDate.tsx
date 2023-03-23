@@ -35,34 +35,6 @@ const Period = () => {
           <div className={styles.container}>
             <div className={styles.card}>
               <div className={styles.box}>
-                <h2 className={styles.subtitle}>Today's Status</h2>
-                <div className={styles.innerBox}>
-                  {/* <div className={styles.icon}>&#128197;</div> */}
-                  <IonIcon
-                    className={styles.icon}
-                    icon={calendarClearOutline}
-                    slot="start"
-                  />
-                  <div className={styles.miniBox}>
-                    <div className={styles.label}>Date</div>
-                    <div className={styles.value}>{currentDate}</div>
-                  </div>
-                </div>
-
-                <div className={styles.innerBox}>
-                  <div className={styles.icon}>&#10133;</div>
-                  <div className={styles.miniBox}>
-                    <div className={styles.label}>Status</div>
-                    <button color="primary" onClick={handleAddStatus}>
-                      Add
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.card}>
-              <div className={styles.box}>
                 <h2 className={styles.subtitle}>Upcoming Period</h2>
                 <div className={styles.innerBox}>
                   <IonIcon
@@ -85,6 +57,34 @@ const Period = () => {
                   <div className={styles.miniBox}>
                     <div className={styles.label}>End Date</div>
                     <div className={styles.date}>{endDate}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.card}>
+              <div className={styles.box}>
+                <h2 className={styles.subtitle}>Today's Status</h2>
+                <div className={styles.innerBox}>
+                  {/* <div className={styles.icon}>&#128197;</div> */}
+                  <IonIcon
+                    className={styles.icon}
+                    icon={calendarClearOutline}
+                    slot="start"
+                  />
+                  <div className={styles.miniBox}>
+                    <div className={styles.label}>Date</div>
+                    <div className={styles.value}>{currentDate}</div>
+                  </div>
+                </div>
+
+                <div className={styles.innerBox}>
+                  <div className={styles.icon}>&#10133;</div>
+                  <div className={styles.miniBox}>
+                    <div className={styles.label}>Status</div>
+                    <button color="primary" onClick={handleAddStatus}>
+                      Add
+                    </button>
                   </div>
                 </div>
               </div>
