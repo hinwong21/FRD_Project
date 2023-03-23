@@ -28,7 +28,6 @@ type Data = {
   icon: string;
 };
 
-
 export const DiaryEditor: React.FC = () => {
   const [content, setContent] = useState(contentStyle);
   const [data, setData] = useState<Data>();
