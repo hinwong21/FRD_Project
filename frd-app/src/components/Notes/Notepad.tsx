@@ -27,6 +27,7 @@ export const Notepad: React.FC = () => {
 
   return (
   <>
+  {/* fetch db/local storage to show all the notes */}
   < AddNotePopup />
   </>
   );
