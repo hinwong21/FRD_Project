@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import { Display } from './Display';
 import { Panel } from './Panel';
+import { IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/react';
 
 // function Calculator() {
 //     const [result, setResult] = useState("");
@@ -171,8 +172,26 @@ function Calculator() {
         setOperator(undefined);
     }
 
+    function deleteResult() {
+        setResult(result.slice(0, -1));
+    }
     return (
         <>
+            <IonList>
+                <IonItem>
+                    <IonSelect placeholder="Select fruit">
+                        <IonSelectOption value="income">Income</IonSelectOption>
+                        <IonSelectOption value="food">Food</IonSelectOption>
+                        <IonSelectOption value="drink">Drink</IonSelectOption>
+                        <IonSelectOption value="transport">Transport</IonSelectOption>
+                        <IonSelectOption value="entertainment">Entertainment</IonSelectOption>
+                        <IonSelectOption value="bill">Bill</IonSelectOption>
+                        <IonSelectOption value="consumption">Consumption</IonSelectOption>
+                        <IonSelectOption value="medical">Medical</IonSelectOption>
+                        <IonSelectOption value="electronic">Electronic</IonSelectOption>
+                    </IonSelect>
+                </IonItem>
+            </IonList>
             <Display result={result} />
             <Panel
                 operatingEvent={(element: number | string) => {
@@ -191,6 +210,9 @@ function Calculator() {
                                 break;
                             case "AC":
                                 clearResult();
+                                break;
+                            case "delete":
+                                deleteResult();
                                 break;
                             case ".":
                                 if (result.indexOf(".") === -1) {
