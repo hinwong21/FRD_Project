@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Panel.module.scss";
+import { useHistory } from 'react-router';
 
-const num = [7, 8, 9, "+", 4, 5, 6, "-", 1, 2, 3, "x", "AC", ".", "=", "÷", 0, "delete"];
+const num = [7, 8, 9, "+", 4, 5, 6, "-", 1, 2, 3, "x", "AC", ".", "=", "÷", 0, "⌫", "✔"];
 
 
 type PanelProps = {
@@ -9,10 +10,19 @@ type PanelProps = {
 }
 
 export function Panel(props: PanelProps) {
-
+    // const [enter, setEnter] = useState<boolean>(false);
+    const history = useHistory()
     const handler = (element: string | number) => {
         props.operatingEvent(element)
     };
+
+    function clickSubmit() {
+        // setEnter(true);
+        history.push('./Calculator')
+        console.log('clickSubmit');
+
+    }
+
     // const clickEvent = (event:any)=>{
     //     const element = event.target.value;
     //     props.operatingEvent(element);
@@ -24,10 +34,13 @@ export function Panel(props: PanelProps) {
                     return <button className={styles.zeroBtn} key={idx} onClick={() => {
                         handler(element);
                     }}>{element}</button>
-                } else if (element === "delete") {
+                } else if (element === "⌫") {
                     return <button className={styles.delBtn} key={idx} onClick={() => {
                         handler(element);
                     }}>{element}</button>
+                } else if (element === "✔") {
+                    return <button className={styles.clickBtn} key={idx} onClick={() =>
+                        clickSubmit()}> {element}</button>
                 } else {
                     return <button className={styles.regularBtn} key={idx} onClick={() => {
                         handler(element);
@@ -36,5 +49,5 @@ export function Panel(props: PanelProps) {
             }
             )
         }
-    </div>)
+    </div >)
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import { Display } from './Display';
 import { Panel } from './Panel';
-import { IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonList, IonItem, IonSelect, IonSelectOption, IonModal } from '@ionic/react';
 
 // function Calculator() {
 //     const [result, setResult] = useState("");
@@ -138,7 +138,9 @@ import { IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/react';
 
 // export default Calculator;
 
-function Calculator() {
+function Calculator(
+    // props: { isOpen: boolean, bigState: () => void }
+) {
     const [result, setResult] = useState("");
     const [lhs, setLHS] = useState("");
     const [operator, setOperator] = useState<string | undefined>(undefined);
@@ -175,8 +177,14 @@ function Calculator() {
     function deleteResult() {
         setResult(result.slice(0, -1));
     }
+    const handleModalDIdDismiss = () => {
+        console.log('Modal did dismiss');
+        // props.bigState()
+    }
     return (
         <>
+            {/* <IonModal isOpen={props.isOpen} onDidDismiss={handleModalDIdDismiss}> */}
+
             <IonList>
                 <IonItem>
                     <IonSelect placeholder="Select fruit">
@@ -227,6 +235,7 @@ function Calculator() {
                     }
                 }}
             />
+            {/* </ IonModal> */}
         </>
     )
 }

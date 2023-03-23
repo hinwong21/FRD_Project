@@ -56,13 +56,13 @@ const Finance: React.FC = () => {
         <>
 
             <IonList>
-                <div className={style.date}><h1>{date}</h1></div> 
+                <div className={style.date}><h1>{date}</h1></div>
                 <IonTitle><div className={style.title}>My Account</div> </IonTitle>
                 <IonItem>
                     <div className={style.type}>
-                    <IonLabel>Type</IonLabel>
-                    <IonInput value={type} onIonChange={e => setType(e.detail.value!)}></IonInput>
-                    </div> 
+                        <IonLabel>Type</IonLabel>
+                        <IonInput value={type} onIonChange={e => setType(e.detail.value!)}></IonInput>
+                    </div>
                 </IonItem>
                 <IonItem>
                     <IonLabel>Amount</IonLabel>
@@ -109,18 +109,18 @@ const Finance: React.FC = () => {
                     </IonItem>
                 ))}
             </IonList>
-            <IonItem>
+            {/* <IonItem>
                 <Link to="/page/Calculator"><IonButton onClick={handleAddTransaction}>
                     <IonIcon slot="start" icon={add} />
                     Add Transaction
                 </IonButton></Link>
-            </IonItem>
-            <IonItem>
+            </IonItem> */}
+            {/* <IonItem>
                 <Link to="/page/Transaction"><IonButton onClick={handleAddTransaction}>
                     <IonIcon slot="start" icon={add} />
                     Review
                 </IonButton></Link>
-            </IonItem>
+            </IonItem> */}
         </>
     );
 }

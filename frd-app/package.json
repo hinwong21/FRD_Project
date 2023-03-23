@@ -8,10 +8,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-<<<<<<< HEAD
-    "@fullcalendar/common": "^5.11.4",
-=======
->>>>>>> origin
     "@fullcalendar/daygrid": "^6.1.4",
     "@fullcalendar/interaction": "^6.1.4",
     "@fullcalendar/list": "^6.1.4",
