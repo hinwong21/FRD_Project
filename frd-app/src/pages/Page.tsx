@@ -13,7 +13,7 @@ import Calendar from "../components/Calendar/Calendar";
 // import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
-import  { Notes }  from "../components/Notes/Notes";
+import  { Notepad }  from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
 
@@ -33,7 +33,7 @@ const Page: React.FC = () => {
       break;
     case "TodoList":
       // titleName = "待辦事項";
-      fetchPage = <Notes />;
+      fetchPage = <Notepad />;
       break;
     case "Weather":
       // titleName = "天氣";

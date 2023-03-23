@@ -14,7 +14,7 @@ import styles from "./Notes.module.css"
 import { useParams } from "react-router";
 
 
-export const Notes: React.FC = () => {
+export const Notepad: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   // console.log(name);
   let titleName = "";
@@ -29,4 +29,4 @@ export const Notes: React.FC = () => {
     );
 };
 
-export default Notes
+export default Notepad
