@@ -18,26 +18,11 @@ type FoodNutrient = {
   fat: string;
 };
 
-type Intake = {
-  calories: number;
-  carbs: number;
-  protein: number;
-  fat: number;
-};
-
 export function Nutrient() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<Food[]>([]);
   const [foodNutrient, setFoodNutrient] = useState<FoodNutrient>();
   const [waterIntake, setWaterIntake] = useState<number>(0);
-  const [intake, setIntake] = useState<Intake>({
-    calories: 0,
-    carbs: 0,
-    protein: 0,
-    fat: 0,
-  });
-
-  useEffect(() => {});
 
   const handleSearch = useCallback(() => {
     if (searchQuery.length === 0) {
@@ -165,6 +150,13 @@ export function Nutrient() {
           </div>
         </div>
 
+        <div className="food-tracker-container">
+          <header>
+            <div>Food tracking</div>
+            <button className="add-mealBtn">Add meal</button>
+          </header>
+        </div>
+
         <div className="food-search-container">
           <div className="food-search-result">
             <input
@@ -190,7 +182,7 @@ export function Nutrient() {
           </button>
         </div>
 
-        {/* {resultingClientExists.map(obj=><d></>} */}
+        {/* {result.map(obj=><d></>} */}
 
         <div className="intake-history-container">
           <div className="intake-history">

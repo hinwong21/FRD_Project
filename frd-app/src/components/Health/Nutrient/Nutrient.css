@@ -138,6 +138,24 @@ body {
   margin-right: 10px;
 }
 
+.food-tracker-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 300px;
+}
+
+.food-tracker-container header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.add-mealBtn {
+  font-size: 10px;
+}
+
 .food-search-container {
   display: flex;
   flex-direction: row;
