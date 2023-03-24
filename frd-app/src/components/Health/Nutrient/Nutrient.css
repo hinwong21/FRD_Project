@@ -143,22 +143,41 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   width: 300px;
+  margin-bottom: 10px;
 }
 
 .food-tracker-container header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 14px;
-  margin: 10px;
+  margin: 10px 0px;
+}
+
+.select-meal-type {
+  width: 120px;
+  font-size: 12px;
+  padding: 2px;
 }
 
 .add-mealBtn {
   font-size: 10px;
 }
 
+.meal-container {
+  background-color: #eae4b4;
+}
+
+.meal-type {
+  font-size: 12px;
+  margin: 10px 10px 0px 10px;
+}
+
 .food-search-container {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .food-search-result {
@@ -166,7 +185,7 @@ body {
   flex-direction: column;
   position: relative;
   width: 200px;
-  margin: 10px;
+  margin: 10px 10px 10px 0px;
 }
 
 .food-search-bar {
@@ -182,14 +201,14 @@ body {
   outline: none;
 }
 
-ul {
+.nutrient-ul {
   z-index: 9999;
   position: absolute;
   top: 20px;
   right: 0px;
 }
 
-li {
+.nutrient-li {
   width: 200px;
   cursor: pointer;
   border-bottom: 1px solid;
@@ -201,15 +220,21 @@ li {
 }
 
 .nutrient-addBtn {
-  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
   margin: 10px;
+  font-size: 20px;
 }
 
 .intake-history-container {
   width: 300px;
-  height: 200px;
-  background-color: #eae4b4;
+  min-height: 10px;
+  max-height: 100px;
   overflow: scroll;
+  border-bottom: 1px solid;
 }
 
 .intake-history {
