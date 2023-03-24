@@ -138,7 +138,8 @@
   width: 100px;
   height: 150px;
   background-color: #7e826f;
-  background-color: #6c81a1;
+  background-color: rgb(108, 129, 161);
+  background-color: rgb(78, 93, 117);
 }
 
 .test3-f {

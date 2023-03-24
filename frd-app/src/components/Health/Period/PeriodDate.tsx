@@ -83,8 +83,8 @@ const Period = () => {
                   <div className={styles.miniBox}>
                     <div className={styles.label}>Status</div>
                     <IonButton
+                      color={styles.btn}
                       className={styles.btn}
-                      color="primary"
                       onClick={handleAddStatus}
                     >
                       Add
