@@ -2,6 +2,7 @@ import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel,
 import { add, remove } from 'ionicons/icons';
 import React from 'react'
 import { Link } from 'react-router-dom';
+import style from './Finance.module.scss'
 
 type Transaction = {
     id: number,
@@ -55,12 +56,13 @@ const Finance: React.FC = () => {
         <>
 
             <IonList>
-                <h1>{date}</h1>
-                <IonTitle>My Account</IonTitle>
+                <div className={style.date}><h1>{date}</h1></div>
+                <IonTitle><div className={style.title}>My Account</div> </IonTitle>
                 <IonItem>
-
-                    <IonLabel>Type</IonLabel>
-                    <IonInput value={type} onIonChange={e => setType(e.detail.value!)}></IonInput>
+                    <div className={style.type}>
+                        <IonLabel>Type</IonLabel>
+                        <IonInput value={type} onIonChange={e => setType(e.detail.value!)}></IonInput>
+                    </div>
                 </IonItem>
                 <IonItem>
                     <IonLabel>Amount</IonLabel>
@@ -69,15 +71,17 @@ const Finance: React.FC = () => {
 
             </IonList>
             <IonList>
-                <IonItem>
-                    <IonLabel>Total Income: ${totalIncome.toFixed(2)}</IonLabel>
-                </IonItem>
-                <IonItem>
-                    <IonLabel>Total Expense: ${totalExpense.toFixed(2)}</IonLabel>
-                </IonItem>
-                <IonItem>
-                    <IonLabel>Balance: ${balance.toFixed(2)}</IonLabel>
-                </IonItem>
+                <div className={style.balance}>
+                    <IonItem>
+                        <IonLabel>Total Income: ${totalIncome.toFixed(2)}</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                        <IonLabel>Total Expense: ${totalExpense.toFixed(2)}</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                        <IonLabel>Balance: ${balance.toFixed(2)}</IonLabel>
+                    </IonItem>
+                </div>
             </IonList>
             <IonList>
                 <IonItem>
@@ -105,13 +109,18 @@ const Finance: React.FC = () => {
                     </IonItem>
                 ))}
             </IonList>
-            <IonItem>
-                <Link to="/page/Transaction"><IonButton onClick={handleAddTransaction}>
+            {/* <IonItem>
+                <Link to="/page/Calculator"><IonButton onClick={handleAddTransaction}>
                     <IonIcon slot="start" icon={add} />
                     Add Transaction
                 </IonButton></Link>
-            </IonItem>
-
+            </IonItem> */}
+            {/* <IonItem>
+                <Link to="/page/Transaction"><IonButton onClick={handleAddTransaction}>
+                    <IonIcon slot="start" icon={add} />
+                    Review
+                </IonButton></Link>
+            </IonItem> */}
         </>
     );
 }

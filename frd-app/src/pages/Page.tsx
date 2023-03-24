@@ -8,14 +8,17 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import  Accounting  from "../components/Accounting/Accounting";
+import Accounting from "../components/Accounting/Accounting";
+// import Calculator from "../components/Accounting/Calculator";
+import { Transaction } from "../components/Accounting/Transaction";
 import Calendar from "../components/Calendar/Calendar";
 // import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
-import  { Notes }  from "../components/Notes/Notes";
+import { Notepad } from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
+import styles from "./Page.module.scss";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -33,7 +36,7 @@ const Page: React.FC = () => {
       break;
     case "TodoList":
       // titleName = "待辦事項";
-      fetchPage = <Notes />;
+      fetchPage = <Notepad />;
       break;
     case "Weather":
       // titleName = "天氣";
@@ -50,9 +53,6 @@ const Page: React.FC = () => {
     case "Setting":
       // titleName = "設定";
       fetchPage = <Setting />;
-      break;
-      case "Transaction":
-      fetchPage = <Transaction/>
       break;
   }
 

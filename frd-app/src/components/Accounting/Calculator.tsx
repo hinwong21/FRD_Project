@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import { Display } from './Display';
 import { Panel } from './Panel';
+import { IonList, IonItem, IonSelect, IonSelectOption, IonModal } from '@ionic/react';
 
 // function Calculator() {
 //     const [result, setResult] = useState("");
@@ -137,7 +138,9 @@ import { Panel } from './Panel';
 
 // export default Calculator;
 
-function Calculator() {
+function Calculator(
+    // props: { isOpen: boolean, bigState: () => void }
+) {
     const [result, setResult] = useState("");
     const [lhs, setLHS] = useState("");
     const [operator, setOperator] = useState<string | undefined>(undefined);
@@ -171,8 +174,32 @@ function Calculator() {
         setOperator(undefined);
     }
 
+    function deleteResult() {
+        setResult(result.slice(0, -1));
+    }
+    const handleModalDIdDismiss = () => {
+        console.log('Modal did dismiss');
+        // props.bigState()
+    }
     return (
         <>
+            {/* <IonModal isOpen={props.isOpen} onDidDismiss={handleModalDIdDismiss}> */}
+
+            <IonList>
+                <IonItem>
+                    <IonSelect placeholder="Select Genre">
+                        <IonSelectOption value="income">Income</IonSelectOption>
+                        <IonSelectOption value="food">Food</IonSelectOption>
+                        <IonSelectOption value="drink">Drink</IonSelectOption>
+                        <IonSelectOption value="transport">Transport</IonSelectOption>
+                        <IonSelectOption value="entertainment">Entertainment</IonSelectOption>
+                        <IonSelectOption value="bill">Bill</IonSelectOption>
+                        <IonSelectOption value="consumption">Consumption</IonSelectOption>
+                        <IonSelectOption value="medical">Medical</IonSelectOption>
+                        <IonSelectOption value="electronic">Electronic</IonSelectOption>
+                    </IonSelect>
+                </IonItem>
+            </IonList>
             <Display result={result} />
             <Panel
                 operatingEvent={(element: number | string) => {
@@ -192,6 +219,9 @@ function Calculator() {
                             case "AC":
                                 clearResult();
                                 break;
+                            case "delete":
+                                deleteResult();
+                                break;
                             case ".":
                                 if (result.indexOf(".") === -1) {
                                     setResult(result + ".");
@@ -205,6 +235,7 @@ function Calculator() {
                     }
                 }}
             />
+            {/* </ IonModal> */}
         </>
     )
 }

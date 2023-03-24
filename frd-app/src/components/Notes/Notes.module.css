@@ -1,9 +1,4 @@
 .addNotes{
-    font-size: 45px;
-    width: 50px;
-    height: 50px;
-    background-color: rgba(123, 123, 123, 0.354);
-    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,3 +7,29 @@
     bottom: 30px;
 }
 
+
+ion-popover {
+    --background: rgba(105, 175, 198, 0.6);
+    --backdrop-opacity: 0.6;
+    --box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
+    --color: white;
+    --width: 200px;
+  }
+
+button.item-native::after{
+  --width:180px;
+}
+
+  
+  ion-popover ion-content {
+    --background: rgba(40, 173, 218, 0.6);
+  }
+
+
+  .listItemText{
+    margin-left: 10px;
+  }
+  
+  ion-popover::part(backdrop) {
+    background-color: rgba(84, 84, 84, 0.483);
+  }

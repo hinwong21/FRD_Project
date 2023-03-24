@@ -5,7 +5,7 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Menu from "./components/Menu";
 import Page from "./pages/Page";
 
@@ -27,6 +27,9 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import Calculator from "./components/Accounting/Calculator";
+import { Transaction } from "./components/Accounting/Transaction";
+import Accounting from "./components/Accounting/Accounting";
 
 setupIonicReact();
 
@@ -37,12 +40,23 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/page/Main" />
-            </Route>
-            <Route path="/page/:name" exact={true}>
-              <Page />
-            </Route>
+            <Switch>
+              <Route path="/" exact={true}>
+                <Redirect to="/page/Main" />
+              </Route>
+              <Route path="/page/:name" exact={true}>
+                <Page />
+              </Route>
+              <Route path="/Calculator" exact={true}>
+                <Calculator />
+              </Route>
+              <Route path="/Transaction" exact={true}>
+                < Transaction />
+              </Route>
+              <Route path="/Accounting" exact={true}>
+                < Accounting />
+              </Route>
+            </Switch>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
