@@ -18,7 +18,7 @@ import styles from "./Notes.module.css";
 import "./Notes.module.css";
 
 export const AddNotePopup: React.FC = () => {
-    const optionList = {
+    const list = {
       options: [
         {
           icon: <FontAwesomeIcon icon={faBook} />,
@@ -35,8 +35,7 @@ export const AddNotePopup: React.FC = () => {
       ],
     };
   
-    const [list, setList] = useState(optionList);
-  
+
     return (
       <>
         <IonButton
