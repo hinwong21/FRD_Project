@@ -2,7 +2,26 @@
     margin: 5vh 2vh 5vh 2vh;
 }
 
-.calendarWrapper{
-    color:black;
+/* .fc-daygrid-day-top a{
+    --color: black;
+} */
+
+.fc{
+    color: black;
+}
+
+:root{
+    --fc-button-bg-color:transparent;
+    --fc-button-text-color: grey;
+    --fc-event-text-color: grey;
+    --fc-more-link-text-color: grey;
+    --fc-border-color: grey;
+    --fc-today-bg-color: orange;
+    --fc-border-color: grey;
+    --fc-border-radius: 100px;
+}
+
+:host{
+    --fc-col-header-cell-cushion: grey;
 }
 

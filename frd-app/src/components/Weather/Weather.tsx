@@ -81,14 +81,14 @@ export function Weather() {
             {<div className="todayWeather-temp">{data?.temperature}°C</div>}
             {
               <div className="todayWeather-humidity">
-                Humidity：{data?.humidity}%
+                Humidity:{data?.humidity}%
               </div>
             }
 
             <div className="todayWeather-uvindex-container">
               {
                 <div className="todayWeather-uvindex-value">
-                  Ultraviolet index：{data?.uvindexValue}
+                  Ultraviolet index:{data?.uvindexValue}
                 </div>
               }
               {<div>{data?.uvindexdesc}</div>}

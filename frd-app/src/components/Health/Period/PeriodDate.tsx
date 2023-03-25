@@ -6,7 +6,7 @@ import {
   caretForwardOutline,
 } from "ionicons/icons";
 import styles from "./Period.module.scss";
-import { IonContent, IonIcon, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonIcon, IonPage } from "@ionic/react";
 
 const Period = () => {
   const [currentDate, setCurrentDate] = useState(
@@ -82,9 +82,13 @@ const Period = () => {
                   <div className={styles.icon}>&#10133;</div>
                   <div className={styles.miniBox}>
                     <div className={styles.label}>Status</div>
-                    <button color="primary" onClick={handleAddStatus}>
+                    <IonButton
+                      color={styles.btn}
+                      className={styles.btn}
+                      onClick={handleAddStatus}
+                    >
                       Add
-                    </button>
+                    </IonButton>
                   </div>
                 </div>
               </div>

@@ -15,6 +15,7 @@ import Calendar from "../components/Calendar/Calendar";
 // import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
+import DiaryEditor from "../components/Notes/DiaryEditor";
 import { Notepad } from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";

@@ -4,7 +4,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertFromRaw } from "draft-js";
 
 
-export const MemoEditor: React.FC = () => {
+export const TodoListEditor: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -14,4 +14,4 @@ export const MemoEditor: React.FC = () => {
   );
 };
 
-export default MemoEditor;
+export default TodoListEditor;

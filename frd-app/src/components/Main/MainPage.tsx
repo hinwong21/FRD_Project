@@ -1,5 +1,5 @@
 import React from "react";
 
 export const MainPage = () => {
-  return <div>RUN MainPage</div>;
+  return <div>RUN MainPage123</div>;
 };

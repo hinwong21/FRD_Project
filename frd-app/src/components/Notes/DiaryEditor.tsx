@@ -3,7 +3,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertFromRaw } from "draft-js";
 // import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import styles from "DiaryEditor.module.css";
+import styles from "./DiaryEditor.module.css";
 
 const contentStyle = {
   entityMap: {},
@@ -28,10 +28,11 @@ type Data = {
   icon: string;
 };
 
+
 export const DiaryEditor: React.FC = () => {
   const [content, setContent] = useState(contentStyle);
   const [data, setData] = useState<Data>();
-  const [value, setValue] = useState("")
+  // const [value, setValue] = useState("")
 
   const contentState = convertFromRaw(content);
 
@@ -95,6 +96,7 @@ export const DiaryEditor: React.FC = () => {
 
   return (
     <>
+    <div className={styles.mainWrapper}>
       <div className={styles.weatherWrapper}>
         <div className={styles.dateAndTemp}>{diaryDate()}
         {<div className={styles.temperature}>{data?.temperature}°C</div>}
@@ -111,7 +113,6 @@ export const DiaryEditor: React.FC = () => {
         wrapperClassName="demo-wrapper"
         editorClassName="demo-editor"
         onContentStateChange={onContentStateChange}
-        placeholder = "Write your diary here..."
         toolbar={{
           options: [
             "inline",
@@ -174,6 +175,7 @@ export const DiaryEditor: React.FC = () => {
           }
         }}
       />
+      </div>
     </>
   );
 };

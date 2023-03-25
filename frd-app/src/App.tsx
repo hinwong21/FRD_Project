@@ -30,6 +30,7 @@ import "./theme/variables.css";
 import Calculator from "./components/Accounting/Calculator";
 import { Transaction } from "./components/Accounting/Transaction";
 import Accounting from "./components/Accounting/Accounting";
+import DiaryEditor from "./components/Notes/DiaryEditor";
 
 setupIonicReact();
 
@@ -53,6 +54,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/Accounting" exact={true}>
                 < Accounting />
+              </Route>
+              <Route path="/Diaryeditor" exact={true}>
+                < DiaryEditor />
               </Route>
             </Switch>
           </IonRouterOutlet>

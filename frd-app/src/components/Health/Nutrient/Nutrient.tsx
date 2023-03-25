@@ -1,6 +1,8 @@
 // import { IonContent, IonPage } from "@ionic/react";
 import React, { useState, useCallback, useEffect } from "react";
-import { HealthNutrition } from "./HealthNutrition";
+import { Provider, useDispatch } from "react-redux";
+import { Action, storeNutrition } from "../../../redux/Nutrition/store";
+import HealthNutrition from "./HealthNutrition";
 import "./Nutrient.css";
 import { WaterProgressBar } from "./WaterProgressBar";
 
@@ -12,17 +14,25 @@ interface Food {
 }
 
 type FoodNutrient = {
-  calories: string;
-  carbs: string;
-  protein: string;
-  fat: string;
+  calories: number;
+  carbs: number;
+  protein: number;
+  fat: number;
 };
+
+interface MealProps {
+  id: number;
+  name: string;
+}
 
 export function Nutrient() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<Food[]>([]);
   const [foodNutrient, setFoodNutrient] = useState<FoodNutrient>();
   const [waterIntake, setWaterIntake] = useState<number>(0);
+  const [meals, setMeals] = useState<MealProps[]>([]);
+  const [elements, setElements] = useState<JSX.Element[]>([]);
+  const [selectedMealType, setSelectedMealType] = useState<string>("");
 
   const handleSearch = useCallback(() => {
     if (searchQuery.length === 0) {
@@ -67,12 +77,11 @@ export function Nutrient() {
     [setSearchQuery, setSearchResults]
   );
 
-  const handleSearchInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>): void => {
-      setSearchQuery(event.target.value);
-    },
-    []
-  );
+  const handleSearchInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setSearchQuery(event.target.value);
+  };
 
   function nutrientSearch() {
     // Make the API call to get the food data
@@ -107,10 +116,10 @@ export function Nutrient() {
         // Update the state with the food name and calories
         setSearchQuery("");
         setFoodNutrient({
-          calories: `${caloriesNutrient.value}`,
-          carbs: `${carbsNutrient.value}`,
-          protein: `${proteinNutrient.value}`,
-          fat: `${fatNutrient.value}`,
+          calories: caloriesNutrient.value,
+          carbs: carbsNutrient.value,
+          protein: proteinNutrient.value,
+          fat: fatNutrient.value,
         });
       })
       .catch((error) => console.error(error));
@@ -121,42 +130,21 @@ export function Nutrient() {
     setWaterIntake(parseFloat(newWaterIntake));
   }
 
-  return (
-    <>
-      {/* <IonPage> */}
-      {/* <IonContent fullscreen> */}
-      <div className="page-container">
-        <HealthNutrition />
+  const handleMealTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedMealType(event.target.value);
+  };
 
-        {/* Water balance */}
-        <div className="water-balance-container">
-          <div className="water-balance-header">Water balance</div>
+  const handleAddMeal = () => {
+    const newMeal = { id: meals.length + 1, name: selectedMealType };
+    if (newMeal.name === "") {
+      return;
+    }
 
-          <div className="water-balance-main">
-            <div className="water-intake-container">
-              <div className="water-intake">
-                <div className="current-water-intake">Water: {waterIntake}</div>
-                <div className="water-minimum-intake">
-                  Daily minimum intake: 1.6 L
-                </div>
-              </div>
-              <button className="water-intake-addBtn" onClick={addWaterIntake}>
-                +
-              </button>
-            </div>
-            <div className="water-progressBar-container">
-              <WaterProgressBar dailyIntake={1.6} currentIntake={waterIntake} />
-            </div>
-          </div>
-        </div>
-
-        <div className="food-tracker-container">
-          <header>
-            <div>Food tracking</div>
-            <button className="add-mealBtn">Add meal</button>
-          </header>
-        </div>
-
+    const newElement = (
+      <div className="meal-container" key={newMeal.id}>
+        <div className="meal-type">{newMeal.name}</div>
         <div className="food-search-container">
           <div className="food-search-result">
             <input
@@ -164,7 +152,7 @@ export function Nutrient() {
               placeholder="Enter food name"
               type="text"
               value={searchQuery}
-              onChange={handleSearchInputChange}
+              onChange={() => handleSearchInputChange}
             />
             <ul>
               {searchResults.map((food: Food) => (
@@ -178,11 +166,9 @@ export function Nutrient() {
             </ul>
           </div>
           <button className="nutrient-addBtn" onClick={nutrientSearch}>
-            Add Food
+            +
           </button>
         </div>
-
-        {/* {result.map(obj=><d></>} */}
 
         <div className="intake-history-container">
           <div className="intake-history">
@@ -213,9 +199,133 @@ export function Nutrient() {
             </div>
           </div>
         </div>
-        <div className="data-notice">
-          *The data will only be retained for a period of seven days.
+      </div>
+    );
+    setMeals([...meals, newMeal]);
+    setElements((prevElements) => [...prevElements, newElement]);
+    setSelectedMealType("");
+  };
+
+  return (
+    <>
+      {/* <IonPage> */}
+      {/* <IonContent fullscreen> */}
+      <div className="page-container">
+        <Provider store={storeNutrition}>
+          <HealthNutrition />
+        </Provider>
+
+        {/* Water balance */}
+        <div className="water-balance-container">
+          <div className="water-balance-header">Water balance</div>
+
+          <div className="water-balance-main">
+            <div className="water-intake-container">
+              <div className="water-intake">
+                <div className="current-water-intake">Water: {waterIntake}</div>
+                <div className="water-minimum-intake">
+                  Daily minimum intake: 1.6 L
+                </div>
+              </div>
+              <button className="water-intake-addBtn" onClick={addWaterIntake}>
+                +
+              </button>
+            </div>
+            <div className="water-progressBar-container">
+              <WaterProgressBar dailyIntake={1.6} currentIntake={waterIntake} />
+            </div>
+          </div>
         </div>
+
+        <div className="food-tracker-container">
+          <header>
+            <div>Food tracking</div>
+            <select
+              className="select-meal-type"
+              value={selectedMealType}
+              onChange={handleMealTypeChange}
+            >
+              <option value="">Select meal type</option>
+              <option value="Breakfast">breakfast</option>
+              <option value="Brunch">brunch</option>
+              <option value="Lunch">lunch</option>
+              <option value="Tea">tea</option>
+              <option value="Snack">snack</option>
+              <option value="Dinner">dinner</option>
+              <option value="Siu Ye">siu ye</option>
+            </select>
+            <button className="add-mealBtn" onClick={handleAddMeal}>
+              Add meal
+            </button>
+          </header>
+
+          <div className="meal-container">
+            <div className="food-search-container">
+              <div className="food-search-result">
+                <input
+                  className="food-search-bar"
+                  placeholder="Enter food name"
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                />
+                <ul className="nutrient-ul">
+                  {searchResults.map((food: Food) => (
+                    <li
+                      className="nutrient-li"
+                      key={food.fdcId}
+                      onClick={() => handleSearchResultClick(food)}
+                    >
+                      {food.description}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <button className="nutrient-addBtn" onClick={nutrientSearch}>
+                +
+              </button>
+            </div>
+
+            <div className="intake-history-container">
+              <div className="intake-history">
+                <div className="food-name-calories-container">
+                  <div className="food-name">Food: Apple</div>
+                  <div className="nutrient">Calories: 52 KCAL</div>
+                </div>
+
+                <div className="food-nutrient">
+                  <div className="nutrient">Carbs: 14.3 G</div>
+                  <div className="nutrient">Protein: 0 G</div>
+                  <div className="nutrient">Fat: 0.65 G</div>
+                </div>
+              </div>
+
+              <div className="intake-history">
+                <div className="food-name-calories-container">
+                  <div className="food-name">Food: Apple</div>
+                  <div className="nutrient">
+                    Calories: {foodNutrient?.calories} kcal
+                  </div>
+                </div>
+
+                <div className="food-nutrient">
+                  <div className="nutrient">Carbs: {foodNutrient?.carbs}g</div>
+                  <div className="nutrient">
+                    Protein: {foodNutrient?.protein}g
+                  </div>
+                  <div className="nutrient">Fat: {foodNutrient?.fat}g</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {elements}
+        </div>
+
+        {/* {result.map(obj=><d></>} */}
+        {/* <footer className="data-notice">
+          *The data will only be retained for a period of seven days.
+        </footer> */}
       </div>
       {/* </IonContent> */}
       {/* </IonPage> */}

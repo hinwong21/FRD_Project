@@ -1,13 +1,17 @@
 import React from "react";
-import PeriodMain from "./Period/PeriodMain";
-import { HealthNutrition } from "./Nutrient/HealthNutrition";
+import Period from "./Period/PeriodMain";
 import styles from "./Health.module.scss";
+import { Provider } from "react-redux";
+import { storeNutrition } from "../../redux/Nutrition/store";
+import HealthNutrition from "./Nutrient/HealthNutrition";
 
 export const Health = () => {
   return (
     <div>
-      <PeriodMain />
-      <HealthNutrition />
+      <Period />
+      <Provider store={storeNutrition}>
+        <HealthNutrition />
+      </Provider>
     </div>
   );
 };
