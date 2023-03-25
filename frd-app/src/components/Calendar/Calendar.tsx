@@ -6,6 +6,9 @@ import {
     IonPage,
     IonTitle,
     IonToolbar,
+    IonRefresher,
+    IonRefresherContent,
+    RefresherEventDetail
   } from "@ionic/react";
   import { useParams } from "react-router";
   import { Calendar_zh } from "./Calendar_zh";
@@ -17,10 +20,26 @@ import {
     // console.log(name);
     let titleName = "";
     let fetchPage = <></>;
-  
+
+    // function handleRefresh(event: CustomEvent<RefresherEventDetail>) {
+    //   setTimeout(() => {
+    //     // Any calls to load data go here
+    //     event.detail.complete();
+    //   }, 1000);
+    // }
+    // const calendarRef = useRef (null)
+
+    // const onEventAdded = (event)=>{
+    //   let calendarApi =  calendarRef.current.getApi();
+    // }
+
     return (
       <IonPage>
         <IonContent fullscreen>
+        {/* <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher> */}
+
           <div className={styles.calendarWrapper}>
           <Calendar_zh/>
           </div>

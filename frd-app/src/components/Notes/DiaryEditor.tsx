@@ -113,7 +113,6 @@ export const DiaryEditor: React.FC = () => {
         wrapperClassName="demo-wrapper"
         editorClassName="demo-editor"
         onContentStateChange={onContentStateChange}
-        placeholder = "Write your diary here..."
         toolbar={{
           options: [
             "inline",
