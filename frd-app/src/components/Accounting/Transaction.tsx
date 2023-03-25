@@ -1,5 +1,5 @@
-import { IonContent, IonItem, IonLabel, IonList, IonPage, IonSelect, IonSelectOption } from '@ionic/react';
-import React, { useState } from 'react'
+import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonList, IonModal, IonPage, IonSelect, IonSelectOption } from '@ionic/react';
+import React, { useRef, useState } from 'react'
 
 
 interface Genre {
@@ -68,28 +68,36 @@ const compareWith = (o1: Genre, o2: Genre) => {
     return o1.id === o2.id;
 };
 
-export const Transaction = () => {
+// export
+let Transaction: React.FC<{ isTran: boolean, tr_set: (b: boolean) => void }> = ({ isTran, tr_set }) => {
     const [currentGenre, setCurrentGenre] = useState('');
-
+    const modal = useRef<HTMLIonModalElement>(null);
     return (
-        <IonList>
-            <IonItem>
-                <IonSelect
-                    placeholder="Select Genre"
-                    compareWith={compareWith}
-                    onIonChange={(ev) => setCurrentGenre(JSON.stringify(ev.detail.value))}
-                    multiple={true}
-                >
-                    {Genres.map((Genre) => (
-                        <IonSelectOption key={Genre.id} value={Genre}>
-                            {Genre.name}
-                        </IonSelectOption>
-                    ))}
-                </IonSelect>
-            </IonItem>
-            <IonItem lines="none">
-                <IonLabel>Current value: {currentGenre}</IonLabel>
-            </IonItem>
-        </IonList>
+        <IonModal ref={modal} isOpen={isTran}>
+
+            <IonButtons slot="start">
+                <IonButton onClick={() => { modal.current?.dismiss(); tr_set(false) }}>Close</IonButton>
+            </IonButtons>
+            <IonList>
+                <IonItem>
+                    <IonSelect
+                        placeholder="Select Genre"
+                        compareWith={compareWith}
+                        onIonChange={(ev) => setCurrentGenre(JSON.stringify(ev.detail.value))}
+                        multiple={true}
+                    >
+                        {Genres.map((Genre) => (
+                            <IonSelectOption key={Genre.id} value={Genre}>
+                                {Genre.name}
+                            </IonSelectOption>
+                        ))}
+                    </IonSelect>
+                </IonItem>
+                <IonItem lines="none">
+                    <IonLabel>Current value: {currentGenre}</IonLabel>
+                </IonItem>
+            </IonList>
+        </IonModal>
     );
 }
+export default Transaction;
