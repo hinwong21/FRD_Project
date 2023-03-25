@@ -47,9 +47,7 @@ const App: React.FC = () => {
               <Route path="/page/:name" exact={true}>
                 <Page />
               </Route>
-              <Route path="/Calculator" exact={true}>
-                <Calculator />
-              </Route>
+
               <Route path="/Transaction" exact={true}>
                 < Transaction />
               </Route>

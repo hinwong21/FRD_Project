@@ -1,6 +1,6 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonTitle, IonToolbar } from '@ionic/react';
 import { add, remove } from 'ionicons/icons';
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom';
 import style from './Finance.module.scss'
 
@@ -48,8 +48,8 @@ const Finance: React.FC = () => {
 
     const incomeTransactions = transactions.filter(transaction => transaction.type === 'income');
     const expenseTransactions = transactions.filter(transaction => transaction.type === 'expense');
-    const totalIncome = incomeTransactions.reduce((total, transaction) => total + transaction.amount, 0);
-    const totalExpense = expenseTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+    const totalIncome = useMemo(() => incomeTransactions.reduce((total, transaction) => total + transaction.amount, 0), [transactions]);
+    const totalExpense = useMemo(() => expenseTransactions.reduce((total, transaction) => total + transaction.amount, 0), [transactions]);
     const balance = totalIncome - totalExpense;
 
     return (

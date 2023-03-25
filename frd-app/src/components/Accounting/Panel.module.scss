@@ -1,31 +1,37 @@
 .panelContainer{
-    display: flex;
-    flex-wrap: wrap;
-    width: 480px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto repeat(5, 1fr);
+    grid-gap: 5px;
+    // width: 90%;
+    // height: 100%;
+    justify-content: center;
 }
 
 .regularBtn{
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     margin: 10px 10px 10px 10px;
-    font-size:larger
+    font-size:larger;
+    font-family: Arial, sans-serif;
 }
-.zeroBtn{
-    width: 45%;
-    height: 100px;
-    margin: 10px 10px 10px 10px;
-    font-size:larger
-}
+// .acBtn{
+//     width: 41%;
+//     height: 70px;
+//     margin: 10px 10px 10px 10px;
+//     font-size:larger
+// }
 
-.delBtn{
-    width: 46%;
-    height: 100px;
-    margin: 10px 10px 10px 13px;
-    font-size:larger
-}
-.clickBtn{
-    width: 45%;
-    height: 100px;
-    margin: 10px 10px 10px 13px;
-    font-size:larger
-}
+// .delBtn{
+//     width: 70px;
+//     height: 70px;
+//     margin: 10px 0px 10px 9px;
+//     font-size:larger;
+//     position: relative;
+// }
+// .clickBtn{
+//     width: 70px;
+//     height: 70px;
+//     margin: 10px 10px 10px 10px;
+//     font-size:larger
+// }

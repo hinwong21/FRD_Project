@@ -1,5 +1,5 @@
 import { IonPage, IonContent, IonButton } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Finance from "./Finance";
 import { Finance_summary } from "./Finance_summary";
 import style from './Accounting.module.scss'
@@ -10,13 +10,13 @@ import { useHistory } from 'react-router';
 //   return <div>Accounting</div>;
 // };
 const Accounting: React.FC = () => {
-  // let [isOpen, setIsOpen] = useState<boolean>(false);
-  const history = useHistory()
-  // const tran = useHistory()
-  const handleClick = () => {
-    history.push('/Calculator')
-    // console.log('cal');
 
+  let [isOpen, setIsOpen] = useState<boolean>(false);
+  const history = useHistory()
+  const cb_set = useCallback((boo: boolean) => handleClick(boo), [])
+  const handleClick = (boo: boolean) => {
+
+    setIsOpen(boo)
   }
   const goToTransaction = () => {
     history.push('/Transaction')
@@ -36,8 +36,12 @@ const Accounting: React.FC = () => {
           {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
             {/* <Link to="/Calculator"></Link> */}
           {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
+          <Calculator isOpen={isOpen} cb_set={cb_set} />
+
           <IonButton onClick={goToTransaction}>Review</IonButton>
-          <IonButton onClick={handleClick}>Add Transaction</IonButton>
+          <IonButton expand="block"
+            onClick={() => handleClick(true)}
+          >Add Transaction</IonButton>
         </IonContent>
       </IonPage>
     </>
