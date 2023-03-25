@@ -8,9 +8,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import Accounting from "../components/Accounting/Accounting";
 // import Calculator from "../components/Accounting/Calculator";
-import Transaction from "../components/Accounting/Transaction";
 import Calendar from "../components/Calendar/Calendar";
 // import ExploreContainer from "../components/ExploreContainer";
 import { Health } from "../components/Health/Health";
@@ -43,10 +41,10 @@ const Page: React.FC = () => {
       // titleName = "天氣";
       fetchPage = <Weather />;
       break;
-    case "Accounting":
-      // titleName = "記帳";
-      fetchPage = <Accounting />;
-      break;
+    // case "Accounting":
+    //   // titleName = "記帳";
+    //   fetchPage = <AccountingPage />;
+    //   break;
     case "Health":
       // titleName = "生理健康";
       fetchPage = <Health />;

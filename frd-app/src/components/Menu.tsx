@@ -73,7 +73,7 @@ const appPages: AppPage[] = [
   {
     id: 5,
     title: "Accounting",
-    url: "/page/Accounting",
+    url: "/Accounting",
     iosIcon: cashOutline,
     mdIcon: cashSharp,
   },
