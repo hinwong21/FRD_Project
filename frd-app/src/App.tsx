@@ -28,8 +28,8 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import Calculator from "./components/Accounting/Calculator";
-import { Transaction } from "./components/Accounting/Transaction";
-import Accounting from "./components/Accounting/Accounting";
+import AccountingPage from "./pages/AccountingPage";
+import DiaryEditor from "./components/Notes/DiaryEditor";
 
 setupIonicReact();
 
@@ -47,14 +47,15 @@ const App: React.FC = () => {
               <Route path="/page/:name" exact={true}>
                 <Page />
               </Route>
-              <Route path="/Calculator" exact={true}>
-                <Calculator />
-              </Route>
-              <Route path="/Transaction" exact={true}>
+
+              {/* <Route path="/Transaction" exact={true}>
                 < Transaction />
-              </Route>
+              </Route> */}
               <Route path="/Accounting" exact={true}>
-                < Accounting />
+                <AccountingPage />
+              </Route>
+              <Route path="/Diaryeditor" exact={true}>
+                <DiaryEditor />
               </Route>
             </Switch>
           </IonRouterOutlet>

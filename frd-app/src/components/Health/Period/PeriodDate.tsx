@@ -83,8 +83,8 @@ const Period = () => {
                   <div className={styles.miniBox}>
                     <div className={styles.label}>Status</div>
                     <IonButton
+                      color={styles.btn}
                       className={styles.btn}
-                      color="primary"
                       onClick={handleAddStatus}
                     >
                       Add
@@ -99,15 +99,17 @@ const Period = () => {
                 <h2 className={styles.subtitle}>Log</h2>
                 <div className={styles.innerBox}>
                   {logs.map((log, index) => (
-                    <div key={index}>
+                    <div key={index} className={styles.logBox}>
                       <IonIcon
                         className={styles.icon}
                         icon={calendarClearOutline}
                         slot="start"
                       />
-                      <div className={styles.label}>Date</div>
+                      {/* <div className={styles.label}>Date</div> */}
                       <div className={styles.date}>{log.date}</div>
-                      <div className={styles.badge}>{log.status}</div>
+                      <div>
+                        <div className={styles.badge}>{log.status}</div>
+                      </div>
                     </div>
                   ))}
                 </div>
