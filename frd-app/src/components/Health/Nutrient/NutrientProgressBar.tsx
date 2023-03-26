@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./NutrientProgressBar.css"; // Import the CSS file for the progress bar
+import "./ProgressBar.css"; // Import the CSS file for the progress bar
 
 type ProgressBarProps = {
   dailyIntake: number;

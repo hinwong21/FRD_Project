@@ -251,7 +251,7 @@ body {
 }
 
 .food-name {
-  margin-right: 10px;
+  width: 100px;
   overflow: hidden;
 }
 

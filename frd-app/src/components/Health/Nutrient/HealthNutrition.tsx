@@ -39,13 +39,14 @@ const HealthNutrition = () => {
   // let maxFatDailyIntake = Math.round(caloriesDailyIntake * 0.35);
   // let minCarbsDailyIntake = Math.round(caloriesDailyIntake * 0.45);
   let maxCarbsDailyIntake = Math.round(caloriesDailyIntake * 0.65);
+  let caloriesLeft = caloriesDailyIntake - caloriesIntake;
 
   return (
     <div className="nutrient-header">
       {/* Calories */}
       <div className="header-calories-container">
         <div>
-          <div className="header-calories-left">1587 left</div>
+          <div className="header-calories-left">{caloriesLeft} left</div>
           <div className="daily-calories-intake">
             Daily calories intake: {caloriesDailyIntake}
           </div>
@@ -57,11 +58,9 @@ const HealthNutrition = () => {
       <div className="calories-progressBar-container">
         <NutrientProgressBar
           dailyIntake={caloriesDailyIntake}
-          currentIntake={caloriesIntake}
-        />
+          currentIntake={caloriesIntake} />
       </div>
       <div className="header-nutrient-container">
-        
         {/* Carbs */}
         <div className="header-nutrient">
           <div>Carbs</div>
@@ -72,8 +71,7 @@ const HealthNutrition = () => {
           <div className="nutrient-progressBar-container">
             <NutrientProgressBar
               dailyIntake={maxCarbsDailyIntake}
-              currentIntake={carbsIntake}
-            />
+              currentIntake={carbsIntake} />
           </div>
         </div>
 
@@ -87,8 +85,7 @@ const HealthNutrition = () => {
           <div className="nutrient-progressBar-container">
             <NutrientProgressBar
               dailyIntake={proteinDailyIntake}
-              currentIntake={proteinIntake}
-            />
+              currentIntake={proteinIntake} />
           </div>
         </div>
 
@@ -102,8 +99,7 @@ const HealthNutrition = () => {
           <div className="nutrient-progressBar-container">
             <NutrientProgressBar
               dailyIntake={minFatDailyIntake}
-              currentIntake={fatIntake}
-            />
+              currentIntake={fatIntake} />
           </div>
         </div>
       </div>
