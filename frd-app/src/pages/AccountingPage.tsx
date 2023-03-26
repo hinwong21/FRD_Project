@@ -56,7 +56,7 @@ const AccountingPage: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>記帳</IonTitle>
+            <IonTitle>Accounting</IonTitle>
           </IonToolbar>
         </IonHeader>
 
