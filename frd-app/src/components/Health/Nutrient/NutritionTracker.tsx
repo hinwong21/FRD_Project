@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Nutrient.css";
+import "./Nutrition.css";
 import { useDispatch } from "react-redux";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";

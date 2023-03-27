@@ -30,6 +30,8 @@ import "./theme/variables.css";
 import Calculator from "./components/Accounting/Calculator";
 import AccountingPage from "./pages/AccountingPage";
 import DiaryEditor from "./components/Notes/DiaryEditor";
+import PeriodMain from "./components/Health/Period/PeriodMain";
+import HealthNutrition from "./components/Health/Nutrient/HealthNutrition";
 
 setupIonicReact();
 
@@ -56,6 +58,13 @@ const App: React.FC = () => {
               </Route>
               <Route path="/Diaryeditor" exact={true}>
                 <DiaryEditor />
+              </Route>
+
+              <Route path="/Health-period" exact={true}>
+                <PeriodMain />
+              </Route>
+              <Route path="/Health-nutrient" exact={true}>
+                <HealthNutrition />
               </Route>
             </Switch>
           </IonRouterOutlet>
