@@ -5,6 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction"
 import listPlugin from '@fullcalendar/list';
+import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import {
   IonPopover,
   IonContent,
@@ -18,17 +19,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export const Calendar_zh = () => {
   
   const eventList = [
-    {title:"hihihi", start:'2023-03-20 12:30', end:'2023-03-21 16:30',backgroundColor:"blue",textColor:"white"},
-    {title:"byebyebye", start:'2023-03-20 10:30', end:'2023-03-21 12:30',backgroundColor:"red",textColor:"white"},
-    {title:"yoyoyo", start:'2023-03-24 09:30', end:'2023-03-27 07:30',backgroundColor:"brown",textColor:"white"}
+    {title:"Piano Lesson", start:'2023-03-20 12:30', end:'2023-03-21 16:30', extendedProps: {description: 'Pay lesson fee'}, backgroundColor:"blue",textColor:"white"},
+    {title:"Tecky Group Project Discussion", start:'2023-03-20 10:30', extendedProps: {description: 'Brain Storm-- Karaoke App'},end:'2023-03-21 12:30',backgroundColor:"red",textColor:"white"},
+    {title:"Revision Time", start:'2023-03-24 09:30', end:'2023-03-27 07:30', extendedProps: {description: 'I can do it!'}, backgroundColor:"brown",textColor:"white"}
   ]
-
 
   return (
     <>
     <div>
         <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, googleCalendarPlugin]}
         initialView = "dayGridMonth"
         headerToolbar={{
             start:"title",
@@ -42,15 +42,16 @@ export const Calendar_zh = () => {
         selectable= {true}
         nowIndicator = {true}
         longPressDelay = {500}
-        events = {eventList}
+        googleCalendarApiKey= 'AIzaSyCudYRoPMFcW8GuaTTNTgO9a0IGsz6lYak'
+        eventSources = {[{googleCalendarId: 'en.hong_kong#holiday@group.v.calendar.google.com'},eventList]}
+        // events = {eventList}
         eventDidMount = {(info)=>{
           return new bootstrap.Popover(info.el,{
             title: info.event.title,
             placement:"auto",
             trigger:"hover",
             customClass: "popoverStyle",
-            content:
-            "<p>ABC testing</p>",
+            content: info.event.extendedProps.description,
             html:true,
           })
         }}
