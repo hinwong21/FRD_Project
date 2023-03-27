@@ -1,0 +1,26 @@
+.innerBox {
+  margin-top: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // align-content: center;
+}
+
+.togoP,
+.togoN {
+  margin-bottom: 10%;
+  width: 50%;
+  border-radius: 5px;
+  // padding: 30px;
+  font-size: 20px;
+  height: 60px;
+}
+
+.togoP {
+  background-color: rgb(221, 182, 188);
+}
+
+.togoN {
+  background-color: #aebd9b;
+}

@@ -11,7 +11,7 @@ import { useParams } from "react-router";
 // import Calculator from "../components/Accounting/Calculator";
 import Calendar from "../components/Calendar/Calendar";
 // import ExploreContainer from "../components/ExploreContainer";
-import { Health } from "../components/Health/Health";
+import Health from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
 import DiaryEditor from "../components/Notes/DiaryEditor";
 import { Notepad } from "../components/Notes/Notepad";
