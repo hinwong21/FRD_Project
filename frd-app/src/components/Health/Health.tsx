@@ -1,11 +1,9 @@
 import React from "react";
-import Period from "./Period/PeriodMain";
 import styles from "./Health.module.scss";
 import { Provider } from "react-redux";
 import { nutritionStore } from "../../redux/Nutrition/store";
-import HealthNutrition from "./Nutrient/HealthNutrition";
 import { IonButton, IonContent, IonPage } from "@ionic/react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Health = () => {
   const submit = useHistory();
@@ -29,7 +27,7 @@ const Health = () => {
             >
               Period
             </IonButton>
-            <Provider store={storeNutrition}>
+            <Provider store={nutritionStore}>
               <IonButton
                 color={styles.togoN}
                 className={styles.togoN}
