@@ -7,7 +7,13 @@ export type NutritionState = {
   fatIntake: number;
 };
 
-export type Action = { type: "INCREMENT" };
+export type Action =  {
+  type: "INCREMENT";
+  calories: number;
+  carbs: number;
+  protein: number;
+  fat: number;
+};
 
 const initialState: NutritionState = {
   caloriesIntake: 0,
@@ -20,14 +26,14 @@ function reducer(state = initialState, action: Action): NutritionState {
   switch (action.type) {
     case "INCREMENT":
       return {
-        caloriesIntake: state.caloriesIntake,
-        carbsIntake: state.carbsIntake,
-        proteinIntake: state.proteinIntake,
-        fatIntake: state.fatIntake,
+        caloriesIntake: state.caloriesIntake + action.calories,
+        carbsIntake: state.carbsIntake + action.carbs,
+        proteinIntake: state.proteinIntake + action.protein,
+        fatIntake: state.fatIntake + action.fat,
       };
     default:
       return state;
   }
 }
 
-export const storeNutrition = createStore(reducer);
+export const nutritionStore = createStore(reducer);

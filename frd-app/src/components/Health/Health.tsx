@@ -2,7 +2,7 @@ import React from "react";
 import Period from "./Period/PeriodMain";
 import styles from "./Health.module.scss";
 import { Provider } from "react-redux";
-import { storeNutrition } from "../../redux/Nutrition/store";
+import { nutritionStore } from "../../redux/Nutrition/store";
 import HealthNutrition from "./Nutrient/HealthNutrition";
 import { IonButton, IonContent, IonPage } from "@ionic/react";
 import { Route, Switch, useHistory } from "react-router-dom";
