@@ -59,6 +59,7 @@ const App: React.FC = () => {
               <Route path="/Diaryeditor" exact={true}>
                 <DiaryEditor />
               </Route>
+
               <Route path="/Health-period" exact={true}>
                 <PeriodMain />
               </Route>

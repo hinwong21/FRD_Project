@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Health.module.scss";
 import { Provider } from "react-redux";
 import { nutritionStore } from "../../redux/Nutrition/store";
+
 import { IonButton, IonContent, IonPage } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 
@@ -33,7 +34,7 @@ const Health = () => {
                 className={styles.togoN}
                 onClick={() => handleHistory("Nutrient")}
               >
-                Nutrient
+                Nutrition
               </IonButton>
             </Provider>
           </div>
