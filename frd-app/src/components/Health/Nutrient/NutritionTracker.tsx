@@ -10,8 +10,8 @@ type Meals = {
 };
 
 type Food = {
-  fdcId: number | undefined;
-  description: string | undefined;
+  fdcId: number;
+  description: string;
 };
 
 type Nutrient = {
@@ -46,13 +46,6 @@ export const NutritionTracker = () => {
   };
 
   const foodSearch = (mealId: number, newValue: string) => {
-    //setFoodItems({});
-
-    // if (newValue.length === 0) {
-    //   setFoodItems({});
-    //   return;
-    // }
-
     fetch(
       `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${newValue}`
     )
@@ -63,6 +56,11 @@ export const NutritionTracker = () => {
 
         for (let i = 0; i < 7; i++) {
           const food: Food = foods[i];
+
+          // avoid search result is undefined to throw error
+          if (typeof food == "undefined") {
+            return;
+          }
 
           const isDuplicate: boolean = uniqueFoods.some(
             (uniqueFood) => uniqueFood.description === food.description
@@ -77,9 +75,7 @@ export const NutritionTracker = () => {
         }
 
         const newFoodItem = {
-          //...foodItems,
           [mealId]: [
-            //...(foodItems[mealId] || []),
             ...uniqueFoods.map((food) => ({
               fdcId: food.fdcId,
               description: food.description,
@@ -179,7 +175,6 @@ export const NutritionTracker = () => {
         <div>Food tracking</div>
         <select
           className="select-meal-type"
-          // onChange={handleMealTypeChange}
         >
           <option value="">Select meal type</option>
           <option value="Breakfast">breakfast</option>
@@ -206,7 +201,6 @@ export const NutritionTracker = () => {
                 placeholder="Enter food name"
                 type="text"
                 key={meal.id}
-                // value={meal.meal}
                 onChange={(event) =>
                   foodSearch(meal.id, event.target.value as string)
                 }
