@@ -160,9 +160,17 @@ let Calculator: React.FC<{
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setselectedGenre] = useState(0);
 
-  function addCalculator1() {
+  function markCalculator() {
     const type = Genres.find((genre) => genre.id === selectedGenre)?.name;
     if (!type) return;
+    /* gen by chatgpt */
+    // const transaction: TransactionType = {
+    //   id: Date.now().toString(),
+    //   type: type,
+    //   amount: parseFloat(result),
+    // };
+    // addCalculator(transaction);
+    // clearResult();
   }
 
   function clearResult() {
@@ -260,6 +268,9 @@ let Calculator: React.FC<{
                   if (result.indexOf(".") === -1) {
                     setResult(result + ".");
                   }
+                  break;
+                case "✔":
+                  markCalculator(); // Call the markCalculator function
                   break;
                 default:
                   break;
