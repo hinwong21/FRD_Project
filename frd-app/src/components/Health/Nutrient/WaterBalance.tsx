@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { WaterProgressBar } from "./WaterProgressBar";
-import "./Nutrient.css";
+import "./Nutrition.css";
 
 export const WaterBalance = () => {
   const [waterIntake, setWaterIntake] = useState<number>(0);

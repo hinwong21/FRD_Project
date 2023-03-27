@@ -1,6 +1,6 @@
 import React from "react";
 import { NutrientProgressBar } from "./NutrientProgressBar";
-import "./Nutrient.css";
+import "./Nutrition.css";
 import { useSelector } from "react-redux";
 import { NutritionState } from "../../../redux/Nutrition/store";
 
