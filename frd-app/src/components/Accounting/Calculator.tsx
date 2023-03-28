@@ -12,6 +12,8 @@ import {
   IonButtons,
   IonContent,
   IonPage,
+  IonLabel,
+  IonInput,
 } from "@ionic/react";
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
@@ -155,22 +157,27 @@ let Calculator: React.FC<{
   addCalculator: (transaction: TransactionType) => void;
 }> = ({ isOpen, close, addCalculator }) => {
   const modal = useRef<HTMLIonModalElement>(null);
+  const [amount, setAmount] = useState<number>();
   const [result, setResult] = useState("");
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
-  const [selectedGenre, setselectedGenre] = useState(0);
+  const [selectedGenre, setSelectedGenre] = useState(0);
 
   function markCalculator() {
     const type = Genres.find((genre) => genre.id === selectedGenre)?.name;
+    console.log(Genres, selectedGenre);
+
     if (!type) return;
+
+    console.log("mark function called");
     /* gen by chatgpt */
-    // const transaction: TransactionType = {
-    //   id: Date.now().toString(),
-    //   type: type,
-    //   amount: parseFloat(result),
-    // };
-    // addCalculator(transaction);
-    // clearResult();
+    const transaction: TransactionType = {
+      id: 1,
+      type: type,
+      amount: parseFloat(result),
+    };
+    addCalculator(transaction);
+    clearResult();
   }
 
   function clearResult() {
@@ -225,7 +232,32 @@ let Calculator: React.FC<{
             Close
           </IonButton>
         </IonButtons>
+        {/* <IonContent> */}
         <IonList>
+          <IonItem>
+            <IonLabel>Select Genre</IonLabel>
+            <IonSelect
+              onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
+              value={selectedGenre}
+            >
+              {Genres.map((Genre) => (
+                <IonSelectOption key={Genre.id} value={Genre.id}>
+                  {Genre.name}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+          {/* <IonItem lines="none">
+              <IonLabel>Current value</IonLabel>
+              <IonInput
+                type="number"
+                value={amount}
+                onIonChange={(e) => setAmount(+(e.detail.value || ""))}
+              ></IonInput>
+            </IonItem> */}
+        </IonList>
+        {/* </IonContent> */}
+        {/* <IonList>
           <IonItem>
             <IonSelect placeholder="Select Genre">
               <IonSelectOption value="income">Income</IonSelectOption>
@@ -241,7 +273,7 @@ let Calculator: React.FC<{
               <IonSelectOption value="electronic">Electronic</IonSelectOption>
             </IonSelect>
           </IonItem>
-        </IonList>
+        </IonList> */}
         <Display result={result} />
         <Panel
           operatingEvent={(element: number | string) => {
