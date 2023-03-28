@@ -1,16 +1,11 @@
 import React, {memo} from 'react'
 import FullCalendar from "@fullcalendar/react"
-// import locale from '@fullcalendar/core/locales/zh-tw';
+//change language to zh-tw // import locale from '@fullcalendar/core/locales/zh-tw';
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction"
 import listPlugin from '@fullcalendar/list';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-import {
-  IonPopover,
-  IonContent,
-  IonButton,
-} from "@ionic/react";
 import {AddEvent} from "./AddEvent"
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -43,8 +38,12 @@ export const Calendar_zh = () => {
         nowIndicator = {true}
         longPressDelay = {500}
         googleCalendarApiKey= 'AIzaSyCudYRoPMFcW8GuaTTNTgO9a0IGsz6lYak'
-        eventSources = {[{googleCalendarId: 'en.hong_kong#holiday@group.v.calendar.google.com'},eventList]}
-        // events = {eventList}
+        eventSources = {
+          [
+            {googleCalendarId: 'en.hong_kong#holiday@group.v.calendar.google.com', backgroundColor: "red", textColor: "white", editable: false},
+            eventList
+          ]
+        }
         eventDidMount = {(info)=>{
           return new bootstrap.Popover(info.el,{
             title: info.event.title,
@@ -55,6 +54,10 @@ export const Calendar_zh = () => {
             html:true,
           })
         }}
+        eventClick= {(event)=> {
+          // stop from redirecting to Google Calendar onclick
+          event.jsEvent.preventDefault();
+      }}
         
         />
     </div>
