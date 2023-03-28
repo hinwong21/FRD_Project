@@ -102,6 +102,14 @@ const AccountingPage: React.FC = () => {
               </IonItem>
             ))}
           </IonList>
+          <IonList>
+            {calculateResult.map((calculateResult) => (
+              <IonItem key={calculateResult.id}>
+                {calculateResult.type} - $
+                {calculateResult.amount.toLocaleString()}
+              </IonItem>
+            ))}
+          </IonList>
         </IonContent>
 
         <TransactionModal
