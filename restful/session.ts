@@ -12,7 +12,13 @@ export let sessionMiddleware = expressSession({
 declare module 'express-session' {
     interface SessionData{
         userId?: number
-        username?: string
+        email?: string
         isLogin?:boolean
+        GoogleOauth?:{
+            type?: string | undefined,
+            client_id?: string | undefined,
+            client_secret?: string | undefined,
+            refresh_token?: string | null| undefined,
+          }
     }
 }

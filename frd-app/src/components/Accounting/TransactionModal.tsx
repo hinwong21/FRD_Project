@@ -32,42 +32,42 @@ export const Genres: Genre[] = [
   {
     id: 2,
     name: "Food",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 3,
     name: "Drink",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 4,
     name: "Transport",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 5,
     name: "Entertainment",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 6,
     name: "Bill",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 7,
     name: "Consumption",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 8,
     name: "Medical",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 9,
     name: "Electronic",
-    type: "outcome",
+    type: "expense",
   },
 ];
 
