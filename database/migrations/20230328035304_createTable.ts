@@ -105,7 +105,22 @@ export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable("period_state", (table) => {
       table.text("id").notNullable().unique();
       table.integer("level").notNullable().defaultTo(0);
-      table.enum("symptom", [""]).notNullable();
+      table
+        .enum("symptom", [
+          "Abdominal discomfort or pain",
+          "Loss of appetite",
+          "Increased appetite",
+          "Fatigue or feeling tired",
+          "Difficulty sleeping or decreased sleep quality",
+          "Anxiety",
+          "Depression",
+          "Irritability",
+          "Swollen or sensitive breasts",
+          "Headaches or dizziness",
+          "Nausea or diarrhea",
+          "Skin acne or other skin problems",
+        ])
+        .notNullable();
     });
   }
 
@@ -128,7 +143,19 @@ export async function up(knex: Knex): Promise<void> {
   if (!(await knex.schema.hasTable("transaction"))) {
     await knex.schema.createTable("transaction", (table) => {
       table.text("id").notNullable().unique();
-      table.enum("category", ["Income", "Food", "Drink", "Transport", "Entertainment", "Bill", "Consumption", "Medical", "Electronic"]).notNullable();
+      table
+        .enum("category", [
+          "Income",
+          "Food",
+          "Drink",
+          "Transport",
+          "Entertainment",
+          "Bill",
+          "Consumption",
+          "Medical",
+          "Electronic",
+        ])
+        .notNullable();
       table.integer("amount").notNullable().defaultTo(0);
       table.text("description").nullable();
       table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
