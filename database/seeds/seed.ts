@@ -19,6 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
   let [tony] = await knex("users")
     .insert([
       {
+        id: 1,
         username: "t123",
         email: "t123@gmail.com",
         gender: "male",

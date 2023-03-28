@@ -170,6 +170,7 @@ export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTableIfExists("period_state");
   await knex.schema.dropTableIfExists("period");
   await knex.schema.dropTableIfExists("nutrition");
+   await knex.schema.dropTableIfExists("google_calendar");
   await knex.schema.dropTableIfExists("calendar");
   await knex.schema.dropTableIfExists("todolist_item");
   await knex.schema.dropTableIfExists("todolist");
