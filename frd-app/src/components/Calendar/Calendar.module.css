@@ -25,3 +25,11 @@
     --fc-col-header-cell-cushion: grey;
 }
 
+/* .newEventAdd{
+    height: 40vh;
+    width:50vw;
+} */
+
+.newEventAdd input{
+    width:90%;
+}
