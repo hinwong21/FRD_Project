@@ -7,14 +7,16 @@ import { Response, Request } from "express";
 import { authenticate } from "@google-cloud/local-auth";
 import { OAuth2Client } from "google-auth-library";
 import { google, calendar_v3 } from "googleapis";
+import { CalendarService } from "../../../service/calendarService";
 import "../../../session";
 
 export class OauthController {
-  constructor() {}
+  constructor(private calendarService: CalendarService) {
+    this.calendarService = calendarService;
+  }
 
-  authorization = async (req: Request, res: Response) => {
+  calendarAuthorization = async (req: Request, res: Response) => {
     const SCOPES = [
-      "https://www.googleapis.com/auth/userinfo",
       "https://www.googleapis.com/auth/calendar",
     ];
     const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
@@ -90,13 +92,14 @@ export class OauthController {
           eventArr.push({
             "title": event.summary,
             "start": event.start.dateTime ? event.start.dateTime.slice(0,10) + " "+ event.start.dateTime.slice(11,16) :event.start.date,
-            "end": event.end.dateTime ? event.end.dateTime.slice(0,10)+ " " +event.end.dateTime.slice(11,16) : event.end.date,
+            "end": event.end.dateTime ? event.end.dateTime.slice(0,10)+ " " + event.end.dateTime.slice(11,16) : event.end.date,
             "extendedProps": {"description": event.description? event.description : "No Description"},
             "backgroundColor": event.colorId,
             "textColor" : "white"
           })
         });
-        res.json(eventArr);
+        // res.json(eventArr);
+        await this.calendarService(req.session.userId, eventArr)
       }
 
       authorize().then(listEvents);
