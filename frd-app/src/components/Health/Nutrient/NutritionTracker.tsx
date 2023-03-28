@@ -9,10 +9,10 @@ type Meals = {
   meal: string;
 };
 
-// type Food = {
-//   fdcId: number;
-//   description: string;
-// };
+type Food = {
+  fdcId: number;
+  description: string;
+};
 
 type Nutrient = {
   id: number;
@@ -26,6 +26,7 @@ type Nutrient = {
 export const NutritionTracker = () => {
   const [meals, setMeals] = useState<Meals[]>([]);
   const [nutrients, setNutrients] = useState<{ [key: number]: Nutrient[] }>({});
+  const [foodItems, setFoodItems] = useState<{ [key: number]: Food[] }>({});
   const dispatch = useDispatch();
 
   const handleAddMeal = () => {
@@ -44,17 +45,76 @@ export const NutritionTracker = () => {
     mealSelect.value = "";
   };
 
+  const foodSearch = (mealId: number, newValue: string) => {
+    fetch(
+      `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${newValue}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const foods: Food[] = data.foods;
+        const uniqueFoods: Food[] = [];
+
+        for (let i = 0; i < 7; i++) {
+          const food: Food = foods[i];
+
+          // avoid search result is undefined to throw error
+          if (typeof food == "undefined") {
+            return;
+          }
+
+          const isDuplicate: boolean = uniqueFoods.some(
+            (uniqueFood) => uniqueFood.description === food.description
+          );
+
+          if (!isDuplicate) {
+            uniqueFoods.push({
+              fdcId: food.fdcId,
+              description: food.description,
+            });
+          }
+        }
+
+        const newFoodItem = {
+          [mealId]: [
+            ...uniqueFoods.map((food) => ({
+              fdcId: food.fdcId,
+              description: food.description,
+            })),
+          ],
+        };
+        setFoodItems(newFoodItem);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleSearchResultClick = (
+    mealId: number,
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    const foodName = document.querySelector(
+      `.food-search-bar-${mealId}`
+    ) as HTMLInputElement;
+
+    const foodItem = event?.currentTarget.textContent || "";
+
+    foodName.value = foodItem;
+    setFoodItems({});
+  };
+
   const nutrientSearch =
-    (mealId: number) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+    (mealId: number) => (event: React.MouseEvent<HTMLButtonElement>) => {
       const foodName = document.querySelector(
         `.food-search-bar-${mealId}`
       ) as HTMLInputElement;
 
       if (foodName.value === "") {
+        setFoodItems([]);
         return;
       }
 
-      await fetch(
+      setFoodItems([]);
+
+      fetch(
         `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
       )
         .then((response) => response.json())
@@ -105,8 +165,8 @@ export const NutritionTracker = () => {
             fat: fatNutrient.value,
           });
           foodName.value = "";
-        })
-        .catch((error) => console.error(error));
+          setFoodItems([]);
+        });
     };
 
   return (
@@ -115,7 +175,6 @@ export const NutritionTracker = () => {
         <div>Food tracking</div>
         <select
           className="select-meal-type"
-          // onChange={handleMealTypeChange}
         >
           <option value="">Select meal type</option>
           <option value="Breakfast">breakfast</option>
@@ -141,20 +200,25 @@ export const NutritionTracker = () => {
                 className={`food-search-bar-${meal.id}`}
                 placeholder="Enter food name"
                 type="text"
-                key={`search-input-${meal.id}`}
-                // onChange={() => handleSearchInputChange}
+                key={meal.id}
+                onChange={(event) =>
+                  foodSearch(meal.id, event.target.value as string)
+                }
               />
-              {/* <ul className="nutrient-ul">
-              {searchResults.map((food: Food) => (
-                <li
-                className="nutrient-li"
-                  key={food.fdcId}
-                  onClick={() => handleSearchResultClick(food)}
-                >
-                  {food.description}
-                </li>
-              ))}
-            </ul> */}
+              <ul className="nutrient-ul">
+                {foodItems[meal.id] &&
+                  foodItems[meal.id].map((food: Food) => (
+                    <li
+                      className="nutrient-li"
+                      key={food.fdcId}
+                      onClick={(event) =>
+                        handleSearchResultClick(meal.id, event)
+                      }
+                    >
+                      {food.description}
+                    </li>
+                  ))}
+              </ul>
             </div>
             <button
               className="nutrient-addBtn"

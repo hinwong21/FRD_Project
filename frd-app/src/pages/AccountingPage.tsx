@@ -18,12 +18,13 @@ import React, { useCallback, useRef, useState } from "react";
 // import Finance from "./Finance";
 // import { Finance_summary } from "./Finance_summary";
 import style from "./AccountingPage.module.scss";
-// import Calculator from "./Calculator";
 import { useHistory } from "react-router";
 import TransactionModal, {
   Genres,
 } from "../components/Accounting/TransactionModal";
 import { TransactionType } from "../components/Accounting/Finance";
+import Calendar from "../components/Calendar/Calendar";
+import Calculator from "../components/Accounting/Calculator";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -35,8 +36,19 @@ const AccountingPage: React.FC = () => {
   const [isTran, setIsTran] = useState<boolean>(false);
   const history = useHistory();
   const [transactions, setTransactions] = useState<TransactionType[]>([]);
+  const [calculateResult, setCalculateResult] = useState<TransactionType[]>([]);
 
   const closeTrans = useCallback(() => setIsTran(false), []);
+  const closeOpen = useCallback(() => setIsOpen(false), []);
+
+  const addCalculator = useCallback(
+    (transaction: TransactionType) =>
+      setCalculateResult((calculateResult) => [
+        ...calculateResult,
+        transaction,
+      ]),
+    []
+  );
 
   const addTransaction = useCallback(
     (transaction: TransactionType) =>
@@ -69,12 +81,17 @@ const AccountingPage: React.FC = () => {
           {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
           {/* <Transaction isTran={isTran} tr_set={setIsTran} /> */}
           {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
-
           {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
+
           <IonButton expand="block" onClick={() => setIsTran(true)}>
             Review
           </IonButton>
-          <IonButton expand="block" onClick={() => setIsTran(true)}>
+          <IonButton
+            expand="block"
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          >
             Add Transaction
           </IonButton>
 
@@ -88,10 +105,15 @@ const AccountingPage: React.FC = () => {
         </IonContent>
 
         <TransactionModal
-          isOpen={isTran}
+          isTran={isTran}
           close={closeTrans}
           addTransaction={addTransaction}
         ></TransactionModal>
+        <Calculator
+          isOpen={isOpen}
+          close={closeOpen}
+          addCalculator={addCalculator}
+        ></Calculator>
       </IonPage>
     </>
   );
