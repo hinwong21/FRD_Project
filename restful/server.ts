@@ -1,13 +1,18 @@
 import express from "express";
 import { Request, Response } from "express";
+import { sessionMiddleware } from "./session";
 import path from "path";
 import { env } from "./env";
+import { nutritionRoutes } from "./route/nutritionRoues";
 
 const app = express();
+app.use(express.json());
 
-app.get("/", function (req: Request, res: Response) {
-});
+app.use(sessionMiddleware);
 
+app.use("/", nutritionRoutes);
+
+app.get("/", function (req: Request, res: Response) {});
 
 let port = env.PORT;
 app.listen(port, () => {
