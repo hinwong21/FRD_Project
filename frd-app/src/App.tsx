@@ -31,8 +31,7 @@ import Calculator from "./components/Accounting/Calculator";
 import AccountingPage from "./pages/AccountingPage";
 import DiaryEditor from "./components/Notes/DiaryEditor";
 import PeriodMain from "./components/Health/Period/PeriodMain";
-import HealthNutrition from "./components/Health/Nutrient/HealthNutrition";
-import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
+import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 
 setupIonicReact();
 
@@ -65,7 +64,7 @@ const App: React.FC = () => {
                 <PeriodMain />
               </Route>
               <Route path="/Health-nutrient" exact={true}>
-                <HealthNutrition />
+                <Nutrition />
               </Route>
               <Route path="/Health-periodCalendar" exact={true}>
                 <PeriodCalendar />

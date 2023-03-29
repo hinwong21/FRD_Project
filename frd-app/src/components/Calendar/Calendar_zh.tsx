@@ -1,16 +1,20 @@
-import React, {memo} from 'react'
+import {useRef, useEffect} from 'react'
+import "@ionic/react/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
 import FullCalendar from "@fullcalendar/react"
-// import locale from '@fullcalendar/core/locales/zh-tw';
+//change language to zh-tw // import locale from '@fullcalendar/core/locales/zh-tw';
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
-import interactionPlugin, { Draggable } from "@fullcalendar/interaction"
+import interactionPlugin from "@fullcalendar/interaction"
 import listPlugin from '@fullcalendar/list';
-import {
-  IonPopover,
-  IonContent,
-  IonButton,
-} from "@ionic/react";
-import {AddEvent} from "./AddEvent"
+import googleCalendarPlugin from '@fullcalendar/google-calendar';
+import {AddEvent} from "./AddEvent";
+import { createGesture, Gesture } from '@ionic/core';
+import { IonContent, IonModal, IonLabel, IonButton } from '@ionic/react';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,9 +22,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export const Calendar_zh = () => {
   
   const eventList = [
-    {title:"hihihi", start:'2023-03-20 12:30', end:'2023-03-21 16:30',backgroundColor:"blue",textColor:"white"},
-    {title:"byebyebye", start:'2023-03-20 10:30', end:'2023-03-21 12:30',backgroundColor:"red",textColor:"white"},
-    {title:"yoyoyo", start:'2023-03-24 09:30', end:'2023-03-27 07:30',backgroundColor:"brown",textColor:"white"}
+    {title:"Piano Lesson", start:'2023-03-20 12:30', end:'2023-03-21 16:30', extendedProps: {description: 'Pay lesson fee'}, backgroundColor:"blue",textColor:"white"},
+    {title:"Tecky Group Project Discussion", start:'2023-03-20 10:30', extendedProps: {description: 'Brain Storm-- Karaoke App'},end:'2023-03-21 12:30',backgroundColor:"red",textColor:"white"},
+    {title:"Revision Time", start:'2023-03-24 09:30', end:'2023-03-27 07:30', extendedProps: {description: 'I can do it!'}, backgroundColor:"brown",textColor:"white"}
   ]
 
 
@@ -28,7 +32,7 @@ export const Calendar_zh = () => {
     <>
     <div>
         <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, googleCalendarPlugin]}
         initialView = "dayGridMonth"
         headerToolbar={{
             start:"title",
@@ -42,23 +46,47 @@ export const Calendar_zh = () => {
         selectable= {true}
         nowIndicator = {true}
         longPressDelay = {500}
-        events = {eventList}
+        googleCalendarApiKey= 'AIzaSyCudYRoPMFcW8GuaTTNTgO9a0IGsz6lYak'
+        eventSources = {
+          [
+            {googleCalendarId: 'en.hong_kong#holiday@group.v.calendar.google.com', backgroundColor: "red", textColor: "white", editable: false},
+            eventList
+          ]
+        }
         eventDidMount = {(info)=>{
           return new bootstrap.Popover(info.el,{
             title: info.event.title,
             placement:"auto",
             trigger:"hover",
             customClass: "popoverStyle",
-            content:
-            "<p>ABC testing</p>",
+            content: info.event.extendedProps.description,
             html:true,
           })
         }}
+        eventClick= {(event)=> {
+          // stop from redirecting to Google Calendar onclick
+          event.jsEvent.preventDefault();
+      }}
         
         />
     </div>
 
     <AddEvent/>
+
+    <IonButton id="open-modal">testing123</IonButton>
+
+    <IonModal
+          trigger="open-modal"
+          initialBreakpoint={0.25}
+          breakpoints={[0, 0.25, 0.5, 0.75]}
+          handleBehavior="cycle"
+        >
+          <IonContent className="ion-padding">
+            <div className="ion-margin-top">
+              <IonLabel>Click the handle above to advance to the next breakpoint.</IonLabel>
+            </div>
+          </IonContent>
+        </IonModal>
 
     </>
   )

@@ -17,7 +17,7 @@ import {
 import React, { useRef, useState } from "react";
 import { TransactionType } from "./Finance";
 
-interface Genre {
+export interface Genre {
   id: number;
   name: string;
   type: string;
@@ -32,42 +32,42 @@ export const Genres: Genre[] = [
   {
     id: 2,
     name: "Food",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 3,
     name: "Drink",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 4,
     name: "Transport",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 5,
     name: "Entertainment",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 6,
     name: "Bill",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 7,
     name: "Consumption",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 8,
     name: "Medical",
-    type: "outcome",
+    type: "expense",
   },
   {
     id: 9,
     name: "Electronic",
-    type: "outcome",
+    type: "expense",
   },
 ];
 
@@ -127,7 +127,7 @@ const compareWith = (o1: Genre, o2: Genre) => {
 // };
 
 function TransactionModal(props: {
-  isOpen: boolean;
+  isTran: boolean;
   close: () => void;
   addTransaction: (transaction: TransactionType) => void;
 }) {
@@ -145,7 +145,7 @@ function TransactionModal(props: {
     props.close();
   }
   return (
-    <IonModal isOpen={props.isOpen}>
+    <IonModal isOpen={props.isTran}>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
