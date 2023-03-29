@@ -5,6 +5,7 @@ import path from "path";
 import { env } from "./env";
 import { nutritionRoutes } from "./route/nutritionRoues";
 import cors from "cors";
+import { calendarRoutes } from "./route/calendarRoute";
 
 const app = express();
 app.use(express.json());
@@ -18,8 +19,8 @@ app.use(
 app.use(sessionMiddleware);
 
 app.use("/", nutritionRoutes);
+app.use("/calendar", calendarRoutes);
 
-app.get("/", function (req: Request, res: Response) {});
 
 let port = env.PORT;
 app.listen(port, () => {

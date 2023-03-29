@@ -7,12 +7,12 @@ import { Response, Request } from "express";
 import { authenticate } from "@google-cloud/local-auth";
 import { OAuth2Client } from "google-auth-library";
 import { google, calendar_v3 } from "googleapis";
-import { CalendarService } from "../../../service/calendarService";
+import { CalendarOauthService } from "../../../service/calendarOauthService";
 import "../../../session";
 
-export class OauthController {
-  constructor(private calendarService: CalendarService) {
-    this.calendarService = calendarService;
+export class CalendarOauthController {
+  constructor(private calendarOauthService: CalendarOauthService) {
+    this.calendarOauthService = calendarOauthService;
   }
 
   calendarAuthorization = async (req: Request, res: Response) => {
@@ -97,8 +97,10 @@ export class OauthController {
             "textColor" : "white"
           })
         });
-        // res.json(eventArr);
-        await this.calendarService(req.session.userId, eventArr)
+        
+        await this.calendarOauthService(req.session.userId, eventArr)
+        res.json({eventArr, "success":true});
+
       }
 
       authorize().then(listEvents);
