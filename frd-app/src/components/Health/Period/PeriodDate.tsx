@@ -5,8 +5,10 @@ import {
   calendarOutline,
   caretForwardOutline,
 } from "ionicons/icons";
-import styles from "./Period.module.scss";
+import styles from "./PeriodDate.module.scss";
 import { IonButton, IonContent, IonIcon, IonPage } from "@ionic/react";
+import PeriodCalendar from "./PeriodCanlender";
+import { Link } from "react-router-dom";
 
 const Period = () => {
   const [currentDate, setCurrentDate] = useState(
@@ -23,6 +25,9 @@ const Period = () => {
     const newStatus = { date: currentDate, status: "New Status" };
     setLogs([...logs, newStatus]);
   };
+
+  //Login or not
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <IonPage>
@@ -64,37 +69,34 @@ const Period = () => {
 
             <div className={styles.card}>
               <div className={styles.box}>
-                <h2 className={styles.subtitle}>Today's Status</h2>
+                <h2 className={styles.subtitle}>Upcoming Ovulation</h2>
                 <div className={styles.innerBox}>
-                  {/* <div className={styles.icon}>&#128197;</div> */}
                   <IonIcon
                     className={styles.icon}
                     icon={calendarClearOutline}
                     slot="start"
                   />
                   <div className={styles.miniBox}>
-                    <div className={styles.label}>Date</div>
-                    <div className={styles.value}>{currentDate}</div>
+                    <div className={styles.label}>Start Date</div>
+                    <div className={styles.date}>{startDate}</div>
                   </div>
                 </div>
 
                 <div className={styles.innerBox}>
-                  <div className={styles.icon}>&#10133;</div>
+                  <IonIcon
+                    className={styles.icon}
+                    icon={calendarClearOutline}
+                    slot="start"
+                  />
                   <div className={styles.miniBox}>
-                    <div className={styles.label}>Status</div>
-                    <IonButton
-                      color={styles.btn}
-                      className={styles.btn}
-                      onClick={handleAddStatus}
-                    >
-                      Add
-                    </IonButton>
+                    <div className={styles.label}>End Date</div>
+                    <div className={styles.date}>{endDate}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className={styles.card}>
+            {/* <div className={styles.card}>
               <div className={styles.box}>
                 <h2 className={styles.subtitle}>Log</h2>
                 <div className={styles.innerBox}>
@@ -105,7 +107,6 @@ const Period = () => {
                         icon={calendarClearOutline}
                         slot="start"
                       />
-                      {/* <div className={styles.label}>Date</div> */}
                       <div className={styles.date}>{log.date}</div>
                       <div>
                         <div className={styles.badge}>{log.status}</div>
@@ -114,7 +115,7 @@ const Period = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </IonContent>
