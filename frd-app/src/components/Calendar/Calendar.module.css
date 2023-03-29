@@ -16,7 +16,7 @@
     --fc-event-text-color: grey;
     --fc-more-link-text-color: grey;
     --fc-border-color: grey;
-    --fc-today-bg-color: orange;
+    --fc-today-bg-color: rgba(255, 166, 0, 0.451);
     --fc-border-color: grey;
     --fc-border-radius: 100px;
 }
@@ -25,11 +25,8 @@
     --fc-col-header-cell-cushion: grey;
 }
 
-/* .newEventAdd{
-    height: 40vh;
-    width:50vw;
-} */
-
-.newEventAdd input{
-    width:90%;
+.addButton{
+    position: absolute;
+    right: 20px;
+    bottom: 40px;
 }

@@ -1,12 +1,20 @@
-import React, {memo} from 'react'
+import {useRef, useEffect} from 'react'
+import "@ionic/react/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
 import FullCalendar from "@fullcalendar/react"
 //change language to zh-tw // import locale from '@fullcalendar/core/locales/zh-tw';
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
-import interactionPlugin, { Draggable } from "@fullcalendar/interaction"
+import interactionPlugin from "@fullcalendar/interaction"
 import listPlugin from '@fullcalendar/list';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
-import {AddEvent} from "./AddEvent"
+import {AddEvent} from "./AddEvent";
+import { createGesture, Gesture } from '@ionic/core';
+import { IonContent, IonModal, IonLabel, IonButton } from '@ionic/react';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,6 +26,7 @@ export const Calendar_zh = () => {
     {title:"Tecky Group Project Discussion", start:'2023-03-20 10:30', extendedProps: {description: 'Brain Storm-- Karaoke App'},end:'2023-03-21 12:30',backgroundColor:"red",textColor:"white"},
     {title:"Revision Time", start:'2023-03-24 09:30', end:'2023-03-27 07:30', extendedProps: {description: 'I can do it!'}, backgroundColor:"brown",textColor:"white"}
   ]
+
 
   return (
     <>
@@ -63,6 +72,21 @@ export const Calendar_zh = () => {
     </div>
 
     <AddEvent/>
+
+    <IonButton id="open-modal">testing123</IonButton>
+
+    <IonModal
+          trigger="open-modal"
+          initialBreakpoint={0.25}
+          breakpoints={[0, 0.25, 0.5, 0.75]}
+          handleBehavior="cycle"
+        >
+          <IonContent className="ion-padding">
+            <div className="ion-margin-top">
+              <IonLabel>Click the handle above to advance to the next breakpoint.</IonLabel>
+            </div>
+          </IonContent>
+        </IonModal>
 
     </>
   )
