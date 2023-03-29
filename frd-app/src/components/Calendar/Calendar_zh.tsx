@@ -1,6 +1,5 @@
 import {useRef, useEffect} from 'react'
 import "@ionic/react/css/core.css";
-
 /* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
@@ -13,7 +12,6 @@ import interactionPlugin from "@fullcalendar/interaction"
 import listPlugin from '@fullcalendar/list';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import {AddEvent} from "./AddEvent";
-import { createGesture, Gesture } from '@ionic/core';
 import { IonContent, IonModal, IonLabel, IonButton } from '@ionic/react';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,8 +22,10 @@ export const Calendar_zh = () => {
   const eventList = [
     {title:"Piano Lesson", start:'2023-03-20 12:30', end:'2023-03-21 16:30', extendedProps: {description: 'Pay lesson fee'}, backgroundColor:"blue",textColor:"white"},
     {title:"Tecky Group Project Discussion", start:'2023-03-20 10:30', extendedProps: {description: 'Brain Storm-- Karaoke App'},end:'2023-03-21 12:30',backgroundColor:"red",textColor:"white"},
-    {title:"Revision Time", start:'2023-03-24 09:30', end:'2023-03-27 07:30', extendedProps: {description: 'I can do it!'}, backgroundColor:"brown",textColor:"white"}
+    {title:"Revision Time", start:'2023-03-24 09:30', end:'2023-03-27 07:30', extendedProps: {description: 'I can do it!'}, backgroundColor:"brown",textColor:"white", image_url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"}
   ]
+
+  const googleCalendarEvent : {}[] = []
 
 
   return (
@@ -50,7 +50,8 @@ export const Calendar_zh = () => {
         eventSources = {
           [
             {googleCalendarId: 'en.hong_kong#holiday@group.v.calendar.google.com', backgroundColor: "red", textColor: "white", editable: false},
-            eventList
+            eventList,
+            googleCalendarEvent
           ]
         }
         eventDidMount = {(info)=>{
