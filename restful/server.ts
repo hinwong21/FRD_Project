@@ -4,10 +4,17 @@ import { sessionMiddleware } from "./session";
 import path from "path";
 import { env } from "./env";
 import { nutritionRoutes } from "./route/nutritionRoues";
+import cors from "cors";
 import { calendarRoutes } from "./route/calendarRoute";
 
 const app = express();
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 app.use(sessionMiddleware);
 

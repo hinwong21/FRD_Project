@@ -6,7 +6,7 @@ import process from "process";
 import { Response, Request } from "express";
 import { authenticate } from "@google-cloud/local-auth";
 import { OAuth2Client } from "google-auth-library";
-import { google, calendar_v3 } from "googleapis";
+import { google, calendar_v3, analytics_v3 } from "googleapis";
 import { CalendarOauthService } from "../../../service/calendarOauthService";
 import "../../../session";
 
@@ -67,7 +67,7 @@ export class CalendarOauthController {
         let allEvents: any[] = [];
         const calendar = google.calendar({ version: "v3", auth });
         do{
-          const res = await calendar.events.list({
+          const res:any = await calendar.events.list({
             calendarId: "primary",
             timeMin: new Date().toISOString(),
             maxResults: 1000,
@@ -97,11 +97,17 @@ export class CalendarOauthController {
             "textColor" : "white"
           })
         });
-        
-        await this.calendarOauthService(req.session.userId, eventArr)
-        res.json({eventArr, "success":true});
 
+        console.log(eventArr);
+
+        res.json({eventArr, "success":true})
+        return eventArr;
       }
+
+      // async function toFrontEnd (arr:any){
+      //   // await this.calendarOauthService(req.session.userId, arr)
+      //   ;
+      // }
 
       authorize().then(listEvents);
 

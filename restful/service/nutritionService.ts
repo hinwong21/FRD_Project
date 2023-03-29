@@ -6,7 +6,6 @@ export class NutritionService {
   getDailyIntake = async (userId: number) => {
     try {
       let user = await this.knex("users").select("*").where("id", userId);
-      console.log(user);
       return user;
     } catch (err) {
       throw new Error((err as Error).message);

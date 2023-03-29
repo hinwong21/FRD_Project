@@ -11,12 +11,13 @@ import React, { memo, useState, useRef } from "react";
 import {
   calendarNumberOutline
 } from "ionicons/icons";
-import styles from "./Setting.module.css"
+import styles from "./Setting.module.css";
 
 export const Setting = () => {
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState("")
+
 
   async function getGoogleCalendarEvents(){
     const res = await fetch ("/calendar/google-events",{
@@ -30,6 +31,7 @@ export const Setting = () => {
       setShowAlert(false)
       setAlertMsg("Failed! Please try again later!")
     }
+  
   }
 
   const handleAlertDismiss = ()=>{
