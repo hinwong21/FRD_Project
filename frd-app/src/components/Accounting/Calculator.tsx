@@ -178,6 +178,7 @@ let Calculator: React.FC<{
     };
     addCalculator(transaction);
     clearResult();
+    close();
   }
 
   function clearResult() {
