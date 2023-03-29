@@ -82,6 +82,7 @@ export class CalendarOauthController {
        
         if (allEvents.length === 0) {
           console.log("No upcoming events found.");
+          res.json({"eventArr": "No upcoming events found", "success": true})
           return;
         }
 
@@ -99,9 +100,8 @@ export class CalendarOauthController {
         });
 
         console.log(eventArr);
-
         res.json({eventArr, "success":true})
-        return eventArr;
+        // return eventArr;
       }
 
       // async function toFrontEnd (arr:any){

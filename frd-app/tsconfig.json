@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "../restful/controller/AddEventsToCalendar.ts"  ]
+, "../restful/controller/AddEventsToCalendar.ts", "env.ts"  ]
 }

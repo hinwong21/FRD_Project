@@ -12,7 +12,7 @@ import {
   calendarNumberOutline
 } from "ionicons/icons";
 import styles from "./Setting.module.css"
-
+// import {env} from "../../../env"
 
 export const Setting = () => {
 
@@ -21,7 +21,8 @@ export const Setting = () => {
 
 
   async function getGoogleCalendarEvents(){
-    const res = await fetch ("/calendar/google-events",{
+    // let port = env.EXPRESS_SERVER_URL
+    const res = await fetch ("http://localhost:8080/calendar/google-events",{
       method:"GET"
     })
     const json = await res.json();
