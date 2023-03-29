@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import "./ProgressBar.css"; // Import the CSS file for the progress bar
 
 type ProgressBarProps = {
-  dailyIntake: number;
+  dailyIntake: number | undefined;
   currentIntake: number;
 };
 
-export function NutrientProgressBar({ dailyIntake, currentIntake }: ProgressBarProps) {
+export function NutrientProgressBar({
+  dailyIntake,
+  currentIntake,
+}: ProgressBarProps) {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     // Calculate the progress towards the daily intake
-    const progress = (currentIntake / dailyIntake) * 100;
+    const progress = (currentIntake / (dailyIntake as 0)) * 100;
 
     // Update the width of the progress bar
     setProgress(progress);

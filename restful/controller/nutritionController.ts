@@ -8,7 +8,7 @@ export class NutritionController {
   getDailyIntake = async (req: Request, res: Response) => {
     try {
       //   const userId = req.session.userId!;
-      const userId = 1;
+      const userId = 1
       const result = await this.nutritionService.getDailyIntake(userId);
 
       res.json({ result });
@@ -17,3 +17,4 @@ export class NutritionController {
     }
   };
 }
+
