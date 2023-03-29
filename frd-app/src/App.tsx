@@ -32,6 +32,7 @@ import AccountingPage from "./pages/AccountingPage";
 import DiaryEditor from "./components/Notes/DiaryEditor";
 import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
+import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 
 setupIonicReact();
 
