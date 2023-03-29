@@ -19,7 +19,7 @@ export const Setting = () => {
   const [alertMsg, setAlertMsg] = useState("")
 
   async function getGoogleCalendarEvents(){
-    const res = await fetch ("./calendar/google-events",{
+    const res = await fetch ("/calendar/google-events",{
       method:"GET"
     })
     const json = await res.json();
