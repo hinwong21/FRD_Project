@@ -8,4 +8,5 @@ export let nutritionRoutes = express.Router();
 let nutritionService = new NutritionService(knex);
 let nutritionController = new NutritionController(nutritionService);
 
-nutritionRoutes.get("/nutrition", nutritionController.getDailyIntake);
+nutritionRoutes.get("/userData", nutritionController.getDailyIntake);
+nutritionRoutes.put("/dailyIntake", nutritionController.updateDailyIntake)
