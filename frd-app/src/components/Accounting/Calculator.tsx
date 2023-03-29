@@ -168,8 +168,10 @@ let Calculator: React.FC<{
     console.log(Genres, selectedGenre);
 
     if (!type) return;
-
-    console.log("mark function called");
+    if (!result) {
+      alert("Please record your price");
+      return;
+    }
     /* gen by chatgpt */
     const transaction: TransactionType = {
       id: 1,

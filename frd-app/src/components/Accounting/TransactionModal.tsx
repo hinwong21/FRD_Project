@@ -83,67 +83,25 @@ const compareWith = (o1: Genre, o2: Genre) => {
   return o1.id === o2.id;
 };
 
-export let Transaction: React.FC<{
-  isTran: boolean;
-  tr_set: (b: boolean) => void;
-}> = ({ isTran, tr_set }) => {
-  const [currentGenre, setCurrentGenre] = useState("");
-  const modal = useRef<HTMLIonModalElement>(null);
-  return (
-    <IonModal ref={modal} isOpen={isTran}>
-      <IonButtons slot="start">
-        <IonButton
-          onClick={() => {
-            modal.current?.dismiss();
-            tr_set(false);
-          }}
-        >
-          Close
-        </IonButton>
-      </IonButtons>
-      <IonList>
-        <IonItem>
-          <IonSelect
-            placeholder="Select Genre"
-            compareWith={compareWith}
-            onIonChange={(ev) =>
-              setCurrentGenre(JSON.stringify(ev.detail.value))
-            }
-            multiple={true}
-          >
-            {Genres.map((Genre) => (
-              <IonSelectOption key={Genre.id} value={Genre}>
-                {Genre.name}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonItem>
-        <IonItem lines="none">
-          <IonLabel>Current value: {currentGenre}</IonLabel>
-        </IonItem>
-      </IonList>
-    </IonModal>
-  );
-};
-
 function TransactionModal(props: {
   isTran: boolean;
   close: () => void;
   addTransaction: (transaction: TransactionType) => void;
 }) {
-  const [selectedGenre, setSelectedGenre] = useState(0);
+  // const [selectedGenre, setSelectedGenre] = useState(0);
+  const [selectedGenre, setSelectedGenre] = useState("");
   const [amount, setAmount] = useState<number>();
-  function addTransaction() {
-    let type = Genres.find((genre) => genre.id == selectedGenre)?.name;
-    if (!type) return;
+  // function addTransaction() {
+  //   let type = Genres.find((genre) => genre.id == selectedGenre)?.name;
+  //   if (!type) return;
 
-    if (!amount) return;
+  //   if (!amount) return;
 
-    // TODO ajax
+  //   // TODO ajax
 
-    props.addTransaction({ id: 1, type, amount });
-    props.close();
-  }
+  //   props.addTransaction({ id: 1, type, amount });
+  //   props.close();
+  // }
   return (
     <IonModal isOpen={props.isTran}>
       <IonHeader>
@@ -151,16 +109,15 @@ function TransactionModal(props: {
           <IonButtons slot="start">
             <IonButton onClick={props.close}>Close</IonButton>
           </IonButtons>
-          <IonTitle>Add Transaction</IonTitle>
-          <IonButtons slot="end">
+          <IonTitle>Review</IonTitle>
+          {/* <IonButtons slot="end">
             <IonButton
               disabled={!selectedGenre || !amount}
-              //multiple
               onClick={addTransaction}
             >
               Add
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -168,23 +125,32 @@ function TransactionModal(props: {
           <IonItem>
             <IonLabel>Genre</IonLabel>
             <IonSelect
-              onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
-              value={selectedGenre}
+              multiple={true}
+              compareWith={compareWith}
+              onIonChange={(ev) =>
+                setSelectedGenre(JSON.stringify(ev.detail.value))
+              }
+              // value={selectedGenre}
             >
               {Genres.map((Genre) => (
-                <IonSelectOption key={Genre.id} value={Genre.id}>
+                <IonSelectOption
+                  key={Genre.id}
+                  // value={Genre.id}
+                  value={Genre}
+                >
                   {Genre.name}
                 </IonSelectOption>
               ))}
             </IonSelect>
           </IonItem>
           <IonItem lines="none">
-            <IonLabel>Current value</IonLabel>
+            {/* <IonLabel>Current value</IonLabel>
             <IonInput
               type="number"
               value={amount}
               onIonChange={(e) => setAmount(+(e.detail.value || ""))}
-            ></IonInput>
+            ></IonInput> */}
+            <IonLabel>Current value: {selectedGenre}</IonLabel>
           </IonItem>
         </IonList>
       </IonContent>

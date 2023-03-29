@@ -11,8 +11,7 @@ import React, { memo, useState, useRef } from "react";
 import {
   calendarNumberOutline
 } from "ionicons/icons";
-import styles from "./Setting.module.css"
-// import {env} from "../../../env"
+import styles from "./Setting.module.css";// import {env} from "../../../env"
 
 export const Setting = () => {
 
