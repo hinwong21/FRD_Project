@@ -12,11 +12,17 @@ import {
   calendarNumberOutline
 } from "ionicons/icons";
 import styles from "./Setting.module.css"
+import {promises as fs } from 'fs';
+import path from 'path';
+import process from 'process';
+import { authenticate } from '@google-cloud/local-auth';
+import { google } from 'googleapis';
 
 export const Setting = () => {
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState("")
+
 
   async function getGoogleCalendarEvents(){
     const res = await fetch ("/calendar/google-events",{
@@ -30,6 +36,7 @@ export const Setting = () => {
       setShowAlert(false)
       setAlertMsg("Failed! Please try again later!")
     }
+  
   }
 
   const handleAlertDismiss = ()=>{

@@ -1,9 +1,9 @@
 import express from "express";
 import { isLoggedInAPI } from "../guard";
 import { knex } from "../../database/db";
-import {CalendarOauthController} from "../controller/Calendar/Google Calendar OAuth/calendarOauthController"
+import {CalendarOauthController} from "../controller/Calendar/GoogleCalendarOAuth/calendarOauthController"
 import { CalendarOauthService } from "../service/calendarOauthService";
-import "../../session";
+
 
 export let calendarRoutes = express.Router();
 
