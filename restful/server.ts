@@ -22,6 +22,7 @@ app.use(sessionMiddleware);
 app.use("/nutrition", nutritionRoutes);
 
 app.use("/calendar", calendarRoutes);
+app.use("/Account", accountRoutes);
 
 let port = env.PORT;
 app.listen(port, () => {
