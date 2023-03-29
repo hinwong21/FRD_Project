@@ -10,9 +10,10 @@ import { calendarRoutes } from "./route/calendarRoute";
 const app = express();
 app.use(express.json());
 
+let url = env.URL;
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "url",
   })
 );
 
@@ -20,7 +21,6 @@ app.use(sessionMiddleware);
 
 app.use("/", nutritionRoutes);
 app.use("/calendar", calendarRoutes);
-
 
 let port = env.PORT;
 app.listen(port, () => {
