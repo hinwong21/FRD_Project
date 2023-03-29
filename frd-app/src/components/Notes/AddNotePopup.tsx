@@ -7,6 +7,9 @@ import {
   IonList,
   IonItem,
   IonNavLink,
+  IonFab,
+  IonFabButton,
+  IonFabList
 } from "@ionic/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faBook, faPen, faCheck} from "@fortawesome/free-solid-svg-icons";
@@ -41,27 +44,22 @@ export const AddNotePopup: React.FC = () => {
 
     return (
       <>
-        <IonButton
-          id="popover-button"
-          className={styles.addNotes}
-        >
-          <FontAwesomeIcon icon={faPlus} />
-        </IonButton>
 
-        <IonPopover trigger="popover-button" dismissOnSelect={true}>
-          <IonContent>
-            <IonList>
-              {list.options.map((item, index) => (
-                <IonItem button={true} detail={false} key={index}>
+
+        <IonFab slot="fixed" vertical="bottom" horizontal="end" className={styles.fabButton}>
+          <IonFabButton>
+            <FontAwesomeIcon icon={faPlus} />
+          </IonFabButton>
+          <IonFabList side="top">
+          {list.options.map((item, index) => (
+                <IonFabButton key={index}>
                   <IonNavLink routerDirection="forward" component={() => <DiaryEditor/>}>
                   <div>{list.options[index].icon}</div>
-                  <div className={styles.listItemText}>{list.options[index].text}</div>
                   </IonNavLink>
-                </IonItem>
+                </IonFabButton>
               ))}
-            </IonList>
-          </IonContent>
-        </IonPopover>
+          </IonFabList>
+        </IonFab>
       </>
     );
   };
