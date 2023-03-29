@@ -12,11 +12,7 @@ import {
   calendarNumberOutline
 } from "ionicons/icons";
 import styles from "./Setting.module.css"
-import {promises as fs } from 'fs';
-import path from 'path';
-import process from 'process';
-import { authenticate } from '@google-cloud/local-auth';
-import { google } from 'googleapis';
+
 
 export const Setting = () => {
 
