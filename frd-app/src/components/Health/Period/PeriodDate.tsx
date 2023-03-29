@@ -26,21 +26,39 @@ const Period = () => {
     setLogs([...logs, newStatus]);
   };
 
-  //Login or not
-  const [isLogin, setIsLogin] = useState(false);
+  //Has record or not,
+  const [hasRecord, setHasRecord] = useState(false);
+  //On Period date or not
+  const [isPeriod, setIsPeriod] = useState(false);
 
   return (
     <IonPage>
       <IonContent>
         <div className={styles.home}>
           <header>
-            <h1 className={styles.title}>Period</h1>
+            <h1 className={styles.title}>period</h1>
           </header>
 
           <div className={styles.container}>
+            <div className={styles.topBox}>
+              <div className={styles.upcomingPeriod}>
+                upcoming period
+                <div>3 days</div>
+              </div>
+              <div className={styles.upcomingOvulation}>
+                ovulation date: after 15 days
+              </div>
+              <IonButton
+                size="default"
+                color={styles.btn}
+                className={styles.btn}
+              >
+                period start
+              </IonButton>
+            </div>
             <div className={styles.card}>
               <div className={styles.box}>
-                <h2 className={styles.subtitle}>Upcoming Period</h2>
+                <h2 className={styles.subtitle}>upcoming period</h2>
                 <div className={styles.innerBox}>
                   <IonIcon
                     className={styles.icon}
@@ -48,7 +66,7 @@ const Period = () => {
                     slot="start"
                   />
                   <div className={styles.miniBox}>
-                    <div className={styles.label}>Start Date</div>
+                    <div className={styles.label}>start date</div>
                     <div className={styles.date}>{startDate}</div>
                   </div>
                 </div>
@@ -60,7 +78,7 @@ const Period = () => {
                     slot="start"
                   />
                   <div className={styles.miniBox}>
-                    <div className={styles.label}>End Date</div>
+                    <div className={styles.label}>end date</div>
                     <div className={styles.date}>{endDate}</div>
                   </div>
                 </div>
@@ -69,7 +87,7 @@ const Period = () => {
 
             <div className={styles.card}>
               <div className={styles.box}>
-                <h2 className={styles.subtitle}>Upcoming Ovulation</h2>
+                <h2 className={styles.subtitle}>upcoming ovulation</h2>
                 <div className={styles.innerBox}>
                   <IonIcon
                     className={styles.icon}
@@ -77,7 +95,7 @@ const Period = () => {
                     slot="start"
                   />
                   <div className={styles.miniBox}>
-                    <div className={styles.label}>Start Date</div>
+                    <div className={styles.label}>start date</div>
                     <div className={styles.date}>{startDate}</div>
                   </div>
                 </div>
@@ -89,7 +107,7 @@ const Period = () => {
                     slot="start"
                   />
                   <div className={styles.miniBox}>
-                    <div className={styles.label}>End Date</div>
+                    <div className={styles.label}>end date</div>
                     <div className={styles.date}>{endDate}</div>
                   </div>
                 </div>
