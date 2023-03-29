@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@types/knex": "^0.16.1",
+    "@types/pg": "^8.6.6",
+    "dotenv": "^16.0.3",
+    "knex": "^2.4.2",
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.10",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}

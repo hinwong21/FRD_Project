@@ -1,7 +1,7 @@
 import express from "express";
 import {Knex} from "knex";
 
-export class CalendarService {
+export class CalendarOauthService {
     constructor(private knex:Knex){
         this.knex = knex;
     }
