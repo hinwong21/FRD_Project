@@ -23,6 +23,7 @@ export const Calendar_zh = () => {
   const [modalState, setModalState] = useState(false)
   const [modalDate, setModalDate] = useState("")
   const [modalContent, setModalContent] = useState("")
+  const [googleCalendarEvent, setGoogleCalendarEvent] = useState([{}])
   
   const eventList = [
     {title:"Piano Lesson", start:'2023-03-20 12:30', end:'2023-03-21 16:30', extendedProps: {description: 'Pay lesson fee'}, backgroundColor:"blue",textColor:"white"},
@@ -30,7 +31,24 @@ export const Calendar_zh = () => {
     {title:"Revision Time", start:'2023-03-24 09:30', end:'2023-03-27 07:30', extendedProps: {description: 'I can do it!'}, backgroundColor:"brown",textColor:"white", image_url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"}
   ]
 
-  const googleCalendarEvent : {}[] = []
+  // const googleCalendarEventArr : {}[] = []
+
+  useEffect(()=>{
+    getGoogleCalendarEvents()
+  },[])
+
+  async function getGoogleCalendarEvents(){
+    const events = await fetch ("http://localhost:8080/calendar/google-events",{
+      method: "GET"
+    })
+    const events_json = await events.json();
+    const events_json2 = events_json[0].content.replace(/\\/g, "")
+    const events_json3 = JSON.parse(events_json2)
+    // const obj = JSON.parse(events_json)
+    console.log(events_json3);
+    setGoogleCalendarEvent(events_json3)   
+  }
+  
 
   const modal = useRef<HTMLIonModalElement>(null);
 

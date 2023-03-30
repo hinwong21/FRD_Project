@@ -62,7 +62,7 @@ export class CalendarOauthController {
         return client;
       }
 
-      async function listEvents(auth: OAuth2Client) {
+      let listEvents= async (auth: OAuth2Client)=> {
         let pageToken: string | undefined | null = undefined;
         let allEvents: any[] = [];
         const calendar = google.calendar({ version: "v3", auth });
@@ -100,6 +100,10 @@ export class CalendarOauthController {
         });
 
         console.log(eventArr);
+        console.log(req.session);
+        
+        
+        this.calendarOauthService.calendarAuthorization(1, eventArr as {}[])
         res.json({eventArr, "success":true})
       }
 

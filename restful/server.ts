@@ -6,6 +6,7 @@ import { env_config } from "./env";
 import { nutritionRoutes } from "./route/nutritionRoute";
 import cors from "cors";
 import { calendarRoutes } from "./route/calendarRoute";
+import { userRoutes } from "./route/userRoute";
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use(sessionMiddleware);
 app.use("/nutrition", nutritionRoutes);
 
 app.use("/calendar", calendarRoutes);
+app.use("/user", userRoutes);
 // app.use("/Account", accountRoutes);
 
 let port = env_config.PORT;

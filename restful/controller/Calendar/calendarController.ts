@@ -8,12 +8,14 @@ import { CalendarService } from "../../service/calendarService";
 import "../../session";
 
 
-export class OauthController {
+export class CalendarController {
     constructor(private calendarService: CalendarService) {
       this.calendarService = calendarService;
     }
 
-    localCalendarEvent = async (req:Request, res:Response)=>{
-        
+    getGoogleCalendarEvent = async (req:Request, res:Response)=>{
+        let data = await this.calendarService.getGoogleCalendarEvent(1)
+        console.log(data);
+        res.json(data)
     }
 }  
