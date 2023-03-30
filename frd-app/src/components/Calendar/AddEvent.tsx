@@ -16,6 +16,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonList,
+  IonAlert
 } from "@ionic/react";
 import React, { memo, useState, useRef } from "react";
 //   import { useParams } from "react-router";
@@ -24,13 +25,20 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Calendar.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 
-const NewEventForm = ({
-  onDismiss,
-}: {
-  onDismiss: (data?: string | null | undefined | number, role?: string) => void;
-}) => {
+const NewEventForm = ({onDismiss,}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
   const inputRef = useRef<HTMLIonInputElement>(null);
+
+  const [showAlertNewEvent, setShowAlertNewEvent] = useState(false);
+  const [alertMsgNewEvent, setAlertMsgNewEvent] = useState("");
+
+  const handleAlertDismissNewEvent = () => {
+    setShowAlertNewEvent(false);
+  };
+
+
+
   return (
+    <>
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -39,12 +47,11 @@ const NewEventForm = ({
               Cancel
             </IonButton>
           </IonButtons>
-          <IonTitle>New Event</IonTitle>
           <IonButtons slot="end">
             <IonButton
               onClick={() => onDismiss(inputRef.current?.value, "confirm")}
             >
-              Confirm
+              Add Event
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -55,13 +62,13 @@ const NewEventForm = ({
           <IonInput ref={inputRef} placeholder="Event name" />
 
           <IonLabel position="stacked">Event Start</IonLabel>
-          <IonDatetimeButton datetime="datetime1"></IonDatetimeButton>
+          <IonDatetimeButton ref={inputRef} datetime="datetime1"></IonDatetimeButton>
           <IonModal keepContentsMounted={true}>
             <IonDatetime id="datetime1"></IonDatetime>
           </IonModal>
 
           <IonLabel position="stacked">Event End</IonLabel>
-          <IonDatetimeButton datetime="datetime2"></IonDatetimeButton>
+          <IonDatetimeButton ref={inputRef} datetime="datetime2"></IonDatetimeButton>
           <IonModal keepContentsMounted={true}>
             <IonDatetime id="datetime2"></IonDatetime>
           </IonModal>
@@ -93,6 +100,15 @@ const NewEventForm = ({
         </IonItem>
       </IonContent>
     </IonPage>
+
+
+    <IonAlert
+    isOpen={showAlertNewEvent}
+    onDidDismiss={handleAlertDismissNewEvent}
+    message={alertMsgNewEvent}
+    buttons={["OK"]}
+    ></IonAlert>
+</>
   );
 };
 

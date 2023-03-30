@@ -6,7 +6,7 @@ import process from "process";
 import { Response, Request } from "express";
 import { authenticate } from "@google-cloud/local-auth";
 import { OAuth2Client } from "google-auth-library";
-import { google, calendar_v3, analytics_v3 } from "googleapis";
+import { google } from "googleapis";
 import { CalendarOauthService } from "../../../service/calendarOauthService";
 import "../../../session";
 
@@ -101,15 +101,9 @@ export class CalendarOauthController {
 
         console.log(eventArr);
         res.json({eventArr, "success":true})
-        // return eventArr;
       }
 
-      // async function toFrontEnd (arr:any){
-      //   // await this.calendarOauthService(req.session.userId, arr)
-      //   ;
-      // }
-
-      authorize().then(listEvents);
+      authorize().then(listEvents)
 
     } catch (err) {
       errorHandler(err, req, res);

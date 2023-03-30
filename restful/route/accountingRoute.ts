@@ -7,7 +7,7 @@ import { CalendarOauthService } from "../service/calendarOauthService";
 
 export let accountingRoutes = express.Router();
 
-let accountingService = new AccountingService(knex);
-let accountingController = new AccountingController(calendarOauthService);
+// let accountingService = new AccountingService(knex);
+// let accountingController = new AccountingController(calendarOauthService);
 
-accountingRoutes.get("/Accounting", calendarOauthController.calendarAuthorization);
+// accountingRoutes.get("/Accounting", calendarOauthController.calendarAuthorization);
