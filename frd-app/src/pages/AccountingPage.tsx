@@ -15,7 +15,7 @@ import {
   IonSelectOption,
 } from "@ionic/react";
 import React, { useCallback, useRef, useState } from "react";
-// import Finance from "./Finance";
+import Finance from "../components/Accounting/Finance";
 // import { Finance_summary } from "./Finance_summary";
 import style from "./AccountingPage.module.scss";
 import { useHistory } from "react-router";
@@ -73,6 +73,7 @@ const AccountingPage: React.FC = () => {
         </IonHeader>
 
         <IonContent>
+          <Finance />
           {/* <div className={style.demo}><Finance_summary /></div> */}
           {/* <div className={style.main}><Finance /></div> */}
           {/* <Accounting /> */}

@@ -18,7 +18,7 @@ const HealthNutrition = () => {
   useEffect(() => {
     const getDailyIntake = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/nutrition`);
+        const res = await fetch(`http://localhost:8080/nutrition/userData`);
         const json = await res.json();
 
         let age = json.result[0].age;

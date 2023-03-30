@@ -13,14 +13,16 @@ app.use(express.json());
 let url = env.URL;
 app.use(
   cors({
-    origin: "url",
+    origin: url,
   })
 );
 
 app.use(sessionMiddleware);
 
-app.use("/", nutritionRoutes);
+app.use("/nutrition", nutritionRoutes);
+
 app.use("/calendar", calendarRoutes);
+app.use("/Account", accountRoutes);
 
 let port = env.PORT;
 app.listen(port, () => {
