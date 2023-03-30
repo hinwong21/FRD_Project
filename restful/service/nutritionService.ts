@@ -3,10 +3,14 @@ import { Knex } from "knex";
 export class NutritionService {
   constructor(private knex: Knex) {}
 
-  getDailyIntake = async (userId: number) => {
+  getDailyIntake = async (userId: number, id:number) => {
     try {
       let user = await this.knex("users").select("*").where("id", userId);
-      return user;
+      let nutrient = await this.knex("nutrition").select("*").where("id", id);
+      return {
+        user,
+        nutrient,
+      };
     } catch (err) {
       throw new Error((err as Error).message);
     }
@@ -37,28 +41,15 @@ export class NutritionService {
             fat: this.knex.raw(`fat + ${fat}`),
           });
       } else {
-        console.log(calories, carbs, protein, fat, date);
-        // await this.knex("users").insert({
-        //   id: 3,
-        //   username: "jim",
-        //   email: "jim@ema",
-        //   gender: "male",
-        //   age: 30,
-        //   height: 175,
-        //   weight: 65,
-        // });
-        let [obj] = await this.knex("nutrition")
-          .insert({
-            id: id,
-            user_id: userId,
-            calories: calories,
-            carbs: carbs,
-            protein: protein,
-            fat: fat,
-            date: date,
-          })
-          .returning("*");
-        console.log(obj);
+        await this.knex("nutrition").insert({
+          id: id,
+          user_id: userId,
+          calories: calories,
+          carbs: carbs,
+          protein: protein,
+          fat: fat,
+          date: date,
+        });
       }
     } catch (err) {
       throw new Error((err as Error).message);
