@@ -23,4 +23,15 @@ export class CalendarService {
       user_id: userId,
     });
   };
+
+  getGoogleCalendarEvent = async (userId:number)=>{
+      let data = await this.knex("google_calendar")
+      .select("*")
+      .where("user_id", userId)
+
+      console.log(data);
+      
+      return data;
+  }
+
 }
