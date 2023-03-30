@@ -10,6 +10,7 @@ import {
 import React, { memo, useState, useRef } from "react";
 import { calendarNumberOutline } from "ionicons/icons";
 import styles from "./Setting.module.css"; // import {env} from "../../../env"
+import { Redirect } from "react-router";
 
 export const Setting = () => {
   const [showAlert, setShowAlert] = useState(false);
