@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const config: CapacitorConfig = {
   appId: "com.0218081905181021noticias.app",
-  appName: "ionic-app-base",
+  appName: "noticias",
   webDir: "build",
   bundledWebRuntime: false,
   server: {

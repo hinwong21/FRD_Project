@@ -25,6 +25,7 @@ import TransactionModal, {
 import { TransactionType } from "../components/Accounting/Finance";
 import Calendar from "../components/Calendar/Calendar";
 import Calculator from "../components/Accounting/Calculator";
+import { Finance_summary } from "../components/Accounting/Finance_summary";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -32,6 +33,10 @@ import Calculator from "../components/Accounting/Calculator";
 // };
 
 const AccountingPage: React.FC = () => {
+  const today = new Date(); // 获取当前时间
+  const date = `${today.getFullYear()}-${(today.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`; // 格式化日期
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isTran, setIsTran] = useState<boolean>(false);
   const history = useHistory();
@@ -73,8 +78,7 @@ const AccountingPage: React.FC = () => {
         </IonHeader>
 
         <IonContent>
-          <Finance />
-          {/* <div className={style.demo}><Finance_summary /></div> */}
+          <div className={style.demo}>{/* <Finance_summary /> */}</div>
           {/* <div className={style.main}><Finance /></div> */}
           {/* <Accounting /> */}
           {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
@@ -83,34 +87,37 @@ const AccountingPage: React.FC = () => {
           {/* <Transaction isTran={isTran} tr_set={setIsTran} /> */}
           {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
           {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
-
-          <IonButton expand="block" onClick={() => setIsTran(true)}>
-            Review
-          </IonButton>
-          <IonButton
-            expand="block"
-            onClick={() => {
-              setIsOpen(true);
-            }}
-          >
-            Add Transaction
-          </IonButton>
-
-          <IonList>
-            {transactions.map((transaction) => (
-              <IonItem key={transaction.id}>
-                {transaction.type} - ${transaction.amount.toLocaleString()}
-              </IonItem>
-            ))}
-          </IonList>
-          <IonList>
-            {calculateResult.map((calculateResult) => (
-              <IonItem key={calculateResult.id}>
-                {calculateResult.type} - $
-                {calculateResult.amount.toLocaleString()}
-              </IonItem>
-            ))}
-          </IonList>
+          <h1>{date}</h1>
+          <div className={style.list}>
+            <IonList>
+              {transactions.map((transaction) => (
+                <IonItem key={transaction.id}>
+                  {transaction.type} - ${transaction.amount.toLocaleString()}
+                </IonItem>
+              ))}
+            </IonList>
+            <IonList>
+              {calculateResult.map((calculateResult) => (
+                <IonItem key={calculateResult.id}>
+                  {calculateResult.type} - $
+                  {calculateResult.amount.toLocaleString()}
+                </IonItem>
+              ))}
+            </IonList>
+          </div>
+          <div className={style.button}>
+            <IonButton expand="block" onClick={() => setIsTran(true)}>
+              Review
+            </IonButton>
+            <IonButton
+              expand="block"
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            >
+              Add Transaction
+            </IonButton>
+          </div>
         </IonContent>
 
         <TransactionModal
