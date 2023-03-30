@@ -10,7 +10,6 @@ const SCOPES = ['https://www.googleapis.com/auth/userinfo.profile','https://www.
 const TOKEN_PATH = path.join(process.cwd(), 'token.json');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
 
-
 async function loadSavedCredentialsIfExist() {
   try {
     const content = await fs.readFile(TOKEN_PATH);
@@ -82,3 +81,5 @@ async function listEvents(auth) {
 }
 
 authorize().then(listEvents).catch(console.error);
+
+export default test;

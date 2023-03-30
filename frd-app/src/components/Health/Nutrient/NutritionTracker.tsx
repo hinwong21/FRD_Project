@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Nutrition.css";
 import { useDispatch } from "react-redux";
 
@@ -157,6 +157,18 @@ export const NutritionTracker = () => {
             ],
           });
 
+          // update daily intake to database
+          fetch(`http://localhost:8080/nutrition/dailyIntake`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              calories: caloriesNutrient.value,
+              carbs: carbsNutrient.value,
+              protein: proteinNutrient.value,
+              fat: fatNutrient.value,
+            }),
+          });
+
           dispatch({
             type: "INCREMENT",
             calories: caloriesNutrient.value,
@@ -164,6 +176,7 @@ export const NutritionTracker = () => {
             protein: proteinNutrient.value,
             fat: fatNutrient.value,
           });
+
           foodName.value = "";
           setFoodItems([]);
         });
@@ -173,9 +186,7 @@ export const NutritionTracker = () => {
     <div className="food-tracker-container">
       <header>
         <div>Food tracking</div>
-        <select
-          className="select-meal-type"
-        >
+        <select className="select-meal-type">
           <option value="">Select meal type</option>
           <option value="Breakfast">breakfast</option>
           <option value="Brunch">brunch</option>

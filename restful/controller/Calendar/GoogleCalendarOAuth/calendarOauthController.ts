@@ -6,13 +6,13 @@ import process from "process";
 import { Response, Request } from "express";
 import { authenticate } from "@google-cloud/local-auth";
 import { OAuth2Client } from "google-auth-library";
-import { google, calendar_v3 } from "googleapis";
-import { CalendarService } from "../../../service/calendarService";
+import { google, calendar_v3, analytics_v3 } from "googleapis";
+import { CalendarOauthService } from "../../../service/calendarOauthService";
 import "../../../session";
 
-export class OauthController {
-  constructor(private calendarService: CalendarService) {
-    this.calendarService = calendarService;
+export class CalendarOauthController {
+  constructor(private calendarOauthService: CalendarOauthService) {
+    this.calendarOauthService = calendarOauthService;
   }
 
   calendarAuthorization = async (req: Request, res: Response) => {
@@ -67,7 +67,7 @@ export class OauthController {
         let allEvents: any[] = [];
         const calendar = google.calendar({ version: "v3", auth });
         do{
-          const res = await calendar.events.list({
+          const res:any = await calendar.events.list({
             calendarId: "primary",
             timeMin: new Date().toISOString(),
             maxResults: 1000,
@@ -82,6 +82,7 @@ export class OauthController {
        
         if (allEvents.length === 0) {
           console.log("No upcoming events found.");
+          res.json({"eventArr": "No upcoming events found", "success": true})
           return;
         }
 
@@ -97,9 +98,16 @@ export class OauthController {
             "textColor" : "white"
           })
         });
-        // res.json(eventArr);
-        await this.calendarService(req.session.userId, eventArr)
+
+        console.log(eventArr);
+        res.json({eventArr, "success":true})
+        // return eventArr;
       }
+
+      // async function toFrontEnd (arr:any){
+      //   // await this.calendarOauthService(req.session.userId, arr)
+      //   ;
+      // }
 
       authorize().then(listEvents);
 

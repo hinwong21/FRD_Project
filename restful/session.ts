@@ -14,6 +14,7 @@ declare module 'express-session' {
         userId?: number
         email?: string
         isLogin?:boolean
+        CalendarAuthorized?: boolean 
         GoogleOauth?:{
             type?: string | undefined,
             client_id?: string | undefined,
