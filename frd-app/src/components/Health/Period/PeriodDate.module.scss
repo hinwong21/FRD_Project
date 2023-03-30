@@ -121,3 +121,31 @@ h1 {
   display: flex;
   flex-direction: column;
 }
+
+.statusBox {
+  width: 75%;
+  color: #b88888;
+  font-size: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5%;
+  font-weight: 500;
+}
+
+.todayStatus {
+  margin-top: 5%;
+}
+
+// .ion-padding {
+//   height: 90%;
+// }
+
+.toolbar {
+  background-color: rgb(193, 122, 133);
+}
+
+.statusIcon {
+  font-size: 80px;
+}
