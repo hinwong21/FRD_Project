@@ -9,6 +9,7 @@ import styles from "./PeriodDate.module.scss";
 import { IonButton, IonContent, IonIcon, IonPage } from "@ionic/react";
 import PeriodCalendar from "./PeriodCanlender";
 import { Link } from "react-router-dom";
+import Topbox from "./Topbox";
 
 const Period = () => {
   const [currentDate, setCurrentDate] = useState(
@@ -40,22 +41,13 @@ const Period = () => {
           </header>
           <div>
             <div className={styles.container}>
-              <div className={styles.topBox}>
-                <div className={styles.upcomingPeriod}>
-                  upcoming period
-                  <div>3 days</div>
-                </div>
-                <div className={styles.upcomingOvulation}>
-                  ovulation date: after 15 days
-                </div>
-                <IonButton
-                  size="default"
-                  color={styles.btn}
-                  className={styles.btn}
-                >
-                  period start
-                </IonButton>
-              </div>
+              <Topbox
+                subTitle="upcoming period"
+                periodDay="3 Days"
+                ovuDay="ovulation date: after 15 days"
+                btname="period start"
+              />
+
               <div className={styles.card}>
                 <div className={styles.box}>
                   <h2 className={styles.subtitle}>upcoming period</h2>
