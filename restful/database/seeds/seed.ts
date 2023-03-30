@@ -29,4 +29,15 @@ export async function seed(knex: Knex): Promise<void> {
       },
     ])
     .returning("id");
+  await knex("nutrition").insert([
+    {
+      id: 2,
+      user_id: tony.id,
+      calories: 52.3,
+      carbs: 3.5,
+      protein: 26.555,
+      fat: 47.3333,
+      date: "2023-03-30",
+    },
+  ]);
 }
