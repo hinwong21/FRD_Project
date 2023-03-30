@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react'
+import {useRef, useEffect, useState} from 'react'
 import "@ionic/react/css/core.css";
 /* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
@@ -12,12 +12,17 @@ import interactionPlugin from "@fullcalendar/interaction"
 import listPlugin from '@fullcalendar/list';
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import {AddEvent} from "./AddEvent";
-import { IonContent, IonModal, IonLabel, IonButton } from '@ionic/react';
+import { IonContent, IonModal, IonLabel, IonButton, IonToolbar,IonTitle, IonButtons, IonList, IonItem } from '@ionic/react';
 import * as bootstrap from "bootstrap";
+import styles from "./Calendar.module.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
 export const Calendar_zh = () => {
+
+  const [modalState, setModalState] = useState(false)
+  const [modalDate, setModalDate] = useState("")
+  const [modalContent, setModalContent] = useState("")
   
   const eventList = [
     {title:"Piano Lesson", start:'2023-03-20 12:30', end:'2023-03-21 16:30', extendedProps: {description: 'Pay lesson fee'}, backgroundColor:"blue",textColor:"white"},
@@ -26,6 +31,12 @@ export const Calendar_zh = () => {
   ]
 
   const googleCalendarEvent : {}[] = []
+
+  const modal = useRef<HTMLIonModalElement>(null);
+
+  function dismiss() {
+    setModalState(false)
+  }
 
 
   return (
@@ -68,24 +79,82 @@ export const Calendar_zh = () => {
           // stop from redirecting to Google Calendar onclick
           event.jsEvent.preventDefault();
       }}
+        dateClick={async (info)=>{
+        console.log(info.dateStr)
+        // const res = await fetch ("/",{
+        //   method: "POST",
+        //   headers: {"Content-type": "application/json"},
+        //   body: JSON.stringify(info.dateStr)
+        // })
+        // const json = await res.json();
+        // console.log(json);
+        
+        setModalState(true)
+        setModalDate(info.dateStr)
+        setModalContent("ABC")
+        
+      }} 
         
         />
     </div>
 
     <AddEvent/>
 
-    <IonButton id="open-modal">testing123</IonButton>
+        <IonModal id="example-modal" ref={modal} isOpen={modalState}>
+          <IonContent className={styles.modalContentStyle}>
+            <IonToolbar>
+              <IonTitle>{modalDate}</IonTitle>
+              <IonButtons slot="end">
+                <IonButton color="light" onClick={() => dismiss()}>
+                  Close
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+            <IonList>
+                <IonLabel>
+                  <h2>Events</h2>
+                </IonLabel>
+                <IonItem>
+                <div>{modalContent}</div>
+                </IonItem>
+                <IonItem>
+                <div>{modalContent}</div>
+                </IonItem>
+                <IonItem>
+                <div>{modalContent}</div>
+                </IonItem>
+            </IonList>
+            
+            <IonList>
+                <IonLabel>
+                  <h2>Todo List</h2>
+                </IonLabel>
+                <IonItem>
+                <div>{modalContent}</div>
+                </IonItem>
+                <IonItem>
+                <div>{modalContent}</div>
+                </IonItem>
+            </IonList>
 
-    <IonModal
-          trigger="open-modal"
-          initialBreakpoint={0.25}
-          breakpoints={[0, 0.25, 0.5, 0.75]}
-          handleBehavior="cycle"
-        >
-          <IonContent className="ion-padding">
-            <div className="ion-margin-top">
-              <IonLabel>Click the handle above to advance to the next breakpoint.</IonLabel>
-            </div>
+            <IonList>
+                <IonLabel>
+                  <h2>Diary</h2>
+                </IonLabel>
+                <IonItem>
+                <div>{modalContent}</div>
+                </IonItem>  
+            </IonList>
+
+            <IonList>
+                <IonLabel>
+                  <h2>Period</h2>
+                </IonLabel>
+                <IonItem>
+                <div>Day ?</div>
+                </IonItem>  
+            </IonList>
+
           </IonContent>
         </IonModal>
 
