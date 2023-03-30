@@ -44,18 +44,14 @@ export const Calendar_zh = () => {
     const events_json = await events.json();
     const events_json2 = events_json[0].content.replace(/\\/g, "")
     const events_json3 = JSON.parse(events_json2)
-    // const obj = JSON.parse(events_json)
-    console.log(events_json3);
     setGoogleCalendarEvent(events_json3)   
   }
   
-
   const modal = useRef<HTMLIonModalElement>(null);
 
   function dismiss() {
     setModalState(false)
   }
-
 
   return (
     <>
@@ -70,7 +66,6 @@ export const Calendar_zh = () => {
         editable= {true}
         // locale= {locale}
         contentHeight = {600}
-        // dateClick = {handleDateClick}
         droppable = {true}
         selectable= {true}
         nowIndicator = {true}
@@ -98,7 +93,7 @@ export const Calendar_zh = () => {
           event.jsEvent.preventDefault();
       }}
         dateClick={async (info)=>{
-        console.log(info.dateStr)
+     
         // const res = await fetch ("/",{
         //   method: "POST",
         //   headers: {"Content-type": "application/json"},
