@@ -18,6 +18,14 @@ import styles from "./PeriodDate.module.scss";
 import Topbox from "./Topbox";
 
 import { useForm } from "react-hook-form";
+import StatusItem from "./StatusItem";
+import {
+  bodyOutline,
+  contrastOutline,
+  phoneLandscapeOutline,
+  sadOutline,
+  waterOutline,
+} from "ionicons/icons";
 
 type OtherStatus = {
   content: string;
@@ -29,18 +37,29 @@ const ModalExample = ({
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
 }) => {
   const inputRef = useRef<HTMLIonInputElement>(null);
+  // Submit Form
+  const { register, handleSubmit } = useForm<OtherStatus>();
+  const submitHandler = (data: OtherStatus) => {
+    // TODO Insert into the DB here?(use useEffect()) Save the data into the variable
+    console.log(data);
+  };
+
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color={styles.pBar} className={styles.pBar}>
           <IonButtons slot="start">
-            <IonButton color="medium" onClick={() => onDismiss(null, "cancel")}>
+            <IonButton
+              color={styles.pBar}
+              onClick={() => onDismiss(null, "cancel")}
+            >
               Cancel
             </IonButton>
           </IonButtons>
-          <IonTitle>Welcome</IonTitle>
+          <IonTitle>Add Status</IonTitle>
           <IonButtons slot="end">
             <IonButton
+              color={styles.pBar}
               onClick={() => onDismiss(inputRef.current?.value, "confirm")}
             >
               Confirm
@@ -49,23 +68,46 @@ const ModalExample = ({
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonItem>
+        {/* TODO ADD STATUS */}
+        <StatusItem icon={waterOutline} type="menstrual flow" lv={5} />
+        <StatusItem icon={bodyOutline} type="lower back pain" lv={5} />
+        <StatusItem icon={sadOutline} type="headache" lv={5} />
+
+        <StatusItem icon={phoneLandscapeOutline} type="fatigue" lv={5} />
+        <StatusItem icon={contrastOutline} type="contraceptive pill" lv={30} />
+
+        <StatusItem icon={contrastOutline} type="painkiller" lv={30} />
+
+        <form
+          className={styles.statusForm}
+          onSubmit={handleSubmit(submitHandler)}
+        >
+          <label className={styles.otherStatus} htmlFor="otherStatus">
+            Other Status
+          </label>
+          <div className={styles.otherInputBox}>
+            <textarea
+              // ref={inputRef}
+              className={styles.otherInput}
+              // type="text"
+              style={{ height: "70px" }}
+              {...register("content")}
+            ></textarea>
+            <IonButton color={styles.btn} className={styles.btn} type="submit">
+              Submit
+            </IonButton>
+          </div>
+        </form>
+        {/* <IonItem>
           <IonLabel position="stacked">Enter your name</IonLabel>
           <IonInput ref={inputRef} placeholder="Your name" />
-        </IonItem>
+        </IonItem> */}
       </IonContent>
     </IonPage>
   );
 };
 
 function AddStatusPage() {
-  // Submit Form
-  const { register, handleSubmit } = useForm<OtherStatus>();
-  const submitHandler = (data: OtherStatus) => {
-    // TODO Insert into the DB here?(use useEffect()) Save the data into the variable
-    console.log(data);
-  };
-
   const [present, dismiss] = useIonModal(ModalExample, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
