@@ -23,3 +23,13 @@ calendarRoutes.get(
   "/google-events",
   calendarController.getGoogleCalendarEvent
 );
+
+calendarRoutes.get(
+  "/local-events",
+  calendarController.getLocalCalendarEvent
+);
+
+calendarRoutes.post(
+  "/new-local-event",
+  calendarController.createLocalCalendarEvent
+);

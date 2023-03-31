@@ -8,10 +8,14 @@ import {
 import styles from "./PeriodDate.module.scss";
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
+  IonMenuButton,
   IonPage,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import PeriodCalendar from "./PeriodCanlender";
 import { Link } from "react-router-dom";
@@ -45,13 +49,14 @@ const UpcomingPeriod = () => {
       <IonContent>
         <div className={styles.home}>
           <IonHeader>
-            {/* <IonToolbar>
-              <IonTitle className={styles.title}>period</IonTitle>
-            </IonToolbar> */}
+            <IonToolbar color={styles.pBar} className={styles.pBar}>
+              <IonButtons slot="start">
+                <IonMenuButton />
+              </IonButtons>
+              <IonTitle>Period</IonTitle>
+            </IonToolbar>
           </IonHeader>
-          {/* <header>
-            <h1 className={styles.title}>period</h1>
-          </header> */}
+
           <div>
             <div className={styles.container}>
               <Topbox

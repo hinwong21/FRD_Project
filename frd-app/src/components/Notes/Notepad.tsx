@@ -18,6 +18,7 @@ import {
 import "./Notes.module.css";
 import { AddNotePopup } from "./AddNotePopup";
 import { useParams } from "react-router";
+import {MemoEditor} from "./MemoEditor"
 import styles from "./Notes.module.css";
 
 export const Notepad:React.FC = () => {
@@ -30,6 +31,7 @@ export const Notepad:React.FC = () => {
     <>
       <IonSearchbar></IonSearchbar>
       <AddNotePopup />
+      <MemoEditor/>
       </>
   )
   }
