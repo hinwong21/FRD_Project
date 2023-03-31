@@ -3,7 +3,7 @@ import styles from "./Health.module.scss";
 import { Provider } from "react-redux";
 import { nutritionStore } from "../../redux/Nutrition/store";
 
-import { IonButton, IonContent, IonPage } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 
 const Health = () => {
@@ -19,7 +19,24 @@ const Health = () => {
   return (
     <>
       <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton />
+            </IonButtons>
+            <IonTitle>Health</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonContent className={styles.mainBox}>
+          <IonHeader>
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton />
+              </IonButtons>
+              <IonTitle>Health</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+
           <div className={styles.innerBox}>
             <IonButton
               color={styles.togoP}
