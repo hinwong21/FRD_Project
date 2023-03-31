@@ -107,7 +107,7 @@ const ModalExample = ({
   );
 };
 
-function AddStatusPage() {
+function PeriodDay() {
   const [present, dismiss] = useIonModal(ModalExample, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
@@ -149,10 +149,10 @@ function AddStatusPage() {
               btname="period end"
             />
 
-            <div className={styles.statusBox}>
+            {/* <div className={styles.statusBox}>
               <div className={styles.todayStatus}>today's status</div>
-              {/* <Button btname="add" /> */}
-            </div>
+              <Button btname="add" />
+            </div> */}
 
             {/* <Status subtitle="status" date="22/03/2023" /> */}
           </div>
@@ -164,7 +164,7 @@ function AddStatusPage() {
             expand="block"
             onClick={() => openModal()}
           >
-            Open
+            Add Today's Status
           </IonButton>
         </IonContent>
       </div>
@@ -172,4 +172,4 @@ function AddStatusPage() {
   );
 }
 
-export default AddStatusPage;
+export default PeriodDay;
