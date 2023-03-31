@@ -22,7 +22,8 @@ import { useState, useRef, FormEvent, FC } from "react";
 //   import { useParams } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Controller, useForm } from "react-hook-form";
+// import { Controller, useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 import styles from "./Calendar.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 
@@ -44,15 +45,25 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
     setShowAlertNewEvent(false);
   };
 
-  function handleSubmit() {
+  async function handleSubmit () {
     // event.preventDefault();
-    console.log({title});
-    console.log({startDateTime});
-    console.log({endDateTime});
-    console.log({description});
-    console.log({location});
-    console.log({color});
+
     onDismiss("", "confirm")
+
+    let id = uuidv4()
+
+    const res= await fetch("http://localhost:8080/calendar/new-local-event",{
+      method: "POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify({
+        id: id.slice(1,-1),
+        title:title.slice(1,-1),
+        description:description.slice(1,-1),
+        start: startDateTime.slice(1,11)+ ' '+startDateTime.slice(12,17),
+        end: endDateTime.slice(1,11)+' '+endDateTime.slice(12,17),
+        backgroundColor:color
+      })
+    })
   }
 
   return (

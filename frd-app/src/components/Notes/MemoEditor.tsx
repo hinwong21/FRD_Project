@@ -1,17 +1,19 @@
-import { IonPage, IonContent } from "@ionic/react";
-import React, { useEffect, useState, Component } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import { convertFromRaw } from "draft-js";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
-
-export const MemoEditor: React.FC = () => {
-  return (
-    <IonPage>
-      <IonContent fullscreen>
-      
-      </IonContent>
-    </IonPage>
+export const MemoEditor:React.FC = () => {
+  const [editorState, setEditorState] = React.useState(
+    () => EditorState.createEmpty(),
   );
-};
+
+  return (
+    <>
+  <Editor editorState={editorState} onChange={setEditorState} />
+  </>
+  );
+}
+
 
 export default MemoEditor;
