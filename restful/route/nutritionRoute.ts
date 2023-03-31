@@ -10,3 +10,4 @@ let nutritionController = new NutritionController(nutritionService);
 
 nutritionRoutes.get("/userData", nutritionController.getDailyIntake);
 nutritionRoutes.put("/dailyIntake", nutritionController.updateDailyIntake);
+

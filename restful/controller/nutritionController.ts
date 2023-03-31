@@ -9,7 +9,8 @@ export class NutritionController {
     try {
       //   const userId = req.session.userId!;
       const userId = 1;
-      const result = await this.nutritionService.getDailyIntake(userId);
+      const id = 2;
+      const result = await this.nutritionService.getDailyIntake(userId, id);
 
       res.json({ result });
     } catch (err) {
@@ -35,7 +36,6 @@ export class NutritionController {
         fat,
         date
       );
-      
       res.json({ success: true });
     } catch (err) {
       errorHandler(err, req, res);
