@@ -20,7 +20,16 @@ import Topbox from "./Topbox";
 import styles from "./PeriodDate.module.scss";
 import Status from "./Status";
 import Button from "./Button";
-import { calendarClearOutline, waterOutline } from "ionicons/icons";
+import {
+  bodyOutline,
+  calendarClearOutline,
+  contrastOutline,
+  phoneLandscapeOutline,
+  sadOutline,
+  waterOutline,
+} from "ionicons/icons";
+import LevelBtn from "./LevelBtn";
+import StatusItem from "./StatusItem";
 
 export const PeriodDay = () => {
   const modal = useRef<HTMLIonModalElement>(null);
@@ -45,9 +54,9 @@ export const PeriodDay = () => {
       <IonContent>
         <div className={styles.home}>
           <IonHeader>
-            <IonToolbar>
+            {/* <IonToolbar>
               <IonTitle className={styles.title}>period</IonTitle>
-            </IonToolbar>
+            </IonToolbar> */}
           </IonHeader>
           {/* <header>
             <h1 className={styles.title}>period</h1>
@@ -108,15 +117,49 @@ export const PeriodDay = () => {
                   </IonHeader>
 
                   {/* TODO ADD STATUS */}
-                  <div className="statusContainer">
-                    <div className="statusItem">
-                      <IonIcon
-                        className="statusIcon"
-                        icon={waterOutline}
-                        slot="start"
-                      ></IonIcon>
+                  <StatusItem
+                    icon={waterOutline}
+                    type="menstrual flow"
+                    lv={5}
+                  />
+                  <StatusItem
+                    icon={bodyOutline}
+                    type="lower back pain"
+                    lv={5}
+                  />
+                  <StatusItem icon={sadOutline} type="headache" lv={5} />
+
+                  <StatusItem
+                    icon={phoneLandscapeOutline}
+                    type="fatigue"
+                    lv={5}
+                  />
+                  <StatusItem
+                    icon={contrastOutline}
+                    type="contraceptive pill"
+                    lv={30}
+                  />
+
+                  <StatusItem
+                    icon={contrastOutline}
+                    type="painkiller"
+                    lv={30}
+                  />
+                  {/* TODO 寫一個其他選項，使用form */}
+
+                  {/* <div className={styles.statusContainer}>
+                    <div className={styles.statusItem}>
+                      <div className={styles.item}>
+                        <IonIcon
+                          className={styles.statusIcon}
+                          icon={waterOutline}
+                          slot="start"
+                        ></IonIcon>
+                        <div className={styles.type}>menstrual flow</div>
+                      </div>
+                      <LevelBtn />
                     </div>
-                  </div>
+                  </div> */}
                 </IonModal>
               </IonContent>
             </div>
