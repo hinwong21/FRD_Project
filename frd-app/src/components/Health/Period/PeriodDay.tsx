@@ -7,6 +7,7 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonMenuButton,
   IonModal,
   IonPage,
   IonTitle,
@@ -31,33 +32,34 @@ import {
 import LevelBtn from "./LevelBtn";
 import StatusItem from "./StatusItem";
 
+import { useForm } from "react-hook-form";
+import AddStatusPage from "./AddStatusPage";
+
+type OtherStatus = {
+  content: string;
+};
+
 export const PeriodDay = () => {
-  const modal = useRef<HTMLIonModalElement>(null);
-  const input = useRef<HTMLIonInputElement>(null);
-
-  const [message, setMessage] = useState(
-    "This modal example uses triggers to automatically open a modal when the button is clicked."
-  );
-
-  function confirm() {
-    modal.current?.dismiss(input.current?.value, "confirm");
-  }
-
-  function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
-    if (ev.detail.role === "confirm") {
-      setMessage(`Hello, ${ev.detail.data}!`);
-    }
-  }
+  // Submit Form
+  const { register, handleSubmit } = useForm<OtherStatus>();
+  const submitHandler = (data: OtherStatus) => {
+    // TODO Insert into the DB here?(use useEffect()) Save the data into the variable
+    console.log(data);
+  };
 
   return (
     <IonPage>
       <IonContent>
         <div className={styles.home}>
           <IonHeader>
-            {/* <IonToolbar>
-              <IonTitle className={styles.title}>period</IonTitle>
-            </IonToolbar> */}
+            <IonToolbar color={styles.pBar} className={styles.pBar}>
+              <IonButtons slot="start">
+                <IonMenuButton />
+              </IonButtons>
+              <IonTitle>Period</IonTitle>
+            </IonToolbar>
           </IonHeader>
+
           {/* <header>
             <h1 className={styles.title}>period</h1>
           </header> */}
@@ -76,92 +78,7 @@ export const PeriodDay = () => {
               </div>
 
               {/* <Status subtitle="status" date="22/03/2023" /> */}
-
-              <IonContent className="ion-padding">
-                <IonButton
-                  id="open-modal"
-                  size="default"
-                  color={styles.btn}
-                  className={styles.btn}
-                  expand="block"
-                >
-                  add
-                </IonButton>
-                {/* <Button btname="add" id="open-modal" /> */}
-                {/* <IonButton color="dark" id="open-modal" expand="block">
-                  Add
-                </IonButton> */}
-                {/* <p>{message}</p> */}
-                <IonModal
-                  ref={modal}
-                  trigger="open-modal"
-                  onWillDismiss={(ev) => onWillDismiss(ev)}
-                >
-                  <IonHeader>
-                    <IonToolbar
-                      color={styles.toolbar}
-                      className={styles.toolbar}
-                    >
-                      <IonButtons slot="start">
-                        <IonButton onClick={() => modal.current?.dismiss()}>
-                          Cancel
-                        </IonButton>
-                      </IonButtons>
-                      <IonTitle>Add Status</IonTitle>
-                      <IonButtons slot="end">
-                        <IonButton strong={true} onClick={() => confirm()}>
-                          Confirm
-                        </IonButton>
-                      </IonButtons>
-                    </IonToolbar>
-                  </IonHeader>
-
-                  {/* TODO ADD STATUS */}
-                  <StatusItem
-                    icon={waterOutline}
-                    type="menstrual flow"
-                    lv={5}
-                  />
-                  <StatusItem
-                    icon={bodyOutline}
-                    type="lower back pain"
-                    lv={5}
-                  />
-                  <StatusItem icon={sadOutline} type="headache" lv={5} />
-
-                  <StatusItem
-                    icon={phoneLandscapeOutline}
-                    type="fatigue"
-                    lv={5}
-                  />
-                  <StatusItem
-                    icon={contrastOutline}
-                    type="contraceptive pill"
-                    lv={30}
-                  />
-
-                  <StatusItem
-                    icon={contrastOutline}
-                    type="painkiller"
-                    lv={30}
-                  />
-                  {/* TODO 寫一個其他選項，使用form */}
-
-                  {/* <div className={styles.statusContainer}>
-                    <div className={styles.statusItem}>
-                      <div className={styles.item}>
-                        <IonIcon
-                          className={styles.statusIcon}
-                          icon={waterOutline}
-                          slot="start"
-                        ></IonIcon>
-                        <div className={styles.type}>menstrual flow</div>
-                      </div>
-                      <LevelBtn />
-                    </div>
-                  </div> */}
-                </IonModal>
-              </IonContent>
+              <div>{/* <AddStatusPage /> */}</div>
             </div>
           </div>
         </div>
