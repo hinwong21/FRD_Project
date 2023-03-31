@@ -14,7 +14,6 @@ type DailyIntake = {
 
 const HealthNutrition = () => {
   const [dailyIntake, setDailyIntake] = useState<DailyIntake>();
-  // const [intake, setIntake] = useState<Intake>(defaultIntake);
   const intake = useSelector((state: NutritionState) => state);
   const dispatch = useDispatch();
 
@@ -53,18 +52,13 @@ const HealthNutrition = () => {
           maxCarbsDailyIntake: maxCarbsDailyIntake,
         });
 
-        let date = new Date().toISOString().slice(0, 10);
-        console.log(date);
-
-        if (json.result.nutrient[0].date === date) {
-          dispatch({
-            type: "UPDATE",
-            calories: json.result.nutrient[0].calories,
-            carbs: json.result.nutrient[0].carbs,
-            protein: json.result.nutrient[0].protein,
-            fat: json.result.nutrient[0].fat,
-          });
-        }
+        dispatch({
+          type: "UPDATE",
+          calories: json.result.nutrient[0].calories,
+          carbs: json.result.nutrient[0].carbs,
+          protein: json.result.nutrient[0].protein,
+          fat: json.result.nutrient[0].fat,
+        });
       } catch (err) {
         console.log(err);
       }
