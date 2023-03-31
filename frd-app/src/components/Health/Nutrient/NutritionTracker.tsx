@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./Nutrition.css";
 import { useDispatch } from "react-redux";
+import { Preferences } from "@capacitor/preferences";
+import { v4 as uuidv4 } from "uuid";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";
 
@@ -157,15 +159,18 @@ export const NutritionTracker = () => {
             ],
           });
 
+          let id = uuidv4();
           // update daily intake to database
           fetch(`http://localhost:8080/nutrition/dailyIntake`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+              id: id,
               calories: caloriesNutrient.value,
               carbs: carbsNutrient.value,
               protein: proteinNutrient.value,
               fat: fatNutrient.value,
+             date : new Date().toISOString().slice(0, 10),
             }),
           });
 

@@ -1,13 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { WaterProgressBar } from "./WaterProgressBar";
 import "./Nutrition.css";
+import { Preferences } from "@capacitor/preferences";
 
 export const WaterBalance = () => {
   const [waterIntake, setWaterIntake] = useState<number>(0);
-  function addWaterIntake() {
+
+  const resetData = () => {
+    const now = new Date();
+    const resetTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      6,
+      0,
+      0
+    );
+
+    if (now >= resetTime) {
+      // If the current time is past the reset time, set the reset time to tomorrow
+      resetTime.setDate(resetTime.getDate() + 1);
+    }
+    
+    const timeUntilReset = resetTime.getTime() - now.getTime();
+
+    setTimeout(async () => {
+      await Preferences.remove({ key: "water" });
+      resetData(); // Schedule the next reset
+    }, timeUntilReset);
+  };
+
+  resetData(); // Start the reset process
+
+  useEffect(() => {
+    const getWater = async () => {
+      const { value } = await Preferences.get({ key: "water" });
+      if (value !== null) {
+        const water = parseFloat(value);
+        setWaterIntake(water);
+      }
+    };
+
+    getWater();
+  }, []);
+
+  async function addWaterIntake() {
     const newWaterIntake = (waterIntake + 0.1).toFixed(1);
     setWaterIntake(parseFloat(newWaterIntake));
+
+    const setWater = async () => {
+      await Preferences.set({
+        key: "water",
+        value: newWaterIntake,
+      });
+    };
+    setWater();
   }
+
   return (
     <div className="water-balance-container">
       <div className="water-balance-header">Water balance</div>

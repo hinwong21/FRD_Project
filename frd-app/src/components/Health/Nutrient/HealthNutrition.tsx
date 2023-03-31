@@ -5,20 +5,6 @@ import { NutritionState } from "../../../redux/Nutrition/store";
 import { NutrientProgressBar } from "./NutrientProgressBar";
 import "./Nutrition.css";
 
-// type Intake = {
-//   caloriesIntake: number;
-//   carbsIntake: number;
-//   proteinIntake: number;
-//   fatIntake: number;
-// };
-
-// const defaultIntake: Intake = {
-//   caloriesIntake: 0,
-//   carbsIntake: 0,
-//   proteinIntake: 0,
-//   fatIntake: 0,
-// };
-
 type DailyIntake = {
   caloriesDailyIntake?: number | any;
   proteinDailyIntake?: number;
@@ -28,7 +14,6 @@ type DailyIntake = {
 
 const HealthNutrition = () => {
   const [dailyIntake, setDailyIntake] = useState<DailyIntake>();
-  // const [intake, setIntake] = useState<Intake>(defaultIntake);
   const intake = useSelector((state: NutritionState) => state);
   const dispatch = useDispatch();
 
@@ -67,13 +52,6 @@ const HealthNutrition = () => {
           maxCarbsDailyIntake: maxCarbsDailyIntake,
         });
 
-        // setIntake({
-        //   caloriesIntake: json.result.nutrient[0].calories,
-        //   carbsIntake: json.result.nutrient[0].carbs,
-        //   proteinIntake: json.result.nutrient[0].protein,
-        //   fatIntake: json.result.nutrient[0].fat,
-        // });
-
         dispatch({
           type: "UPDATE",
           calories: json.result.nutrient[0].calories,
@@ -81,13 +59,12 @@ const HealthNutrition = () => {
           protein: json.result.nutrient[0].protein,
           fat: json.result.nutrient[0].fat,
         });
-
       } catch (err) {
         console.log(err);
       }
     };
     getDailyIntake();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="nutrient-header">
