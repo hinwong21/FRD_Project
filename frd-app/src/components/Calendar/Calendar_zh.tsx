@@ -23,6 +23,7 @@ import {
   IonList,
   IonItem,
   IonMenuButton,
+  IonHeader,
 } from "@ionic/react";
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
@@ -166,6 +167,7 @@ export const Calendar_zh = () => {
 
       <IonModal id="example-modal" ref={modal} isOpen={modalState}>
         <IonContent className={styles.modalContentStyle}>
+          <IonHeader>
           <IonToolbar>
             <IonButtons slot="start"></IonButtons>
             <IonTitle>{modalDate}</IonTitle>
@@ -175,6 +177,7 @@ export const Calendar_zh = () => {
               </IonButton>
             </IonButtons>
           </IonToolbar>
+          </IonHeader>
           <IonList>
             <IonLabel>
               <h2>Events</h2>
