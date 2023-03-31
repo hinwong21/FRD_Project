@@ -8,17 +8,10 @@ import {
   IonSearchbar,
   IonNavLink,
 } from "@ionic/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faBook,
-  faPen,
-  faCheck,
-} from "@fortawesome/free-solid-svg-icons";
 import "./Notes.module.css";
 import { AddNotePopup } from "./AddNotePopup";
 import { useParams } from "react-router";
-import {MemoEditor} from "./MemoEditor"
+// import {MemoEditor} from "./MemoEditor"
 import styles from "./Notes.module.css";
 
 export const Notepad:React.FC = () => {
@@ -31,7 +24,7 @@ export const Notepad:React.FC = () => {
     <>
       <IonSearchbar></IonSearchbar>
       <AddNotePopup />
-      <MemoEditor/>
+      {/* <MemoEditor/> */}
       </>
   )
   }
