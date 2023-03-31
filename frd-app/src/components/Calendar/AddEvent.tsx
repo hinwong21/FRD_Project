@@ -173,7 +173,7 @@ export const AddEvent = () => {
   const [present, dismiss] = useIonModal(NewEventForm, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
-  // const [message, setMessage] = useState('This modal example uses the modalController to present and dismiss modals.');
+  
 
   function openModal() {
     present({
