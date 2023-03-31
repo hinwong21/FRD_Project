@@ -18,7 +18,7 @@ export const Setting = () => {
 
   async function getGoogleCalendarEvents() {
     // let port = env.EXPRESS_SERVER_URL
-    const res = await fetch("http://localhost:8080/calendar/google-events", {
+    const res = await fetch("http://localhost:8080/calendar/google-calendar-authorization", {
       method: "GET",
     });
     const json = await res.json();

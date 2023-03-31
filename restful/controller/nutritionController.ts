@@ -7,10 +7,11 @@ export class NutritionController {
 
   getDailyIntake = async (req: Request, res: Response) => {
     try {
-      //   const userId = req.session.userId!;
+      // const userId = req.session.userId!;
       const userId = 1;
-      const result = await this.nutritionService.getDailyIntake(userId);
+      const date = new Date();
 
+      const result = await this.nutritionService.getDailyIntake(userId, date);
       res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);
@@ -19,13 +20,13 @@ export class NutritionController {
 
   updateDailyIntake = async (req: Request, res: Response) => {
     try {
-      const id = 2;
+      const id = req.body.id;
       const userId = 1;
       const calories = req.body.calories;
       const carbs = req.body.carbs;
       const protein = req.body.protein;
       const fat = req.body.fat;
-      const date = new Date().toISOString().slice(0, 10);
+      const date = new Date();
       await this.nutritionService.updateDailyIntake(
         id,
         userId,
@@ -35,7 +36,6 @@ export class NutritionController {
         fat,
         date
       );
-      
       res.json({ success: true });
     } catch (err) {
       errorHandler(err, req, res);

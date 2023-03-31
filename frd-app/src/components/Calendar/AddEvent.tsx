@@ -57,6 +57,7 @@ const NewEventForm = ({onDismiss,}: {onDismiss: (data?: string | null | undefine
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
+        <form>
         <IonItem>
           <IonLabel position="stacked">Title</IonLabel>
           <IonInput ref={inputRef} placeholder="Event name" />
@@ -96,8 +97,8 @@ const NewEventForm = ({onDismiss,}: {onDismiss: (data?: string | null | undefine
 
           <IonLabel position="stacked">Link to</IonLabel>
           <IonInput ref={inputRef} placeholder="Link to specific notes/todo list--auto complete input???" />
-
         </IonItem>
+        </form>
       </IonContent>
     </IonPage>
 
@@ -121,9 +122,9 @@ export const AddEvent = () => {
   function openModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
-        // if (ev.detail.role === 'confirm') {
-        //   // setMessage(`Hello, ${ev.detail.data}!`);
-        // }
+        if (ev.detail.role === 'confirm') {
+          // setMessage(`Hello, ${ev.detail.data}!`);
+        }
       },
     });
   }

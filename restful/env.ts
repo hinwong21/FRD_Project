@@ -13,6 +13,7 @@ export let env_config = {
   PORT: "",
   URL: "",
   DB_HOST: "",
+  DB_PORT: "",
 };
 
 populateEnv(env_config, { mode: "halt" });

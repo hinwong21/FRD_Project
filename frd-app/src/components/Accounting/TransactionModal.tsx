@@ -15,7 +15,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React, { useRef, useState } from "react";
-import { TransactionType } from "./Finance";
+import Finance, { TransactionType } from "./Finance";
 
 export interface Genre {
   id: number;
@@ -153,6 +153,7 @@ function TransactionModal(props: {
             <IonLabel>Current value: {selectedGenre}</IonLabel>
           </IonItem>
         </IonList>
+        <Finance />
       </IonContent>
     </IonModal>
   );

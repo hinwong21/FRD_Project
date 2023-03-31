@@ -3,7 +3,7 @@ import "./ProgressBar.css"; // Import the CSS file for the progress bar
 
 type ProgressBarProps = {
   dailyIntake: number | undefined;
-  currentIntake: number;
+  currentIntake: number | undefined;
 };
 
 export function NutrientProgressBar({
@@ -14,7 +14,7 @@ export function NutrientProgressBar({
 
   useEffect(() => {
     // Calculate the progress towards the daily intake
-    const progress = (currentIntake / (dailyIntake as 0)) * 100;
+    const progress = ((currentIntake as 0) / (dailyIntake as 0)) * 100;
 
     // Update the width of the progress bar
     setProgress(progress);

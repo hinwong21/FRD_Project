@@ -6,6 +6,8 @@ module.exports = {
       database: env_config.DB_NAME,
       user: env_config.DB_USER,
       password: env_config.DB_PASSWORD,
+      host: env_config.DB_HOST,
+      port: env_config.DB_PORT
       // host: env_config.DB_HOST,
     },
     pool: {
