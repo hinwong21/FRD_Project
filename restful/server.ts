@@ -25,7 +25,7 @@ app.use("/nutrition", nutritionRoutes);
 
 app.use("/calendar", calendarRoutes);
 app.use("/user", userRoutes);
-app.use("/Account", accountingRoutes);
+// app.use("/Account", accountingRoutes);
 
 let port = env_config.PORT;
 app.listen(port, () => {

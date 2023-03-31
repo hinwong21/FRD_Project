@@ -6,6 +6,7 @@ import path from "path";
 import process from "process";
 import { CalendarService } from "../../service/calendarService";
 import "../../session";
+import { log } from "console";
 
 
 export class CalendarController {
@@ -14,8 +15,37 @@ export class CalendarController {
     }
 
     getGoogleCalendarEvent = async (req:Request, res:Response)=>{
-        let data = await this.calendarService.getGoogleCalendarEvent(1)
-        console.log(data);
+      try{
+        let data = await this.calendarService.getGoogleCalendarEvent(req.session.userId as number)
         res.json(data)
+      }catch (err){
+        errorHandler(err, req, res);
+      }
+    }
+
+    getLocalCalendarEvent = async (req:Request, res:Response)=>{
+      try{
+        let data = await this.calendarService.getLocalCalendarEvent(1)
+        res.json(data)
+
+      }catch (err){
+        errorHandler(err, req, res);
+      }
+        
+    }
+
+    createLocalCalendarEvent = async (req:Request, res:Response)=>{
+      try{
+        let eventData = req.body
+        console.log(eventData)
+
+        await this.calendarService.createLocalCalendarEvent(eventData, req.session.userId as number)
+
+        res.json({success: true})
+
+      }catch (err){
+        errorHandler(err, req, res);
+      }
+
     }
 }  

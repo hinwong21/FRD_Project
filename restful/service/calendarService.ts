@@ -1,3 +1,4 @@
+import { log } from "console";
 import express from "express";
 import { Knex } from "knex";
 
@@ -6,23 +7,6 @@ export class CalendarService {
     this.knex = knex;
   }
 
-  newEvent = async (
-    title: string,
-    description: string,
-    start: string,
-    end: string,
-    backgroundColor: string,
-    userId: string
-  ) => {
-    await this.knex("calendar").insert({
-      title: title,
-      description: description,
-      start: start,
-      end: end,
-      backgroundColor: backgroundColor,
-      user_id: userId,
-    });
-  };
 
   getGoogleCalendarEvent = async (userId:number)=>{
       let data = await this.knex("google_calendar")
@@ -34,4 +18,29 @@ export class CalendarService {
       return data;
   }
 
+  getLocalCalendarEvent = async (userId:number)=>{
+      let data = await this.knex("calendar")
+      .select("*")
+      .where("user_id", userId)
+
+      console.log(data);
+      
+      return data;
+  }
+
+  createLocalCalendarEvent = async (eventData: any, userId :number)=>{
+      await this.knex
+    .insert({
+      id: eventData.id,
+      title: eventData.title,
+      description: eventData.description,
+      start: eventData.start,
+      end: eventData.end,
+      backgroundColor: eventData.backgroundColor,
+      user_id: userId
+    })
+    .into("calendar")
+    
+  }
+  
 }
