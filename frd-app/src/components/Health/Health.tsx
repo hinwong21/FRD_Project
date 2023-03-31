@@ -28,14 +28,6 @@ const Health = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className={styles.mainBox}>
-          <IonHeader>
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton />
-              </IonButtons>
-              <IonTitle>Health</IonTitle>
-            </IonToolbar>
-          </IonHeader>
 
           <div className={styles.innerBox}>
             <IonButton

@@ -1,9 +1,8 @@
 import { IonContent, IonPage } from "@ionic/react";
 import React from "react";
-import AddStatusPage from "./AddStatusPage";
 import PeriodCalendar from "./PeriodCanlender";
-
 import UpcomingPeriod from "./UpcomingPeriod";
+import PeriodDay from "./PeriodDay";
 
 const PeriodMain = () => {
   return (
@@ -11,7 +10,7 @@ const PeriodMain = () => {
       <IonContent>
         {/* <UpcomingPeriod /> */}
 
-        <AddStatusPage />
+        <PeriodDay />
         {/* <PeriodCalendar /> */}
       </IonContent>
     </IonPage>
