@@ -1,4 +1,12 @@
-import { IonContent, IonPage } from "@ionic/react";
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./Weather.css";
 
@@ -75,6 +83,15 @@ export function Weather() {
   return (
     <>
       <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton />
+            </IonButtons>
+            <IonTitle>Weather</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+
         <IonContent fullscreen>
           <div className="page-container">
             <div className="weather-location">Hong Kong</div>

@@ -10,3 +10,7 @@ npx knex migrate:down --knexfile database/knexfile.ts
 npx knex migrate:latest --knexfile database/knexfile.ts
 
 npx knex seed:run --knexfile database/knexfile.ts
+
+# open xcode
+npx cap sync
+npx cap open ios
