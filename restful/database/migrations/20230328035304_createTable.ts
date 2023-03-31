@@ -82,12 +82,14 @@ export async function up(knex: Knex): Promise<void> {
   if (!(await knex.schema.hasTable("nutrition"))) {
     await knex.schema.createTable("nutrition", (table) => {
       table.text("id").notNullable().unique();
-      table.integer("calories").notNullable().defaultTo(0);
-      table.integer("carbs").notNullable().defaultTo(0);
-      table.integer("protein").notNullable().defaultTo(0);
-      table.integer("fat").notNullable().defaultTo(0);
-      table.date("date").notNullable().defaultTo(knex.raw("CURRENT_DATE"));
-      table.text("user_id").references("users.id");
+      table.float("calories").notNullable();
+      table.float("carbs").notNullable();
+      table.float("protein").notNullable();
+      table.float("fat").notNullable();
+      table.float("water").notNullable();
+      table.date("date").notNullable();
+      table.text("user_id").unsigned();
+      table.foreign("user_id").references("users.id");
     });
   }
 
@@ -134,7 +136,7 @@ export async function up(knex: Knex): Promise<void> {
   if (!(await knex.schema.hasTable("finance"))) {
     await knex.schema.createTable("finance", (table) => {
       table.text("id").notNullable().unique();
-      table.integer("budget").notNullable().defaultTo(0);
+      table.float("budget").notNullable().defaultTo(0);
       table.text("user_id").references("users.id");
     });
   }
@@ -155,7 +157,7 @@ export async function up(knex: Knex): Promise<void> {
           "Electronic",
         ])
         .notNullable();
-      table.integer("amount").notNullable().defaultTo(0);
+      table.float("amount").notNullable().defaultTo(0);
       table.text("description").nullable();
       table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
       table.text("user_id").references("users.id");
@@ -170,7 +172,7 @@ export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTableIfExists("period_state");
   await knex.schema.dropTableIfExists("period");
   await knex.schema.dropTableIfExists("nutrition");
-   await knex.schema.dropTableIfExists("google_calendar");
+  await knex.schema.dropTableIfExists("google_calendar");
   await knex.schema.dropTableIfExists("calendar");
   await knex.schema.dropTableIfExists("todolist_item");
   await knex.schema.dropTableIfExists("todolist");

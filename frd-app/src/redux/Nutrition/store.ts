@@ -7,13 +7,21 @@ export type NutritionState = {
   fatIntake: number;
 };
 
-export type Action = {
-  type: "INCREMENT";
-  calories: number;
-  carbs: number;
-  protein: number;
-  fat: number;
-};
+export type Action =
+  | {
+      type: "INCREMENT";
+      calories: number;
+      carbs: number;
+      protein: number;
+      fat: number;
+    }
+  | {
+      type: "UPDATE";
+      calories: number;
+      carbs: number;
+      protein: number;
+      fat: number;
+    };
 
 const initialState: NutritionState = {
   caloriesIntake: 0,
@@ -34,6 +42,13 @@ function reducer(state = initialState, action: Action): NutritionState {
           (state.proteinIntake + action.protein).toFixed(1)
         ),
         fatIntake: parseFloat((state.fatIntake + action.fat).toFixed(1)),
+      };
+    case "UPDATE":
+      return {
+        caloriesIntake: parseFloat(action.calories.toFixed(1)),
+        carbsIntake: parseFloat(action.carbs.toFixed(1)),
+        proteinIntake: parseFloat(action.protein.toFixed(1)),
+        fatIntake: parseFloat(action.fat.toFixed(1)),
       };
     default:
       return state;

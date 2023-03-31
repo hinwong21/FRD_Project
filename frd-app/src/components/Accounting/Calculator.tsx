@@ -163,6 +163,7 @@ let Calculator: React.FC<{
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
 
+  /* Confirm button function */
   function markCalculator() {
     const type = Genres.find((genre) => genre.id === selectedGenre)?.name;
     console.log(Genres, selectedGenre);
@@ -172,6 +173,14 @@ let Calculator: React.FC<{
       alert("Please record your price");
       return;
     }
+
+    /* Put data to database */
+    fetch(`http://localhost:8080/Accounting/`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(result),
+    });
+
     /* gen by chatgpt */
     const transaction: TransactionType = {
       id: 1,
@@ -182,7 +191,7 @@ let Calculator: React.FC<{
     clearResult();
     close();
   }
-
+  /* AC button function */
   function clearResult() {
     setResult("");
     setLHS("");
