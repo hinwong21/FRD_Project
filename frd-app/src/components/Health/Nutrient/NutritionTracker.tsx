@@ -160,16 +160,6 @@ export const NutritionTracker = () => {
           });
 
           let id = uuidv4();
-          // update daily intake to local storage
-          const setDailyIntake = async () => {
-            await Preferences.set({
-              key: "nutrition",
-              value: JSON.stringify({
-
-              }),
-            });
-          };
-
           // update daily intake to database
           fetch(`http://localhost:8080/nutrition/dailyIntake`, {
             method: "PUT",
