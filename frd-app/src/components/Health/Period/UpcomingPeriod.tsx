@@ -6,7 +6,13 @@ import {
   caretForwardOutline,
 } from "ionicons/icons";
 import styles from "./PeriodDate.module.scss";
-import { IonButton, IonContent, IonIcon, IonPage } from "@ionic/react";
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonPage,
+} from "@ionic/react";
 import PeriodCalendar from "./PeriodCanlender";
 import { Link } from "react-router-dom";
 import Topbox from "./Topbox";
@@ -38,9 +44,14 @@ const UpcomingPeriod = () => {
     <IonPage>
       <IonContent>
         <div className={styles.home}>
-          <header>
+          <IonHeader>
+            {/* <IonToolbar>
+              <IonTitle className={styles.title}>period</IonTitle>
+            </IonToolbar> */}
+          </IonHeader>
+          {/* <header>
             <h1 className={styles.title}>period</h1>
-          </header>
+          </header> */}
           <div>
             <div className={styles.container}>
               <Topbox
