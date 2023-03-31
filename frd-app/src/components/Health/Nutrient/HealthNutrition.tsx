@@ -5,20 +5,6 @@ import { NutritionState } from "../../../redux/Nutrition/store";
 import { NutrientProgressBar } from "./NutrientProgressBar";
 import "./Nutrition.css";
 
-// type Intake = {
-//   caloriesIntake: number;
-//   carbsIntake: number;
-//   proteinIntake: number;
-//   fatIntake: number;
-// };
-
-// const defaultIntake: Intake = {
-//   caloriesIntake: 0,
-//   carbsIntake: 0,
-//   proteinIntake: 0,
-//   fatIntake: 0,
-// };
-
 type DailyIntake = {
   caloriesDailyIntake?: number | any;
   proteinDailyIntake?: number;
@@ -67,27 +53,24 @@ const HealthNutrition = () => {
           maxCarbsDailyIntake: maxCarbsDailyIntake,
         });
 
-        // setIntake({
-        //   caloriesIntake: json.result.nutrient[0].calories,
-        //   carbsIntake: json.result.nutrient[0].carbs,
-        //   proteinIntake: json.result.nutrient[0].protein,
-        //   fatIntake: json.result.nutrient[0].fat,
-        // });
+        let date = new Date().toISOString().slice(0, 10);
+        console.log(date);
 
-        dispatch({
-          type: "UPDATE",
-          calories: json.result.nutrient[0].calories,
-          carbs: json.result.nutrient[0].carbs,
-          protein: json.result.nutrient[0].protein,
-          fat: json.result.nutrient[0].fat,
-        });
-
+        if (json.result.nutrient[0].date === date) {
+          dispatch({
+            type: "UPDATE",
+            calories: json.result.nutrient[0].calories,
+            carbs: json.result.nutrient[0].carbs,
+            protein: json.result.nutrient[0].protein,
+            fat: json.result.nutrient[0].fat,
+          });
+        }
       } catch (err) {
         console.log(err);
       }
     };
     getDailyIntake();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="nutrient-header">
