@@ -176,7 +176,11 @@ h1 {
   margin-left: 2%;
 }
 
-// *** LevelBtn.tsx  ***//
+.btnNone {
+  display: none;
+}
+
+// *** StatusItem.tsx  ***//
 .addStatus {
   padding: 3px;
   font-size: 15px;

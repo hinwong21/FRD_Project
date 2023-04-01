@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   IonButtons,
   IonButton,
@@ -31,7 +31,14 @@ type OtherStatus = {
   content: string;
 };
 
-const ModalExample = ({
+export type LevelInfo = {
+  type: string;
+  lv: number;
+};
+
+// const statusInfo: Array<object> = [];
+
+const ModalPeriod = ({
   onDismiss,
 }: {
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
@@ -39,18 +46,40 @@ const ModalExample = ({
   const inputRef = useRef<HTMLIonInputElement>(null);
   // Submit Form
   const { register, handleSubmit } = useForm<OtherStatus>();
-  const submitHandler = (data: OtherStatus) => {
+  const formSubmitBtnRef = useRef<any>(null);
+  const [statusInfo, setStatusInfo] = useState<Array<object>>([]);
+
+  useEffect(() => {
     // TODO Insert into the DB here?(use useEffect()) Save the data into the variable
-    console.log(data);
+    console.log("Data Object", statusInfo);
+  }, [statusInfo]);
+
+  const submitHandler = (data: OtherStatus) => {
+    console.log("dat::", data);
+    const newStatusInfo = [...statusInfo];
+
+    newStatusInfo.push(data);
+    console.log("newStatusInfo After:", newStatusInfo);
+    setStatusInfo(newStatusInfo);
   };
 
-  const [level, setLevel] = useState<number>(0);
+  const submitControl = () => {
+    formSubmitBtnRef.current.click();
+  };
 
-  const handleLevelChange = (newLevel: number) => {
+  const [level, setLevel] = useState<LevelInfo>({
+    type: "",
+    lv: 0,
+  });
+
+  const handleLevelChange = (newLevel: LevelInfo) => {
+    console.log("newLevel:", newLevel);
+
     setLevel(newLevel);
+    const newLevelInfo = [...statusInfo];
+    newLevelInfo.push(newLevel);
+    setStatusInfo(newLevelInfo);
   };
-
-  console.log("Parent Level:", level);
 
   return (
     <IonPage>
@@ -68,7 +97,15 @@ const ModalExample = ({
           <IonButtons slot="end">
             <IonButton
               color={styles.pBar}
-              onClick={() => onDismiss(inputRef.current?.value, "confirm")}
+              // onClick={() => onDismiss(inputRef.current?.value, "confirm")}
+              // onClick={() => {
+              //   submitControl();
+              // }}
+              onClick={() => {
+                submitControl();
+                console.log("StatusInfo", statusInfo);
+                onDismiss(null, "confirm");
+              }}
             >
               Confirm
             </IonButton>
@@ -91,8 +128,7 @@ const ModalExample = ({
         />
         <StatusItem
           icon={sadOutline}
-          type="heada
-          che"
+          type="headache"
           lv={5}
           onLevelChange={handleLevelChange}
         />
@@ -132,9 +168,15 @@ const ModalExample = ({
               style={{ height: "70px" }}
               {...register("content")}
             ></textarea>
-            <IonButton color={styles.btn} className={styles.btn} type="submit">
-              Submit
-            </IonButton>
+            {
+              <IonButton
+                className={styles.btnNone}
+                ref={formSubmitBtnRef}
+                type="submit"
+              >
+                Submit
+              </IonButton>
+            }
           </div>
         </form>
         {/* <IonItem>
@@ -147,7 +189,7 @@ const ModalExample = ({
 };
 
 function PeriodDay() {
-  const [present, dismiss] = useIonModal(ModalExample, {
+  const [present, dismiss] = useIonModal(ModalPeriod, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
   const [message, setMessage] = useState(
