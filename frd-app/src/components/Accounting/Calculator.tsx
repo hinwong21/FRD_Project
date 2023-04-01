@@ -164,32 +164,54 @@ let Calculator: React.FC<{
   const [selectedGenre, setSelectedGenre] = useState(0);
 
   /* Confirm button function */
-  function markCalculator() {
-    const type = Genres.find((genre) => genre.id === selectedGenre)?.name;
-    console.log(Genres, selectedGenre);
+  async function markCalculator() {
+    const obj = Genres.filter((genre) => genre.id === selectedGenre)[0];
+    // console.log(Genres, selectedGenre);
 
-    if (!type) return;
+    if (!obj) {
+      alert("Please select a Genres");
+      return;
+    }
+
     if (!result) {
       alert("Please record your price");
       return;
     }
+    let newObj = Object.assign(obj, { amount: result });
+    console.log(newObj);
 
     /* Put data to database */
-    fetch(`http://localhost:8080/Accounting/`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(result),
-    });
+    try {
+      let res = await fetch(
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newObj),
+        }
+      );
+      console.log("jsoned");
+      let json = await res.json();
 
-    /* gen by chatgpt */
-    const transaction: TransactionType = {
-      id: 1,
-      type: type,
-      amount: parseFloat(result),
-    };
-    addCalculator(transaction);
+      if (!json.ok) {
+        alert(json.errMess);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("error occurred");
+    }
+    // /* gen by chatgpt */
+    // const transaction: TransactionType = {
+    //   id: 1,
+    //   type: type,
+    //   amount: parseFloat(result),
+    // };
+    addCalculator(newObj);
+    console.log("addCalculator");
     clearResult();
+    console.log("clearResult");
     close();
+    console.log("close");
   }
   /* AC button function */
   function clearResult() {

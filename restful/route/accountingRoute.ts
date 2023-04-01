@@ -8,4 +8,5 @@ export let accountingRoutes = express.Router();
 let accountingService = new AccountingService(knex);
 let accountingController = new AccountingController(accountingService);
 
-accountingRoutes.get("/Accounting", accountingController);
+accountingRoutes.post("/addTransaction", accountingController.addTransaction);
+accountingRoutes.get("/getTransaction", accountingController.getTransaction)

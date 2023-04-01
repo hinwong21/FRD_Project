@@ -20,7 +20,7 @@ export async function seed(knex: Knex): Promise<void> {
   let [tony] = await knex("users")
     .insert([
       {
-        id: 1,
+        id: "1",
         username: "t123",
         email: "t123@gmail.com",
         gender: "male",
@@ -30,4 +30,14 @@ export async function seed(knex: Knex): Promise<void> {
       },
     ])
     .returning("id");
+  console.log(tony.id)
+  await knex("transaction").insert([
+    {
+      category: "Income",
+      type: "income",
+      amount: 52,
+      user_id: "1",
+      description: undefined
+    }
+  ])
 }
