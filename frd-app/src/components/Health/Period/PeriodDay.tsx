@@ -44,6 +44,14 @@ const ModalExample = ({
     console.log(data);
   };
 
+  const [level, setLevel] = useState<number>(0);
+
+  const handleLevelChange = (newLevel: number) => {
+    setLevel(newLevel);
+  };
+
+  console.log("Parent Level:", level);
+
   return (
     <IonPage>
       <IonHeader>
@@ -69,14 +77,45 @@ const ModalExample = ({
       </IonHeader>
       <IonContent className="ion-padding">
         {/* TODO ADD STATUS */}
-        <StatusItem icon={waterOutline} type="menstrual flow" lv={5} />
-        <StatusItem icon={bodyOutline} type="lower back pain" lv={5} />
-        <StatusItem icon={sadOutline} type="headache" lv={5} />
+        <StatusItem
+          icon={waterOutline}
+          type="menstrual flow"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
+        <StatusItem
+          icon={bodyOutline}
+          type="lower back pain"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
+        <StatusItem
+          icon={sadOutline}
+          type="heada
+          che"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
 
-        <StatusItem icon={phoneLandscapeOutline} type="fatigue" lv={5} />
-        <StatusItem icon={contrastOutline} type="contraceptive pill" lv={30} />
+        <StatusItem
+          icon={phoneLandscapeOutline}
+          type="fatigue"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
+        <StatusItem
+          icon={contrastOutline}
+          type="contraceptive pill"
+          lv={30}
+          onLevelChange={handleLevelChange}
+        />
 
-        <StatusItem icon={contrastOutline} type="painkiller" lv={30} />
+        <StatusItem
+          icon={contrastOutline}
+          type="painkiller"
+          lv={30}
+          onLevelChange={handleLevelChange}
+        />
 
         <form
           className={styles.statusForm}
