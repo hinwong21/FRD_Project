@@ -166,7 +166,7 @@ let Calculator: React.FC<{
   /* Confirm button function */
   async function markCalculator() {
     const obj = Genres.filter((genre) => genre.id === selectedGenre)[0];
-    console.log(Genres, selectedGenre);
+    // console.log(Genres, selectedGenre);
 
     if (!obj) {
       alert("Please select a Genres");
@@ -178,13 +178,23 @@ let Calculator: React.FC<{
       return;
     }
     let newObj = Object.assign(obj, { amount: result });
-    /* Put data to database */
-    await fetch(`http://localhost:8080/Accounting/`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newObj),
-    });
+    console.log(newObj);
 
+    /* Put data to database */
+    let res = await fetch(
+      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newObj),
+      }
+    );
+    console.log("jsoned");
+    let json = await res.json();
+
+    if (!json.ok) {
+      alert(json.errMess);
+    }
     // /* gen by chatgpt */
     // const transaction: TransactionType = {
     //   id: 1,
@@ -192,8 +202,11 @@ let Calculator: React.FC<{
     //   amount: parseFloat(result),
     // };
     addCalculator(newObj);
+    console.log("addCalculator");
     clearResult();
+    console.log("clearResult");
     close();
+    console.log("close");
   }
   /* AC button function */
   function clearResult() {

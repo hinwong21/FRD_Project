@@ -142,7 +142,7 @@ export async function up(knex: Knex): Promise<void> {
 
   if (!(await knex.schema.hasTable("transaction"))) {
     await knex.schema.createTable("transaction", (table) => {
-      table.text("id").notNullable().unique();
+      table.increments();
       table
         .enu("category", [
           "Income",
@@ -156,10 +156,17 @@ export async function up(knex: Knex): Promise<void> {
           "Electronic",
         ])
         .notNullable();
+      table.enu("type", [
+        "income",
+        "expense",
+      ])
+        .notNullable();
       table.float("amount").notNullable().defaultTo(0);
       table.text("description").nullable();
-      table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
-      table.text("user_id").references("users.id");
+
+      table.text("user_id").unsigned();
+      table.foreign("user_id").references("users.id");
+      table.timestamp("created_at").defaultTo(knex.fn.now());
     });
   }
 }
