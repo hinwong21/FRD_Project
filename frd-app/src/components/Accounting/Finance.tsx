@@ -18,7 +18,8 @@ import style from "./Finance.module.scss";
 export type TransactionType = {
   id: number;
   type: string;
-  amount: number;
+  name: string;
+  amount: string;
 };
 // type Genre = {
 //     food: number | string,
@@ -36,7 +37,7 @@ export type TransactionType = {
 const Finance: React.FC = () => {
   const [transactions, setTransactions] = React.useState<TransactionType[]>([]);
   const [type, setType] = React.useState("");
-  const [amount, setAmount] = React.useState<number>(0);
+  const [amount, setAmount] = React.useState<string>("0");
   const today = new Date(); // 获取当前时间
   const date = `${today.getFullYear()}-${(today.getMonth() + 1)
     .toString()
@@ -46,11 +47,12 @@ const Finance: React.FC = () => {
     const newTransaction: TransactionType = {
       id: transactions.length + 1,
       type,
+      name: "",
       amount,
     };
     setTransactions([...transactions, newTransaction]);
     setType("");
-    setAmount(0);
+    setAmount("0");
   };
 
   const handleRemoveTransaction = (id: number) => {
@@ -69,7 +71,7 @@ const Finance: React.FC = () => {
   const totalIncome = useMemo(
     () =>
       incomeTransactions.reduce(
-        (total, transaction) => total + transaction.amount,
+        (total, transaction) => total + parseInt(transaction.amount),
         0
       ),
     [transactions]
@@ -77,7 +79,7 @@ const Finance: React.FC = () => {
   const totalExpense = useMemo(
     () =>
       expenseTransactions.reduce(
-        (total, transaction) => total + transaction.amount,
+        (total, transaction) => total + parseInt(transaction.amount),
         0
       ),
     [transactions]
@@ -107,7 +109,9 @@ const Finance: React.FC = () => {
           <IonInput
             type="number"
             value={amount}
-            onIonChange={(e) => setAmount(parseFloat(e.detail.value!))}
+            onIonChange={(e) =>
+              setAmount(parseFloat(e.detail.value!).toString())
+            }
           ></IonInput>
         </IonItem>
       </IonList>
@@ -131,7 +135,7 @@ const Finance: React.FC = () => {
         {incomeTransactions.map((transaction) => (
           <IonItem key={transaction.id}>
             <IonLabel>
-              {transaction.type}: ${transaction.amount.toFixed(2)}
+              {transaction.type}: ${parseInt(transaction.amount).toFixed(2)}
             </IonLabel>
             <IonButton
               slot="end"
@@ -149,7 +153,7 @@ const Finance: React.FC = () => {
         {expenseTransactions.map((transaction) => (
           <IonItem key={transaction.id}>
             <IonLabel>
-              {transaction.type}: ${transaction.amount.toFixed(2)}
+              {transaction.type}: ${parseInt(transaction.amount).toFixed(2)}
             </IonLabel>
             <IonButton
               slot="end"

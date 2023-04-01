@@ -106,7 +106,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text("id").notNullable().unique();
       table.integer("level").notNullable().defaultTo(0);
       table
-        .enum("symptom", [
+        .enu("symptom", [
           "Abdominal discomfort or pain",
           "Loss of appetite",
           "Increased appetite",
@@ -144,7 +144,7 @@ export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable("transaction", (table) => {
       table.text("id").notNullable().unique();
       table
-        .enum("category", [
+        .enu("category", [
           "Income",
           "Food",
           "Drink",

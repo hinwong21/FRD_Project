@@ -1,44 +1,42 @@
 import React, { useEffect, useState, Component } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import { convertFromRaw } from "draft-js";
-// import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from "./DiaryEditor.module.css";
-
-const contentStyle = {
-  entityMap: {},
-  blocks: [
-    {
-      key: "637gr",
-      text: "Initialized from content state.",
-      type: "unstyled",
-      depth: 0,
-      inlineStyleRanges: [],
-      entityRanges: [],
-      data: {},
-    },
-  ],
-};
-
-type Data = {
-  temperature: number;
-  humidity: number;
-  uvindexValue: number;
-  uvindexdesc: string;
-  icon: string;
-};
+import {TextEditor} from "./TextEditor"
+import {
+  IonButtons,
+  IonButton,
+  IonPopover,
+  IonContent,
+  IonList,
+  IonItem,
+  IonNavLink,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle
+} from "@ionic/react";
 
 
-export const DiaryEditor: React.FC = () => {
-  const [content, setContent] = useState(contentStyle);
+
+export const DiaryEditor = ({onDismiss}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
+  const [content, setContent] = useState("");
   const [data, setData] = useState<Data>();
   // const [value, setValue] = useState("")
 
-  const contentState = convertFromRaw(content);
 
-  function onContentStateChange(contentState: any) {
-    setContent(contentState);
-  }
+  // function onContentStateChange(contentState: any) {
+  //   setContent(contentState);
+  // }
+
+  type Data = {
+    temperature: number;
+    humidity: number;
+    uvindexValue: number;
+    uvindexdesc: string;
+    icon: string;
+  };
 
   function diaryDate ():string{
     const date = new Date();
@@ -75,27 +73,29 @@ export const DiaryEditor: React.FC = () => {
     todayWeather();
   }, []);
 
-  
 
-  // const uploadCallback = (file: string | any, callback: any) => {
-  //   console.log(file);
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new window.FileReader();
-  //     console.log(reader);
-  //     reader.onloadend = async () => {
-  //       const form_data = new FormData();
-  //       form_data.append("file", file);
-  //       const res = await uploadFile(form_data);
-  //       setValue("thumbnail", res.data);
-  //       resolve({ data: { link: process.env.REACT_APP_API + res.data } });
-  //     };
-  //     reader.readAsDataURL(file);
-  //   });
-  // };
+  function handleDiarySubmit (){
+    onDismiss("", "confirm")
+
+  }
   
 
   return (
     <>
+    <IonPage>
+    <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton color="medium" onClick={() => onDismiss(null, 'cancel')}>
+              Cancel
+            </IonButton>
+          </IonButtons>
+          <IonTitle>Welcome</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={handleDiarySubmit}>Confirm</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
     <div className={styles.mainWrapper}>
       <div className={styles.weatherWrapper}>
         <div className={styles.dateAndTemp}>{diaryDate()}
@@ -108,74 +108,10 @@ export const DiaryEditor: React.FC = () => {
         />
       </div>
 
-
-      <Editor
-        wrapperClassName="demo-wrapper"
-        editorClassName="demo-editor"
-        onContentStateChange={onContentStateChange}
-        toolbar={{
-          options: [
-            "inline",
-            "blockType",
-            "fontSize",
-            "list",
-            "textAlign",
-            "colorPicker",
-            "history",
-            "embedded",
-            "emoji",
-            "remove",
-            "image",
-          ],
-          inline: { inDropdown: true },
-          list: { inDropDown: false },
-          textAlign: { inDropdown: true },
-          link: { inDropdown: true },
-          history: { inDropDown: false },
-        }}
-        hashtag={{
-          separator: " ",
-          trigger: "#",
-        }}
-        mention={{
-          options: [
-            "inline",
-            "blockType",
-            "fontSize",
-            "fontFamily",
-            "list",
-            "textAlign",
-            "colorPicker",
-            "link",
-            "embedded",
-            "emoji",
-            "image",
-            "remove",
-            "history",
-          ],
-          separator: " ",
-          trigger: "@",
-          environment: "",
-          Category: "",
-          suggestions: [
-            { text: "APPLE", value: "apple", url: "apple" },
-            { text: "BANANA", value: "banana", url: "banana" },
-            { text: "CHERRY", value: "cherry", url: "cherry" },
-            { text: "DURIAN", value: "durian", url: "durian" },
-            { text: "EGGFRUIT", value: "eggfruit", url: "eggfruit" },
-            { text: "FIG", value: "fig", url: "fig" },
-            { text: "GRAPEFRUIT", value: "grapefruit", url: "grapefruit" },
-            { text: "HONEYDEW", value: "honeydew", url: "honeydew" },
-          ],
-          image:{
-            uploadEnabled: true,
-            inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
-            urlEnabled: true,
-            // uploadCallback: uploadCallback,
-          }
-        }}
-      />
+    <TextEditor/>
+      
       </div>
+      </IonPage>
     </>
   );
 };

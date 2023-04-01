@@ -164,30 +164,34 @@ let Calculator: React.FC<{
   const [selectedGenre, setSelectedGenre] = useState(0);
 
   /* Confirm button function */
-  function markCalculator() {
-    const type = Genres.find((genre) => genre.id === selectedGenre)?.name;
+  async function markCalculator() {
+    const obj = Genres.filter((genre) => genre.id === selectedGenre)[0];
     console.log(Genres, selectedGenre);
 
-    if (!type) return;
+    if (!obj) {
+      alert("Please select a Genres");
+      return;
+    }
+
     if (!result) {
       alert("Please record your price");
       return;
     }
-
+    let newObj = Object.assign(obj, { amount: result });
     /* Put data to database */
-    fetch(`http://localhost:8080/Accounting/`, {
+    await fetch(`http://localhost:8080/Accounting/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(result),
+      body: JSON.stringify(newObj),
     });
 
-    /* gen by chatgpt */
-    const transaction: TransactionType = {
-      id: 1,
-      type: type,
-      amount: parseFloat(result),
-    };
-    addCalculator(transaction);
+    // /* gen by chatgpt */
+    // const transaction: TransactionType = {
+    //   id: 1,
+    //   type: type,
+    //   amount: parseFloat(result),
+    // };
+    addCalculator(newObj);
     clearResult();
     close();
   }

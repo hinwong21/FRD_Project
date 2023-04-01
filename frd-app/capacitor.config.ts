@@ -2,8 +2,8 @@ import { CapacitorConfig } from "@capacitor/cli";
 import dotenv from "dotenv";
 dotenv.config();
 const config: CapacitorConfig = {
-  appId: "com.0218081905181021noticias.app",
-  appName: "noticias",
+  appId: "com.noticias0218081905181021.app",
+  appName: "Noticias",
   webDir: "build",
   bundledWebRuntime: false,
   server: {
