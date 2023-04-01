@@ -182,33 +182,39 @@ export const NutritionTracker = () => {
 
       setFoodItems([]);
 
-      fetch(
-        `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          const foodItem = data.foods[0];
-          const foodNutrients = foodItem.foodNutrients;
+      // fetch(
+      //   `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
+      // )
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     const foodItem = data.foods[0];
+      //     const foodNutrients = foodItem.foodNutrients;
 
-          // Find the nutrient with ID 1008, which corresponds to calories
-          const caloriesNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1008
-          );
+      //     // Find the nutrient with ID 1008, which corresponds to calories
+      //     const caloriesNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1008
+      //     );
 
-          // Find the nutrient with ID 1005, which corresponds to carbohydrates
-          const carbsNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1005
-          );
+      //     // Find the nutrient with ID 1005, which corresponds to carbohydrates
+      //     const carbsNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1005
+      //     );
 
-          // Find the nutrient with ID 1008, which corresponds to protein
-          const proteinNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1003
-          );
+      //     // Find the nutrient with ID 1008, which corresponds to protein
+      //     const proteinNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1003
+      //     );
 
-          // Find the nutrient with ID 1008, which corresponds to fat
-          const fatNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1004
-          );
+      //     // Find the nutrient with ID 1008, which corresponds to fat
+      //     const fatNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1004
+      //     );
+
+      // template, usda website error
+      let caloriesNutrient = {value: 123}
+      let carbsNutrient = {value: 123}
+      let proteinNutrient = {value: 123}
+      let fatNutrient = {value: 123}
 
       setNutrients({
         ...nutrients,
@@ -271,7 +277,7 @@ export const NutritionTracker = () => {
 
       foodName.value = "";
       setFoodItems([]);
-      });
+      // });
     };
 
   return (

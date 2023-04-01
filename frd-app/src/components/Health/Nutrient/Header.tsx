@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { NutritionState } from "../../../redux/Nutrition/store";
+import { HeaderNutrient } from "./HeaderNutrient";
 import { NutrientProgressBar } from "./NutrientProgressBar";
 import "./Nutrition.css";
 
@@ -99,55 +100,25 @@ const HealthNutrition = () => {
 
       <div className="header-nutrient-container">
         {/* Carbs */}
-        <div className="header-nutrient">
-          <div>Carbs</div>
-          <div className="header-nutrient-index">
-            {intake?.carbsIntake} / {""}
-            <span style={{ color: "gray" }}>
-              {dailyIntake?.maxCarbsDailyIntake}g
-            </span>
-          </div>
-          <div className="nutrient-progressBar-container">
-            <NutrientProgressBar
-              dailyIntake={dailyIntake?.maxCarbsDailyIntake}
-              currentIntake={intake?.carbsIntake}
-            />
-          </div>
-        </div>
+        <HeaderNutrient
+          nutrient="carbs"
+          Intake={intake?.carbsIntake}
+          DailyIntake={dailyIntake?.maxCarbsDailyIntake}
+        />
 
         {/* Protein */}
-        <div className="header-nutrient">
-          <div>Protein</div>
-          <div className="header-nutrient-index">
-            {intake?.proteinIntake} / {""}
-            <span style={{ color: "gray" }}>
-              {dailyIntake?.proteinDailyIntake}g
-            </span>
-          </div>
-          <div className="nutrient-progressBar-container">
-            <NutrientProgressBar
-              dailyIntake={dailyIntake?.proteinDailyIntake}
-              currentIntake={intake?.proteinIntake}
-            />
-          </div>
-        </div>
+        <HeaderNutrient
+          nutrient="protein"
+          Intake={intake?.proteinIntake}
+          DailyIntake={dailyIntake?.proteinDailyIntake}
+        />
 
         {/* Fat */}
-        <div className="header-nutrient">
-          <div>Fat</div>
-          <div className="header-nutrient-index">
-            {intake?.fatIntake} / {""}
-            <span style={{ color: "gray" }}>
-              {dailyIntake?.minFatDailyIntake}g
-            </span>
-          </div>
-          <div className="nutrient-progressBar-container">
-            <NutrientProgressBar
-              dailyIntake={dailyIntake?.minFatDailyIntake}
-              currentIntake={intake?.fatIntake}
-            />
-          </div>
-        </div>
+        <HeaderNutrient
+          nutrient="fat"
+          Intake={intake?.fatIntake}
+          DailyIntake={dailyIntake?.minFatDailyIntake}
+        />
       </div>
     </div>
   );
