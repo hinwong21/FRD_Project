@@ -181,19 +181,24 @@ let Calculator: React.FC<{
     console.log(newObj);
 
     /* Put data to database */
-    let res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newObj),
-      }
-    );
-    console.log("jsoned");
-    let json = await res.json();
+    try {
+      let res = await fetch(
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newObj),
+        }
+      );
+      console.log("jsoned");
+      let json = await res.json();
 
-    if (!json.ok) {
-      alert(json.errMess);
+      if (!json.ok) {
+        alert(json.errMess);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("error occurred");
     }
     // /* gen by chatgpt */
     // const transaction: TransactionType = {

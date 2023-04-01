@@ -25,5 +25,9 @@ export class AccountingService {
         }
     }
 
+    getTransaction = async (name: string, type: string, amount: number, description?: string) => {
+
+    }
+
 }
 

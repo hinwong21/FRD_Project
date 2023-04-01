@@ -13,6 +13,16 @@ export class AccountingController {
         } catch (error) {
             errorHandler(error, req, res)
         }
+    }
+
+    getTransaction = async (req: Request, res: Response) => {
+        try {
+            let { name, type, amount, description } = req.body;
+            console.log(name, type, amount, description);
+            this.accountingService.addTransaction(name, type, amount, description)
+        } catch (error) {
+            errorHandler(error, req, res)
+        }
 
     }
 }

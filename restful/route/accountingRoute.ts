@@ -9,3 +9,4 @@ let accountingService = new AccountingService(knex);
 let accountingController = new AccountingController(accountingService);
 
 accountingRoutes.post("/addTransaction", accountingController.addTransaction);
+accountingRoutes.get("/getTransaction", accountingController.getTransaction)
