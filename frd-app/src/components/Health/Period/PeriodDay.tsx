@@ -165,7 +165,7 @@ const ModalPeriod = ({
               // ref={inputRef}
               className={styles.otherInput}
               // type="text"
-              style={{ height: "70px" }}
+              style={{ height: "70px", width: "320px" }}
               {...register("content")}
             ></textarea>
             {
@@ -226,11 +226,10 @@ function PeriodDay() {
           <div className={styles.container}>
             <Topbox
               chance="low probability of pregnancy"
-              // subTitle="period day"
               subTitle="ovulation date:"
-              // periodDay="3"
+              // TODO Count the Ovulation day
               periodDay="after 15 days"
-              // ovuDay="ovulation date: after 15 days"
+              // TODO Count the Period day
               ovuDay="period day 3"
               btname="period end"
             />
