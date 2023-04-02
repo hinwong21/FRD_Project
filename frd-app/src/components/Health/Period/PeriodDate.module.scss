@@ -28,6 +28,7 @@ h1 {
   align-items: center;
 }
 
+// **** Topbox.tsx ***///
 .topBox {
   background-color: #e4bbbb;
   background-color: #e4bbbbc4;
@@ -41,6 +42,12 @@ h1 {
   // border: 3px solid #efcaca;
   border-radius: 10px;
   box-shadow: 0px 0.5px 5px rgba(0, 42%, 81%, 0.339);
+}
+
+.chancePre {
+  color: #ecedef;
+  margin-bottom: 3%;
+  font-weight: 500;
 }
 
 .upcomingPeriod {
@@ -58,6 +65,7 @@ h1 {
   margin-top: 3%;
   font-size: 13px;
   color: #ecedef;
+  font-weight: 500;
 }
 
 .card {
