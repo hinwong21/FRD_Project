@@ -21,7 +21,7 @@ export const WaterBalance = () => {
       // If the current time is past the reset time, set the reset time to tomorrow
       resetTime.setDate(resetTime.getDate() + 1);
     }
-    
+
     const timeUntilReset = resetTime.getTime() - now.getTime();
 
     setTimeout(async () => {
@@ -48,13 +48,13 @@ export const WaterBalance = () => {
     const newWaterIntake = (waterIntake + 0.1).toFixed(1);
     setWaterIntake(parseFloat(newWaterIntake));
 
-    const setWater = async () => {
+    const setWaterLocal = async () => {
       await Preferences.set({
         key: "water",
         value: newWaterIntake,
       });
     };
-    setWater();
+    setWaterLocal();
   }
 
   return (

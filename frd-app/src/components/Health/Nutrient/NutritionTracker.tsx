@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Nutrition.css";
 import { useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
@@ -31,6 +31,66 @@ export const NutritionTracker = () => {
   const [foodItems, setFoodItems] = useState<{ [key: number]: Food[] }>({});
   const dispatch = useDispatch();
 
+  const resetData = () => {
+    const now = new Date();
+    const resetTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      6,
+      0,
+      0
+    );
+
+    if (now >= resetTime) {
+      // If the current time is past the reset time, set the reset time to tomorrow
+      resetTime.setDate(resetTime.getDate() + 1);
+    }
+
+    const timeUntilReset = resetTime.getTime() - now.getTime();
+
+    setTimeout(async () => {
+      await Preferences.remove({ key: "meals" });
+      await Preferences.remove({ key: "nutrient" });
+      resetData(); // Schedule the next reset
+    }, timeUntilReset);
+  };
+
+  resetData();
+
+  useEffect(() => {
+    const getMealsLocal = async () => {
+      const { value } = await Preferences.get({ key: "meals" });
+      if (value !== null) {
+        setMeals(JSON.parse(value));
+      }
+    };
+    getMealsLocal();
+  }, []);
+
+  useEffect(() => {
+    const getNutrientLocal = async () => {
+      const { value } = await Preferences.get({ key: "nutrient" });
+      if (value !== null) {
+        setNutrients(JSON.parse(value));
+      }
+    };
+    getNutrientLocal();
+  }, []);
+
+  const setMealsLocal = async (
+    meals: Meals[],
+    mealSelect: HTMLSelectElement
+  ) => {
+    await Preferences.set({
+      key: "meals",
+      value: JSON.stringify([
+        ...meals,
+        { id: meals.length + 1, meal: mealSelect.value },
+      ]),
+    });
+  };
+
   const handleAddMeal = () => {
     const mealSelect = document.querySelector(
       ".select-meal-type"
@@ -42,6 +102,12 @@ export const NutritionTracker = () => {
     }
 
     setMeals([...meals, { id: meals.length + 1, meal: mealSelect.value }]);
+
+    const newMeals = [
+      ...meals,
+      // { id: meals.length + 1, meal: mealSelect.value },
+    ];
+    setMealsLocal(newMeals, mealSelect);
 
     // reset the select tag value
     mealSelect.value = "";
@@ -116,35 +182,59 @@ export const NutritionTracker = () => {
 
       setFoodItems([]);
 
-      fetch(
-        `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          const foodItem = data.foods[0];
-          const foodNutrients = foodItem.foodNutrients;
+      // fetch(
+      //   `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
+      // )
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     const foodItem = data.foods[0];
+      //     const foodNutrients = foodItem.foodNutrients;
 
-          // Find the nutrient with ID 1008, which corresponds to calories
-          const caloriesNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1008
-          );
+      //     // Find the nutrient with ID 1008, which corresponds to calories
+      //     const caloriesNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1008
+      //     );
 
-          // Find the nutrient with ID 1005, which corresponds to carbohydrates
-          const carbsNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1005
-          );
+      //     // Find the nutrient with ID 1005, which corresponds to carbohydrates
+      //     const carbsNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1005
+      //     );
 
-          // Find the nutrient with ID 1008, which corresponds to protein
-          const proteinNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1003
-          );
+      //     // Find the nutrient with ID 1008, which corresponds to protein
+      //     const proteinNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1003
+      //     );
 
-          // Find the nutrient with ID 1008, which corresponds to fat
-          const fatNutrient = foodNutrients.find(
-            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1004
-          );
+      //     // Find the nutrient with ID 1008, which corresponds to fat
+      //     const fatNutrient = foodNutrients.find(
+      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1004
+      //     );
 
-          setNutrients({
+      // template, usda website error
+      let caloriesNutrient = {value: 123}
+      let carbsNutrient = {value: 123}
+      let proteinNutrient = {value: 123}
+      let fatNutrient = {value: 123}
+
+      setNutrients({
+        ...nutrients,
+        [mealId]: [
+          ...(nutrients[mealId] || []),
+          {
+            id: nutrients[mealId] ? nutrients[mealId].length + 1 : 1,
+            foodName: foodName.value,
+            calories: caloriesNutrient.value,
+            carbs: carbsNutrient.value,
+            protein: proteinNutrient.value,
+            fat: fatNutrient.value,
+          },
+        ],
+      });
+
+      const setNutrientLocal = async () => {
+        await Preferences.set({
+          key: "nutrient",
+          value: JSON.stringify({
             ...nutrients,
             [mealId]: [
               ...(nutrients[mealId] || []),
@@ -157,34 +247,37 @@ export const NutritionTracker = () => {
                 fat: fatNutrient.value,
               },
             ],
-          });
-
-          let id = uuidv4();
-          // update daily intake to database
-          fetch(`http://localhost:8080/nutrition/dailyIntake`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id: id,
-              calories: caloriesNutrient.value,
-              carbs: carbsNutrient.value,
-              protein: proteinNutrient.value,
-              fat: fatNutrient.value,
-             date : new Date().toISOString().slice(0, 10),
-            }),
-          });
-
-          dispatch({
-            type: "INCREMENT",
-            calories: caloriesNutrient.value,
-            carbs: carbsNutrient.value,
-            protein: proteinNutrient.value,
-            fat: fatNutrient.value,
-          });
-
-          foodName.value = "";
-          setFoodItems([]);
+          }),
         });
+      };
+      setNutrientLocal();
+
+      let id = uuidv4();
+      // update daily intake to database
+      fetch(`http://localhost:8080/nutrition/dailyIntake`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: id,
+          calories: caloriesNutrient.value,
+          carbs: carbsNutrient.value,
+          protein: proteinNutrient.value,
+          fat: fatNutrient.value,
+          date: new Date().toISOString().slice(0, 10),
+        }),
+      });
+
+      dispatch({
+        type: "INCREMENT",
+        calories: caloriesNutrient.value,
+        carbs: carbsNutrient.value,
+        protein: proteinNutrient.value,
+        fat: fatNutrient.value,
+      });
+
+      foodName.value = "";
+      setFoodItems([]);
+      // });
     };
 
   return (

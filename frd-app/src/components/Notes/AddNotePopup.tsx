@@ -18,9 +18,14 @@ import {
 
 } from "@ionic/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faBook, faPen, faCheck} from "@fortawesome/free-solid-svg-icons";
-import  {DiaryEditor}  from "./DiaryEditor";
-import {TodoListEditor} from "./TodoListEditor"
+import {
+  faPlus,
+  faBook,
+  faPen,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
+import { DiaryEditor } from "./DiaryEditor";
+import { TodoListEditor } from "./TodoListEditor";
 import MemoEditor, { TextEditor } from "./TextEditor";
 
 import styles from "./Notes.module.css";

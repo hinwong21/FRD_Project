@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import styles from "./PeriodDate.module.scss";
 
-export default function LevelBtn(props: { lv: number }) {
+export default function LevelBtn(props: {
+  lv: number;
+  getValue: (value: number) => void;
+}) {
   let [level, setLevel] = useState(0);
   const handleAdd = () => {
     if (level < props.lv) {
       setLevel(level + 1);
+      handleChange();
+      console.log("Level", level);
     } else if (level >= props.lv) {
       setLevel(5);
     }
@@ -13,6 +18,14 @@ export default function LevelBtn(props: { lv: number }) {
 
   const handleSubtract = () => {
     setLevel(level - 1);
+    handleChange();
+  };
+
+  const [value, setValue] = useState(0);
+  const handleChange = () => {
+    setValue(level);
+    props.getValue(value);
+    // console.log(value);
   };
 
   return (

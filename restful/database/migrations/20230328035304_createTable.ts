@@ -106,7 +106,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text("id").notNullable().unique();
       table.integer("level").notNullable().defaultTo(0);
       table
-        .enum("symptom", [
+        .enu("symptom", [
           "Abdominal discomfort or pain",
           "Loss of appetite",
           "Increased appetite",
@@ -136,15 +136,16 @@ export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable("finance", (table) => {
       table.text("id").notNullable().unique();
       table.float("budget").notNullable().defaultTo(0);
-      table.text("user_id").references("users.id");
+      table.text("user_id").unsigned();
+      table.foreign("user_id").references("users.id");
     });
   }
 
   if (!(await knex.schema.hasTable("transaction"))) {
     await knex.schema.createTable("transaction", (table) => {
-      table.text("id").notNullable().unique();
+      table.increments();
       table
-        .enum("category", [
+        .enu("category", [
           "Income",
           "Food",
           "Drink",
@@ -156,10 +157,16 @@ export async function up(knex: Knex): Promise<void> {
           "Electronic",
         ])
         .notNullable();
+      table.enu("type", [
+        "income",
+        "expense",
+      ])
+        .notNullable();
       table.float("amount").notNullable().defaultTo(0);
       table.text("description").nullable();
-      table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
-      table.text("user_id").references("users.id");
+      table.text("user_id").unsigned();
+      table.foreign("user_id").references("users.id");
+      table.timestamp("created_at").defaultTo(knex.fn.now());
     });
   }
 }

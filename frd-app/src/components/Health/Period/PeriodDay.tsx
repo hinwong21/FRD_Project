@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   IonButtons,
   IonButton,
@@ -31,7 +31,14 @@ type OtherStatus = {
   content: string;
 };
 
-const ModalExample = ({
+export type LevelInfo = {
+  type: string;
+  lv: number;
+};
+
+// const statusInfo: Array<object> = [];
+
+const ModalPeriod = ({
   onDismiss,
 }: {
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
@@ -39,9 +46,39 @@ const ModalExample = ({
   const inputRef = useRef<HTMLIonInputElement>(null);
   // Submit Form
   const { register, handleSubmit } = useForm<OtherStatus>();
-  const submitHandler = (data: OtherStatus) => {
+  const formSubmitBtnRef = useRef<any>(null);
+  const [statusInfo, setStatusInfo] = useState<Array<object>>([]);
+
+  useEffect(() => {
     // TODO Insert into the DB here?(use useEffect()) Save the data into the variable
-    console.log(data);
+    console.log("Data Object", statusInfo);
+  }, [statusInfo]);
+
+  const submitHandler = (data: OtherStatus) => {
+    console.log("dat::", data);
+    const newStatusInfo = [...statusInfo];
+
+    newStatusInfo.push(data);
+    console.log("newStatusInfo After:", newStatusInfo);
+    setStatusInfo(newStatusInfo);
+  };
+
+  const submitControl = () => {
+    formSubmitBtnRef.current.click();
+  };
+
+  const [level, setLevel] = useState<LevelInfo>({
+    type: "",
+    lv: 0,
+  });
+
+  const handleLevelChange = (newLevel: LevelInfo) => {
+    console.log("newLevel:", newLevel);
+
+    setLevel(newLevel);
+    const newLevelInfo = [...statusInfo];
+    newLevelInfo.push(newLevel);
+    setStatusInfo(newLevelInfo);
   };
 
   return (
@@ -60,7 +97,15 @@ const ModalExample = ({
           <IonButtons slot="end">
             <IonButton
               color={styles.pBar}
-              onClick={() => onDismiss(inputRef.current?.value, "confirm")}
+              // onClick={() => onDismiss(inputRef.current?.value, "confirm")}
+              // onClick={() => {
+              //   submitControl();
+              // }}
+              onClick={() => {
+                submitControl();
+                console.log("StatusInfo", statusInfo);
+                onDismiss(null, "confirm");
+              }}
             >
               Confirm
             </IonButton>
@@ -69,14 +114,44 @@ const ModalExample = ({
       </IonHeader>
       <IonContent className="ion-padding">
         {/* TODO ADD STATUS */}
-        <StatusItem icon={waterOutline} type="menstrual flow" lv={5} />
-        <StatusItem icon={bodyOutline} type="lower back pain" lv={5} />
-        <StatusItem icon={sadOutline} type="headache" lv={5} />
+        <StatusItem
+          icon={waterOutline}
+          type="menstrual flow"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
+        <StatusItem
+          icon={bodyOutline}
+          type="lower back pain"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
+        <StatusItem
+          icon={sadOutline}
+          type="headache"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
 
-        <StatusItem icon={phoneLandscapeOutline} type="fatigue" lv={5} />
-        <StatusItem icon={contrastOutline} type="contraceptive pill" lv={30} />
+        <StatusItem
+          icon={phoneLandscapeOutline}
+          type="fatigue"
+          lv={5}
+          onLevelChange={handleLevelChange}
+        />
+        <StatusItem
+          icon={contrastOutline}
+          type="contraceptive pill"
+          lv={30}
+          onLevelChange={handleLevelChange}
+        />
 
-        <StatusItem icon={contrastOutline} type="painkiller" lv={30} />
+        <StatusItem
+          icon={contrastOutline}
+          type="painkiller"
+          lv={30}
+          onLevelChange={handleLevelChange}
+        />
 
         <form
           className={styles.statusForm}
@@ -90,12 +165,18 @@ const ModalExample = ({
               // ref={inputRef}
               className={styles.otherInput}
               // type="text"
-              style={{ height: "70px" }}
+              style={{ height: "70px", width: "320px" }}
               {...register("content")}
             ></textarea>
-            <IonButton color={styles.btn} className={styles.btn} type="submit">
-              Submit
-            </IonButton>
+            {
+              <IonButton
+                className={styles.btnNone}
+                ref={formSubmitBtnRef}
+                type="submit"
+              >
+                Submit
+              </IonButton>
+            }
           </div>
         </form>
         {/* <IonItem>
@@ -108,18 +189,19 @@ const ModalExample = ({
 };
 
 function PeriodDay() {
-  const [present, dismiss] = useIonModal(ModalExample, {
+  const [present, dismiss] = useIonModal(ModalPeriod, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
-  const [message, setMessage] = useState(
-    "This modal example uses the modalController to present and dismiss modals."
-  );
+  // const [message, setMessage] = useState(
+  //   "This modal example uses the modalController to present and dismiss modals."
+  // );
 
   function openModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === "confirm") {
-          setMessage(`Hello, ${ev.detail.data}!`);
+          //TODO
+          // setMessage(`Hello, ${ev.detail.data}!`);
         }
       },
     });
@@ -143,9 +225,12 @@ function PeriodDay() {
         <div>
           <div className={styles.container}>
             <Topbox
-              subTitle="period day"
-              periodDay="3"
-              ovuDay="ovulation date: after 15 days"
+              chance="low probability of pregnancy"
+              subTitle="ovulation date:"
+              // TODO Count the Ovulation day
+              periodDay="after 15 days"
+              // TODO Count the Period day
+              ovuDay="period day 3"
               btname="period end"
             />
 
