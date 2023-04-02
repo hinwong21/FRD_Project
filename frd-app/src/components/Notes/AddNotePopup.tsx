@@ -27,7 +27,7 @@ import {
 import { DiaryEditor } from "./DiaryEditor";
 import { TodoListEditor } from "./TodoListEditor";
 import MemoEditor, { TextEditor } from "./TextEditor";
-
+import { v4 as uuidv4 } from "uuid";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
@@ -142,8 +142,19 @@ export const AddNotePopup: React.FC = () => {
       }
     }
 
-    function confirm_memo() {
-      modal.current?.dismiss(input.current?.value, 'confirm');
+    async function confirm_memo() {
+      modal.current?.dismiss("", 'confirm');
+      let id = uuidv4()
+      const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
+      const res = await fetch ("http://localhost:8080/editors/new-memo",{
+        method: "POST",
+        headers:{"Content-type":"application/json"},
+        body: JSON.stringify({
+          id: id,
+          content:memoContent
+        })
+      })
+
     }
 
     return (
