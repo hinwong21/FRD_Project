@@ -3,6 +3,7 @@ import React from "react";
 import PeriodCalendar from "./PeriodCanlender";
 import UpcomingPeriod from "./UpcomingPeriod";
 import PeriodDay from "./PeriodDay";
+import PeriodRecord from "./PeriodRecord";
 
 const PeriodMain = () => {
   return (
@@ -10,7 +11,8 @@ const PeriodMain = () => {
       <IonContent>
         {/* <UpcomingPeriod /> */}
 
-        <PeriodDay />
+        {/* <PeriodDay /> */}
+        <PeriodRecord />
         {/* <PeriodCalendar /> */}
       </IonContent>
     </IonPage>
