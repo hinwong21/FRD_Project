@@ -18,7 +18,7 @@ import {
   IonList,
   IonAlert,
 } from "@ionic/react";
-import { useState, useRef, FormEvent, FC } from "react";
+import { useState} from "react";
 //   import { useParams } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -28,7 +28,6 @@ import styles from "./Calendar.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 
 const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
-  // const inputRef = useRef<HTMLIonInputElement>(null);
 
   const [showAlertNewEvent, setShowAlertNewEvent] = useState(false);
   const [alertMsgNewEvent, setAlertMsgNewEvent] = useState("");
@@ -64,6 +63,15 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
         backgroundColor:color
       })
     })
+
+    const json = await res.json();
+    if (json.success == true){
+      setShowAlertNewEvent(true);
+      setAlertMsgNewEvent("Event created!")
+    }else{
+      setShowAlertNewEvent(true);
+      setAlertMsgNewEvent("Something went wrong! Please try again later!")
+    }
   }
 
   return (
@@ -81,7 +89,6 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
             </IonButtons>
             <IonButtons slot="end">
               <IonButton
-                // onClick={() => handleSubmit() }
                 onClick={handleSubmit}
               >
                 Add Event
