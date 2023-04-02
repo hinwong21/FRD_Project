@@ -29,6 +29,7 @@
     position: absolute;
     right: 20px;
     bottom: 40px;
+    z-index:999;
 }
 
 .modalContentStyle{

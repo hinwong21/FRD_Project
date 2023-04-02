@@ -1,6 +1,9 @@
 import React, { useEffect, useState, Component } from "react";
 import {
-  IonSearchbar,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonSearchbar, IonTitle, IonToolbar,
 } from "@ionic/react";
 import "./Notes.module.css";
 import { AddNotePopup } from "./AddNotePopup";
@@ -14,6 +17,14 @@ export const Notepad:React.FC = () => {
 
   return (
     <>
+    <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>Notepad</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonSearchbar></IonSearchbar>
       <AddNotePopup />
       </>
