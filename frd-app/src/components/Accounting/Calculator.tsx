@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import { Display } from "./Display";
 import { Panel } from "./Panel";
@@ -181,6 +181,7 @@ let Calculator: React.FC<{
     console.log(newObj);
 
     /* Put data to database */
+    useEffect; // use effect function?
     try {
       let res = await fetch(
         `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
