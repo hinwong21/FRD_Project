@@ -7,7 +7,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* padding: 20px; */
     width: 100%;
     margin-top: 2vh;
     margin-bottom: 1vh;
@@ -22,9 +21,10 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 95%;
+    width: 90%;
     margin-left: 15px;
     margin-right: 15px;
+    margin-bottom:20px;
 }
 
 .dateAndTemp{
@@ -36,7 +36,4 @@
     font-size: 60px !important;
 }
 
-a span{
-    color: black;
-} 
 

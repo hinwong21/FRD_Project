@@ -20,7 +20,7 @@ import {
 
 
 
-export const DiaryEditor = ({onDismiss}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
+export const DiaryEditor = () => {
   const [content, setContent] = useState("");
   const [data, setData] = useState<Data>();
   // const [value, setValue] = useState("")
@@ -73,29 +73,12 @@ export const DiaryEditor = ({onDismiss}: {onDismiss: (data?: string | null | und
     todayWeather();
   }, []);
 
-
-  function handleDiarySubmit (){
-    onDismiss("", "confirm")
-
-  }
   
 
   return (
     <>
     <IonPage>
-    <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton color="medium" onClick={() => onDismiss(null, 'cancel')}>
-              Cancel
-            </IonButton>
-          </IonButtons>
-          <IonTitle>Welcome</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={handleDiarySubmit}>Confirm</IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
+
     <div className={styles.mainWrapper}>
       <div className={styles.weatherWrapper}>
         <div className={styles.dateAndTemp}>{diaryDate()}
@@ -107,9 +90,9 @@ export const DiaryEditor = ({onDismiss}: {onDismiss: (data?: string | null | und
           alt="weather icon"
         />
       </div>
-
+    <div className={styles.editorWrapper}>
     <TextEditor/>
-      
+    </div>
       </div>
       </IonPage>
     </>

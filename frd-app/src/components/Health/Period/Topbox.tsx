@@ -3,6 +3,7 @@ import React from "react";
 import Button from "./Button";
 import styles from "./PeriodDate.module.scss";
 function Topbox(props: {
+  chance: string;
   subTitle: string;
   periodDay: string;
   ovuDay: string;
@@ -10,6 +11,7 @@ function Topbox(props: {
 }) {
   return (
     <div className={styles.topBox}>
+      <div className={styles.chancePre}>{props.chance}</div>
       <div className={styles.upcomingPeriod}>
         {props.subTitle}
         <div>{props.periodDay}</div>

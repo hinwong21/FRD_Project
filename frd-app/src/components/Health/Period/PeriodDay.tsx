@@ -165,7 +165,7 @@ const ModalPeriod = ({
               // ref={inputRef}
               className={styles.otherInput}
               // type="text"
-              style={{ height: "70px" }}
+              style={{ height: "70px", width: "320px" }}
               {...register("content")}
             ></textarea>
             {
@@ -192,15 +192,16 @@ function PeriodDay() {
   const [present, dismiss] = useIonModal(ModalPeriod, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
-  const [message, setMessage] = useState(
-    "This modal example uses the modalController to present and dismiss modals."
-  );
+  // const [message, setMessage] = useState(
+  //   "This modal example uses the modalController to present and dismiss modals."
+  // );
 
   function openModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === "confirm") {
-          setMessage(`Hello, ${ev.detail.data}!`);
+          //TODO
+          // setMessage(`Hello, ${ev.detail.data}!`);
         }
       },
     });
@@ -224,9 +225,12 @@ function PeriodDay() {
         <div>
           <div className={styles.container}>
             <Topbox
-              subTitle="period day"
-              periodDay="3"
-              ovuDay="ovulation date: after 15 days"
+              chance="low probability of pregnancy"
+              subTitle="ovulation date:"
+              // TODO Count the Ovulation day
+              periodDay="after 15 days"
+              // TODO Count the Period day
+              ovuDay="period day 3"
               btname="period end"
             />
 

@@ -8,6 +8,7 @@ import cors from "cors";
 import { calendarRoutes } from "./route/calendarRoute";
 import { userRoutes } from "./route/userRoute";
 import { accountingRoutes } from "./route/accountingRoute";
+import { editorsRoutes } from "./route/editorsRoute";
 
 const app = express();
 app.use(express.json());
@@ -22,10 +23,10 @@ app.use(
 app.use(sessionMiddleware);
 
 app.use("/nutrition", nutritionRoutes);
-
 app.use("/calendar", calendarRoutes);
 app.use("/user", userRoutes);
 app.use("/account", accountingRoutes);
+app.use("/editors", editorsRoutes);
 
 let port = env_config.PORT;
 app.listen(port, () => {

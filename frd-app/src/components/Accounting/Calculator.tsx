@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import { Display } from "./Display";
 import { Panel } from "./Panel";
@@ -181,6 +181,8 @@ let Calculator: React.FC<{
     console.log(newObj);
 
     /* Put data to database */
+    // useEffect(() => {
+    //   const putAmountDate = async () => {
     try {
       let res = await fetch(
         `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
@@ -200,6 +202,9 @@ let Calculator: React.FC<{
       console.error(error);
       alert("error occurred");
     }
+    //   };
+    //   putAmountDate();
+    // }, []);
     // /* gen by chatgpt */
     // const transaction: TransactionType = {
     //   id: 1,

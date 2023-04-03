@@ -1,0 +1,14 @@
+.ContentEditable__root{
+    resize:none;
+    height: 85vh;
+   /* min-height: 80vh; */
+}
+
+.toolbar select.toolbar-item{
+    margin-top: 3px;
+    padding:3px 0px 3px 0px;
+}
+
+.toolbar{
+    height:45px;
+}

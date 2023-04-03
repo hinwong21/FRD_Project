@@ -70,6 +70,9 @@ const App: React.FC = () => {
               <Route path="/Health-periodCalendar" exact={true}>
                 <PeriodCalendar />
               </Route>
+              <Route path="*" exact={true}>
+                <div>404 not found</div>
+              </Route>
             </Switch>
           </IonRouterOutlet>
         </IonSplitPane>
