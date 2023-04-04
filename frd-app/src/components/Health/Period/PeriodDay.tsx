@@ -26,6 +26,9 @@ import {
   sadOutline,
   waterOutline,
 } from "ionicons/icons";
+import Button from "./Button";
+import { useHistory } from "react-router";
+import Datebox from "./Datebox";
 
 type OtherStatus = {
   content: string;
@@ -112,7 +115,7 @@ const ModalPeriod = ({
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className={styles.ionPadding}>
         {/* TODO ADD STATUS */}
         <StatusItem
           icon={waterOutline}
@@ -192,6 +195,11 @@ function PeriodDay() {
   const [present, dismiss] = useIonModal(ModalPeriod, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
+
+  const submit = useHistory();
+  const handleHistory = () => {
+    submit.push("/Health-periodRecordDetails");
+  };
   // const [message, setMessage] = useState(
   //   "This modal example uses the modalController to present and dismiss modals."
   // );
@@ -233,6 +241,9 @@ function PeriodDay() {
               ovuDay="period day 3"
               btname="period end"
             />
+            <br></br>
+            <br></br>
+            <Datebox subTitle="upcoming ovulation" startDate="" endDate="" />
 
             {/* <div className={styles.statusBox}>
               <div className={styles.todayStatus}>today's status</div>
@@ -251,6 +262,18 @@ function PeriodDay() {
           >
             Add Today's Status
           </IonButton>
+
+          <br></br>
+          <div className={styles.goStatusBtn}>
+            <IonButton
+              size="default"
+              color={styles.btn}
+              className={styles.btn}
+              onClick={handleHistory}
+            >
+              status record
+            </IonButton>
+          </div>
         </IonContent>
       </div>
     </IonPage>
