@@ -92,10 +92,10 @@ const Finance: React.FC = () => {
         <div className={style.date}>
           <h1>{date}</h1>
         </div>
-        <IonTitle>
+        {/* <IonTitle>
           <div className={style.title}>My Account</div>{" "}
-        </IonTitle>
-        <IonItem>
+        </IonTitle> */}
+        {/* <IonItem>
           <div className={style.type}>
             <IonLabel>Type</IonLabel>
             <IonInput
@@ -103,7 +103,7 @@ const Finance: React.FC = () => {
               onIonChange={(e) => setType(e.detail.value!)}
             ></IonInput>
           </div>
-        </IonItem>
+        </IonItem> */}
         <IonItem>
           <IonLabel>Amount</IonLabel>
           <IonInput
