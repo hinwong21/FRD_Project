@@ -3,7 +3,7 @@ body {
   padding: 0;
 }
 
-.nutrient-header {
+.nutrientHeader {
   height: 140px;
   display: flex;
   flex-direction: column;
@@ -11,7 +11,7 @@ body {
   justify-content: center;
 }
 
-.header-calories-container {
+.headerCaloriesContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -19,21 +19,21 @@ body {
   width: 300px;
 }
 
-.header-calories-left {
+.headerCaloriesLeft {
   font-size: 20px;
 }
 
-.daily-calories-intake {
+.dailyCaloriesIntake {
   font-size: 12px;
   color: gray;
   margin-top: 5px;
 }
 
-.header-calories-intake {
+.headerCaloriesIntake {
   font-size: 12px;
 }
 
-.calories-progressBar-container {
+.caloriesProgressBarContainer {
   width: 300px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -41,14 +41,14 @@ body {
   justify-content: center;
 }
 
-.header-nutrient-container {
+.headerNutrientContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 300px;
 }
 
-.header-nutrient {
+.headerNutrient {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,26 +56,26 @@ body {
   font-size: 12px;
 }
 
-.header-nutrient-index {
+.headerNutrientIndex {
   font-size: 10px;
   margin-bottom: 5px;
 }
 
-.nutrient-progressBar-container {
+.nutrientProgressBarContainer {
   width: 80px;
 }
 
-.expected-calories-intake {
+.expectedCaloriesIntake {
   font-size: 12px;
 }
 
-.water-balance-wrapper {
+.waterBalanceWrapper {
   display: flex;
   justify-content: center;
   margin: 10px;
 }
 
-.water-balance-container {
+.waterBalanceContainer {
   width: 300px;
   height: 120px;
   background-color: #08c4ff;
@@ -84,13 +84,13 @@ body {
   border: 1px solid rgb(202, 199, 199);
 }
 
-.water-balance-header {
+.waterBalanceHeader {
   font-size: 12px;
   font-weight: bold;
   margin: 10px;
 }
 
-.water-balance-main {
+.waterBalanceMain {
   width: 280px;
   height: 75px;
   background-color: white;
@@ -100,23 +100,23 @@ body {
   border-radius: 5px;
 }
 
-.water-intake-container {
+.waterIntakeContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.water-intake {
+.waterIntake {
   padding: 10px;
 }
 
-.water-minimum-intake {
+.waterMinimumIntake {
   margin-top: 3px;
   font-size: 10px;
   color: gray;
 }
 
-.water-intake-addBtn {
+.waterIntakeAddBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,18 +131,18 @@ body {
   cursor: pointer;
 }
 
-.water-progressBar-container {
+.waterProgressBarContainer {
   width: 260px;
   margin-left: 10px;
   margin-right: 10px;
 }
 
-.food-tracker-wrapper {
+.foodTrackerWrapper {
   display: flex;
   justify-content: center;
 }
 
-.food-tracker-container {
+.foodTrackerContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -150,41 +150,43 @@ body {
   margin-bottom: 10px;
 }
 
-.food-tracker-container header {
+.foodTrackerContainerHeader {
+  width: 300px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
   margin: 10px 0px;
 }
 
-.select-meal-type {
+.selectMealType {
   width: 120px;
   font-size: 12px;
   padding: 2px;
 }
 
-.add-mealBtn {
+.addMealBtn {
   font-size: 10px;
 }
 
-.meal-container {
+.mealContainer {
   background-color: #eae4b4;
 }
 
-.meal-type {
+.mealType {
   font-size: 12px;
   margin: 10px 10px 0px 10px;
 }
 
-.food-search-container {
+.foodSearchContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
 }
 
-.food-search-result {
+.foodSearchResult {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -192,7 +194,7 @@ body {
   margin: 10px 10px 10px 0px;
 }
 
-.food-search-bar {
+.foodSearchBar {
   width: 200px;
   height: 20px;
   border-top-left-radius: 3px;
@@ -201,18 +203,18 @@ body {
   font-size: 10px;
 }
 
-.food-search-bar:focus {
+.foodSearchBar:focus {
   outline: none;
 }
 
-.nutrient-ul {
+.nutrientUl {
   z-index: 9999;
   position: absolute;
   top: 20px;
   right: 0px;
 }
 
-.nutrient-li {
+.nutrientLi {
   width: 200px;
   cursor: pointer;
   border-bottom: 1px solid;
@@ -223,7 +225,7 @@ body {
   font-size: 12px;
 }
 
-.nutrient-addBtn {
+.nutrientAddBtn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -233,7 +235,7 @@ body {
   font-size: 20px;
 }
 
-.intake-history-container {
+.intakeHistoryContainer {
   width: 300px;
   min-height: 10px;
   max-height: 100px;
@@ -241,25 +243,25 @@ body {
   border-bottom: 1px solid;
 }
 
-.intake-history {
+.intakeHistory {
   display: flex;
   flex-direction: column;
   margin: 10px;
   font-size: 12px;
 }
 
-.food-name-calories-container {
+.foodNameCaloriesContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.food-name {
+.foodName {
   width: 100px;
   overflow: hidden;
 }
 
-.food-nutrient {
+.foodNutrient {
   display: flex;
   flex-direction: row;
   font-size: 10px;
@@ -267,6 +269,6 @@ body {
   margin-top: 5px;
 }
 
-.data-notice {
+.dataNotice {
   font-size: 10px;
 }

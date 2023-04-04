@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { WaterProgressBar } from "./WaterProgressBar";
-import "./Nutrition.css";
+import style from "./Nutrition.module.scss";
 import { Preferences } from "@capacitor/preferences";
 
 export const WaterBalance = () => {
@@ -65,23 +65,28 @@ export const WaterBalance = () => {
   }
 
   return (
-    <div className="water-balance-wrapper">
-      <div className="water-balance-container">
-        <div className="water-balance-header">Water balance</div>
+    <div className={style.waterBalanceWrapper}>
+      <div className={style.waterBalanceContainer}>
+        <div className={style.waterBalanceHeader}>Water balance</div>
 
-        <div className="water-balance-main">
-          <div className="water-intake-container">
-            <div className="water-intake">
-              <div className="current-water-intake">Water: {waterIntake}</div>
-              <div className="water-minimum-intake">
+        <div className={style.waterBalanceMain}>
+          <div className={style.waterIntakeContainer}>
+            <div className={style.waterIntake}>
+              <div className={style.currentWaterIntake}>
+                Water: {waterIntake}
+              </div>
+              <div className={style.waterMinimumIntake}>
                 Daily minimum intake: 1.6 L
               </div>
             </div>
-            <button className="water-intake-addBtn" onClick={addWaterIntake}>
+            <button
+              className={style.waterIntakeAddBtn}
+              onClick={addWaterIntake}
+            >
               +
             </button>
           </div>
-          <div className="water-progressBar-container">
+          <div className={style.waterProgressBarContainer}>
             <WaterProgressBar dailyIntake={1.6} currentIntake={waterIntake} />
           </div>
         </div>

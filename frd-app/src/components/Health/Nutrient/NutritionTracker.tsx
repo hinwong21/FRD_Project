@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Nutrition.css";
+import style from "./Nutrition.module.scss";
 import { useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { v4 as uuidv4 } from "uuid";
@@ -281,11 +281,11 @@ export const NutritionTracker = () => {
     };
 
   return (
-    <div className="food-tracker-wrapper">
-      <div className="food-tracker-container">
-        <header>
+    <div className={style.foodTrackerWrapper}>
+      <div className={style.foodTrackerContainer}>
+        <header className={style.foodTrackerContainerHeader}>
           <div>Food tracking</div>
-          <select className="select-meal-type">
+          <select className={style.selectMealType}>
             <option value="">Select meal type</option>
             <option value="Breakfast">breakfast</option>
             <option value="Brunch">brunch</option>
@@ -295,17 +295,17 @@ export const NutritionTracker = () => {
             <option value="Dinner">dinner</option>
             <option value="Siu Ye">siu ye</option>
           </select>
-          <button className="add-mealBtn" onClick={handleAddMeal}>
+          <button className={style.addMealBtn} onClick={handleAddMeal}>
             Add meal
           </button>
         </header>
 
         {/* show each meal and the intake food */}
         {meals.map((meal) => (
-          <div className="meal-container" key={meal.id}>
-            <div className="meal-type">{meal.meal}</div>
-            <div className="food-search-container">
-              <div className="food-search-result">
+          <div className={style.mealContainer} key={meal.id}>
+            <div className={style.mealType}>{meal.meal}</div>
+            <div className={style.foodSearchContainer}>
+              <div className={style.foodSearchResult}>
                 <input
                   className={`food-search-bar-${meal.id}`}
                   placeholder="Enter food name"
@@ -315,11 +315,11 @@ export const NutritionTracker = () => {
                     foodSearch(meal.id, event.target.value as string)
                   }
                 />
-                <ul className="nutrient-ul">
+                <ul className={style.nutrientUl}>
                   {foodItems[meal.id] &&
                     foodItems[meal.id].map((food: Food) => (
                       <li
-                        className="nutrient-li"
+                        className={style.nutrientLi}
                         key={food.fdcId}
                         onClick={(event) =>
                           handleSearchResultClick(meal.id, event)
@@ -331,30 +331,36 @@ export const NutritionTracker = () => {
                 </ul>
               </div>
               <button
-                className="nutrient-addBtn"
+                className={style.nutrientAddBtn}
                 onClick={nutrientSearch(meal.id)}
               >
                 +
               </button>
             </div>
 
-            <div className="intake-history-container">
+            <div className={style.intakeHistoryContainer}>
               {nutrients[meal.id] &&
                 nutrients[meal.id].map((nutrient) => (
-                  <div className="intake-history" key={nutrient.id}>
-                    <div className="food-name-calories-container">
-                      <div className="food-name">Food: {nutrient.foodName}</div>
-                      <div className="nutrient">
+                  <div className={style.intakeHistory} key={nutrient.id}>
+                    <div className={style.foodNameCaloriesContainer}>
+                      <div className={style.foodName}>
+                        Food: {nutrient.foodName}
+                      </div>
+                      <div className={style.nutrient}>
                         Calories: {nutrient?.calories} kcal
                       </div>
                     </div>
 
-                    <div className="food-nutrient">
-                      <div className="nutrient">Carbs: {nutrient?.carbs}g</div>
-                      <div className="nutrient">
+                    <div className={style.foodNutrient}>
+                      <div className={style.nutrient}>
+                        Carbs: {nutrient?.carbs}g
+                      </div>
+                      <div className={style.nutrient}>
                         Protein: {nutrient?.protein}g
                       </div>
-                      <div className="nutrient">Fat: {nutrient?.fat}g</div>
+                      <div className={style.nutrient}>
+                        Fat: {nutrient?.fat}g
+                      </div>
                     </div>
                   </div>
                 ))}
