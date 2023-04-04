@@ -39,13 +39,13 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
-  {
-    id: 1,
-    title: "Main",
-    url: "/page/Main",
-    iosIcon: diamondOutline,
-    mdIcon: diamondSharp,
-  },
+  // {
+  //   id: 1,
+  //   title: "Main",
+  //   url: "/page/Main",
+  //   iosIcon: diamondOutline,
+  //   mdIcon: diamondSharp,
+  // },
   {
     id: 2,
     title: "Calender",

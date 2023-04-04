@@ -6,6 +6,12 @@ const config: CapacitorConfig = {
   appName: "Noticias",
   webDir: "build",
   bundledWebRuntime: false,
+  plugins: {
+    FirebaseAuthentication: {
+      skipNativeAuth: false,
+      providers: ["apple.com", "google.com"]
+    }
+  },
   server: {
     url: process.env.REACT_APP_IP,
     cleartext: true,

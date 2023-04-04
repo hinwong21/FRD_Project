@@ -33,49 +33,67 @@ import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { loginState } from "./atoms";
+import { MainPage } from "./components/Main/MainPage";
+import RoutesIsLogin from "./RoutesIsLogin";
+import RoutesIsNotLogin from "./RoutesIsNotLogin";
+import { getName } from "./service/LocalStorage/LocalStorage";
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  const setIsLogin = useSetRecoilState(loginState);
+  const getIsLogin = useRecoilValue(loginState);
+
+  useEffect(() => {
+    async function main() {
+      let token = await getName("token");
+      if (token) {
+        let res = await fetch(
+          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/verifyToken`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        let json = await res.json();
+        if (json.ok) {
+          setIsLogin((isLogin) => {
+            let newState = { ...isLogin };
+            newState.isLogin = true;
+            return newState;
+          });
+        } else {
+          setIsLogin((isLogin) => {
+            let newState = { ...isLogin };
+            newState.isLogin = false;
+            return newState;
+          });
+        }
+      } else {
+        setIsLogin((isLogin) => {
+          let newState = { ...isLogin };
+          newState.isLogin = false;
+          return newState;
+        });
+      }
+    }
+    main();
+  }, []);
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const cbLoginFunc = useCallback(() => changeLogin, []);
+  // function changeLogin() {
+  //   setIsLogin(true);
+  // }
+
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Switch>
-              <Route path="/" exact={true}>
-                <Redirect to="/page/Main" />
-              </Route>
-              <Route path="/page/:name" exact={true}>
-                <Page />
-              </Route>
-
-              {/* <Route path="/Transaction" exact={true}>
-                < Transaction />
-              </Route> */}
-              <Route path="/Accounting" exact={true}>
-                <AccountingPage />
-              </Route>
-              <Route path="/Diaryeditor" exact={true}>
-                <Notepad />
-              </Route>
-
-              <Route path="/Health-period" exact={true}>
-                <PeriodMain />
-              </Route>
-              <Route path="/Health-nutrient" exact={true}>
-                <Nutrition />
-              </Route>
-              <Route path="/Health-periodCalendar" exact={true}>
-                <PeriodCalendar />
-              </Route>
-              <Route path="*" exact={true}>
-                <div>404 not found</div>
-              </Route>
-            </Switch>
-          </IonRouterOutlet>
-        </IonSplitPane>
+        {getIsLogin.isLogin && <RoutesIsLogin />}
+        {!getIsLogin.isLogin && <RoutesIsNotLogin />}
       </IonReactRouter>
     </IonApp>
   );
