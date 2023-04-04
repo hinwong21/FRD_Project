@@ -27,10 +27,11 @@ import {
 import { DiaryEditor } from "./DiaryEditor";
 import { TodoListEditor } from "./TodoListEditor";
 import MemoEditor, { TextEditor } from "./TextEditor";
-
+import { v4 as uuidv4 } from "uuid";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
+import { log } from "console";
 
 
 
@@ -92,19 +93,22 @@ export const AddNotePopup: React.FC = () => {
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
 
-    function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
+    function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
-        // setMessage(`Hello, ${ev.detail.data}!`);
+        console.log("diary")
       }
     }
 
-    function confirm() {
-      modal.current?.dismiss(input.current?.value, 'confirm');
+    function confirm_diary() {
+      modal.current?.dismiss("", 'confirm');
+      const diaryContent = document.querySelector('.ContentEditable__root')?.innerHTML
+      console.log(diaryContent)
+      
     }
 
     return (
       <>
-      <IonModal trigger="openDiary" onWillDismiss={(ev) => onWillDismiss(ev)}>
+      <IonModal ref={modal} trigger="openDiary" onWillDismiss={(ev) => onWillDismiss_diary(ev)}>
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
@@ -112,7 +116,7 @@ export const AddNotePopup: React.FC = () => {
               </IonButtons>
               <IonTitle>New Diary</IonTitle>
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
+                <IonButton strong={true} onClick={() => confirm_diary()}>
                   Confirm
                 </IonButton>
               </IonButtons>
@@ -132,19 +136,30 @@ export const AddNotePopup: React.FC = () => {
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
 
-    function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
+    function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
-        // setMessage(`Hello, ${ev.detail.data}!`);
+        console.log("memo")
       }
     }
 
-    function confirm() {
-      modal.current?.dismiss(input.current?.value, 'confirm');
+    async function confirm_memo() {
+      modal.current?.dismiss("", 'confirm');
+      let id = uuidv4()
+      const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
+      const res = await fetch ("http://localhost:8080/editors/new-memo",{
+        method: "POST",
+        headers:{"Content-type":"application/json"},
+        body: JSON.stringify({
+          id: id,
+          content:memoContent
+        })
+      })
+
     }
 
     return (
       <>
-      <IonModal trigger="openMemo" onWillDismiss={(ev) => onWillDismiss(ev)}>
+      <IonModal ref={modal} trigger="openMemo" onWillDismiss={(ev) => onWillDismiss_memo(ev)}>
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
@@ -152,7 +167,7 @@ export const AddNotePopup: React.FC = () => {
               </IonButtons>
               <IonTitle>New Memo</IonTitle>
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
+                <IonButton strong={true} onClick={() => confirm_memo()}>
                   Confirm
                 </IonButton>
               </IonButtons>
@@ -172,19 +187,19 @@ export const AddNotePopup: React.FC = () => {
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
 
-    function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
+    function onWillDismiss_todo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
-        // setMessage(`Hello, ${ev.detail.data}!`);
+        console.log("todo")
       }
     }
 
-    function confirm() {
+    function confirm_todo() {
       modal.current?.dismiss(input.current?.value, 'confirm');
     }
 
     return (
       <>
-      <IonModal trigger="openTodo" onWillDismiss={(ev) => onWillDismiss(ev)}>
+      <IonModal ref={modal} trigger="openTodo" onWillDismiss={(ev) => onWillDismiss_todo(ev)}>
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
@@ -192,7 +207,7 @@ export const AddNotePopup: React.FC = () => {
               </IonButtons>
               <IonTitle>New Todo</IonTitle>
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
+                <IonButton strong={true} onClick={() => confirm_todo()}>
                   Confirm
                 </IonButton>
               </IonButtons>

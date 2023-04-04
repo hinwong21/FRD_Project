@@ -38,7 +38,7 @@ const PeriodRecord = () => {
               subtitle="March"
               date="22/03/2023"
               statusType="Tried"
-              statusLv="5"
+              statusContent="5"
               fnDel={del}
             />
           )}
@@ -48,7 +48,7 @@ const PeriodRecord = () => {
               subtitle="February"
               date="07/02/2023"
               statusType="Pain"
-              statusLv="2"
+              statusContent="2"
               fnDel={del}
             />
           )}

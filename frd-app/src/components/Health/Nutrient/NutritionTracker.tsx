@@ -31,32 +31,24 @@ export const NutritionTracker = () => {
   const [foodItems, setFoodItems] = useState<{ [key: number]: Food[] }>({});
   const dispatch = useDispatch();
 
-  const resetData = () => {
-    const now = new Date();
-    const resetTime = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      6,
-      0,
-      0
-    );
+  useEffect(() => {
+    const resetData = async () => {
+      const { value } = await Preferences.get({ key: "meals" });
+      if (value !== null) {
+        let json = JSON.parse(value);
+        let date = new Date(json[json.length - 1].date).getTime();
+        let now = new Date().getTime();
 
-    if (now >= resetTime) {
-      // If the current time is past the reset time, set the reset time to tomorrow
-      resetTime.setDate(resetTime.getDate() + 1);
-    }
-
-    const timeUntilReset = resetTime.getTime() - now.getTime();
-
-    setTimeout(async () => {
-      await Preferences.remove({ key: "meals" });
-      await Preferences.remove({ key: "nutrient" });
-      resetData(); // Schedule the next reset
-    }, timeUntilReset);
-  };
-
-  resetData();
+        if (now >= date) {
+          await Preferences.remove({ key: "meals" });
+          await Preferences.remove({ key: "nutrient" });
+          setMeals([]);
+          setNutrients({});
+        }
+      }
+    };
+    resetData();
+  }, []);
 
   useEffect(() => {
     const getMealsLocal = async () => {
@@ -82,11 +74,25 @@ export const NutritionTracker = () => {
     meals: Meals[],
     mealSelect: HTMLSelectElement
   ) => {
+    const now = new Date();
+    const resetTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      10,
+      43,
+      30
+    );
+
+    if (now > resetTime) {
+      // If the current time is past the reset time, set the reset time to tomorrow
+      resetTime.setDate(resetTime.getDate() + 1);
+    }
     await Preferences.set({
       key: "meals",
       value: JSON.stringify([
         ...meals,
-        { id: meals.length + 1, meal: mealSelect.value },
+        { id: meals.length + 1, meal: mealSelect.value, date: resetTime },
       ]),
     });
   };
@@ -182,59 +188,35 @@ export const NutritionTracker = () => {
 
       setFoodItems([]);
 
-      // fetch(
-      //   `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
-      // )
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     const foodItem = data.foods[0];
-      //     const foodNutrients = foodItem.foodNutrients;
+      fetch(
+        `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const foodItem = data.foods[0];
+          const foodNutrients = foodItem.foodNutrients;
 
-      //     // Find the nutrient with ID 1008, which corresponds to calories
-      //     const caloriesNutrient = foodNutrients.find(
-      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1008
-      //     );
+          // Find the nutrient with ID 1008, which corresponds to calories
+          const caloriesNutrient = foodNutrients.find(
+            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1008
+          );
 
-      //     // Find the nutrient with ID 1005, which corresponds to carbohydrates
-      //     const carbsNutrient = foodNutrients.find(
-      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1005
-      //     );
+          // Find the nutrient with ID 1005, which corresponds to carbohydrates
+          const carbsNutrient = foodNutrients.find(
+            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1005
+          );
 
-      //     // Find the nutrient with ID 1008, which corresponds to protein
-      //     const proteinNutrient = foodNutrients.find(
-      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1003
-      //     );
+          // Find the nutrient with ID 1008, which corresponds to protein
+          const proteinNutrient = foodNutrients.find(
+            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1003
+          );
 
-      //     // Find the nutrient with ID 1008, which corresponds to fat
-      //     const fatNutrient = foodNutrients.find(
-      //       (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1004
-      //     );
+          // Find the nutrient with ID 1008, which corresponds to fat
+          const fatNutrient = foodNutrients.find(
+            (nutrient: { nutrientId: number }) => nutrient.nutrientId === 1004
+          );
 
-      // template, usda website error
-      let caloriesNutrient = {value: 123}
-      let carbsNutrient = {value: 123}
-      let proteinNutrient = {value: 123}
-      let fatNutrient = {value: 123}
-
-      setNutrients({
-        ...nutrients,
-        [mealId]: [
-          ...(nutrients[mealId] || []),
-          {
-            id: nutrients[mealId] ? nutrients[mealId].length + 1 : 1,
-            foodName: foodName.value,
-            calories: caloriesNutrient.value,
-            carbs: carbsNutrient.value,
-            protein: proteinNutrient.value,
-            fat: fatNutrient.value,
-          },
-        ],
-      });
-
-      const setNutrientLocal = async () => {
-        await Preferences.set({
-          key: "nutrient",
-          value: JSON.stringify({
+          setNutrients({
             ...nutrients,
             [mealId]: [
               ...(nutrients[mealId] || []),
@@ -247,119 +229,139 @@ export const NutritionTracker = () => {
                 fat: fatNutrient.value,
               },
             ],
-          }),
+          });
+
+          const setNutrientLocal = async () => {
+            await Preferences.set({
+              key: "nutrient",
+              value: JSON.stringify({
+                ...nutrients,
+                [mealId]: [
+                  ...(nutrients[mealId] || []),
+                  {
+                    id: nutrients[mealId] ? nutrients[mealId].length + 1 : 1,
+                    foodName: foodName.value,
+                    calories: caloriesNutrient.value,
+                    carbs: carbsNutrient.value,
+                    protein: proteinNutrient.value,
+                    fat: fatNutrient.value,
+                  },
+                ],
+              }),
+            });
+          };
+          setNutrientLocal();
+
+          let id = uuidv4();
+          // update daily intake to database
+          fetch(`http://localhost:8080/nutrition/dailyIntake`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: id,
+              calories: caloriesNutrient.value,
+              carbs: carbsNutrient.value,
+              protein: proteinNutrient.value,
+              fat: fatNutrient.value,
+              date: new Date().toISOString().slice(0, 10),
+            }),
+          });
+
+          dispatch({
+            type: "INCREMENT",
+            calories: caloriesNutrient.value,
+            carbs: carbsNutrient.value,
+            protein: proteinNutrient.value,
+            fat: fatNutrient.value,
+          });
+
+          foodName.value = "";
+          setFoodItems([]);
         });
-      };
-      setNutrientLocal();
-
-      let id = uuidv4();
-      // update daily intake to database
-      fetch(`http://localhost:8080/nutrition/dailyIntake`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: id,
-          calories: caloriesNutrient.value,
-          carbs: carbsNutrient.value,
-          protein: proteinNutrient.value,
-          fat: fatNutrient.value,
-          date: new Date().toISOString().slice(0, 10),
-        }),
-      });
-
-      dispatch({
-        type: "INCREMENT",
-        calories: caloriesNutrient.value,
-        carbs: carbsNutrient.value,
-        protein: proteinNutrient.value,
-        fat: fatNutrient.value,
-      });
-
-      foodName.value = "";
-      setFoodItems([]);
-      // });
     };
 
   return (
-    <div className="food-tracker-container">
-      <header>
-        <div>Food tracking</div>
-        <select className="select-meal-type">
-          <option value="">Select meal type</option>
-          <option value="Breakfast">breakfast</option>
-          <option value="Brunch">brunch</option>
-          <option value="Lunch">lunch</option>
-          <option value="Tea">tea</option>
-          <option value="Snack">snack</option>
-          <option value="Dinner">dinner</option>
-          <option value="Siu Ye">siu ye</option>
-        </select>
-        <button className="add-mealBtn" onClick={handleAddMeal}>
-          Add meal
-        </button>
-      </header>
+    <div className="food-tracker-wrapper">
+      <div className="food-tracker-container">
+        <header>
+          <div>Food tracking</div>
+          <select className="select-meal-type">
+            <option value="">Select meal type</option>
+            <option value="Breakfast">breakfast</option>
+            <option value="Brunch">brunch</option>
+            <option value="Lunch">lunch</option>
+            <option value="Tea">tea</option>
+            <option value="Snack">snack</option>
+            <option value="Dinner">dinner</option>
+            <option value="Siu Ye">siu ye</option>
+          </select>
+          <button className="add-mealBtn" onClick={handleAddMeal}>
+            Add meal
+          </button>
+        </header>
 
-      {/* show each meal and the intake food */}
-      {meals.map((meal) => (
-        <div className="meal-container" key={meal.id}>
-          <div className="meal-type">{meal.meal}</div>
-          <div className="food-search-container">
-            <div className="food-search-result">
-              <input
-                className={`food-search-bar-${meal.id}`}
-                placeholder="Enter food name"
-                type="text"
-                key={meal.id}
-                onChange={(event) =>
-                  foodSearch(meal.id, event.target.value as string)
-                }
-              />
-              <ul className="nutrient-ul">
-                {foodItems[meal.id] &&
-                  foodItems[meal.id].map((food: Food) => (
-                    <li
-                      className="nutrient-li"
-                      key={food.fdcId}
-                      onClick={(event) =>
-                        handleSearchResultClick(meal.id, event)
-                      }
-                    >
-                      {food.description}
-                    </li>
-                  ))}
-              </ul>
+        {/* show each meal and the intake food */}
+        {meals.map((meal) => (
+          <div className="meal-container" key={meal.id}>
+            <div className="meal-type">{meal.meal}</div>
+            <div className="food-search-container">
+              <div className="food-search-result">
+                <input
+                  className={`food-search-bar-${meal.id}`}
+                  placeholder="Enter food name"
+                  type="text"
+                  key={meal.id}
+                  onChange={(event) =>
+                    foodSearch(meal.id, event.target.value as string)
+                  }
+                />
+                <ul className="nutrient-ul">
+                  {foodItems[meal.id] &&
+                    foodItems[meal.id].map((food: Food) => (
+                      <li
+                        className="nutrient-li"
+                        key={food.fdcId}
+                        onClick={(event) =>
+                          handleSearchResultClick(meal.id, event)
+                        }
+                      >
+                        {food.description}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              <button
+                className="nutrient-addBtn"
+                onClick={nutrientSearch(meal.id)}
+              >
+                +
+              </button>
             </div>
-            <button
-              className="nutrient-addBtn"
-              onClick={nutrientSearch(meal.id)}
-            >
-              +
-            </button>
-          </div>
 
-          <div className="intake-history-container">
-            {nutrients[meal.id] &&
-              nutrients[meal.id].map((nutrient) => (
-                <div className="intake-history" key={nutrient.id}>
-                  <div className="food-name-calories-container">
-                    <div className="food-name">Food: {nutrient.foodName}</div>
-                    <div className="nutrient">
-                      Calories: {nutrient?.calories} kcal
+            <div className="intake-history-container">
+              {nutrients[meal.id] &&
+                nutrients[meal.id].map((nutrient) => (
+                  <div className="intake-history" key={nutrient.id}>
+                    <div className="food-name-calories-container">
+                      <div className="food-name">Food: {nutrient.foodName}</div>
+                      <div className="nutrient">
+                        Calories: {nutrient?.calories} kcal
+                      </div>
+                    </div>
+
+                    <div className="food-nutrient">
+                      <div className="nutrient">Carbs: {nutrient?.carbs}g</div>
+                      <div className="nutrient">
+                        Protein: {nutrient?.protein}g
+                      </div>
+                      <div className="nutrient">Fat: {nutrient?.fat}g</div>
                     </div>
                   </div>
-
-                  <div className="food-nutrient">
-                    <div className="nutrient">Carbs: {nutrient?.carbs}g</div>
-                    <div className="nutrient">
-                      Protein: {nutrient?.protein}g
-                    </div>
-                    <div className="nutrient">Fat: {nutrient?.fat}g</div>
-                  </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

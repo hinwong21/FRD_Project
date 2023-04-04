@@ -3,13 +3,6 @@ body {
   padding: 0;
 }
 
-.page-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  /* margin-top: 5vh; */
-}
-
 .nutrient-header {
   height: 140px;
   display: flex;
@@ -76,6 +69,12 @@ body {
   font-size: 12px;
 }
 
+.water-balance-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
 .water-balance-container {
   width: 300px;
   height: 120px;
@@ -136,6 +135,11 @@ body {
   width: 260px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.food-tracker-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
 .food-tracker-container {

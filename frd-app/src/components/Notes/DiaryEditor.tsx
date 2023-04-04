@@ -90,9 +90,9 @@ export const DiaryEditor = () => {
           alt="weather icon"
         />
       </div>
-
+    <div className={styles.editorWrapper}>
     <TextEditor/>
-      
+    </div>
       </div>
       </IonPage>
     </>
