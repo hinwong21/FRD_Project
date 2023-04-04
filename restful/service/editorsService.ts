@@ -21,6 +21,14 @@ export class EditorsService {
     console.log(memos)
     return memos;
   }
+
+  updateMemo = async (id:number, content: string)=>{
+    await this.knex.update({
+      content:content,
+      updated_at: new Date()
+    })
+    .where("id", id)
+  }
   
   
 }

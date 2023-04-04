@@ -27,4 +27,13 @@ export class EditorsController {
         errorHandler(err, req, res);
     }
   }
+
+  updateMemo= async (req:Request, res:Response)=>{
+    try{
+      await this.editorsService.updateMemo(req.body.id, req.body.content)
+      res.json({success:true})
+    }catch (err){
+      errorHandler(err, req, res);
+    }
+  }
 }
