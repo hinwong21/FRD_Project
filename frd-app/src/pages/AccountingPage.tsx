@@ -63,7 +63,6 @@ const AccountingPage: React.FC = () => {
 
   const goToTransaction = () => {
     history.push("/Transaction");
-    // console.log('fei hui transaction');
   };
   return (
     <>
@@ -92,14 +91,14 @@ const AccountingPage: React.FC = () => {
             <IonList>
               {transactions.map((transaction) => (
                 <IonItem key={transaction.id}>
-                  {transaction.type} - ${transaction.amount.toLocaleString()}
+                  {transaction.name} - ${transaction.amount.toLocaleString()}
                 </IonItem>
               ))}
             </IonList>
             <IonList>
               {calculateResult.map((calculateResult) => (
                 <IonItem key={calculateResult.id}>
-                  {calculateResult.type} - $
+                  {calculateResult.name} - $
                   {calculateResult.amount.toLocaleString()}
                 </IonItem>
               ))}

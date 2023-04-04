@@ -9,7 +9,7 @@ function Status(props: {
   subtitle: string;
   date: string;
   statusType: string;
-  statusLv: string;
+  statusContent: string;
   fnDel: () => void;
 }) {
   const [openDetails, setOpenDetails] = useState(false);
@@ -57,7 +57,7 @@ function Status(props: {
           {openDetails && (
             <RecordItems
               statusType={props.statusType}
-              statusLv={props.statusLv}
+              statusContent={props.statusContent}
             />
           )}
         </div>
