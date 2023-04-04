@@ -7,9 +7,16 @@ export class AccountingController {
 
     addTransaction = async (req: Request, res: Response) => {
         try {
-            let { name, type, amount, description } = req.body;
-            console.log(name, type, amount, description);
-            this.accountingService.addTransaction(name, type, amount, description)
+            console.log("req.body", req.body);
+
+            let { id, name, type, amount, description } = req.body;
+            // console.log(name, type, amount, description);
+            const addResult = await this.accountingService.addTransaction(id, name, type, amount, description);
+            console.log(addResult);
+
+            // res.json(addResult)
+            res.json({ ok: true })
+            return
         } catch (error) {
             errorHandler(error, req, res)
         }
