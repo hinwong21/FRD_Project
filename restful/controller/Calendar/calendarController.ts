@@ -1,12 +1,8 @@
 import { Request, Response } from "express";
 import express from "express";
 import { errorHandler } from "../../error";
-const fs = require("fs").promises;
-import path from "path";
-import process from "process";
 import { CalendarService } from "../../service/calendarService";
 import "../../session";
-import { log } from "console";
 
 
 export class CalendarController {
@@ -25,7 +21,7 @@ export class CalendarController {
 
     getLocalCalendarEvent = async (req:Request, res:Response)=>{
       try{
-        let data = await this.calendarService.getLocalCalendarEvent(1)
+        let data = await this.calendarService.getLocalCalendarEvent(req.session.userId as number)
         res.json(data)
 
       }catch (err){

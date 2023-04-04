@@ -18,4 +18,13 @@ export class EditorsController {
       errorHandler(err, req, res);
     }
   };
+
+  getMemo = async (req:Request, res:Response)=>{
+    try{
+        const memos = await this.editorsService.getMemo(1)
+        res.json(memos)
+    }catch (err){
+        errorHandler(err, req, res);
+    }
+  }
 }

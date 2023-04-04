@@ -8,6 +8,7 @@ import {
 import "./Notes.module.css";
 import { AddNotePopup } from "./AddNotePopup";
 import { useParams } from "react-router";
+import {Notes} from "./Notes"
 import styles from "./Notes.module.css";
 
 export const Notepad:React.FC = () => {
@@ -26,6 +27,7 @@ export const Notepad:React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonSearchbar></IonSearchbar>
+      <Notes/>
       <AddNotePopup />
       </>
   )
