@@ -33,7 +33,6 @@ import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
-<<<<<<< HEAD
 import { useCallback, useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "./atoms";
@@ -41,9 +40,7 @@ import { MainPage } from "./components/Main/MainPage";
 import RoutesIsLogin from "./RoutesIsLogin";
 import RoutesIsNotLogin from "./RoutesIsNotLogin";
 import { getName } from "./service/LocalStorage/LocalStorage";
-=======
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
->>>>>>> origin
 
 setupIonicReact();
 
@@ -96,50 +93,8 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-<<<<<<< HEAD
         {getIsLogin.isLogin && <RoutesIsLogin />}
         {!getIsLogin.isLogin && <RoutesIsNotLogin />}
-=======
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Switch>
-              <Route path="/" exact={true}>
-                <Redirect to="/page/Main" />
-              </Route>
-              <Route path="/page/:name" exact={true}>
-                <Page />
-              </Route>
-
-              {/* <Route path="/Transaction" exact={true}>
-                < Transaction />
-              </Route> */}
-              <Route path="/Accounting" exact={true}>
-                <AccountingPage />
-              </Route>
-              <Route path="/Diaryeditor" exact={true}>
-                <Notepad />
-              </Route>
-
-              <Route path="/Health-period" exact={true}>
-                <PeriodMain />
-              </Route>
-              <Route path="/Health-nutrient" exact={true}>
-                <Nutrition />
-              </Route>
-              <Route path="/Health-periodCalendar" exact={true}>
-                <PeriodCalendar />
-              </Route>
-              <Route path="/Health-periodRecordDetails" exact={true}>
-                <PeriodRecord />
-              </Route>
-              <Route path="*" exact={true}>
-                <div>404 not found</div>
-              </Route>
-            </Switch>
-          </IonRouterOutlet>
-        </IonSplitPane>
->>>>>>> origin
       </IonReactRouter>
     </IonApp>
   );
