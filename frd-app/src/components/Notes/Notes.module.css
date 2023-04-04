@@ -33,3 +33,36 @@ button.item-native::after{
   ion-popover::part(backdrop) {
     background-color: rgba(233, 228, 228, 0.832);
   }
+
+  .memoWrapper{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right:15px;
+    margin-left: 15px;
+  }
+
+  .memoBlock{
+    padding:5px;
+    border-width: 5px;
+    border-color: red;
+    font-size: 6px;
+    width: 100px;
+    height: 100px;
+    overflow:hidden;
+    background-color: white;
+    border-radius: 5px;
+  }
+
+  .memoAContainer{
+    width: 100px;
+    height: 100px;
+    margin: 6px;
+    text-decoration: none;
+  }
+
+  .memoUpdatedTime{
+    margin-top: 2px;
+    font-size: 12px;
+    text-align: center;
+    color: gray;
+  }

@@ -17,6 +17,7 @@ import DiaryEditor from "../components/Notes/DiaryEditor";
 import { Notepad } from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
+import { EditMemo } from "../components/Notes/Notes";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -44,6 +45,9 @@ const Page: React.FC = () => {
       break;
     case "Setting":
       fetchPage = <Setting />;
+      break;
+    case "EditMemo":
+      fetchPage = <EditMemo />;
       break;
   }
 

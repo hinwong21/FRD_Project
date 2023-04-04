@@ -1,0 +1,58 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  background-color: #98aa9e;
+  height: 70vh;
+  width: 100vw;
+}
+
+.loginContainer {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.appleId {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0px;
+  width: 200px;
+  height: 32px;
+  font-size: 14px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.googleId {
+  background-color: white;
+  color: gray;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px gray solid;
+  width: 200px;
+  height: 32px;
+  font-size: 14px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.googleIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+}
+
+.appleIcon {
+  margin-right: 5px;
+}

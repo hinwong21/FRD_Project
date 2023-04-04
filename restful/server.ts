@@ -11,7 +11,8 @@ import { accountingRoutes } from "./route/accountingRoute";
 import { editorsRoutes } from "./route/editorsRoute";
 
 const app = express();
-app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.json({ limit: "50mb" }));
 
 let url = env_config.URL;
 app.use(

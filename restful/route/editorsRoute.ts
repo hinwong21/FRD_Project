@@ -13,3 +13,8 @@ editorsRoutes.post(
     "/new-memo",
     editorsController.addMemo
   );
+
+editorsRoutes.get(
+    "/memo",
+    editorsController.getMemo
+  );

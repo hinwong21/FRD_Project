@@ -21,8 +21,8 @@ import {
 } from 'verbum';
 import "./TextEditor.css"
 
-
-export function TextEditor() {
+export function TextEditor(props:any) {
+  console.log(props.content.content)
   return (
     <EditorComposer>
       <Editor hashtagsEnabled={true} emojisEnabled={true} autoLinkEnabled={true} >
@@ -39,7 +39,7 @@ export function TextEditor() {
           <BackgroundColorPicker />
           <TextFormatDropdown />
           <Divider />
-          <InsertDropdown enableYoutube={true} enableImage={true} enableStickyNote={true}/>
+          <InsertDropdown enableYoutube={true} enableImage={true}/>
           <Divider />
           <AlignDropdown />
         </ToolbarPlugin>

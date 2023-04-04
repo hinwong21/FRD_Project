@@ -1,5 +1,5 @@
 .dayWeatherIcon{
-     width: 180px;
+     width: 120px;
      padding-right: 30px;
 }
 
@@ -12,7 +12,7 @@
     margin-bottom: 1vh;
     border-radius: 10px;
     background-color: rgba(55, 141, 194, 0.357);
-    font-size: 20px;
+    font-size: 16px;
     color: white;
     background-image: url("./weather_background/cloudy.jpg");
 }
@@ -33,7 +33,7 @@
 }
 
 .temperature{
-    font-size: 60px !important;
+    font-size: 40px !important;
 }
 
 

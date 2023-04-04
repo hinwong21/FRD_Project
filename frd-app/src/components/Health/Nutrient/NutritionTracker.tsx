@@ -79,9 +79,9 @@ export const NutritionTracker = () => {
       now.getFullYear(),
       now.getMonth(),
       now.getDate(),
-      10,
-      43,
-      30
+      6,
+      0,
+      0
     );
 
     if (now > resetTime) {

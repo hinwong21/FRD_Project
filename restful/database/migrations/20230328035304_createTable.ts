@@ -95,40 +95,29 @@ export async function up(knex: Knex): Promise<void> {
   if (!(await knex.schema.hasTable("period"))) {
     await knex.schema.createTable("period", (table) => {
       table.text("id").notNullable().unique();
-      table.timestamp("start_at").notNullable();
-      table.timestamp("end_at").notNullable();
+      table.string("start_at");
+      table.string("end_at");
+      table.string("days").defaultTo("5");
+      table.string("ovu_start_at");
+      table.string("ovu_end_at");
       table.text("user_id").references("users.id");
     });
   }
 
-  if (!(await knex.schema.hasTable("period_state"))) {
-    await knex.schema.createTable("period_state", (table) => {
+  if (!(await knex.schema.hasTable("period_status"))) {
+    await knex.schema.createTable("period_status", (table) => {
       table.text("id").notNullable().unique();
-      table.integer("level").notNullable().defaultTo(0);
-      table
-        .enu("symptom", [
-          "Abdominal discomfort or pain",
-          "Loss of appetite",
-          "Increased appetite",
-          "Fatigue or feeling tired",
-          "Difficulty sleeping or decreased sleep quality",
-          "Anxiety",
-          "Depression",
-          "Irritability",
-          "Swollen or sensitive breasts",
-          "Headaches or dizziness",
-          "Nausea or diarrhea",
-          "Skin acne or other skin problems",
-        ])
-        .notNullable();
+      table.string("type");
+      table.text("content");
+      table.timestamps(true, true);
     });
   }
 
-  if (!(await knex.schema.hasTable("period_period_state"))) {
-    await knex.schema.createTable("period_period_state", (table) => {
+  if (!(await knex.schema.hasTable("period_period_status"))) {
+    await knex.schema.createTable("period_period_status", (table) => {
       table.text("id").notNullable().unique();
       table.text("period_id").references("period.id");
-      table.text("period_state_id").references("period_state.id");
+      table.text("period_status_id").references("period_status.id");
     });
   }
 
@@ -157,11 +146,7 @@ export async function up(knex: Knex): Promise<void> {
           "Electronic",
         ])
         .notNullable();
-      table.enu("type", [
-        "income",
-        "expense",
-      ])
-        .notNullable();
+      table.enu("type", ["income", "expense"]).notNullable();
       table.float("amount").notNullable().defaultTo(0);
       table.text("description").nullable();
       table.text("user_id").unsigned();
