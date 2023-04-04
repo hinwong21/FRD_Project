@@ -6,13 +6,14 @@ import PeriodDay from "./PeriodDay";
 import PeriodRecord from "./PeriodRecord";
 
 const PeriodMain = () => {
+  //TODO 默認是顯示UpcomingPeriod，當periodDay = true，就顯示PeriodDay
   return (
     <IonPage>
       <IonContent>
-        {/* <UpcomingPeriod /> */}
+        <UpcomingPeriod />
 
         {/* <PeriodDay /> */}
-        <PeriodRecord />
+        {/* <PeriodRecord /> */}
         {/* <PeriodCalendar /> */}
       </IonContent>
     </IonPage>

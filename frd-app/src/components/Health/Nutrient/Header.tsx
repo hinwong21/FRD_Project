@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { NutritionState } from "../../../redux/Nutrition/store";
 import { HeaderNutrient } from "./HeaderNutrient";
 import { NutrientProgressBar } from "./NutrientProgressBar";
-import "./Nutrition.css";
+import style from "./Nutrition.module.scss"
 
 type DailyIntake = {
   caloriesDailyIntake?: number | any;
@@ -68,37 +68,37 @@ const HealthNutrition = () => {
   }, [dispatch]);
 
   return (
-    <div className="nutrient-header">
+    <div className={style.nutrientHeader}>
       {/* Calories */}
-      <div className="header-calories-container">
+      <div className={style.headerCaloriesContainer}>
         <div>
           {intake === undefined ? (
-            <div className="header-calories-left">
+            <div className={style.headerCaloriesLeft}>
               {dailyIntake?.caloriesDailyIntake} left
             </div>
           ) : (
-            <div className="header-calories-left">
+            <div className={style.headerCaloriesLeft}>
               {dailyIntake?.caloriesDailyIntake - intake.caloriesIntake} left
             </div>
           )}
-          <div className="daily-calories-intake">
+          <div className={style.dailyCaloriesIntake}>
             Daily calories intake: {dailyIntake?.caloriesDailyIntake}
           </div>
         </div>
         <div>
-          <div className="header-calories-intake">
+          <div className={style.headerCaloriesIntake}>
             {intake?.caloriesIntake} eaten
           </div>
         </div>
       </div>
-      <div className="calories-progressBar-container">
+      <div className={style.caloriesProgressBarContainer}>
         <NutrientProgressBar
           dailyIntake={dailyIntake?.caloriesDailyIntake}
           currentIntake={intake?.caloriesIntake}
         />
       </div>
 
-      <div className="header-nutrient-container">
+      <div className={style.headerNutrientContainer}>
         {/* Carbs */}
         <HeaderNutrient
           nutrient="carbs"

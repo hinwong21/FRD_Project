@@ -168,7 +168,6 @@ let Calculator: React.FC<{
   async function markCalculator() {
     const obj = Genres.filter((genre) => genre.id === selectedGenre)[0];
     // console.log(Genres, selectedGenre);
-    console.log("1111");
     if (!obj) {
       alert("Please select a Genres");
       return;

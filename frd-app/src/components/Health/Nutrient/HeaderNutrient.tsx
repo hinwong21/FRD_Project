@@ -1,5 +1,6 @@
 import React from "react";
 import { NutrientProgressBar } from "./NutrientProgressBar";
+import style from "./Nutrition.module.scss";
 
 export const HeaderNutrient = (props: {
   nutrient: string;
@@ -7,13 +8,13 @@ export const HeaderNutrient = (props: {
   DailyIntake: number | undefined;
 }) => {
   return (
-    <div className="header-nutrient">
+    <div className={style.headerNutrient}>
       <div>{props.nutrient}</div>
-      <div className="header-nutrient-index">
+      <div className={style.headerNutrientIndex}>
         {props.Intake}/ {""}
         <span style={{ color: "gray" }}>{props.DailyIntake}g</span>
       </div>
-      <div className="nutrient-progressBar-container">
+      <div className={style.nutrientProgressBarContainer}>
         <NutrientProgressBar
           dailyIntake={props.DailyIntake}
           currentIntake={props.Intake}

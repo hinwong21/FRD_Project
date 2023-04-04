@@ -42,10 +42,14 @@ export class AccountingController {
     getTransaction = async (req: Request, res: Response) => {
         try {
             // let userId = req.session.userId!
-            // const tranResult = await this.accountingService.getTransaction(userId)
-            const tranResult = await this.accountingService.getTransaction(req.session.userId as number)
+            // console.log()
+            const tranResult = await this.accountingService.getTransaction(1)
+            // const tranResult = await this.accountingService.getTransaction(req.session.userId as number)
+            console.log(tranResult);
             res.json(tranResult)
-            return
+
+
+            // return
         } catch (error) {
             errorHandler(error, req, res)
         }

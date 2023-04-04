@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { nutritionStore } from "../../../redux/Nutrition/store";
 import Header from "./Header";
 import { WaterBalance } from "./WaterBalance";
-import "./Nutrition.css";
 import { NutritionTracker } from "./NutritionTracker";
 import {
   IonPage,
