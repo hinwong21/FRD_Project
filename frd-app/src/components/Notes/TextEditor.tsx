@@ -1,5 +1,5 @@
 import {$getRoot, $getSelection} from 'lexical';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {
   EditorComposer,
   Editor,
@@ -22,7 +22,16 @@ import {
 import "./TextEditor.css"
 
 export function TextEditor(props:any) {
-  console.log(props.content.content)
+  const [addContent, setAddContent] = useState(props.content)
+
+
+  useEffect(()=>{
+    let textArea  = document.querySelector(".ContentEditable__root")
+    console.log(textArea)
+    console.log(addContent)
+    textArea!.innerHTML = addContent ;
+  },[])
+  
   return (
     <EditorComposer>
       <Editor hashtagsEnabled={true} emojisEnabled={true} autoLinkEnabled={true} >

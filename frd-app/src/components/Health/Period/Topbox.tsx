@@ -17,7 +17,10 @@ function Topbox(props: {
         <div>{props.periodDay}</div>
       </div>
       <div className={styles.upcomingOvulation}>{props.ovuDay}</div>
-      <Button btname={props.btname} />
+      <IonButton size="default" color={styles.btn} className={styles.btn}>
+        {props.btname}
+      </IonButton>
+      {/* <Button btname={props.btname} /> */}
     </div>
   );
 }

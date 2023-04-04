@@ -134,13 +134,13 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-.miniBox {
-  display: flex;
-  flex-direction: row;
   border-bottom: 1px solid #b9b6b6;
 }
+
+// .miniBox {
+//   display: flex;
+//   flex-direction: row;
+// }
 
 .statusDetailsBox {
   width: 97%;
@@ -197,7 +197,7 @@ h1 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .item {
@@ -253,7 +253,7 @@ h1 {
 
 .statusForm {
   margin-top: 5%;
-  margin-left: 5%;
+  margin-left: 7%;
   width: 91%;
 }
 
@@ -275,10 +275,24 @@ h1 {
 }
 
 //*** PeriodRecord ***//
-.statusContainer {
+.statusRecordContainer {
   margin-top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.goStatusBtn {
+  display: flex;
+  justify-content: center;
+}
+
+.topDayBox {
+  width: 97%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #b9b6b6;
 }

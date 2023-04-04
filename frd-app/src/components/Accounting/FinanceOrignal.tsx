@@ -21,12 +21,28 @@ export type TransactionType = {
   name: string;
   amount: string;
 };
+// type Genre = {
+//     food: number | string,
+//     drink: number | string,
+//     transport: number | string,
+//     entertainment: number | string,
+//     bill: number | string,
+//     consumption: number | string,
+//     income: number | string,
+//     medical: number | string,
+//     electronic: number | string,
 
-const Finance = (props: {
-  amount: number;
-  totalIncome: number;
-  totalExpense: number;
-}) => {
+// }
+
+// type Data = {
+//   amount: number;
+//   category: string;
+//   createdAt: string;
+//   type: string;
+//   id: number;
+// };
+
+const Finance = () => {
   const [transactions, setTransactions] = React.useState<TransactionType[]>([]);
   const [type, setType] = React.useState("");
   const [amount, setAmount] = React.useState<string>("0");
@@ -62,23 +78,23 @@ const Finance = (props: {
   const expenseTransactions = transactions.filter(
     (transaction) => transaction.type === "expense"
   );
-  // const totalIncome = useMemo(
-  //   () =>
-  //     incomeTransactions.reduce(
-  //       (total, transaction) => total + parseInt(transaction.amount),
-  //       0
-  //     ),
-  //   [transactions]
-  // );
-  // const totalExpense = useMemo(
-  //   () =>
-  //     expenseTransactions.reduce(
-  //       (total, transaction) => total + parseInt(transaction.amount),
-  //       0
-  //     ),
-  //   [transactions]
-  // );
-  const balance = props.totalIncome - props.totalExpense;
+  const totalIncome = useMemo(
+    () =>
+      incomeTransactions.reduce(
+        (total, transaction) => total + parseInt(transaction.amount),
+        0
+      ),
+    [transactions]
+  );
+  const totalExpense = useMemo(
+    () =>
+      expenseTransactions.reduce(
+        (total, transaction) => total + parseInt(transaction.amount),
+        0
+      ),
+    [transactions]
+  );
+  const balance = totalIncome - totalExpense;
 
   return (
     <>
@@ -99,23 +115,23 @@ const Finance = (props: {
           </div>
         </IonItem> */}
         <IonItem>
-          <IonLabel>Amount {props.amount}</IonLabel>
-          {/* <IonInput
+          <IonLabel>Amount</IonLabel>
+          <IonInput
             type="number"
             value={amount}
             onIonChange={(e) =>
               setAmount(parseFloat(e.detail.value!).toString())
             }
-          ></IonInput> */}
+          ></IonInput>
         </IonItem>
       </IonList>
       <IonList>
         <div className={style.balance}>
           <IonItem>
-            <IonLabel>Total Income: {props.totalIncome}</IonLabel>
+            <IonLabel>Total Income: ${totalIncome.toFixed(2)}</IonLabel>
           </IonItem>
           <IonItem>
-            <IonLabel>Total Expense: {props.totalExpense}</IonLabel>
+            <IonLabel>Total Expense: ${totalExpense.toFixed(2)}</IonLabel>
           </IonItem>
           <IonItem>
             <IonLabel>Balance: ${balance.toFixed(2)}</IonLabel>
