@@ -1,7 +1,7 @@
 import { IonIcon } from "@ionic/react";
 import { waterOutline } from "ionicons/icons";
 import React, { useState } from "react";
-import LevelBtn from "./LevelBtn";
+
 import styles from "./PeriodDate.module.scss";
 import { LevelInfo } from "./PeriodDay";
 
