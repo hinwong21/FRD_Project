@@ -18,6 +18,7 @@ import {
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
 import { Genres } from "./TransactionModal";
+
 import { log } from "console";
 
 // function Calculator() {
