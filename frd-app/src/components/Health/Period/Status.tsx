@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import styles from "./PeriodDate.module.scss";
 import RecordItems from "./RecordItems";
 
-//TODO onClick Fn , True or False, and then show the status detail
 function Status(props: {
   subtitle: string;
   date: string;
   statusType: string;
-  statusLv: string;
+  statusContent: string;
   fnDel: () => void;
 }) {
+  //onClick Fn , True or False, and then show the status detail
   const [openDetails, setOpenDetails] = useState(false);
 
   return (
@@ -57,7 +57,7 @@ function Status(props: {
           {openDetails && (
             <RecordItems
               statusType={props.statusType}
-              statusLv={props.statusLv}
+              statusContent={props.statusContent}
             />
           )}
         </div>

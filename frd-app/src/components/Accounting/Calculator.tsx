@@ -18,6 +18,7 @@ import {
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
 import { Genres } from "./TransactionModal";
+import { log } from "console";
 
 // function Calculator() {
 //     const [result, setResult] = useState("");
@@ -167,7 +168,7 @@ let Calculator: React.FC<{
   async function markCalculator() {
     const obj = Genres.filter((genre) => genre.id === selectedGenre)[0];
     // console.log(Genres, selectedGenre);
-
+    console.log("1111");
     if (!obj) {
       alert("Please select a Genres");
       return;
@@ -178,7 +179,6 @@ let Calculator: React.FC<{
       return;
     }
     let newObj = Object.assign(obj, { amount: result });
-    console.log(newObj);
 
     /* Put data to database */
     // useEffect(() => {
@@ -195,9 +195,13 @@ let Calculator: React.FC<{
       console.log("jsoned");
       let json = await res.json();
 
+      // if (!res.ok) {
       if (!json.ok) {
         alert(json.errMess);
       }
+      addCalculator(newObj);
+      clearResult();
+      close();
     } catch (error) {
       console.error(error);
       alert("error occurred");
@@ -211,12 +215,6 @@ let Calculator: React.FC<{
     //   type: type,
     //   amount: parseFloat(result),
     // };
-    addCalculator(newObj);
-    console.log("addCalculator");
-    clearResult();
-    console.log("clearResult");
-    close();
-    console.log("close");
   }
   /* AC button function */
   function clearResult() {

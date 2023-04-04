@@ -26,7 +26,7 @@ export const Nutrition = () => {
           <IonTitle>Nutrition</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="page-container">
+      <IonContent>
         <Provider store={nutritionStore}>
           <Header />
         </Provider>
