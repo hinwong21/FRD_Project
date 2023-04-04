@@ -33,6 +33,7 @@ import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
+import PeriodRecord from "./components/Health/Period/PeriodRecord";
 
 setupIonicReact();
 
@@ -69,6 +70,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/Health-periodCalendar" exact={true}>
                 <PeriodCalendar />
+              </Route>
+              <Route path="/Health-periodRecordDetails" exact={true}>
+                <PeriodRecord />
               </Route>
               <Route path="*" exact={true}>
                 <div>404 not found</div>

@@ -18,10 +18,11 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import PeriodCalendar from "./PeriodCanlender";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Topbox from "./Topbox";
 import Datebox from "./Datebox";
 import Status from "./Status";
+import Button from "./Button";
 
 const UpcomingPeriod = () => {
   const [currentDate, setCurrentDate] = useState(
@@ -37,6 +38,10 @@ const UpcomingPeriod = () => {
   const handleAddStatus = () => {
     const newStatus = { date: currentDate, status: "New Status" };
     setLogs([...logs, newStatus]);
+  };
+  const submit = useHistory();
+  const handleHistory = () => {
+    submit.push("/Health-periodRecordDetails");
   };
 
   //Has record or not,
@@ -81,6 +86,16 @@ const UpcomingPeriod = () => {
 
               {/* <Status subtitle="status" date={startDate} /> */}
             </div>
+          </div>
+          <div className={styles.goStatusBtn}>
+            <IonButton
+              size="default"
+              color={styles.btn}
+              className={styles.btn}
+              onClick={handleHistory}
+            >
+              status record
+            </IonButton>
           </div>
         </div>
       </IonContent>

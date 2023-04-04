@@ -18,3 +18,8 @@ editorsRoutes.get(
     "/memo",
     editorsController.getMemo
   );
+
+editorsRoutes.put(
+    "/update-memo",
+    editorsController.updateMemo
+  );
