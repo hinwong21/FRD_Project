@@ -28,7 +28,6 @@ import {
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { log } from "console";
 
 export const Calendar_zh = () => {
   const [modalState, setModalState] = useState(false);

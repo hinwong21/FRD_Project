@@ -14,7 +14,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Finance, { TransactionType } from "./Finance";
 
 export interface Genre {
@@ -71,84 +71,6 @@ export const Genres: Genre[] = [
   },
 ];
 
-// function TransactionModal(props: {
-//   isTran: boolean;
-//   close: () => void;
-//   addTransaction: (transaction: TransactionType) => void;
-// }) {
-//   // const [selectedGenre, setSelectedGenre] = useState(0);
-//   const [selectedGenre, setSelectedGenre] = useState("");
-//   const [amount, setAmount] = useState<number>();
-//   // function addTransaction() {
-//   //   let type = Genres.find((genre) => genre.id == selectedGenre)?.name;
-//   //   if (!type) return;
-
-//   //   if (!amount) return;
-
-//   //   // TODO ajax
-
-//   //   props.addTransaction({ id: 1, type, amount });
-//   //   props.close();
-//   // }
-//   return (
-//     <IonModal isOpen={props.isTran}>
-//       <IonHeader>
-//         <IonToolbar>
-//           <IonButtons slot="start">
-//             <IonButton onClick={props.close}>Close</IonButton>
-//           </IonButtons>
-//           <IonTitle>Review</IonTitle>
-//           {/* <IonButtons slot="end">
-//             <IonButton
-//               disabled={!selectedGenre || !amount}
-//               onClick={addTransaction}
-//             >
-//               Add
-//             </IonButton>
-//           </IonButtons> */}
-//         </IonToolbar>
-//       </IonHeader>
-//       <IonContent>
-//         <IonList>
-//           <IonItem>
-//             <IonLabel>Genre</IonLabel>
-//             <IonSelect
-//               multiple={true}
-//               compareWith={compareWith}
-//               onIonChange={(ev) =>
-//                 setSelectedGenre(JSON.stringify(ev.detail.value))
-//               }
-//               // value={selectedGenre}
-//             >
-//               {Genres.map((Genre) => (
-//                 <IonSelectOption
-//                   key={Genre.id}
-//                   // value={Genre.id}
-//                   value={Genre}
-//                 >
-//                   {Genre.name}
-//                 </IonSelectOption>
-//               ))}
-//             </IonSelect>
-//           </IonItem>
-//           <IonItem lines="none">
-//             {/* <IonLabel>Current value</IonLabel>
-//             <IonInput
-//               type="number"
-//               value={amount}
-//               onIonChange={(e) => setAmount(+(e.detail.value || ""))}
-//             ></IonInput> */}
-//             <IonLabel>Current value: {selectedGenre}</IonLabel>
-//           </IonItem>
-//         </IonList>
-//         <Finance />
-//       </IonContent>
-//     </IonModal>
-//   );
-// }
-
-// export default TransactionModal;
-
 const compareWith = (o1: Genre, o2: Genre) => {
   if (!o1 || !o2) {
     return o1 === o2;
@@ -166,35 +88,52 @@ function TransactionModal(props: {
   close: () => void;
   addTransaction: (transaction: TransactionType) => void;
 }) {
-  const [selectedGenre, setSelectedGenre] = useState("");
-  const [amount, setAmount] = useState<string>("");
+  // const [selectedGenre, setSelectedGenre] = useState(0);
+  const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
+  const [amount, setAmount] = useState<string>("500");
 
-  // const addTransaction = () => {
-  //   if (!selectedGenre || !amount) return;
-
-  //   const genre = JSON.parse(selectedGenre) as Genre;
+  // useEffect(() => {
+  //   getTransaction();
+  // }, []);
 
   async function getTransaction() {
-    let type = Genres.find((genre) => genre.name === selectedGenre)?.name;
-    if (!type || !amount) return;
+    // console.log(selectedGenre);
+    let type = Genres.find((obj) => obj.name == selectedGenre)?.name;
+    console.log(type, amount);
+    if (!type) return;
+
+    if (!amount) return;
 
     // TODO ajax
-    try {
-      const res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`
-      );
-      let json = await res.json();
-      if (!json.ok) {
-        alert(json.errMess);
-      }
-    } catch (error) {
-      console.error(error);
-      alert("error occurred");
+    const res = await fetch(
+      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`
+    );
+    let json = await res.json();
+    console.log(json, "ssssssssss");
+    if (!json.ok) {
+      alert(json.errMess);
     }
-
-    props.addTransaction({ id: 1, type, name: "", amount });
-    props.close();
   }
+  // useEffect(() => {
+  //   async function getData() {
+  //     let type = Genres.find((genre) => genre.name === selectedGenre)?.name;
+  //     if (!type) return;
+
+  //     if (!amount) return;
+
+  //     const res = await fetch(
+  //       `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`
+  //     );
+  //     let json = await res.json();
+  //     if (!json.ok) {
+  //       alert(json.errMess);
+
+  //       props.addTransaction({ id: 1, type: "", name: "", amount });
+  //     }
+  //   }
+
+  //   getData();
+  // }, [selectedGenre, amount]);
 
   return (
     <IonModal isOpen={props.isTran}>
@@ -207,7 +146,7 @@ function TransactionModal(props: {
           {/* <IonButtons slot="end">
             <IonButton
               disabled={!selectedGenre || !amount}
-              onClick={addTransaction}
+              onClick={getTransaction}
             >
               Add
             </IonButton>
@@ -221,34 +160,36 @@ function TransactionModal(props: {
             <IonSelect
               multiple={false}
               compareWith={compareWith}
-              onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
-              value={selectedGenre}
+              onIonChange={(ev) => setSelectedGenre(ev.detail.value.name)}
             >
-              {Genres.map((genre) => (
-                <IonSelectOption key={genre.id} value={JSON.stringify(genre)}>
-                  {genre.name}
+              {Genres.map((Genre) => (
+                <IonSelectOption
+                  key={Genre.id}
+                  // value={Genre.id}
+                  value={Genre}
+                >
+                  {Genre.name}
                 </IonSelectOption>
               ))}
             </IonSelect>
           </IonItem>
           <IonItem lines="none">
-            <IonLabel>
-              Current value:
-              {selectedGenre && JSON.parse(selectedGenre).name},
-              {getTransaction()}
-            </IonLabel>
+            {/* <IonLabel>Current value</IonLabel>
             <IonInput
               type="number"
               value={amount}
-              // onIonChange={(e) => setAmount(+(e.detail.value || ""))}
-              onIonChange={(e) => setAmount(e.detail.value!)}
-            ></IonInput>
+              onIonChange={(e) => setAmount(+(e.detail.value || ""))}
+            ></IonInput> */}
+            <IonLabel>
+              Current value:
+              {selectedGenre !== null && selectedGenre}
+            </IonLabel>
           </IonItem>
         </IonList>
         <Finance />
+        <IonButton onClick={getTransaction}>submit</IonButton>
       </IonContent>
     </IonModal>
   );
 }
-
 export default TransactionModal;

@@ -10,6 +10,7 @@
     "pg": "^8.10.0",
     "populate-env": "^2.0.0",
     "react-hook-form": "^7.43.8",
+    "react-html-parser": "^2.0.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

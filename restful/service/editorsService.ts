@@ -9,11 +9,18 @@ export class EditorsService {
   addMemo = async (id: number, content:string, userId:number)=>{
     await this.knex.insert({
         id: id,
-        content: content,
+        content: JSON.stringify(content),
         user_id:userId
     }).into("memo")
   }
 
+  getMemo = async (userId:number)=>{
+    const memos = await this.knex("memo")
+    .select("*")
+    .where("user_id",userId)
+    console.log(memos)
+    return memos;
+  }
   
   
 }

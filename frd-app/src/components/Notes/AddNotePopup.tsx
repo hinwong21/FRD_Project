@@ -194,7 +194,7 @@ export const AddNotePopup: React.FC = () => {
     }
 
     function confirm_todo() {
-      modal.current?.dismiss(input.current?.value, 'confirm');
+      modal.current?.dismiss("", 'confirm');
     }
 
     return (
