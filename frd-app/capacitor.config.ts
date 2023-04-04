@@ -10,8 +10,13 @@ const config: CapacitorConfig = {
     FirebaseAuthentication: {
       skipNativeAuth: false,
       providers: ["apple.com", "google.com"]
-    }
+    },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"]
+    },
+    cordova: {}
   },
+
   server: {
     url: process.env.REACT_APP_IP,
     cleartext: true,
