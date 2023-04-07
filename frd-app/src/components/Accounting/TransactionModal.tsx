@@ -16,6 +16,8 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import Finance, { TransactionType } from "./Finance";
+import { Pie } from "react-chartjs-2";
+import { AccountingChart } from "./AccountingChart";
 
 export interface Genre {
   id: number;
@@ -207,6 +209,7 @@ function TransactionModal(props: {
         )}
 
         <IonButton onClick={getTransaction}>submit</IonButton>
+        <AccountingChart />
       </IonContent>
     </IonModal>
   );

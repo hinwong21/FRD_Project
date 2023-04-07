@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>499965291407-dm47i35nmblb2r4euagkt7gp6judo8ev.apps.googleusercontent.com</string>
+	<string>53836002713-bp3716l998ggto1elcfvk6tsacs8be2p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.499965291407-dm47i35nmblb2r4euagkt7gp6judo8ev</string>
+	<string>com.googleusercontent.apps.53836002713-bp3716l998ggto1elcfvk6tsacs8be2p</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAKIzP2VYav-1LyQgOEdJ6t42W6g84RhbY</string>
+	<string>AIzaSyBPpathklhuIuczbbgwiWIsW6j2JKCokwA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>499965291407</string>
+	<string>53836002713</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.noticias0218081905181021.app</string>
 	<key>PROJECT_ID</key>
-	<string>noticias-df956</string>
+	<string>noticias-66f4d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>noticias-df956.appspot.com</string>
+	<string>noticias-66f4d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:499965291407:ios:c31e313f081e11328a79fa</string>
+	<string>1:53836002713:ios:66bd074ec18e1f45bbcf08</string>
 </dict>
 </plist>

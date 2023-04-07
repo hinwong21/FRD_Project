@@ -1,15 +1,21 @@
 import express from "express";
-import { isLoggedInAPI } from "../guard";
-import { knex } from "../database/db";
 import { CurrentUserController } from "../controller/currentUserController";
+import { isLoggedInAPI } from "../guard";
+import { CurrentUserService } from "../service/currentUserService";
+import { knex } from "../database/db";
 
 
 export let userRoutes = express.Router();
 
-
-let currentUserController = new CurrentUserController ();
+let currentUserService = new CurrentUserService(knex)
+let currentUserController = new CurrentUserController(currentUserService);
 
 userRoutes.get(
-  "/current",
-  currentUserController.currentUser
+  "/verifyToken", isLoggedInAPI,
+  currentUserController.verifyToken
 );
+
+userRoutes.post(
+  "/getToken",
+  currentUserController.getToken
+)

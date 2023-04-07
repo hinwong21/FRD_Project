@@ -2,8 +2,12 @@ import React from "react";
 import style from "./Login.module.scss";
 import { logoApple } from "ionicons/icons";
 import { IonContent, IonIcon, IonPage } from "@ionic/react";
-import { googleSignIn } from "../../service/firebaseConfig";
-import { setName } from "../../service/LocalStorage/LocalStorage";
+import {
+  googleSignIn,
+  signInWithApple,
+  signOut,
+} from "../../service/firebaseConfig";
+import { getName, setName } from "../../service/LocalStorage/LocalStorage";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "../../atoms";
 export const Login = () => {
@@ -13,15 +17,64 @@ export const Login = () => {
 
   async function handleGoogleSignIn() {
     let user = await googleSignIn();
+
+    if (user) {
+      // login success
+      let pushNotificationToken = await getName("push_notification_token");
+      let res = await fetch(
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/getToken`,
+        {
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+          body: JSON.stringify({
+            userId: user.uid,
+            pushNotificationToken: pushNotificationToken,
+          }),
+        }
+      );
+      let json = await res.json();
+      if (json.ok) {
+        await setName("token", json.data);
+        setIsLogin((isLogin) => {
+          let newState = { ...isLogin };
+          newState.isLogin = true;
+          return newState;
+        });
+      } else {
+        await signOut();
+        setIsLogin((isLogin) => {
+          let newState = { ...isLogin };
+          newState.isLogin = false;
+          return newState;
+        });
+      }
+    } else {
+      setIsLogin((isLogin) => {
+        let newState = { ...isLogin };
+        newState.isLogin = false;
+        return newState;
+      });
+    }
+  }
+
+  async function handleAppleSignIn() {
+    let user = await signInWithApple();
     console.log(user);
     if (user) {
       // login success
       let res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/getToken`
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/getToken`,
+        {
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+          body: JSON.stringify({
+            userId: user.uid,
+          }),
+        }
       );
       let json = await res.json();
       if (json.ok) {
-        await setName("token", json.data.token);
+        await setName("token", json.data);
         setIsLogin((isLogin) => {
           let newState = { ...isLogin };
           newState.isLogin = true;
@@ -73,6 +126,7 @@ export const Login = () => {
                   id="appleId-signIn"
                   className={style.appleId}
                   datatype="sign-in"
+                  onClick={handleAppleSignIn}
                 >
                   <IonIcon
                     className={style.appleIcon}

@@ -1,26 +1,35 @@
 import { initializeApp } from "firebase/app";
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 
+
 const firebaseConfig = {
-    apiKey: "AIzaSyBpN_KwJWo4Lt0cHgwQSS07OGUsmV9y-Mo",
-    authDomain: "noticias-df956.firebaseapp.com",
-    projectId: "noticias-df956",
-    storageBucket: "noticias-df956.appspot.com",
-    messagingSenderId: "499965291407",
-    appId: "1:499965291407:web:a8659d7bb75af8428a79fa",
-    measurementId: "G-19R71RTGWT"
+    apiKey: "AIzaSyDYzcWJBFuJNplhLYZTFbRMICzNvSGodBM",
+    authDomain: "noticias-66f4d.firebaseapp.com",
+    projectId: "noticias-66f4d",
+    storageBucket: "noticias-66f4d.appspot.com",
+    messagingSenderId: "53836002713",
+    appId: "1:53836002713:web:86e182cc677713f2bbcf08",
+    measurementId: "G-FJWCGF0G1W"
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+
+
 
 export let googleSignIn = async () => {
     const result = await FirebaseAuthentication.signInWithGoogle();
+    console.log(result);
     return result.user;
 };
 
 
-const signInWithApple = async () => {
+
+
+export const signInWithApple = async () => {
     const result = await FirebaseAuthentication.signInWithApple();
     return result.user;
 };
 
+export const signOut = async () => {
+    await FirebaseAuthentication.signOut();
+};

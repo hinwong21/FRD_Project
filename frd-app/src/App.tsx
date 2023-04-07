@@ -39,11 +39,18 @@ import { loginState } from "./atoms";
 import { MainPage } from "./components/Main/MainPage";
 import RoutesIsLogin from "./RoutesIsLogin";
 import RoutesIsNotLogin from "./RoutesIsNotLogin";
-import { getName } from "./service/LocalStorage/LocalStorage";
+import { getName, setName } from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
-
+// import { Device } from "@capacitor/device";
+import { PushNotifications } from "@capacitor/push-notifications";
 setupIonicReact();
+// const logDeviceInfo = async () => {
+//   const info = await Device.getInfo();
+//   if (info.platform === "web") {
 
+//   }
+// };
+// logDeviceInfo();
 const App: React.FC = () => {
   const setIsLogin = useSetRecoilState(loginState);
   const getIsLogin = useRecoilValue(loginState);
@@ -51,9 +58,10 @@ const App: React.FC = () => {
   useEffect(() => {
     async function main() {
       let token = await getName("token");
+
       if (token) {
         let res = await fetch(
-          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/verifyToken`,
+          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/verifyToken`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -61,6 +69,7 @@ const App: React.FC = () => {
           }
         );
         let json = await res.json();
+
         if (json.ok) {
           setIsLogin((isLogin) => {
             let newState = { ...isLogin };
@@ -84,6 +93,55 @@ const App: React.FC = () => {
     }
     main();
   }, []);
+  useEffect(() => {
+    const main = async () => {
+      await reg_push_notifications_token();
+      await reg_push_notification_listeners();
+    };
+    main();
+  }, []);
+  const reg_push_notification_listeners = async () => {
+    await PushNotifications.addListener("registration", async (token) => {
+      console.log("Registration token: ", token.value);
+      await setName("push_notification_token", token.value);
+    });
+
+    await PushNotifications.addListener("registrationError", (err) => {
+      console.log("Registration error: ", err.error);
+    });
+
+    await PushNotifications.addListener(
+      "pushNotificationReceived",
+      (notification) => {
+        console.log("Push notification received: ", notification);
+      }
+    );
+
+    await PushNotifications.addListener(
+      "pushNotificationActionPerformed",
+      (notification) => {
+        console.log(
+          "Push notification action performed",
+          notification.actionId,
+          notification.inputValue
+        );
+      }
+    );
+  };
+  const reg_push_notifications_token = async () => {
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === "prompt") {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+
+    if (permStatus.receive !== "granted") {
+      throw new Error("User denied permissions!");
+    }
+
+    await PushNotifications.register();
+  };
+
   // const [isLogin, setIsLogin] = useState<boolean>(false);
   // const cbLoginFunc = useCallback(() => changeLogin, []);
   // function changeLogin() {
