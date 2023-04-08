@@ -2,7 +2,9 @@
     resize:none;
     height: 85vh;
    /* min-height: 80vh; */
+   text-transform: none;
 }
+
 
 .toolbar select.toolbar-item{
     margin-top: 3px;
@@ -12,3 +14,12 @@
 .toolbar{
     height:45px;
 }
+
+.Modal__modal{
+    max-width: 80vw;
+}
+
+img{
+    max-width: 55vw !important;
+}
+

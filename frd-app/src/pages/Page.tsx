@@ -13,11 +13,12 @@ import Calendar from "../components/Calendar/Calendar";
 
 import Health from "../components/Health/Health";
 import { MainPage } from "../components/Main/MainPage";
-import DiaryEditor from "../components/Notes/DiaryEditor";
+import DiaryEditor from "../components/Notes/Diary/DiaryEditor";
 import { Notepad } from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
 import { EditMemo } from "../components/Notes/Notes";
+import { EditDiary } from "../components/Notes/Diary/Diaries";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -48,6 +49,9 @@ const Page: React.FC = () => {
       break;
     case "EditMemo":
       fetchPage = <EditMemo />;
+      break;
+    case "EditDiary":
+      fetchPage = <EditDiary />;
       break;
   }
 

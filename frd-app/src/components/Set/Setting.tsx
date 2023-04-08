@@ -6,6 +6,10 @@ import {
   IonTitle,
   IonIcon,
   IonAlert,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonToolbar,
 } from "@ionic/react";
 import React, { memo, useState, useRef } from "react";
 import { calendarNumberOutline } from "ionicons/icons";
@@ -37,6 +41,15 @@ export const Setting = () => {
 
   return (
     <>
+    <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>Setting</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      
       <IonList>
         <IonTitle>Calendar</IonTitle>
         <IonItem>

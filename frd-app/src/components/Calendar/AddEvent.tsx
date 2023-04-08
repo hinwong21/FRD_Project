@@ -17,6 +17,7 @@ import {
   IonSelectOption,
   IonList,
   IonAlert,
+  IonToast,
 } from "@ionic/react";
 import { useState} from "react";
 //   import { useParams } from "react-router";
@@ -40,9 +41,7 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
   const [location, setLocation] = useState("Hong Kong");
   const [color, setColor] = useState("blue");
 
-  const handleAlertDismissNewEvent = () => {
-    setShowAlertNewEvent(false);
-  };
+
 
   async function handleSubmit () {
     // event.preventDefault();
@@ -166,12 +165,7 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
         </IonContent>
       </IonPage>
 
-      <IonAlert
-        isOpen={showAlertNewEvent}
-        onDidDismiss={handleAlertDismissNewEvent}
-        message={alertMsgNewEvent}
-        buttons={["OK"]}
-      ></IonAlert>
+      <IonToast isOpen={showAlertNewEvent} message={alertMsgNewEvent} duration={5000}></IonToast>
     </>
   );
 };

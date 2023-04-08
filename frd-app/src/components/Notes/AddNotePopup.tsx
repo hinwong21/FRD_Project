@@ -24,21 +24,17 @@ import {
   faPen,
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { DiaryEditor } from "./DiaryEditor";
-import { TodoListEditor } from "./TodoListEditor";
-import MemoEditor, { TextEditor } from "./TextEditor";
+import { DiaryEditor } from "./Diary/DiaryEditor";
+import { TodoEditor } from "./Todo/TodoEditor";
+import MemoEditor, { TextEditor } from "./TextEditor/TextEditor";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
-import { log } from "console";
 
 
 
 export const AddNotePopup: React.FC = () => {
-  // const [diaryOpen, setDiaryOpen] = useState(false)
-  // const [memoOpen, setMemoOpen] = useState(false)
-  // const [todoOpen, setTodoOpen] = useState(false)
 
 
   const list = {
@@ -92,6 +88,9 @@ export const AddNotePopup: React.FC = () => {
 
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
+    const [diaryWeather, setDiaryWeather] = useState("")
+    const [title, setTitle] = useState("")
+    const [mood, setMood] = useState("")
 
     function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
@@ -99,11 +98,35 @@ export const AddNotePopup: React.FC = () => {
       }
     }
 
-    function confirm_diary() {
+    let id = uuidv4()
+   async function confirm_diary() {
       modal.current?.dismiss("", 'confirm');
       const diaryContent = document.querySelector('.ContentEditable__root')?.innerHTML
-      console.log(diaryContent)
-      
+
+      const res = await fetch ("http://localhost:8080/editors/new-diary",{
+        method: "POST",
+        headers:{"Content-type":"application/json"},
+        body: JSON.stringify({
+          id: id,
+          content:diaryContent,
+          weather: diaryWeather,
+          title:title,
+          mood:mood,
+        })
+      })
+      const json= await res.json()
+      console.log(json)
+    }
+
+    function handleCallbackWeather(childData: any) {
+      setDiaryWeather(childData)
+    }
+
+    function handleCallbackTitleAndMood(childData:any){
+      setTitle(childData.title)
+      setMood(childData.selected)
+      console.log(title)
+      console.log(mood)
     }
 
     return (
@@ -123,7 +146,7 @@ export const AddNotePopup: React.FC = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <DiaryEditor/>
+            <DiaryEditor handleCallbackWeather = {handleCallbackWeather} handleCallbackTitleAndMood={handleCallbackTitleAndMood}/>
           </IonContent>
         </IonModal>
       
@@ -186,6 +209,7 @@ export const AddNotePopup: React.FC = () => {
 
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
+    const [todoListTitle, setTodoListTitle] = useState("")
 
     function onWillDismiss_todo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
@@ -197,6 +221,10 @@ export const AddNotePopup: React.FC = () => {
       modal.current?.dismiss("", 'confirm');
     }
 
+    function handleCallback(childData:any){
+      setTodoListTitle(childData.todoTitle)
+    }
+
     return (
       <>
       <IonModal ref={modal} trigger="openTodo" onWillDismiss={(ev) => onWillDismiss_todo(ev)}>
@@ -205,7 +233,7 @@ export const AddNotePopup: React.FC = () => {
               <IonButtons slot="start">
                 <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
               </IonButtons>
-              <IonTitle>New Todo</IonTitle>
+              <IonTitle>{todoListTitle}</IonTitle>
               <IonButtons slot="end">
                 <IonButton strong={true} onClick={() => confirm_todo()}>
                   Confirm
@@ -214,7 +242,7 @@ export const AddNotePopup: React.FC = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <TodoListEditor/>
+            <TodoEditor handleCallback = {handleCallback}/>
           </IonContent>
         </IonModal>
       </>

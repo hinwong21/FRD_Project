@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Special+Elite&display=swap');
+
 .dayWeatherIcon{
      width: 120px;
      padding-right: 30px;
@@ -36,4 +38,27 @@
     font-size: 40px !important;
 }
 
+.selected{
+    color:red;
+    border-radius: 50%;
+    box-shadow: 0 0 15px 5px #dde048;
+    background-color: #dde048; 
+}
 
+.emotionSelectionBlock{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: space-between;
+    border-style:dashed;
+    border-width: 2px;
+    border-color: gray;
+    border-radius: 10px;
+}
+
+.diaryTitleInput{
+    font-size: 22px;
+    font-family: 'Special Elite', cursive;
+    font-weight: bolder;
+    color: #415b76;
+}

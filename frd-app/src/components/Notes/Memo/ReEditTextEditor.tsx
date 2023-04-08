@@ -1,4 +1,3 @@
-import {$getRoot, $getSelection} from 'lexical';
 import {useEffect, useState} from 'react';
 import {
   EditorComposer,
@@ -8,7 +7,6 @@ import {
   BackgroundColorPicker,
   BoldButton,
   CodeFormatButton,
-  FloatingLinkEditor,
   FontFamilyDropdown,
   FontSizeDropdown,
   InsertDropdown,
@@ -19,17 +17,15 @@ import {
   UnderlineButton,
   Divider,
 } from 'verbum';
-import "./TextEditor.css"
+import "../TextEditor/TextEditor.css"
 
-export function TextEditor(props:any) {
+export function ReEditTextEditor(props:any) {
   const [addContent, setAddContent] = useState(props.content)
-
-
+  
+  
   useEffect(()=>{
     let textArea  = document.querySelector(".ContentEditable__root")
-    console.log(textArea)
-    console.log(addContent)
-    textArea!.innerHTML = addContent ;
+    textArea!.innerHTML = addContent;
   },[])
   
   return (
@@ -57,4 +53,4 @@ export function TextEditor(props:any) {
   );
 }
 
-export default TextEditor;
+export default ReEditTextEditor;

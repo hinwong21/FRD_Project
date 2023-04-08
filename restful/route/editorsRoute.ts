@@ -23,3 +23,13 @@ editorsRoutes.put(
     "/update-memo",
     editorsController.updateMemo
   );
+
+editorsRoutes.post(
+    "/new-diary",
+    editorsController.newDiary
+  );
+
+editorsRoutes.get(
+    "/diary",
+    editorsController.getDiary
+  );

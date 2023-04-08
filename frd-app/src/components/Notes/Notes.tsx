@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./Notes.module.css";
 import { Link } from "react-router-dom";
 import {
@@ -14,10 +10,13 @@ import {
   IonTitle,
   IonContent,
   IonPage,
+  IonItem,
+  IonItemDivider,
+  IonItemGroup,
+  IonLabel,
 } from "@ionic/react";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
-import DiaryEditor from "./DiaryEditor";
-import MemoEditor, { TextEditor } from "./TextEditor";
+import ReEditTextEditor from "./Memo/ReEditTextEditor";
 import { useLocation } from "react-router-dom";
 
 type MemoType = {
@@ -44,39 +43,49 @@ export const Notes: React.FC = () => {
     getMemo();
   }, []);
 
-
   return (
     <>
-      <div className={styles.memoWrapper}>
-        {memoContent.map((item, index) => (
-          <Link
-            to={{ pathname: "./EditMemo", state: {data: item.content, id: item.id} }}
-            className={styles.memoAContainer}
-            key={index}
-          >
-            <div
-              dangerouslySetInnerHTML={{ __html: JSON.parse(item.content) }}
-              className={styles.memoBlock}
-            ></div>
-            <div className={styles.memoUpdatedTime}>
-              {item.updated_at.slice(0, 10)}
-            </div>
-          </Link>
-        ))}
-      </div>
+      <div>Good Day, {}</div>
+
+      <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>Today</IonLabel>
+        </IonItemDivider>
+
+        {/* <IonItem>
+         
+        </IonItem> */}
+      </IonItemGroup>
+
+      <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>Tomorrow</IonLabel>
+        </IonItemDivider>
+
+        {/* <IonItem>
+         
+        </IonItem> */}
+      </IonItemGroup>
+
+      <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>The Day After Tomorrow</IonLabel>
+        </IonItemDivider>
+
+        {/* <IonItem>
+         
+        </IonItem> */}
+      </IonItemGroup>
     </>
   );
 };
-
-
 
 export const EditMemo = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
 
-
   const [memoEditorContent, setMemoEditorContent] = useState({});
-  const [memoEditorId, setMemoEditorId] = useState("")
+  const [memoEditorId, setMemoEditorId] = useState("");
 
   function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -84,32 +93,34 @@ export const EditMemo = () => {
     }
   }
 
-  async function confirm_memo () {
+  async function confirm_memo() {
     modal.current?.dismiss("", "confirm");
 
-    const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
-    const res = await fetch ("http://localhost:8080/editors/update-memo",{
-      method: "POST",
-      headers:{"Content-type":"application/json"},
+    const memoContent = document.querySelector(
+      ".ContentEditable__root"
+    )?.innerHTML;
+    const res = await fetch("http://localhost:8080/editors/update-memo", {
+      method: "PUT",
+      headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         id: memoEditorId,
-        content:memoContent
-      })
-    })
-    await res.json()
+        content: memoContent,
+      }),
+    });
+    // await res.json()
   }
 
   type dataType = {
-    data:string,
-    id:string
-  }
+    data: string;
+    id: string;
+  };
 
   const location = useLocation();
-  const data= location.state as dataType;
-  
+  const data = location.state as dataType;
+
   useEffect(() => {
-    setMemoEditorContent(`${JSON.parse(data.data as string)}`)
-    setMemoEditorId(data.id)
+    setMemoEditorContent(`${JSON.parse(data.data as string)}`);
+    setMemoEditorId(data.id);
   }, []);
 
   return (
@@ -136,7 +147,7 @@ export const EditMemo = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <MemoEditor content={memoEditorContent}/>
+            <ReEditTextEditor content={memoEditorContent} />
           </IonContent>
         </IonModal>
       </IonPage>
