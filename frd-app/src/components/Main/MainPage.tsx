@@ -15,7 +15,7 @@ export const MainPage = () => {
     const getUserLocal = async () => {
       const { value } = await Preferences.get({ key: "users" });
       if (value == null) {
-        setLoggedIn("false")
+        setLoggedIn("false");
       } else {
         setLoggedIn("true");
         const { value } = await Preferences.get({ key: "dailyCheckIn" });
@@ -37,18 +37,12 @@ export const MainPage = () => {
 
   return (
     <>
-      {loggedIn === "false" ? (
-        <Login />
-      ) :
-      //  loggedIn === "true" && dailyCheckIn === "true" ? 
-      (
-        <IonPage>
+      <Login />
+
+      {/* <IonPage>
           <IonContent fullscreen>
             <div className={style.mainContainer}>
               <MainHeader />
-
-              {/* <div className={style.mainPhrase}>見字飲水</div> */}
-
               <div className={style.mainEventHeader}>Today Schedule</div>
               <div className={style.mainEventContainer}>
                 <ul>
@@ -89,10 +83,7 @@ export const MainPage = () => {
               </footer>
             </div>
           </IonContent>
-        </IonPage>
-      // ) : (
-      //   <Calendar />
-      )}
+        </IonPage> */}
     </>
   );
 };
