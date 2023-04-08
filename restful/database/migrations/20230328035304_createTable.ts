@@ -6,10 +6,11 @@ export async function up(knex: Knex): Promise<void> {
       table.text("id").notNullable().unique();
       table.string("username", 60).notNullable();
       table.string("email", 255).notNullable().unique();
-      table.text("gender").notNullable();
-      table.integer("age").notNullable();
-      table.integer("height").notNullable();
-      table.integer("weight").notNullable();
+      table.text("gender").nullable();
+      table.integer("age").nullable();
+      table.integer("height").nullable();
+      table.integer("weight").nullable();
+      table.string("push_notification_token").nullable();
     });
   }
 

@@ -25,9 +25,9 @@ const Page: React.FC = () => {
 
   let fetchPage = <></>;
   switch (name) {
-    case "Main":
-      fetchPage = <MainPage />;
-      break;
+    // case "Main":
+    //   fetchPage = <MainPage />;
+    //   break;
     case "Calender":
       fetchPage = <Calendar />;
       break;

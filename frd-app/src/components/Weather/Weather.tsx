@@ -8,7 +8,8 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
-import "./Weather.css";
+import style from "./Weather.module.scss";
+import { Loading } from "./Loading";
 
 type Data = {
   temperature: number;
@@ -93,48 +94,58 @@ export function Weather() {
         </IonHeader>
 
         <IonContent fullscreen>
-          <div className="page-container">
-            <div className="weather-location">Hong Kong</div>
-            {<div className="todayWeather-temp">{data?.temperature}°C</div>}
-            {
-              <div className="todayWeather-humidity">
-                Humidity: {data?.humidity}%
-              </div>
-            }
-
-            <div className="todayWeather-uvindex-container">
+          {!data2 || Object.keys(data2).length === 0 ? (
+            <Loading />
+          ) : (
+            <div className={style.pageContainer}>
+              <div className={style.weatherLocation}>Hong Kong</div>
               {
-                <div className="todayWeather-uvindex-value">
-                  Ultraviolet index: {data?.uvindexValue}
+                <div className={style.todayWeatherTemp}>
+                  {data?.temperature}°C
                 </div>
               }
-              {<div>{data?.uvindexdesc}</div>}
-            </div>
+              {
+                <div className={style.todayWeatherHumidity}>
+                  Humidity: {data?.humidity}%
+                </div>
+              }
 
-            <div className="nineDayWeather-container">
-              <div className="dayWeather-header-container">
-                <div className="dayWeather-header">9-day Weather Forecast</div>
+              <div className={style.todayWeatherUvIndexContainer}>
+                {
+                  <div className={style.todayWeatherUvIndexValue}>
+                    Ultraviolet index: {data?.uvindexValue}
+                  </div>
+                }
+                {<div>{data?.uvindexdesc}</div>}
               </div>
-              {data2?.nineDayWeather.map((forecastDate, index) => (
-                <div className="dayWeather" key={index}>
-                  <div className="dayWeather-week">
-                    {data2?.nineDayWeather[index].week}
-                  </div>
-                  <div className="dayWeather-icon-container">
-                    <img
-                      className="dayWeather-icon"
-                      src={`https://www.hko.gov.hk/images/HKOWxIconOutline/pic${data2?.nineDayWeather[index].ForecastIcon}.png`}
-                      alt="weather icon"
-                    />
-                  </div>
-                  <div className="dayWeather-temp">
-                    {data2?.nineDayWeather[index].forecastMintemp.value} -{" "}
-                    {data2?.nineDayWeather[index].forecastMaxtemp.value}°C
+
+              <div className={style.nineDayWeatherContainer}>
+                <div className={style.dayWeatherHeaderContainer}>
+                  <div className={style.dayWeatherHeader}>
+                    9-day Weather Forecast
                   </div>
                 </div>
-              ))}
+                {data2?.nineDayWeather.map((forecastDate, index) => (
+                  <div className={style.dayWeather} key={index}>
+                    <div className={style.dayWeatherWeek}>
+                      {data2?.nineDayWeather[index].week}
+                    </div>
+                    <div className={style.dayWeatherIconContainer}>
+                      <img
+                        className={style.dayWeatherIcon}
+                        src={`https://www.hko.gov.hk/images/HKOWxIconOutline/pic${data2?.nineDayWeather[index].ForecastIcon}.png`}
+                        alt="weather icon"
+                      />
+                    </div>
+                    <div className={style.dayWeatherTemp}>
+                      {data2?.nineDayWeather[index].forecastMintemp.value} -{" "}
+                      {data2?.nineDayWeather[index].forecastMaxtemp.value}°C
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </IonContent>
       </IonPage>
     </>

@@ -1,0 +1,78 @@
+.pageContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.weatherLocation {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.todayWeatherTemp {
+  font-size: 60px;
+}
+
+.todayWeatherHumidity {
+  margin: 10px;
+}
+
+.todayWeatherUvIndexContainer {
+  display: flex;
+}
+
+.todayWeatherUvIndexValue {
+  margin-right: 10px;
+}
+
+.nineDayWeatherContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.dayWeatherHeaderContainer {
+  height: 30px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  background-color: #32393f;
+  color: #818a89;
+  border: solid #eae4b4 1px;
+  border-radius: 5;
+}
+
+.dayWeatherHeader {
+  margin-left: 10px;
+}
+
+.dayWeather {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #32393f;
+  color: white;
+  border: solid #eae4b4 1px;
+}
+
+.dayWeatherWeek {
+  width: 100px;
+  margin: 10px;
+  margin-left: 20px;
+}
+
+.dayWeatherIconContainer {
+  width: 100px;
+}
+
+.dayWeatherIcon {
+  height: 40px;
+  margin: 10px;
+}
+
+.dayWeatherTemp {
+  letter-spacing: 2px;
+  margin-right: 20px;
+}

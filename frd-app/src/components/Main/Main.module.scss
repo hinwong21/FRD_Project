@@ -1,0 +1,142 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+  font-family: "Times New Roman", Times, serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+.mainHeaderContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainDate {
+  font-size: 40px;
+  font-weight: 900;
+  margin-top: 10px;
+}
+
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+  // background-color: #c8d7ec;
+  color: #74777a;
+  height: 10vh;
+  width: 90vw;
+  margin-top: 10px;
+}
+
+.mainGreeting {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.mainFortune {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.fortuneColor {
+  color: rgba(222, 18, 18, 0.849);
+}
+
+.rightMainHeader {
+  display: flex;
+  align-items: center;
+  font-size: 36px;
+}
+
+.dayWeatherIcon {
+  width: 45px;
+  height: 45px;
+  margin-right: 10px;
+}
+
+.mainPhrase {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.mainEventContainer {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  max-height: 50vh;
+  // border: 1px solid black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #74777a;
+  background-color: white;
+  overflow: scroll;
+  box-shadow: 0px 0.5px 5px rgba(132, 119, 113, 0.704);
+}
+
+.mainEventHeader {
+  width: 90vw;
+  background-color: #a3b7cb;
+  padding: 5px;
+  color: white;
+  font-size: 16px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-shadow: 0px 0.5px 5px rgba(132, 119, 113, 0.704);
+}
+
+.mainEventHeader ul {
+  list-style: none;
+}
+
+.mainEventHeader ul li::before {
+  content: "\2022";
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+  color: #aeabab;
+}
+
+.mainEvent {
+  margin: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #aeabab;
+  width: 70vw;
+  font-size: 20px;
+}
+
+.space {
+  height: 2px;
+}
+
+.mainFooter {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.calenderBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 50px;
+  background-color: #a3b7cb;
+  // background-color: #bb9e90;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 700;
+  margin-top: 20px;
+  box-shadow: 0px 0.5px 5px rgba(132, 119, 113, 0.704);
+  position: fixed;
+}
+
+.calenderBtn:hover {
+  color: #222222;
+}

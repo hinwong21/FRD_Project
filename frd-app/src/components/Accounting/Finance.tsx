@@ -11,7 +11,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { add, remove } from "ionicons/icons";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import style from "./Finance.module.scss";
 
@@ -21,23 +21,17 @@ export type TransactionType = {
   name: string;
   amount: string;
 };
-// type Genre = {
-//     food: number | string,
-//     drink: number | string,
-//     transport: number | string,
-//     entertainment: number | string,
-//     bill: number | string,
-//     consumption: number | string,
-//     income: number | string,
-//     medical: number | string,
-//     electronic: number | string,
 
-// }
-
-const Finance: React.FC = () => {
+const Finance = (props: {
+  amount: number;
+  totalIncome: number;
+  totalExpense: number;
+}) => {
   const [transactions, setTransactions] = React.useState<TransactionType[]>([]);
   const [type, setType] = React.useState("");
   const [amount, setAmount] = React.useState<string>("0");
+  // const [data, setData] = useState<Data[]>([]);
+
   const today = new Date(); // 获取当前时间
   const date = `${today.getFullYear()}-${(today.getMonth() + 1)
     .toString()
@@ -68,23 +62,23 @@ const Finance: React.FC = () => {
   const expenseTransactions = transactions.filter(
     (transaction) => transaction.type === "expense"
   );
-  const totalIncome = useMemo(
-    () =>
-      incomeTransactions.reduce(
-        (total, transaction) => total + parseInt(transaction.amount),
-        0
-      ),
-    [transactions]
-  );
-  const totalExpense = useMemo(
-    () =>
-      expenseTransactions.reduce(
-        (total, transaction) => total + parseInt(transaction.amount),
-        0
-      ),
-    [transactions]
-  );
-  const balance = totalIncome - totalExpense;
+  // const totalIncome = useMemo(
+  //   () =>
+  //     incomeTransactions.reduce(
+  //       (total, transaction) => total + parseInt(transaction.amount),
+  //       0
+  //     ),
+  //   [transactions]
+  // );
+  // const totalExpense = useMemo(
+  //   () =>
+  //     expenseTransactions.reduce(
+  //       (total, transaction) => total + parseInt(transaction.amount),
+  //       0
+  //     ),
+  //   [transactions]
+  // );
+  const balance = props.totalIncome - props.totalExpense;
 
   return (
     <>
@@ -105,23 +99,23 @@ const Finance: React.FC = () => {
           </div>
         </IonItem> */}
         <IonItem>
-          <IonLabel>Amount</IonLabel>
-          <IonInput
+          <IonLabel>Amount {props.amount}</IonLabel>
+          {/* <IonInput
             type="number"
             value={amount}
             onIonChange={(e) =>
               setAmount(parseFloat(e.detail.value!).toString())
             }
-          ></IonInput>
+          ></IonInput> */}
         </IonItem>
       </IonList>
       <IonList>
         <div className={style.balance}>
           <IonItem>
-            <IonLabel>Total Income: ${totalIncome.toFixed(2)}</IonLabel>
+            <IonLabel>Total Income: {props.totalIncome}</IonLabel>
           </IonItem>
           <IonItem>
-            <IonLabel>Total Expense: ${totalExpense.toFixed(2)}</IonLabel>
+            <IonLabel>Total Expense: {props.totalExpense}</IonLabel>
           </IonItem>
           <IonItem>
             <IonLabel>Balance: ${balance.toFixed(2)}</IonLabel>
@@ -179,4 +173,5 @@ const Finance: React.FC = () => {
     </>
   );
 };
+
 export default Finance;

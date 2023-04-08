@@ -1,6 +1,7 @@
 import UIKit
 import Capacitor
-
+import FirebaseAuth
+import Firebase
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -8,6 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure();
         return true
     }
 
@@ -34,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if Auth.auth().canHandle(url) {
+            return true
+        }
         // Called when the app was launched with a url. Feel free to add additional processing here,
         // but if you want the App API to support tracking app url opens, make sure to keep this call
         return ApplicationDelegateProxy.shared.application(app, open: url, options: options)
@@ -45,5 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // tracking app url opens, make sure to keep this call
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
-
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    Messaging.messaging().apnsToken = deviceToken
+    Messaging.messaging().token(completion: { (token, error) in
+      if let error = error {
+          NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+      } else if let token = token {
+          NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: token)
+      }
+    })
+    }
 }
