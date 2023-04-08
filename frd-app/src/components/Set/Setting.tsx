@@ -6,11 +6,17 @@ import {
   IonTitle,
   IonIcon,
   IonAlert,
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonToolbar,
+  IonContent,
 } from "@ionic/react";
 import React, { memo, useState, useRef } from "react";
 import { calendarNumberOutline } from "ionicons/icons";
 import styles from "./Setting.module.css"; // import {env} from "../../../env"
-import { Redirect } from "react-router";
+import { PersonalSetting } from "./PersonalSetting";
 
 export const Setting = () => {
   const [showAlert, setShowAlert] = useState(false);
@@ -18,9 +24,12 @@ export const Setting = () => {
 
   async function getGoogleCalendarEvents() {
     // let port = env.EXPRESS_SERVER_URL
-    const res = await fetch("http://localhost:8080/calendar/google-calendar-authorization", {
-      method: "GET",
-    });
+    const res = await fetch(
+      "http://localhost:8080/calendar/google-calendar-authorization",
+      {
+        method: "GET",
+      }
+    );
     const json = await res.json();
     if (json.success) {
       setShowAlert(true);
@@ -37,29 +46,43 @@ export const Setting = () => {
 
   return (
     <>
-      <IonList>
-        <IonTitle>Calendar</IonTitle>
-        <IonItem>
-          <IonLabel>
-            <div className={styles.settingIcon}>
-              <IonIcon icon={calendarNumberOutline}></IonIcon>
-            </div>
-            <div className={styles.settingTitle}>Google Calendar</div>
-            <div>Import from Google Calendar</div>
-          </IonLabel>
-          <IonToggle
-            slot="end"
-            onIonFocus={getGoogleCalendarEvents}
-          ></IonToggle>
-        </IonItem>
-      </IonList>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton />
+            </IonButtons>
+            <IonTitle>Setting</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonList>
+            <IonTitle>Calendar</IonTitle>
+            <IonItem>
+              <IonLabel>
+                <div className={styles.settingIcon}>
+                  <IonIcon icon={calendarNumberOutline}></IonIcon>
+                </div>
+                <div className={styles.settingTitle}>Google Calendar</div>
+                <div>Import from Google Calendar</div>
+              </IonLabel>
+              <IonToggle
+                slot="end"
+                onIonFocus={getGoogleCalendarEvents}
+              ></IonToggle>
+            </IonItem>
+          </IonList>
 
-      <IonAlert
-        isOpen={showAlert}
-        onDidDismiss={handleAlertDismiss}
-        message={alertMsg}
-        buttons={["OK"]}
-      ></IonAlert>
+          <IonAlert
+            isOpen={showAlert}
+            onDidDismiss={handleAlertDismiss}
+            message={alertMsg}
+            buttons={["OK"]}
+          ></IonAlert>
+
+          <PersonalSetting />
+        </IonContent>
+      </IonPage>
     </>
   );
 };

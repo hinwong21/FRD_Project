@@ -34,6 +34,7 @@ import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
+import { Edit } from "./components/Set/Edit";
 
 setupIonicReact();
 
@@ -74,6 +75,12 @@ const App: React.FC = () => {
               <Route path="/Health-periodRecordDetails" exact={true}>
                 <PeriodRecord />
               </Route>
+
+              {/* Setting page: edit personal information */}
+              <Route path="/Edit" exact={true}>
+                <Edit />
+              </Route>
+              
               <Route path="*" exact={true}>
                 <div>404 not found</div>
               </Route>

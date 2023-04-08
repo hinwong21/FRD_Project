@@ -1,0 +1,51 @@
+.editHeaderContainer {
+  height: 30px;
+  border-bottom: 1px solid black;
+}
+
+.editHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+}
+
+.headerBack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.editContainer {
+  margin: 10px;
+}
+
+.editItemContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editInput {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+}
+
+.clearBtn {
+  font-size: 8px;
+  height: 16px;
+  width: 16px;
+  color: white;
+  background-color: rgb(107, 107, 107);
+  border-radius: 50%;
+  cursor: pointer;
+}

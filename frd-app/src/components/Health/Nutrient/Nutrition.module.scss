@@ -1,14 +1,10 @@
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .nutrientHeader {
   height: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: #222222;
 }
 
 .headerCaloriesContainer {
@@ -140,6 +136,7 @@ body {
 .foodTrackerWrapper {
   display: flex;
   justify-content: center;
+  color: #222222;
 }
 
 .foodTrackerContainer {
@@ -175,7 +172,7 @@ body {
 }
 
 .mealType {
-  font-size: 12px;
+  font-size: 14px;
   margin: 10px 10px 0px 10px;
 }
 
@@ -257,7 +254,7 @@ body {
 }
 
 .foodName {
-  width: 100px;
+  width: 150px;
   overflow: hidden;
 }
 

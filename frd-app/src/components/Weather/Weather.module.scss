@@ -1,48 +1,38 @@
-body {
-  background-color: #dbdcd4;
-}
-
-.page-container {
+.pageContainer {
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
-.weather-location {
+.weatherLocation {
   font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
 }
 
-.todayWeather-temp {
+.todayWeatherTemp {
   font-size: 60px;
 }
 
-.todayWeather-humidity {
+.todayWeatherHumidity {
   margin: 10px;
 }
 
-.todayWeather-uvindex-container {
+.todayWeatherUvIndexContainer {
   display: flex;
 }
 
-.todayWeather-uvindex-value {
+.todayWeatherUvIndexValue {
   margin-right: 10px;
 }
 
-.weather-icon {
-  width: 50px;
-  height: 50px;
-}
-
-.nineDayWeather-container {
+.nineDayWeatherContainer {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
 }
 
-.dayWeather-header-container {
-  /* width: 700px; */
+.dayWeatherHeaderContainer {
   height: 30px;
   font-size: 12px;
   display: flex;
@@ -53,12 +43,11 @@ body {
   border-radius: 5;
 }
 
-.dayWeather-header {
+.dayWeatherHeader {
   margin-left: 10px;
 }
 
 .dayWeather {
-  /* width: 700px; */
   height: 60px;
   display: flex;
   flex-direction: row;
@@ -68,22 +57,22 @@ body {
   border: solid #eae4b4 1px;
 }
 
-.dayWeather-week {
+.dayWeatherWeek {
   width: 100px;
   margin: 10px;
   margin-left: 20px;
 }
 
-.dayWeather-icon-container {
+.dayWeatherIconContainer {
   width: 100px;
 }
 
-.dayWeather-icon {
+.dayWeatherIcon {
   height: 40px;
   margin: 10px;
 }
 
-.dayWeather-temp {
+.dayWeatherTemp {
   letter-spacing: 2px;
   margin-right: 20px;
 }

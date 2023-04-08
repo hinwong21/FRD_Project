@@ -2,10 +2,19 @@ import React from "react";
 import style from "./Login.module.scss";
 import { logoApple } from "ionicons/icons";
 import { IonContent, IonIcon, IonPage } from "@ionic/react";
+import { Preferences } from "@capacitor/preferences";
 
 export const Login = () => {
   let googleIcon =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327";
+
+  const loggedIn = async () => {
+    await Preferences.set({
+      key: "users",
+      value: "1",
+    });
+    window.location.reload();
+  };
   return (
     <>
       <IonPage>
@@ -23,6 +32,7 @@ export const Login = () => {
                   id="googleId-signIn"
                   className={style.googleId}
                   datatype="sign-in"
+                  onClick={loggedIn}
                 >
                   <img
                     className={style.googleIcon}

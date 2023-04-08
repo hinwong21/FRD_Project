@@ -1,12 +1,45 @@
-.settingItem{
-    font-size: 15px;
+.settingItem {
+  font-size: 15px;
 }
 
-.settingIcon{
-    font-size: 30px;
+.settingIcon {
+  font-size: 30px;
 }
 
-.settingTitle{
-    font-size: 18px;
-    font-weight: bolder;
+.settingTitle {
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.settingHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.settingContainer {
+  display: flex;
+  width: 100vw;
+  border-bottom: 2px solid gray;
+  cursor: pointer;
+}
+
+.settingContainer:hover {
+  color: white;
+  background-color: gray;
+}
+
+.settingItemContainer {
+  display: flex;
+  margin: 10px;
+}
+
+.settingItem {
+  width: 100px;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.settingItemResult {
+  text-transform: lowercase;
 }

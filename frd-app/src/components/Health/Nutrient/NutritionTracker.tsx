@@ -53,7 +53,6 @@ export const NutritionTracker = () => {
   useEffect(() => {
     const getMealsLocal = async () => {
       const { value } = await Preferences.get({ key: "meals" });
-      console.log(value, 123);
 
       if (value !== null) {
         setMeals(JSON.parse(value));
