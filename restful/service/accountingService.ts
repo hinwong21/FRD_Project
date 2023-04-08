@@ -1,8 +1,7 @@
 import { Knex } from "knex";
-import { log } from "console";
 
 export class AccountingService {
-  constructor(private knex: Knex) {}
+  constructor(private knex: Knex) { }
 
   addTransaction = async (
     id: number,
@@ -26,7 +25,7 @@ export class AccountingService {
       console.log(addTransaction);
       return addTransaction;
     } catch (error) {
-      console.error("Error occurred while adding transaction: ", error);
+      throw new Error(`Error occurred while adding transaction: ${error.message}`);
     }
   };
 
@@ -46,10 +45,10 @@ export class AccountingService {
     try {
       let getTransaction = await this.knex("transaction")
         .select("*")
-        .where({ user_id: userId});
+        .where({ user_id: userId });
       return getTransaction;
     } catch (error) {
-      console.error("Error occurred while getting transaction", error);
+      throw new Error(`Error occurred while adding transaction: ${error.message}`);
     }
   };
 }

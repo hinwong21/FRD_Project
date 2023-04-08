@@ -14,6 +14,7 @@ export let env_config = {
   URL: "",
   DB_HOST: "",
   DB_PORT: "",
+  SEREST: ""
 };
 
 populateEnv(env_config, { mode: "halt" });

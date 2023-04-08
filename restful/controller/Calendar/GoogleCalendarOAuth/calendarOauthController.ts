@@ -1,4 +1,3 @@
-import express from "express";
 import { errorHandler } from "../../../error";
 const fs = require("fs").promises;
 import path from "path";
@@ -62,12 +61,12 @@ export class CalendarOauthController {
         return client;
       }
 
-      let listEvents= async (auth: OAuth2Client)=> {
+      let listEvents = async (auth: OAuth2Client) => {
         let pageToken: string | undefined | null = undefined;
         let allEvents: any[] = [];
         const calendar = google.calendar({ version: "v3", auth });
-        do{
-          const res:any = await calendar.events.list({
+        do {
+          const res: any = await calendar.events.list({
             calendarId: "primary",
             timeMin: new Date().toISOString(),
             maxResults: 1000,
@@ -75,36 +74,36 @@ export class CalendarOauthController {
             orderBy: "startTime",
             pageToken,
           });
-          const events = res.data.items||[];
+          const events = res.data.items || [];
           allEvents = allEvents.concat(events);
           pageToken = res.data.nextPageToken;
-        }while (pageToken);
-       
+        } while (pageToken);
+
         if (allEvents.length === 0) {
           console.log("No upcoming events found.");
-          res.json({"eventArr": "No upcoming events found", "success": true})
+          res.json({ "eventArr": "No upcoming events found", "success": true })
           return;
         }
 
-        let eventArr: {}[]= [];
+        let eventArr: {}[] = [];
 
         allEvents.map((event, i) => {
           eventArr.push({
             "title": event.summary,
-            "start": event.start.dateTime ? event.start.dateTime.slice(0,10) + " "+ event.start.dateTime.slice(11,16) :event.start.date,
-            "end": event.end.dateTime ? event.end.dateTime.slice(0,10)+ " " + event.end.dateTime.slice(11,16) : event.end.date,
-            "extendedProps": {"description": event.description? event.description : "No Description"},
+            "start": event.start.dateTime ? event.start.dateTime.slice(0, 10) + " " + event.start.dateTime.slice(11, 16) : event.start.date,
+            "end": event.end.dateTime ? event.end.dateTime.slice(0, 10) + " " + event.end.dateTime.slice(11, 16) : event.end.date,
+            "extendedProps": { "description": event.description ? event.description : "No Description" },
             "backgroundColor": event.colorId,
-            "textColor" : "white"
+            "textColor": "white"
           })
         });
 
         console.log(eventArr);
         console.log(req.session);
-        
-        
+
+
         this.calendarOauthService.calendarAuthorization(req.session.userId as number, eventArr as {}[])
-        res.json({eventArr, "success":true})
+        res.json({ eventArr, "success": true })
       }
 
       authorize().then(listEvents)
