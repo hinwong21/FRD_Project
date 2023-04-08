@@ -9,13 +9,9 @@ import {
   IonButtons,
   IonHeader,
   IonMenuButton,
-<<<<<<< HEAD
-  IonToolbar,
-=======
   IonPage,
   IonToolbar,
   IonContent,
->>>>>>> f2e9ac2d983e83cddc48d0b7f307bed23bf2f8f0
 } from "@ionic/react";
 import React, { memo, useState, useRef } from "react";
 import { calendarNumberOutline } from "ionicons/icons";
@@ -50,33 +46,6 @@ export const Setting = () => {
 
   return (
     <>
-<<<<<<< HEAD
-    <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>Setting</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      
-      <IonList>
-        <IonTitle>Calendar</IonTitle>
-        <IonItem>
-          <IonLabel>
-            <div className={styles.settingIcon}>
-              <IonIcon icon={calendarNumberOutline}></IonIcon>
-            </div>
-            <div className={styles.settingTitle}>Google Calendar</div>
-            <div>Import from Google Calendar</div>
-          </IonLabel>
-          <IonToggle
-            slot="end"
-            onIonFocus={getGoogleCalendarEvents}
-          ></IonToggle>
-        </IonItem>
-      </IonList>
-=======
       <IonPage>
         <IonHeader>
           <IonToolbar>
@@ -103,7 +72,6 @@ export const Setting = () => {
               ></IonToggle>
             </IonItem>
           </IonList>
->>>>>>> f2e9ac2d983e83cddc48d0b7f307bed23bf2f8f0
 
           <IonAlert
             isOpen={showAlert}
