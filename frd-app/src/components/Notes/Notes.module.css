@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Special+Elite&display=swap');
+
 .addNotes{
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    right:40px;
-    bottom: 70px;
+    right: 20px;
+    bottom: 40px;
+    z-index:999;
 }
 
 
@@ -39,6 +42,8 @@ button.item-native::after{
     flex-wrap: wrap;
     margin-right:15px;
     margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 40px;    
   }
 
   .memoBlock{
@@ -55,7 +60,6 @@ button.item-native::after{
 
   .memoAContainer{
     width: 100px;
-    height: 100px;
     margin: 6px;
     text-decoration: none;
   }
@@ -66,3 +70,203 @@ button.item-native::after{
     text-align: center;
     color: gray;
   }
+
+  .todayLabel{
+    background-color: rgba(50, 58, 214, 0.374);
+    padding: 2px;
+    border-radius: 5px;
+  }
+
+  .diaryLabel{
+    background-color: rgba(76, 93, 220, 0.374);
+    padding: 2px;
+    border-radius: 5px;
+  }
+
+  .memoLabel{
+    background-color: rgba(178, 139, 139, 0.374);
+    padding: 2px;
+    border-radius: 5px;
+  }
+
+  .todoLabel{
+    background-color: rgba(123, 224, 209, 0.374);
+    padding: 2px;
+    border-radius: 5px;
+  }
+
+  .dayWeatherIcon{
+    width: 120px;
+    padding-right: 30px;
+}
+
+.weatherWrapper{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   width: 100%;
+   margin-top: 2vh;
+   margin-bottom: 1vh;
+   border-radius: 10px;
+   background-color: rgba(55, 141, 194, 0.357);
+   font-size: 16px;
+   color: white;
+   background-image: url("./Diary/weather_background/cloudy.jpg");
+}
+
+.mainWrapper{
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   width: 90%;
+   margin-left: 15px;
+   margin-right: 15px;
+   margin-bottom:20px;
+}
+
+.dateAndTemp{
+   padding-left: 30px;
+   padding-top: 20px;
+}
+
+.temperature{
+   font-size: 40px !important;
+}
+
+.diaryWrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 40px;    
+}
+
+.diaryBlock{
+  padding:10px;
+  border-width: 5px;
+  border-color: red;
+  font-size: 10px;
+  /* width: 65vw; */
+  height: 167px;
+  overflow:hidden;
+  background-color: rgb(255, 255, 255);
+}
+
+.diaryAContainer{
+  width: 85vw;
+  height: 200px;
+  margin: 6px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  border-color:white;
+  border-radius: 5px;
+  border-width: 5px;
+  border-style: solid;
+  margin-top: 20px;
+}
+
+.diaryMood{
+  position: relative;
+  bottom: 46px;
+  left: 244px;
+  font-size: 33px;
+}
+
+.diaryUpdatedTime{
+  font-size: 16px;
+  color: rgb(110, 110, 110);
+  width:16vw;
+  background-color: #a0a2c0c0;
+  padding:6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.diaryTitleText{
+  margin-left: 10px;
+  padding-top: 5px;
+}
+
+.diaryDateAdjPosition{
+  position: relative;
+  top: 22px;
+}
+
+.diaryContent{
+  width:69vw;
+}
+
+.diaryWeek{
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 20px;
+  color:rgb(235, 235, 60);
+  font-weight: bold;
+}
+
+.diaryDate{
+  display: flex;
+  flex-direction: column;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-weight: bold;
+  color:aliceblue
+}
+
+.diaryDateDay{
+  font-size: 30px;
+}
+
+.diaryDateMonth{
+  font-size: 18px;
+}
+
+.diaryDateYear{
+  font-size: 18px;
+}
+
+.diaryTitle{
+  color:black;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: white;
+  height:25px;
+}
+
+.diaryChooseDate{
+  position: absolute;
+  right: 5vw;
+  top:135px;
+  z-index:999;
+}
+
+
+.selected{
+  color:red;
+  border-radius: 50%;
+  box-shadow: 0 0 15px 5px #dde048;
+  background-color: #dde048; 
+}
+
+.emotionSelectionBlock{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  justify-content: space-between;
+  border-style:dashed;
+  border-width: 2px;
+  border-color: gray;
+  border-radius: 10px;
+}
+
+.diaryTitleInput{
+  font-size: 22px;
+  font-family: 'Special Elite', cursive;
+  font-weight: bolder;
+  color: #415b76;
+}
+

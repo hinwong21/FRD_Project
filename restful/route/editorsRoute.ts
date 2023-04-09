@@ -19,6 +19,16 @@ editorsRoutes.get(
 );
 
 editorsRoutes.put(
-  "/update-memo",
-  editorsController.updateMemo
-);
+    "/update-memo",
+    editorsController.updateMemo
+  );
+
+editorsRoutes.post(
+    "/new-diary",
+    editorsController.newDiary
+  );
+
+editorsRoutes.get(
+    "/diary",
+    editorsController.getDiary
+  );

@@ -21,7 +21,7 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
       table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
       table.timestamp("deleted_at").nullable().defaultTo(knex.fn.now());
-      table.integer("weather").notNullable();
+      table.text("weather").notNullable();
       table.text("user_id").references("users.id");
     });
   }
