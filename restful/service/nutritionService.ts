@@ -3,10 +3,12 @@ import { Knex } from "knex";
 export class NutritionService {
   constructor(private knex: Knex) {}
 
-  getDailyIntake = async (userId: number, date:Date) => {
+  getDailyIntake = async (userId: string, date: Date) => {
     try {
       let user = await this.knex("users").select("*").where("id", userId);
-      let nutrient = await this.knex("nutrition").select("*").where({"user_id": userId, "date": date});
+      let nutrient = await this.knex("nutrition")
+        .select("*")
+        .where({ user_id: userId, date: date });
       return {
         user,
         nutrient,
@@ -17,8 +19,8 @@ export class NutritionService {
   };
 
   updateDailyIntake = async (
-    id: number,
-    userId: number,
+    id: string,
+    userId: string,
     calories: number,
     carbs: number,
     protein: number,
