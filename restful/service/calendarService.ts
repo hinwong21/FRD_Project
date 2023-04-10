@@ -6,7 +6,7 @@ export class CalendarService {
   }
 
 
-  getGoogleCalendarEvent = async (userId: number) => {
+  getGoogleCalendarEvent = async (userId: string) => {
     let data = await this.knex("google_calendar")
       .select("*")
       .where("user_id", userId)
@@ -16,7 +16,7 @@ export class CalendarService {
     return data;
   }
 
-  getLocalCalendarEvent = async (userId: number) => {
+  getLocalCalendarEvent = async (userId: string) => {
     let data = await this.knex("calendar")
       .select("*")
       .where("user_id", userId)
@@ -26,7 +26,7 @@ export class CalendarService {
     return data;
   }
 
-  createLocalCalendarEvent = async (eventData: any, userId: number) => {
+  createLocalCalendarEvent = async (eventData: any, userId: string) => {
     await this.knex
       .insert({
         id: eventData.id,

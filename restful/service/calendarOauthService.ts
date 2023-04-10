@@ -6,7 +6,7 @@ export class CalendarOauthService {
     this.knex = knex;
   }
 
-  calendarAuthorization = async (userId: number, content: {}[]) => {
+  calendarAuthorization = async (userId: string, content: {}[]) => {
     await this.knex("google_calendar").insert({
       id: uuidv4(),
       user_id: userId,

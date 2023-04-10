@@ -3,6 +3,7 @@ import style from "./Nutrition.module.scss";
 import { useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { v4 as uuidv4 } from "uuid";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";
 
@@ -193,7 +194,7 @@ export const NutritionTracker = () => {
         `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
       )
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
           const foodItem = data.foods[0];
           const foodNutrients = foodItem.foodNutrients;
 
@@ -252,12 +253,15 @@ export const NutritionTracker = () => {
             });
           };
           setNutrientLocal();
-
           let id = uuidv4();
+          let token = await getName("token");
           // update daily intake to database
           fetch(`http://localhost:8080/nutrition/dailyIntake`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               id: id,
               calories: caloriesNutrient.value,

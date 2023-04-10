@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import { NutritionState } from "../../../redux/Nutrition/store";
 import { HeaderNutrient } from "./HeaderNutrient";
 import { NutrientProgressBar } from "./NutrientProgressBar";
-import style from "./Nutrition.module.scss"
+import style from "./Nutrition.module.scss";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
 
 type DailyIntake = {
   caloriesDailyIntake?: number | any;
@@ -21,11 +22,24 @@ const HealthNutrition = () => {
   useEffect(() => {
     const getDailyIntake = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/nutrition/userData`);
+        let token = await getName("token");
+        const res = await fetch(
+          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/nutrition/userData`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
         const json = await res.json();
+        console.log(json);
 
         let age = json.result.user[0].age;
         let weight = json.result.user[0].weight;
+        if (weight == null) {
+          weight = 55;
+        }
+
         let height = json.result.user[0].height;
         let gender = json.result.user[0].gender;
 
