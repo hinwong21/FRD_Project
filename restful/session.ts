@@ -9,17 +9,17 @@ export let sessionMiddleware = expressSession({
   saveUninitialized: true,
 });
 
-declare module "express-session" {
+declare module 'express-session' {
   interface SessionData {
-    userId?: string;
-    email?: string;
-    isLogin?: boolean;
-    CalendarAuthorized?: boolean;
+    userId?: string
+    email?: string
+    isLogin?: boolean
+    CalendarAuthorized?: boolean
     GoogleOauth?: {
-      type?: string | undefined;
-      client_id?: string | undefined;
-      client_secret?: string | undefined;
-      refresh_token?: string | null | undefined;
-    };
+      type?: string | undefined,
+      client_id?: string | undefined,
+      client_secret?: string | undefined,
+      refresh_token?: string | null | undefined,
+    }
   }
 }

@@ -120,7 +120,16 @@ export class CalendarOauthController {
         res.json({ eventArr, success: true });
       };
 
+<<<<<<< HEAD
+        this.calendarOauthService.calendarAuthorization(req.session.userId!, eventArr as {}[])
+        res.json({ eventArr, "success": true })
+      }
+
+      authorize().then(listEvents)
+
+=======
       authorize().then(listEvents);
+>>>>>>> origin
     } catch (err) {
       errorHandler(err, req, res);
     }
