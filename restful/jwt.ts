@@ -3,7 +3,6 @@ import sha512 from "js-sha512";
 import express from "express";
 import { env_config } from "./env";
 let sha384 = sha512.sha384;
-// let secret = 'ashdkjashdsadasdsadsadajkashdkjashdkjhasjkdakjsdh'
 export const createJwt = (user_id: string) => {
     // create Header
     let header = JSON.stringify({

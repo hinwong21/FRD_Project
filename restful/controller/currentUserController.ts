@@ -32,6 +32,8 @@ export class CurrentUserController {
             let { uid, displayName, email } = user as { uid: string, displayName: string, email: string }
             await this.currentUserService.createUser(uid, displayName, email, pushNotificationToken)
             let token = createJwt(uid)
+            console.log(token);
+
             res.json({
                 ok: true,
                 isErr: null,

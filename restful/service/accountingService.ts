@@ -4,25 +4,28 @@ export class AccountingService {
   constructor(private knex: Knex) { }
 
   addTransaction = async (
-    id: number,
+    // id: number,
     name: string,
     type: string,
     amount: string,
-    description?: string
+    description: string,
+    userId: string,
+
   ) => {
     try {
       let addTransaction = await this.knex("transaction")
         .insert([
           {
+            // id: id,
             category: name,
             type: type,
             amount: amount,
-            user_id: "1", //插個"1" ok?
             description: description,
+            user_id: userId,
           },
         ])
         .returning("*");
-      console.log(addTransaction);
+      console.log('accountingService.ts', addTransaction);
       return addTransaction;
     } catch (error) {
       throw new Error(`Error occurred while adding transaction: ${error.message}`);
@@ -41,14 +44,17 @@ export class AccountingService {
   //     }
   // }
 
-  getTransaction = async (userId: number) => {
+  getTransaction = async (userId: string) => {
     try {
       let getTransaction = await this.knex("transaction")
         .select("*")
-        .where({ user_id: userId });
+        // .where({ user_id: userId });
+        .where("user_id", userId)
+      console.log(getTransaction);
+
       return getTransaction;
     } catch (error) {
-      throw new Error(`Error occurred while adding transaction: ${error.message}`);
+      throw new Error(`Error occurred while getting transaction: ${error.message}`);
     }
   };
 }

@@ -102,7 +102,7 @@ export class CalendarOauthController {
         console.log(req.session);
 
 
-        this.calendarOauthService.calendarAuthorization(req.session.userId as number, eventArr as {}[])
+        this.calendarOauthService.calendarAuthorization(req.session.userId!, eventArr as {}[])
         res.json({ eventArr, "success": true })
       }
 

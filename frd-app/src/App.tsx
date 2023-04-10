@@ -39,7 +39,11 @@ import { loginState } from "./atoms";
 import { MainPage } from "./components/Main/MainPage";
 import RoutesIsLogin from "./RoutesIsLogin";
 import RoutesIsNotLogin from "./RoutesIsNotLogin";
-import { getName, setName } from "./service/LocalStorage/LocalStorage";
+import {
+  getName,
+  removeName,
+  setName,
+} from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import { Edit } from "./components/Set/Edit";
 
@@ -191,7 +195,7 @@ const App: React.FC = () => {
               <Route path="/Edit" exact={true}>
                 <Edit />
               </Route>
-              
+
               <Route path="*" exact={true}>
                 <div>404 not found</div>
               </Route>

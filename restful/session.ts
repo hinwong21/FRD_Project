@@ -11,7 +11,7 @@ export let sessionMiddleware = expressSession({
 
 declare module 'express-session' {
     interface SessionData {
-        userId?: number
+        userId?: string
         email?: string
         isLogin?: boolean
         CalendarAuthorized?: boolean

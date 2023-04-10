@@ -11,7 +11,7 @@ export class CalendarController {
 
   getGoogleCalendarEvent = async (req: Request, res: Response) => {
     try {
-      let data = await this.calendarService.getGoogleCalendarEvent(req.session.userId as number)
+      let data = await this.calendarService.getGoogleCalendarEvent(req.session.userId as string)
       res.json(data)
     } catch (err) {
       errorHandler(err, req, res);
@@ -20,7 +20,7 @@ export class CalendarController {
 
   getLocalCalendarEvent = async (req: Request, res: Response) => {
     try {
-      let data = await this.calendarService.getLocalCalendarEvent(req.session.userId as number)
+      let data = await this.calendarService.getLocalCalendarEvent(req.session.userId as string)
       res.json(data)
 
     } catch (err) {
@@ -34,7 +34,7 @@ export class CalendarController {
       let eventData = req.body
       console.log(eventData)
 
-      await this.calendarService.createLocalCalendarEvent(eventData, req.session.userId as number)
+      await this.calendarService.createLocalCalendarEvent(eventData, req.session.userId as string)
 
       res.json({ success: true })
 
