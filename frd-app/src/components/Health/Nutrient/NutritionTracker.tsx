@@ -114,8 +114,6 @@ export const NutritionTracker = () => {
     const newMeals = [...meals];
 
     setMealsLocal(newMeals, mealSelect);
-    console.log(mealSelect);
-    console.log(newMeals);
 
     // reset the select tag value
     mealSelect.value = "";
@@ -256,7 +254,7 @@ export const NutritionTracker = () => {
           let id = uuidv4();
           let token = await getName("token");
           // update daily intake to database
-          fetch(`http://localhost:8080/nutrition/dailyIntake`, {
+          fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/nutrition/dailyIntake`, {
             method: "PUT",
             headers: {
               Authorization: "Bearer " + token,

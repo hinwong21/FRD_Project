@@ -11,8 +11,7 @@ export class CurrentUserController {
   verifyToken = async (req: Request, res: Response) => {
     try {
       let userId = req.session.userId!;
-      console.log(req.session, 77777);
-
+      
       res.json({
         ok: true,
         isErr: null,
