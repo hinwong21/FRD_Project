@@ -16,8 +16,8 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import Finance, { TransactionType } from "./Finance";
-import { Pie } from "react-chartjs-2";
-import { AccountingChart } from "./AccountingChart";
+import { getName } from "../../service/LocalStorage/LocalStorage";
+import AccountingChart from "./AccountingChart";
 
 export interface Genre {
   id: number;
@@ -85,7 +85,7 @@ const compareWith = (o1: Genre, o2: Genre) => {
   return o1.id === o2.id;
 };
 
-type Data3 = {
+export type Data3 = {
   amount: number;
   totalIncome: number;
   totalExpense: number;
@@ -101,26 +101,26 @@ function TransactionModal(props: {
   const [amount, setAmount] = useState<string>("500");
   const [data3, setData3] = useState<Data3[]>([]);
 
-  let userId = 1;
-
   async function getTransaction() {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
     if (!amount) return;
-
+    let token = await getName("token");
     // TODO ajax
     const res = await fetch(
       `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: userId,
-        }),
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       }
     );
     let json = await res.json();
+    console.log(json);
+
+    // let aaa = json.map((transaction: any) => transaction.amount);
+    // console.log(aaa);
 
     let selectedCategoryAmount = json.filter(
       (item: { category: string | undefined }) => item.category === type
@@ -157,6 +157,7 @@ function TransactionModal(props: {
       },
     ]);
   }
+
   return (
     <IonModal isOpen={props.isTran}>
       <IonHeader>

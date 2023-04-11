@@ -11,21 +11,24 @@ export class EditorsController {
   addMemo = async (req: Request, res: Response) => {
     try {
       const memoContent = req.body.content;
-      const id = req.body.id
-      this.editorsService.addMemo(id, memoContent, 1);
+      const id = req.body.id;
+      this.editorsService.addMemo(id, memoContent, "1");
       res.json({ success: true });
     } catch (err) {
       errorHandler(err, req, res);
     }
   };
 
-  getMemo = async (req:Request, res:Response)=>{
-    try{
-        const memos = await this.editorsService.getMemo(1)
-        res.json(memos)
-    }catch (err){
-        errorHandler(err, req, res);
+  getMemo = async (req: Request, res: Response) => {
+    try {
+      const memos = await this.editorsService.getMemo("1");
+      res.json(memos);
+    } catch (err) {
+      errorHandler(err, req, res);
     }
+<<<<<<< HEAD
+  };
+=======
   }
 
   updateMemo= async (req:Request, res:Response)=>{
@@ -55,4 +58,5 @@ export class EditorsController {
         errorHandler(err, req, res);
     }
   }
+>>>>>>> f3113e1137665f03642942135dc633437808749a
 }

@@ -3,26 +3,27 @@ import { AccountingService } from "../service/accountingService";
 import { errorHandler } from "../error";
 
 export class AccountingController {
-  constructor(private accountingService: AccountingService) {}
+  constructor(private accountingService: AccountingService) { }
 
   addTransaction = async (req: Request, res: Response) => {
     try {
-      console.log("req.body", req.body);
-
-      let { id, name, type, amount, description } = req.body;
-      // console.log(name, type, amount, description);
+      let userId = req.session.userId!
+      let { name, type, amount, description } = req.body;
+      console.log(name, type, amount, description, userId);
       const addResult = await this.accountingService.addTransaction(
-        id,
+        // id,
         name,
         type,
         amount,
-        description
+        description,
+        userId,
       );
-      console.log(addResult);
+      console.log('accountingController.ts', addResult);
 
-      // res.json(addResult)
-      res.json({ ok: true });
-      return;
+      res.json(addResult)
+      // res.json({ ok: true });
+
+      // return;
     } catch (error) {
       errorHandler(error, req, res);
     }
@@ -48,11 +49,16 @@ export class AccountingController {
   getTransaction = async (req: Request, res: Response) => {
     try {
       // let userId = req.session.userId!
-      let userId = req.body.userId;
-      const tranResult = await this.accountingService.getTransaction(userId);
+      let userId = req.session.userId;
+      console.log(userId);
+
+      const tranResult = await this.accountingService.getTransaction(userId!);
       // const tranResult = await this.accountingService.getTransaction(req.session.userId as number)
+      console.log(tranResult);
       res.json(tranResult);
-      // return
+
+
+      return
     } catch (error) {
       errorHandler(error, req, res);
     }

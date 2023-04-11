@@ -22,9 +22,9 @@ export async function seed(knex: Knex): Promise<void> {
   let [tony, nami] = await knex("users")
     .insert([
       {
-        id: `${uuidv4()}`,
+        id: `xphm24xfEKTGnSjlReSGvo1lJQm2`,
         username: "t123",
-        email: "t123@gmail.com",
+        email: "paul6541yau@gmail.com",
         gender: "male",
         age: 23,
         height: 170,
@@ -50,30 +50,33 @@ export async function seed(knex: Knex): Promise<void> {
       category: "Income",
       type: "income",
       amount: 52,
-      user_id: tony.id,
+      user_id: 'xphm24xfEKTGnSjlReSGvo1lJQm2',
       description: undefined,
     },
-  ]);
+  ])
+    .returning("id")
 
   // Period Part Table
   let [namiFeb, namiMar] = await knex("period")
     .insert([
       {
         id: `${uuidv4()}`,
-        started_at: "2023-02-07",
-        ended_at: "2023-02-11",
+        start_at: "2023-02-07",
+        end_at: "2023-02-11",
+        upcoming_at: "2023-03-07",
         days: "5",
-        ovu_started_at: "2023-02-16",
-        ovu_ended_at: "2023-02-22",
+        ovu_start_at: "2023-02-16",
+        ovu_end_at: "2023-02-22",
         user_id: nami.id,
       },
       {
         id: `${uuidv4()}`,
-        started_at: "2023-03-05",
-        ended_at: "2023-03-10",
+        start_at: "2023-03-05",
+        end_at: "2023-03-10",
+        upcoming_at: "2023-04-02",
         days: "6",
-        ovu_started_at: "2023-03-15",
-        ovu_ended_at: "2023-03-21",
+        ovu_start_at: "2023-03-15",
+        ovu_end_at: "2023-03-21",
         user_id: nami.id,
       },
     ])
@@ -123,28 +126,28 @@ export async function seed(knex: Knex): Promise<void> {
   await knex("period_period_status").insert([
     {
       id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusOne.id}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusOne.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusTwo.id}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusTwo.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusThree.id}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusThree.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiMar.id}`,
-      period_status_id: `${marStatusOne.id}`,
+      period_id: namiMar.id,
+      period_status_id: marStatusOne.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiMar.id}`,
-      period_status_id: `${marStatusTwo.id}`,
+      period_id: namiMar.id,
+      period_status_id: marStatusTwo.id,
     },
   ]);
 }

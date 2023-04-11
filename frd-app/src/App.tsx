@@ -39,9 +39,21 @@ import { loginState } from "./atoms";
 import { MainPage } from "./components/Main/MainPage";
 import RoutesIsLogin from "./RoutesIsLogin";
 import RoutesIsNotLogin from "./RoutesIsNotLogin";
+<<<<<<< HEAD
 import { getName, removeName, setName } from "./service/LocalStorage/LocalStorage";
+=======
+import {
+  getName,
+  removeName,
+  setName,
+} from "./service/LocalStorage/LocalStorage";
+>>>>>>> 2e6811233b3621ea51569dc8dd097d8d7de1d7e0
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
+<<<<<<< HEAD
+import PeriodDay from "./components/Health/Period/PeriodDay";
+=======
 import { Edit } from "./components/Set/Edit";
+>>>>>>> f3113e1137665f03642942135dc633437808749a
 
 // import { Device } from "@capacitor/device";
 import { PushNotifications } from "@capacitor/push-notifications";
@@ -187,12 +199,18 @@ const App: React.FC = () => {
               <Route path="/Health-periodRecordDetails" exact={true}>
                 <PeriodRecord />
               </Route>
+<<<<<<< HEAD
+              <Route path="/Health-periodDate" exact={true}>
+                <PeriodDay />
+              </Route>
+=======
 
               {/* Setting page: edit personal information */}
               <Route path="/Edit" exact={true}>
                 <Edit />
               </Route>
-              
+
+>>>>>>> f3113e1137665f03642942135dc633437808749a
               <Route path="*" exact={true}>
                 <div>404 not found</div>
               </Route>

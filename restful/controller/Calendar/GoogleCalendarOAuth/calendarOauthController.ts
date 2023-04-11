@@ -15,12 +15,12 @@ export class CalendarOauthController {
   }
 
   calendarAuthorization = async (req: Request, res: Response) => {
-    const SCOPES = [
-      "https://www.googleapis.com/auth/calendar",
-    ];
+    const SCOPES = ["https://www.googleapis.com/auth/calendar"];
     const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
     try {
-      async function loadCredentialInSession(): Promise<OAuth2Client | null | any> {
+      async function loadCredentialInSession(): Promise<
+        OAuth2Client | null | any
+      > {
         if (req.session.isLogin) {
           const credentials = {
             type: req.session.GoogleOauth?.type,
@@ -81,7 +81,7 @@ export class CalendarOauthController {
 
         if (allEvents.length === 0) {
           console.log("No upcoming events found.");
-          res.json({ "eventArr": "No upcoming events found", "success": true })
+          res.json({ eventArr: "No upcoming events found", success: true });
           return;
         }
 
@@ -89,25 +89,59 @@ export class CalendarOauthController {
 
         allEvents.map((event, i) => {
           eventArr.push({
-            "title": event.summary,
-            "start": event.start.dateTime ? event.start.dateTime.slice(0, 10) + " " + event.start.dateTime.slice(11, 16) : event.start.date,
-            "end": event.end.dateTime ? event.end.dateTime.slice(0, 10) + " " + event.end.dateTime.slice(11, 16) : event.end.date,
-            "extendedProps": { "description": event.description ? event.description : "No Description" },
-            "backgroundColor": event.colorId,
-            "textColor": "white"
-          })
+            title: event.summary,
+            start: event.start.dateTime
+              ? event.start.dateTime.slice(0, 10) +
+                " " +
+                event.start.dateTime.slice(11, 16)
+              : event.start.date,
+            end: event.end.dateTime
+              ? event.end.dateTime.slice(0, 10) +
+                " " +
+                event.end.dateTime.slice(11, 16)
+              : event.end.date,
+            extendedProps: {
+              description: event.description
+                ? event.description
+                : "No Description",
+            },
+            backgroundColor: event.colorId,
+            textColor: "white",
+          });
         });
 
         console.log(eventArr);
         console.log(req.session);
+<<<<<<< HEAD
+=======
 
+        this.calendarOauthService.calendarAuthorization(
+          req.session.userId as string,
+          eventArr as {}[]
+        );
+        res.json({ eventArr, success: true });
+      };
 
-        this.calendarOauthService.calendarAuthorization(req.session.userId as number, eventArr as {}[])
+<<<<<<< HEAD
+        this.calendarOauthService.calendarAuthorization(req.session.userId!, eventArr as {}[])
         res.json({ eventArr, "success": true })
       }
+>>>>>>> f3113e1137665f03642942135dc633437808749a
 
-      authorize().then(listEvents)
+        this.calendarOauthService.calendarAuthorization(
+          req.session.userId as string,
+          eventArr as {}[]
+        );
+        res.json({ eventArr, success: true });
+      };
 
+<<<<<<< HEAD
+      authorize().then(listEvents);
+=======
+=======
+      authorize().then(listEvents);
+>>>>>>> origin
+>>>>>>> f3113e1137665f03642942135dc633437808749a
     } catch (err) {
       errorHandler(err, req, res);
     }

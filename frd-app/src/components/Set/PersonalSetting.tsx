@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Setting.module.css";
-import { Link, useHistory } from "react-router-dom";
-import { Edit } from "./Edit";
+import { useHistory } from "react-router-dom";
 
 type Data = {
   height: number;
@@ -12,8 +11,6 @@ type Data = {
 
 export const PersonalSetting = () => {
   const [data, setData] = useState<Data[]>([]);
-
-  
 
   // import data from db or local storage
   useEffect(() => {
@@ -28,6 +25,14 @@ export const PersonalSetting = () => {
   }, []);
 
   const history = useHistory();
+
+  const goEditUsername = () => {
+    history.push({
+      pathname: "/Edit",
+      state: { item: "username", value: "username" },
+    });
+  };
+
   const goEditHeight = () => {
     history.push({
       pathname: "/Edit",
@@ -53,6 +58,13 @@ export const PersonalSetting = () => {
     <>
       <div className={styles.settingHeaderContainer}>
         <div>Personal Setting</div>
+      </div>
+
+      <div className={styles.settingContainer} onClick={goEditUsername}>
+        <div className={styles.settingItemContainer}>
+          <div className={styles.settingItem}>username</div>
+          <div className={styles.settingItemResult}>username</div>
+        </div>
       </div>
 
       <div className={styles.settingContainer} onClick={goEditHeight}>

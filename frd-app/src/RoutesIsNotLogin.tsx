@@ -9,6 +9,7 @@ import Menu from "./components/Menu";
 import Notepad from "./components/Notes/Notepad";
 import AccountingPage from "./pages/AccountingPage";
 import Page from "./pages/Page";
+import { Edit } from "./components/Set/Edit";
 
 export default function RoutesIsNotLogin() {
   return (
@@ -40,6 +41,9 @@ export default function RoutesIsNotLogin() {
           </Route>
           <Route path="/Health-periodCalendar" exact={true}>
             <Redirect to="/login" />
+          </Route>
+          <Route path="/Edit" exact={true}>
+            <Edit />
           </Route>
           <Route path="*" exact={true}>
             <div>404 not found</div>
