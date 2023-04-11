@@ -178,7 +178,7 @@ button.item-native::after{
 .diaryUpdatedTime{
   font-size: 16px;
   color: rgb(110, 110, 110);
-  width:16vw;
+  width:17vw;
   background-color: #a0a2c0c0;
   padding:6px;
   text-align: center;
@@ -197,7 +197,7 @@ button.item-native::after{
 }
 
 .diaryContent{
-  width:69vw;
+  width:68vw;
 }
 
 .diaryWeek{
