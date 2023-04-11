@@ -97,6 +97,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text("id").notNullable().unique();
       table.string("start_at");
       table.string("end_at");
+      table.string("upcoming_at").defaultTo(null);
       table.string("days").defaultTo("5");
       table.string("ovu_start_at");
       table.string("ovu_end_at");

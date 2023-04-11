@@ -6,21 +6,19 @@ export class EditorsService {
     this.knex = knex;
   }
 
-  addMemo = async (id: number, content:string, userId:number)=>{
-    await this.knex.insert({
+  addMemo = async (id: string, content: string, userId: string) => {
+    await this.knex
+      .insert({
         id: id,
         content: JSON.stringify(content),
-        user_id:userId
-    }).into("memo")
-  }
+        user_id: userId,
+      })
+      .into("memo");
+  };
 
-  getMemo = async (userId:number)=>{
-    const memos = await this.knex("memo")
-    .select("*")
-    .where("user_id",userId)
-    console.log(memos)
+  getMemo = async (userId: string) => {
+    const memos = await this.knex("memo").select("*").where("user_id", userId);
+    console.log(memos);
     return memos;
-  }
-  
-  
+  };
 }

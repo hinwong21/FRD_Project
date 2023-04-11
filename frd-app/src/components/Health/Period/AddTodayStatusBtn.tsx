@@ -7,9 +7,6 @@ import {
   IonToolbar,
   IonTitle,
   IonPage,
-  IonItem,
-  IonLabel,
-  IonInput,
   useIonModal,
   IonMenuButton,
 } from "@ionic/react";
@@ -191,7 +188,7 @@ const ModalPeriod = ({
   );
 };
 
-function PeriodDay() {
+function AddTodayStsBtn() {
   const [present, dismiss] = useIonModal(ModalPeriod, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
   });
@@ -225,69 +222,19 @@ function PeriodDay() {
   }
 
   return (
-    <IonPage>
-      <div className={styles.home}>
-        <IonHeader>
-          <IonToolbar color={styles.pBar} className={styles.pBar}>
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-            <IonTitle>Period</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+    <div className="ion-padding">
+      <IonButton
+        color={styles.btn}
+        className={styles.btn}
+        expand="block"
+        onClick={() => openModal()}
+      >
+        Add Today's Status
+      </IonButton>
 
-        {/* <header>
-            <h1 className={styles.title}>period</h1>
-          </header> */}
-        <div>
-          <div className={styles.container}>
-            {/* <Topbox
-              chance="low probability of pregnancy"
-              subTitle="ovulation date:"
-              // TODO Count the Ovulation day
-              periodDay="after 15 days"
-              // TODO Count the Period day
-              ovuDay="period day 3"
-              btname="period end"
-              getDate={handleDateInfo}
-            /> */}
-            <br></br>
-            <br></br>
-            <Datebox subTitle="upcoming ovulation" startDate="" endDate="" />
-
-            {/* <div className={styles.statusBox}>
-              <div className={styles.todayStatus}>today's status</div>
-              <Button btname="add" />
-            </div> */}
-
-            {/* <Status subtitle="status" date="22/03/2023" /> */}
-          </div>
-        </div>
-        <IonContent className="ion-padding">
-          <IonButton
-            color={styles.btn}
-            className={styles.btn}
-            expand="block"
-            onClick={() => openModal()}
-          >
-            Add Today's Status
-          </IonButton>
-
-          <br></br>
-          <div className={styles.goStatusBtn}>
-            <IonButton
-              size="default"
-              color={styles.btn}
-              className={styles.btn}
-              onClick={handleHistory}
-            >
-              status record
-            </IonButton>
-          </div>
-        </IonContent>
-      </div>
-    </IonPage>
+      <br></br>
+    </div>
   );
 }
 
-export default PeriodDay;
+export default AddTodayStsBtn;

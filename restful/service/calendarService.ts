@@ -7,40 +7,35 @@ export class CalendarService {
     this.knex = knex;
   }
 
-
-  getGoogleCalendarEvent = async (userId:number)=>{
-      let data = await this.knex("google_calendar")
+  getGoogleCalendarEvent = async (userId: string) => {
+    let data = await this.knex("google_calendar")
       .select("*")
-      .where("user_id", userId)
+      .where("user_id", userId);
 
-      console.log(data);
-      
-      return data;
-  }
+    console.log(data);
 
-  getLocalCalendarEvent = async (userId:number)=>{
-      let data = await this.knex("calendar")
-      .select("*")
-      .where("user_id", userId)
+    return data;
+  };
 
-      console.log(data);
-      
-      return data;
-  }
+  getLocalCalendarEvent = async (userId: string) => {
+    let data = await this.knex("calendar").select("*").where("user_id", userId);
 
-  createLocalCalendarEvent = async (eventData: any, userId :number)=>{
-      await this.knex
-    .insert({
-      id: eventData.id,
-      title: eventData.title,
-      description: eventData.description,
-      start: eventData.start,
-      end: eventData.end,
-      backgroundColor: eventData.backgroundColor,
-      user_id: userId
-    })
-    .into("calendar")
-    
-  }
-  
+    console.log(data);
+
+    return data;
+  };
+
+  createLocalCalendarEvent = async (eventData: any, userId: string) => {
+    await this.knex
+      .insert({
+        id: eventData.id,
+        title: eventData.title,
+        description: eventData.description,
+        start: eventData.start,
+        end: eventData.end,
+        backgroundColor: eventData.backgroundColor,
+        user_id: userId,
+      })
+      .into("calendar");
+  };
 }

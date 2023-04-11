@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid4 } from "uuid";
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
@@ -22,7 +22,7 @@ export async function seed(knex: Knex): Promise<void> {
   let [tony, nami] = await knex("users")
     .insert([
       {
-        id: `${uuidv4()}`,
+        id: `${uuid4()}`,
         username: "t123",
         email: "t123@gmail.com",
         gender: "male",
@@ -31,7 +31,7 @@ export async function seed(knex: Knex): Promise<void> {
         weight: 60,
       },
       {
-        id: `${uuidv4()}`,
+        id: `${uuid4()}`,
         username: "nami",
         email: "naminami@gmail.com",
         gender: "female",
@@ -59,21 +59,23 @@ export async function seed(knex: Knex): Promise<void> {
   let [namiFeb, namiMar] = await knex("period")
     .insert([
       {
-        id: `${uuidv4()}`,
-        started_at: "2023-02-07",
-        ended_at: "2023-02-11",
+        id: `${uuid4()}`,
+        start_at: "2023-02-07",
+        end_at: "2023-02-11",
+        upcoming_at: "2023-03-07",
         days: "5",
-        ovu_started_at: "2023-02-16",
-        ovu_ended_at: "2023-02-22",
+        ovu_start_at: "2023-02-16",
+        ovu_end_at: "2023-02-22",
         user_id: nami.id,
       },
       {
-        id: `${uuidv4()}`,
-        started_at: "2023-03-05",
-        ended_at: "2023-03-10",
+        id: `${uuid4()}`,
+        start_at: "2023-03-05",
+        end_at: "2023-03-10",
+        upcoming_at: "2023-04-02",
         days: "6",
-        ovu_started_at: "2023-03-15",
-        ovu_ended_at: "2023-03-21",
+        ovu_start_at: "2023-03-15",
+        ovu_end_at: "2023-03-21",
         user_id: nami.id,
       },
     ])
@@ -83,35 +85,35 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("period_status")
       .insert([
         {
-          id: `${uuidv4()}`,
+          id: `${uuid4()}`,
           type: "menstrual flow",
           content: "3",
           created_at: "2023-02-07",
           updated_at: "2023-02-07",
         },
         {
-          id: `${uuidv4()}`,
+          id: `${uuid4()}`,
           type: "lower back pain",
           content: "1",
           created_at: "2023-02-07",
           updated_at: "2023-02-07",
         },
         {
-          id: `${uuidv4()}`,
+          id: `${uuid4()}`,
           type: "headache",
           content: "1",
           created_at: "2023-02-07",
           updated_at: "2023-02-07",
         },
         {
-          id: `${uuidv4()}`,
+          id: `${uuid4()}`,
           type: "headache",
           content: "1",
           created_at: "2023-03-08",
           updated_at: "2023-03-08",
         },
         {
-          id: `${uuidv4()}`,
+          id: `${uuid4()}`,
           type: "fatigue",
           content: "2",
           created_at: "2023-03-08",
@@ -122,29 +124,29 @@ export async function seed(knex: Knex): Promise<void> {
 
   await knex("period_period_status").insert([
     {
-      id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusOne.id}`,
+      id: `${uuid4()}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusOne.id,
     },
     {
-      id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusTwo.id}`,
+      id: `${uuid4()}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusTwo.id,
     },
     {
-      id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusThree.id}`,
+      id: `${uuid4()}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusThree.id,
     },
     {
-      id: `${uuidv4()}`,
-      period_id: `${namiMar.id}`,
-      period_status_id: `${marStatusOne.id}`,
+      id: `${uuid4()}`,
+      period_id: namiMar.id,
+      period_status_id: marStatusOne.id,
     },
     {
-      id: `${uuidv4()}`,
-      period_id: `${namiMar.id}`,
-      period_status_id: `${marStatusTwo.id}`,
+      id: `${uuid4()}`,
+      period_id: namiMar.id,
+      period_status_id: marStatusTwo.id,
     },
   ]);
 }
