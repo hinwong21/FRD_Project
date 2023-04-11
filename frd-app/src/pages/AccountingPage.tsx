@@ -105,10 +105,18 @@ const AccountingPage: React.FC = () => {
             </IonList>
           </div>
           <div className={style.button}>
-            <IonButton expand="block" onClick={() => setIsTran(true)}>
+            <IonButton
+              color={style.btn}
+              className={style.btn}
+              class="ion-margin"
+              expand="block"
+              onClick={() => setIsTran(true)}
+            >
               Review
             </IonButton>
             <IonButton
+              color={style.btn}
+              className={style.btn}
               expand="block"
               onClick={() => {
                 setIsOpen(true);

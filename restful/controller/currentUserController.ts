@@ -19,6 +19,7 @@ export class CurrentUserController {
         errMess: null,
         data: userId,
       });
+
     } catch (err) {
       errorHandler(err, req, res);
     }
