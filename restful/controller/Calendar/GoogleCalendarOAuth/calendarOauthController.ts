@@ -92,13 +92,13 @@ export class CalendarOauthController {
             title: event.summary,
             start: event.start.dateTime
               ? event.start.dateTime.slice(0, 10) +
-                " " +
-                event.start.dateTime.slice(11, 16)
+              " " +
+              event.start.dateTime.slice(11, 16)
               : event.start.date,
             end: event.end.dateTime
               ? event.end.dateTime.slice(0, 10) +
-                " " +
-                event.end.dateTime.slice(11, 16)
+              " " +
+              event.end.dateTime.slice(11, 16)
               : event.end.date,
             extendedProps: {
               description: event.description
@@ -120,16 +120,7 @@ export class CalendarOauthController {
         res.json({ eventArr, success: true });
       };
 
-<<<<<<< HEAD
-        this.calendarOauthService.calendarAuthorization(req.session.userId!, eventArr as {}[])
-        res.json({ eventArr, "success": true })
-      }
-
-      authorize().then(listEvents)
-
-=======
       authorize().then(listEvents);
->>>>>>> origin
     } catch (err) {
       errorHandler(err, req, res);
     }

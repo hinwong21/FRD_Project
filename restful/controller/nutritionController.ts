@@ -4,7 +4,7 @@ import { errorHandler } from "../error";
 import "../session";
 
 export class NutritionController {
-  constructor(private nutritionService: NutritionService) {}
+  constructor(private nutritionService: NutritionService) { }
 
   getDailyIntake = async (req: Request, res: Response) => {
     try {
@@ -12,6 +12,7 @@ export class NutritionController {
       const date = new Date();
 
       const result = await this.nutritionService.getDailyIntake(userId, date);
+
       res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);

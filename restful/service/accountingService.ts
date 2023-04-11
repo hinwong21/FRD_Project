@@ -28,7 +28,7 @@ export class AccountingService {
       console.log('accountingService.ts', addTransaction);
       return addTransaction;
     } catch (error) {
-      throw new Error(`Error occurred while adding transaction: ${error.message}`);
+      throw new Error(`Error occurred while adding transaction in accountingService: ${error.message}`);
     }
   };
 
@@ -54,7 +54,23 @@ export class AccountingService {
 
       return getTransaction;
     } catch (error) {
-      throw new Error(`Error occurred while getting transaction: ${error.message}`);
+      throw new Error(`Error occurred while getting transaction in accountingService: ${error.message}`);
     }
   };
+
+  getMonthlyTransaction = async (userId: string) => {
+    try {
+      let getMonthlyTransaction = await this.knex("transaction")
+        .select("*")
+        .where("user_id", userId)
+        .whereRaw(`date_trunc('month', created_at) = date_trunc('month', current_date)`)
+        .whereRaw(`created_at::date <= current_date::date`);
+      console.log('accountingService : ', getMonthlyTransaction);
+
+      return getMonthlyTransaction;
+
+    } catch (error) {
+      throw new Error(`Error occurred while getting Monthly transaction in accountingService: ${error.message}`);
+    }
+  }
 }
