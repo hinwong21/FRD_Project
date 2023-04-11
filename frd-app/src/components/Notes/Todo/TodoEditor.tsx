@@ -20,7 +20,7 @@ interface NewTodoItemProps {
   content: string;
 }
 
-const NewTodoItem: React.FC<NewTodoItemProps> = ({ content }) => {
+export const NewTodoItem: React.FC<NewTodoItemProps> = ({ content }) => {
   const [isChecked, setIsCheck] = useState(false);
 
   return (
