@@ -1,0 +1,31 @@
+.loginSettingHeader {
+  height: 30vh;
+  background-color: antiquewhite;
+}
+
+.loginSettingItemContainer {
+  display: flex;
+  margin: 10px;
+}
+
+.loginSettingItem {
+  display: flex;
+  flex-direction: row;
+}
+
+.loginSettingItemInput {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+}
+
+.loginSettingItemSelect {
+  border: none;
+  outline: none;
+  font-size: 14px;
+}

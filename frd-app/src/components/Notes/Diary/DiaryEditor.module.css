@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Special+Elite&display=swap');
+
+.dayWeatherIcon{
+     width: 120px;
+     padding-right: 30px;
+}
+
+.weatherWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    border-radius: 10px;
+    background-color: rgba(55, 141, 194, 0.357);
+    font-size: 16px;
+    color: white;
+    background-image: url("./weather_background/cloudy.jpg");
+}
+
+.mainWrapper{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 90%;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom:20px;
+}
+
+.dateAndTemp{
+    padding-left: 30px;
+    padding-top: 20px;
+}
+
+.temperature{
+    font-size: 40px !important;
+}
+
+.selected{
+    color:red;
+    border-radius: 50%;
+    box-shadow: 0 0 15px 5px #dde048;
+    background-color: #dde048; 
+}
+
+.emotionSelectionBlock{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: space-between;
+    border-style:dashed;
+    border-width: 2px;
+    border-color: gray;
+    border-radius: 10px;
+}
+
+.diaryTitleInput{
+    font-size: 22px;
+    font-family: 'Special Elite', cursive;
+    font-weight: bolder;
+    color: #415b76;
+}

@@ -1,18 +1,18 @@
 import { Preferences } from '@capacitor/preferences';
 
-const setName = async () => {
+export const setName = async (key: string, value: string) => {
   await Preferences.set({
-    key: 'name',
-    value: 'Max',
+    key: key,
+    value: value,
   });
 };
 
-const checkName = async () => {
-  const { value } = await Preferences.get({ key: 'name' });
+export const getName = async (key: string) => {
+  const { value } = await Preferences.get({ key: key });
 
-  console.log(`Hello ${value}!`);
+  return value
 };
 
-const removeName = async () => {
-  await Preferences.remove({ key: 'name' });
+export const removeName = async (key: string) => {
+  await Preferences.remove({ key: key });
 };

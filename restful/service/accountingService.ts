@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+<<<<<<< HEAD
 import { log } from "console";
 
 export class AccountingService {
@@ -10,11 +11,26 @@ export class AccountingService {
     type: string,
     amount: string,
     description?: string
+=======
+
+export class AccountingService {
+  constructor(private knex: Knex) { }
+
+  addTransaction = async (
+    // id: number,
+    name: string,
+    type: string,
+    amount: string,
+    description: string,
+    userId: string,
+
+>>>>>>> f3113e1137665f03642942135dc633437808749a
   ) => {
     try {
       let addTransaction = await this.knex("transaction")
         .insert([
           {
+<<<<<<< HEAD
             category: name,
             type: type,
             amount: amount,
@@ -27,6 +43,21 @@ export class AccountingService {
       return addTransaction;
     } catch (error) {
       console.error("Error occurred while adding transaction: ", error);
+=======
+            // id: id,
+            category: name,
+            type: type,
+            amount: amount,
+            description: description,
+            user_id: userId,
+          },
+        ])
+        .returning("*");
+      console.log('accountingService.ts', addTransaction);
+      return addTransaction;
+    } catch (error) {
+      throw new Error(`Error occurred while adding transaction: ${error.message}`);
+>>>>>>> f3113e1137665f03642942135dc633437808749a
     }
   };
 
@@ -46,11 +77,21 @@ export class AccountingService {
     try {
       let getTransaction = await this.knex("transaction")
         .select("*")
+<<<<<<< HEAD
         .where("user_id", userId);
       console.log(getTransaction);
       return getTransaction;
     } catch (error) {
       console.error("Error occurred while getting transaction", error);
+=======
+        // .where({ user_id: userId });
+        .where("user_id", userId)
+      console.log(getTransaction);
+
+      return getTransaction;
+    } catch (error) {
+      throw new Error(`Error occurred while getting transaction: ${error.message}`);
+>>>>>>> f3113e1137665f03642942135dc633437808749a
     }
   };
 }

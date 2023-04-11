@@ -29,6 +29,10 @@ import {
   sunnySharp,
 } from "ionicons/icons";
 import "./Menu.css";
+import { signOut } from "../service/firebaseConfig";
+import { removeName } from "../service/LocalStorage/LocalStorage";
+import { useSetRecoilState } from "recoil";
+import { loginState } from "../atoms";
 
 interface AppPage {
   id: number;
@@ -39,13 +43,13 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
-  {
-    id: 1,
-    title: "Main",
-    url: "/page/Main",
-    iosIcon: diamondOutline,
-    mdIcon: diamondSharp,
-  },
+  // {
+  //   id: 1,
+  //   title: "Main",
+  //   url: "/page/Main",
+  //   iosIcon: diamondOutline,
+  //   mdIcon: diamondSharp,
+  // },
   {
     id: 2,
     title: "Calender",
@@ -97,7 +101,16 @@ const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
-
+  const setIsLogin = useSetRecoilState(loginState);
+  async function handleSignOut() {
+    await signOut();
+    await removeName("token");
+    setIsLogin((isLogin) => {
+      let newState = { ...isLogin };
+      newState.isLogin = false;
+      return newState;
+    });
+  }
   console.log("location.pathname:", location.pathname);
 
   return (
@@ -131,6 +144,7 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
+          <button onClick={handleSignOut}>Sign out</button>
         </IonList>
 
         {/* TODO Label Part, PENDING...Maybe Delete?  */}

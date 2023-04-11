@@ -18,7 +18,8 @@ import {
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
 import { Genres } from "./TransactionModal";
-import { log } from "console";
+
+import { getName } from "../../service/LocalStorage/LocalStorage";
 
 // function Calculator() {
 //     const [result, setResult] = useState("");
@@ -178,24 +179,29 @@ let Calculator: React.FC<{
       return;
     }
     let newObj = Object.assign(obj, { amount: result });
+    console.log(newObj);
 
     /* Put data to database */
     // useEffect(() => {
     //   const putAmountDate = async () => {
     try {
+      let token = await getName("token");
+
       let res = await fetch(
         `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-type": "application/json",
+          },
           body: JSON.stringify(newObj),
         }
       );
-      console.log("jsoned");
       let json = await res.json();
-
-      // if (!res.ok) {
-      if (!json.ok) {
+      console.log(json);
+      if (!res.ok) {
+        // if (!json.ok) {
         alert(json.errMess);
       }
       addCalculator(newObj);

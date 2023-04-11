@@ -1,7 +1,6 @@
 import express from "express";
-import { isLoggedInAPI } from "../guard";
 import { knex } from "../database/db";
-import {EditorsController} from "../controller/Notes/editorsController"
+import { EditorsController } from "../controller/Notes/editorsController"
 import { EditorsService } from "../service/editorsService";
 
 export let editorsRoutes = express.Router();
@@ -10,11 +9,26 @@ let editorsService = new EditorsService(knex);
 let editorsController = new EditorsController(editorsService);
 
 editorsRoutes.post(
-    "/new-memo",
-    editorsController.addMemo
+  "/new-memo",
+  editorsController.addMemo
+);
+
+editorsRoutes.get(
+  "/memo",
+  editorsController.getMemo
+);
+
+editorsRoutes.put(
+    "/update-memo",
+    editorsController.updateMemo
+  );
+
+editorsRoutes.post(
+    "/new-diary",
+    editorsController.newDiary
   );
 
 editorsRoutes.get(
-    "/memo",
-    editorsController.getMemo
+    "/diary",
+    editorsController.getDiary
   );

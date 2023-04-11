@@ -24,6 +24,8 @@ import {
   IonItem,
   IonMenuButton,
   IonHeader,
+  IonItemDivider,
+  IonItemGroup,
 } from "@ionic/react";
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
@@ -131,6 +133,7 @@ export const Calendar_zh = () => {
             },
             localCalendarEvent,
             googleCalendarEvent,
+            eventList,
           ]}
           eventDidMount={(info) => {
             return new bootstrap.Popover(info.el, {
@@ -177,50 +180,67 @@ export const Calendar_zh = () => {
             </IonButtons>
           </IonToolbar>
           </IonHeader>
-          <IonList>
-            <IonLabel>
-              <h2>Events</h2>
-            </IonLabel>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-          </IonList>
 
-          <IonList>
-            <IonLabel>
-              <h2>Todo List</h2>
-            </IonLabel>
-            <IonItem>
+          <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>Events</IonLabel>
+        </IonItemDivider>
+        <IonItem>
               <div>{modalContent}</div>
             </IonItem>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
-          </IonList>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+    </IonItemGroup>
 
-          <IonList>
-            <IonLabel>
-              <h2>Diary</h2>
-            </IonLabel>
+    <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>Todo List</IonLabel>
+        </IonItemDivider>
+        <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
-          </IonList>
-
-          <IonList>
-            <IonLabel>
-              <h2>Period</h2>
-            </IonLabel>
             <IonItem>
-              <div>Day ?</div>
+              <div>{modalContent}</div>
             </IonItem>
-          </IonList>
+    </IonItemGroup>
+
+    <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>Diary</IonLabel>
+        </IonItemDivider>
+        <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+    </IonItemGroup>
+
+    <IonItemGroup>
+        <IonItemDivider>
+          <IonLabel>Period</IonLabel>
+        </IonItemDivider>
+        <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+    </IonItemGroup>
+
         </IonContent>
       </IonModal>
     </>

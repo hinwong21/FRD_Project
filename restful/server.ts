@@ -1,7 +1,5 @@
 import express from "express";
-import { Request, Response } from "express";
 import { sessionMiddleware } from "./session";
-import path from "path";
 import { env_config } from "./env";
 import { nutritionRoutes } from "./route/nutritionRoute";
 import cors from "cors";

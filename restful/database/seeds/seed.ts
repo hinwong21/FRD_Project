@@ -22,9 +22,13 @@ export async function seed(knex: Knex): Promise<void> {
   let [tony, nami] = await knex("users")
     .insert([
       {
+<<<<<<< HEAD
         id: `${uuid4()}`,
+=======
+        id: `xphm24xfEKTGnSjlReSGvo1lJQm2`,
+>>>>>>> f3113e1137665f03642942135dc633437808749a
         username: "t123",
-        email: "t123@gmail.com",
+        email: "paul6541yau@gmail.com",
         gender: "male",
         age: 23,
         height: 170,
@@ -50,16 +54,21 @@ export async function seed(knex: Knex): Promise<void> {
       category: "Income",
       type: "income",
       amount: 52,
-      user_id: tony.id,
+      user_id: 'xphm24xfEKTGnSjlReSGvo1lJQm2',
       description: undefined,
     },
-  ]);
+  ])
+    .returning("id")
 
   // Period Part Table
   let [namiFeb, namiMar] = await knex("period")
     .insert([
       {
+<<<<<<< HEAD
         id: `${uuid4()}`,
+=======
+        id: `${uuidv4()}`,
+>>>>>>> f3113e1137665f03642942135dc633437808749a
         start_at: "2023-02-07",
         end_at: "2023-02-11",
         upcoming_at: "2023-03-07",
@@ -69,7 +78,11 @@ export async function seed(knex: Knex): Promise<void> {
         user_id: nami.id,
       },
       {
+<<<<<<< HEAD
         id: `${uuid4()}`,
+=======
+        id: `${uuidv4()}`,
+>>>>>>> f3113e1137665f03642942135dc633437808749a
         start_at: "2023-03-05",
         end_at: "2023-03-10",
         upcoming_at: "2023-04-02",

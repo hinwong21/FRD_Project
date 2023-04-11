@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import style from "./Nutrition.module.scss";
 import { useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { v4 as uuidv4 } from "uuid";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";
 
 type Meals = {
   id: number;
-  meal: string;
+  meal: string | undefined;
 };
 
 type Food = {
@@ -53,6 +54,7 @@ export const NutritionTracker = () => {
   useEffect(() => {
     const getMealsLocal = async () => {
       const { value } = await Preferences.get({ key: "meals" });
+
       if (value !== null) {
         setMeals(JSON.parse(value));
       }
@@ -92,15 +94,15 @@ export const NutritionTracker = () => {
       key: "meals",
       value: JSON.stringify([
         ...meals,
-        { id: meals.length + 1, meal: mealSelect.value, date: resetTime },
+        { id: meals.length + 1, meal: mealSelect?.value, date: resetTime },
       ]),
     });
   };
 
+  let mealSelectRef = useRef<HTMLSelectElement>(null);
+
   const handleAddMeal = () => {
-    const mealSelect = document.querySelector(
-      ".select-meal-type"
-    ) as HTMLSelectElement;
+    let mealSelect = mealSelectRef.current as HTMLSelectElement;
 
     // if no choose meal type, it will return nothing
     if (mealSelect.value === "") {
@@ -109,10 +111,8 @@ export const NutritionTracker = () => {
 
     setMeals([...meals, { id: meals.length + 1, meal: mealSelect.value }]);
 
-    const newMeals = [
-      ...meals,
-      // { id: meals.length + 1, meal: mealSelect.value },
-    ];
+    const newMeals = [...meals];
+
     setMealsLocal(newMeals, mealSelect);
 
     // reset the select tag value
@@ -192,7 +192,7 @@ export const NutritionTracker = () => {
         `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${foodName.value}`
       )
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
           const foodItem = data.foods[0];
           const foodNutrients = foodItem.foodNutrients;
 
@@ -251,12 +251,15 @@ export const NutritionTracker = () => {
             });
           };
           setNutrientLocal();
-
           let id = uuidv4();
+          let token = await getName("token");
           // update daily intake to database
-          fetch(`http://localhost:8080/nutrition/dailyIntake`, {
+          fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/nutrition/dailyIntake`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               id: id,
               calories: caloriesNutrient.value,
@@ -285,7 +288,7 @@ export const NutritionTracker = () => {
       <div className={style.foodTrackerContainer}>
         <header className={style.foodTrackerContainerHeader}>
           <div>Food tracking</div>
-          <select className={style.selectMealType}>
+          <select className={style.selectMealType} ref={mealSelectRef}>
             <option value="">Select meal type</option>
             <option value="Breakfast">breakfast</option>
             <option value="Brunch">brunch</option>

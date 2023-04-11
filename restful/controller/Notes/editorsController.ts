@@ -26,5 +26,37 @@ export class EditorsController {
     } catch (err) {
       errorHandler(err, req, res);
     }
+<<<<<<< HEAD
   };
+=======
+  }
+
+  updateMemo= async (req:Request, res:Response)=>{
+    try{
+      await this.editorsService.updateMemo(req.body.id, req.body.content)
+      res.json({success:true})
+    }catch (err){
+      errorHandler(err, req, res);
+    }
+  }
+
+  newDiary = async (req:Request, res:Response)=>{
+    try{
+      await this.editorsService.newDiary(req.body.id, req.body.content, req.body.weather,req.body.title, req.body.mood, 1)
+      res.json({success:true})
+    }catch (err){
+      errorHandler(err, req, res);
+    }
+  }
+
+
+  getDiary = async (req:Request, res:Response)=>{
+    try{
+        const diaries = await this.editorsService.getDiary(1)
+        res.json(diaries)
+    }catch (err){
+        errorHandler(err, req, res);
+    }
+  }
+>>>>>>> f3113e1137665f03642942135dc633437808749a
 }

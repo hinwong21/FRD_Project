@@ -1,4 +1,3 @@
-import express from "express";
 import { errorHandler } from "../../../error";
 const fs = require("fs").promises;
 import path from "path";
@@ -113,6 +112,8 @@ export class CalendarOauthController {
 
         console.log(eventArr);
         console.log(req.session);
+<<<<<<< HEAD
+=======
 
         this.calendarOauthService.calendarAuthorization(
           req.session.userId as string,
@@ -121,7 +122,26 @@ export class CalendarOauthController {
         res.json({ eventArr, success: true });
       };
 
+<<<<<<< HEAD
+        this.calendarOauthService.calendarAuthorization(req.session.userId!, eventArr as {}[])
+        res.json({ eventArr, "success": true })
+      }
+>>>>>>> f3113e1137665f03642942135dc633437808749a
+
+        this.calendarOauthService.calendarAuthorization(
+          req.session.userId as string,
+          eventArr as {}[]
+        );
+        res.json({ eventArr, success: true });
+      };
+
+<<<<<<< HEAD
       authorize().then(listEvents);
+=======
+=======
+      authorize().then(listEvents);
+>>>>>>> origin
+>>>>>>> f3113e1137665f03642942135dc633437808749a
     } catch (err) {
       errorHandler(err, req, res);
     }
