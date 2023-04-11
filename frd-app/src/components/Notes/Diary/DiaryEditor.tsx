@@ -106,7 +106,7 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
         />
       </div>
 
-  <IonInput placeholder="Enter the diary title" color="dark" className={styles.diaryTitleInput} clearInput={true} maxlength={80} onIonChange={(event)=>{setTitle(event.target.value as string)}}></IonInput>
+  <IonInput placeholder="Enter the diary title" color="dark" className={styles.diaryTitleInput} clearInput={true} maxlength={25} onIonChange={(event)=>{setTitle(event.target.value as string)}}></IonInput>
 
   <div className={styles.emotionSelectionBlock}>
       <div

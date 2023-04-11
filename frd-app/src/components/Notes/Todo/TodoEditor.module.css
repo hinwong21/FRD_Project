@@ -7,6 +7,8 @@
     border-radius: 5px;
     border-color: grey;
     border-style: solid;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .plusSign{
@@ -26,6 +28,11 @@
 .addNewTodoItem{
     background-color: #b6c4d6a4;
     width:75vw;
+    padding:5px;
+}
+
+.addNewTodoItem input{
+    padding:5px;
 }
 
 .addTodoDiv{
@@ -34,6 +41,8 @@
     border-radius: 5px;
     width: 85vw;
     margin-top: 16px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .addBtn{
@@ -44,5 +53,158 @@
     width:85vw;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    
 }
+
+.todoWrapper{
+    margin:15px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.titleAndMemo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.todoLabel{
+    width:45vw;
+    word-wrap: break-word; 
+    word-break: break-all;
+    padding:2px;
+}
+
+.diaryChooseDate{
+    width:30vw;
+    font-size: 13px;
+}
+
+.checkboxIonItem{
+    --inner-padding-end: 0px !important;
+    --inner-border-width: 0px !important;
+    --background: transparent !important;
+}
+
+.useremail{
+    margin-left: 15px;
+    margin-right: 15px;
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width:42.5vw;
+}
+
+.hashtag{
+    /* margin-left: 15px;
+    margin-right:15px; */
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width:42.5vw;
+    word-wrap: break-word; 
+    word-break: break-all;
+    border:solid;
+    border-color: black;
+}
+
+.hashtagAndUseremailWrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.memoWrapperTodo{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 40px;   
+    height: 70vh; 
+    width: 40vw;
+     
+  }
+
+  .memoBlockTodo{
+    padding:5px;
+    /* border-width: 5px; */
+    border-color: red;
+    font-size: 6px;
+    width: 150px;
+    height: 150px;
+    overflow:hidden;
+    background-color: white;
+    border-radius: 5px;
+  }
+
+  .memoAContainerTodo{
+    width: 150px;
+    height:150px;
+    margin: 15px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .selectedMemoTodo{
+    width: 100px;
+    margin: 6px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 0 15px 5px #dde048;
+    background-color: #dde048; 
+  }
+
+  ion-delegate-host{
+    overflow: scroll !important;
+    display: flex !important;
+    justify-content: center !important;
+    height: 75vh !important; 
+    width: 45vw !important;
+  }
+
+  .hashtagAutoComplete{
+    background-color: white;
+    border: solid;
+    border-width: 0.3px;
+    border-color: rgb(201, 199, 199);
+    box-shadow: 0 0 5px 2px #c7d0dc;
+    width: 42.5vw;
+    z-index: 1;
+  }
+
+  .createHashWrapper{
+    background-color: white;
+    border: solid;
+    border-width: 0.3px;
+    border-color: rgb(201, 199, 199);
+    box-shadow: 0 0 5px 2px #c7d0dc;
+    width: 42.5vw;
+    display: flex;
+    align-items: center;
+    word-wrap: break-word; 
+    word-break: break-all;
+  }
+
+  .hashtagItem{
+    background-color: white;
+    width:100%;
+    font-size: 14px;
+  }
+
+  .hashtagGroupWrapper{
+    display: flex;
+    flex-direction: column;
+    width:42.5vw;
+    margin-left: 15px;
+    /* margin-right:15px; */
+  }

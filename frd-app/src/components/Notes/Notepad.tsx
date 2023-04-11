@@ -24,7 +24,7 @@ export const Notepad: React.FC = () => {
   let titleName = "";
   let fetchPage = <></>;
 
- const [selectedSegment, setSelectedSegment] = useState<string>("today")
+ const [selectedSegment, setSelectedSegment] = useState<string>("todo")
 
  const handleSegmentChange = (event:CustomEvent)=>{
   setSelectedSegment(event.detail.value);
@@ -42,9 +42,6 @@ export const Notepad: React.FC = () => {
       </IonHeader>
 
       <IonSegment value={selectedSegment} onIonChange={handleSegmentChange} >
-        <IonSegmentButton value="today">
-          <IonLabel>Today</IonLabel>
-        </IonSegmentButton>
         <IonSegmentButton value="todo">
           <IonLabel>Todo</IonLabel>
         </IonSegmentButton>
@@ -59,7 +56,6 @@ export const Notepad: React.FC = () => {
       <IonSearchbar></IonSearchbar>
       {selectedSegment==="memo" && <Memos />}
       {selectedSegment==="diary" && <Diaries />}
-      {selectedSegment==="today" && <Notes />}
       {selectedSegment==="todo" && <TodoLists />}
 
       <AddNotePopup />

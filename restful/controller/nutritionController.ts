@@ -10,7 +10,6 @@ export class NutritionController {
     try {
       const userId = req.session.userId!;
       const date = new Date();
-
       const result = await this.nutritionService.getDailyIntake(userId, date);
 
       res.json({ result });

@@ -3,7 +3,6 @@ import { errorHandler } from "../../error";
 import { CalendarService } from "../../service/calendarService";
 import "../../session";
 
-
 export class CalendarController {
   constructor(private calendarService: CalendarService) {
     this.calendarService = calendarService;
@@ -26,9 +25,9 @@ export class CalendarController {
     } catch (err) {
       errorHandler(err, req, res);
     }
+  };
 
-  }
-
+ 
   createLocalCalendarEvent = async (req: Request, res: Response) => {
     try {
       let eventData = req.body
@@ -41,6 +40,5 @@ export class CalendarController {
     } catch (err) {
       errorHandler(err, req, res);
     }
-
   }
-}  
+}

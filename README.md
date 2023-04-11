@@ -12,11 +12,15 @@ npx knex migrate:latest --knexfile database/knexfile.ts
 npx knex seed:run --knexfile database/knexfile.ts
 
 # xcode install
+
 xcode-select --install
 xcode-select -p
 brew help
 brew install cocoapods
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
 # open xcode
+
+ionic build
 npx cap sync
 npx cap open ios

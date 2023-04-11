@@ -1,0 +1,92 @@
+// .dpBox {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   margin-top: 5%;
+// }
+
+.dateModal {
+  color: #c17a85;
+}
+
+.outsideDatePickerBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60%;
+}
+
+.datePickerBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // margin-top: 50%;
+  // margin-right: 50%;
+}
+
+.customDatePicker {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  padding: 8px;
+  background-color: #fff;
+  margin-bottom: 15%;
+}
+
+.customDatePicker__header {
+  background-color: #eee;
+  color: #333;
+  font-weight: bold;
+}
+
+.customDatePicker__navigation {
+  color: #333;
+}
+
+.customDatePicker__navigation--previous {
+  margin-right: 8px;
+}
+
+.customDatePicker__navigation--next {
+  margin-left: 8px;
+}
+
+.customDatePicker__day-name {
+  color: #333;
+  font-weight: bold;
+}
+
+.customDatePicker__day {
+  color: #333;
+}
+
+.customDatePicker__day--today {
+  font-weight: bold;
+}
+
+.customDatePicker__day--selected {
+  background-color: #ccc;
+  color: #fff;
+}
+
+.customDatePicker__month-dropdown,
+.customDatePicker__year-dropdown {
+  font-size: 14px;
+  padding: 4px;
+}
+
+.textBox {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.title {
+  text-transform: capitalize;
+  align-self: center;
+}

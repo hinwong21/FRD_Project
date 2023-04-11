@@ -9,6 +9,8 @@ import { accountingRoutes } from "./route/accountingRoute";
 import { editorsRoutes } from "./route/editorsRoute";
 import * as schedule from 'node-schedule';
 import axios from 'axios';
+import { periodRoutes } from "./route/periodRoute";
+
 const app = express();
 app.use(express.urlencoded());
 app.use(express.json({ limit: "50mb" }));
@@ -27,6 +29,7 @@ app.use("/calendar", calendarRoutes);
 app.use("/user", userRoutes);
 app.use("/account", accountingRoutes);
 app.use("/editors", editorsRoutes);
+app.use("/period", periodRoutes);
 
 
 
