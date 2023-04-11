@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./Login.module.scss";
 import { logoApple } from "ionicons/icons";
 import { IonContent, IonIcon, IonPage } from "@ionic/react";
@@ -14,6 +14,7 @@ import { useSetRecoilState } from "recoil";
 import { loginState } from "../../atoms";
 export const Login = () => {
   const setIsLogin = useSetRecoilState(loginState);
+  const [loggedIn, setIsLoggedIn] = useState("false");
   let googleIcon =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327";
 
@@ -40,6 +41,7 @@ export const Login = () => {
         setIsLogin((isLogin) => {
           let newState = { ...isLogin };
           newState.isLogin = true;
+          setIsLoggedIn("true");
           return newState;
         });
       } else {
@@ -97,6 +99,7 @@ export const Login = () => {
       });
     }
   }
+
   return (
     <>
       <IonPage>
@@ -104,7 +107,7 @@ export const Login = () => {
           <div className={style.loginBody}>
             <div className={style.pageWrapper}>
               <header className={style.loginHeader}>
-                <div className={style.headerLogin}>Login</div>
+                <div className={style.headerLogin}>Noticias</div>
                 <div className={style.headerWelcome}>Welcome</div>
               </header>
 

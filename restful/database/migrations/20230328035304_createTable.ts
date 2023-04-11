@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<void> {
       table.string("email", 255).notNullable().unique();
       table.text("gender").nullable();
       table.integer("age").nullable();
-      table.integer("height").nullable();
-      table.integer("weight").nullable();
+      table.float("height").nullable();
+      table.float("weight").nullable();
       table.string("push_notification_token").nullable();
     });
   }
