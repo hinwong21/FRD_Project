@@ -26,3 +26,4 @@ userRoutes.post(
 userRoutes.post("/weight", isLoggedInAPI, currentUserController.updateWeight);
 userRoutes.post("/height", isLoggedInAPI, currentUserController.updateHeight);
 userRoutes.post("/age", isLoggedInAPI, currentUserController.updateAge);
+userRoutes.post("/gender", isLoggedInAPI, currentUserController.updateGender);
