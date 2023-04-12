@@ -76,13 +76,8 @@
     "static/media/KaTeX_Size3-Regular.woff": "/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/index.html",
-<<<<<<< HEAD
-    "main.6132fd72.css.map": "/static/css/main.6132fd72.css.map",
-    "main.0f4a57e2.js.map": "/static/js/main.0f4a57e2.js.map",
-=======
     "main.a05b4770.css.map": "/static/css/main.a05b4770.css.map",
     "main.b6150ada.js.map": "/static/js/main.b6150ada.js.map",
->>>>>>> da5c8f1c6eb05d9f0a39465136ff2cf4cd84e078
     "738.1935b2e4.chunk.js.map": "/static/js/738.1935b2e4.chunk.js.map",
     "372.9c5f1814.chunk.js.map": "/static/js/372.9c5f1814.chunk.js.map",
     "856.bd0ac2a1.chunk.js.map": "/static/js/856.bd0ac2a1.chunk.js.map",
@@ -95,12 +90,7 @@
     "377.4a9c57f1.chunk.js.map": "/static/js/377.4a9c57f1.chunk.js.map"
   },
   "entrypoints": [
-<<<<<<< HEAD
-    "static/css/main.6132fd72.css",
-    "static/js/main.0f4a57e2.js"
-=======
     "static/css/main.a05b4770.css",
     "static/js/main.b6150ada.js"
->>>>>>> da5c8f1c6eb05d9f0a39465136ff2cf4cd84e078
   ]
 }
