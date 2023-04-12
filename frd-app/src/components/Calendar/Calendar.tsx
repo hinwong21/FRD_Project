@@ -21,7 +21,7 @@ import {
 
     return (
       <IonPage>
-        <IonContent fullscreen>
+        <IonContent id="999" fullscreen>
         <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -35,7 +35,7 @@ import {
           <Calendar_zh/>
           </div>
           {/* Fetch to the page that name equal to url */}
-          {fetchPage}
+          {/* {fetchPage} */}
         </IonContent>
       </IonPage>
     );

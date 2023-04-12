@@ -44,6 +44,10 @@ import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
 import {PushNotifications} from "@capacitor/push-notifications"
 import { Edit } from "./components/Set/Edit";
+import { EditMemo } from "./components/Notes/Memo/Memos";
+import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
+// import {NewMemo} from "./components/Notes/AddNotePopup"
+import AddNotePopup from "./components/Notes/AddNotePopup";
 
 
 // import { Device } from "@capacitor/device";
@@ -173,9 +177,18 @@ const App: React.FC = () => {
               <Route path="/Accounting" exact={true}>
                 <AccountingPage />
               </Route>
-              <Route path="/Diaryeditor" exact={true}>
+              <Route path="/Notepad" exact={true}>
                 <Notepad />
               </Route>
+
+              {/* <Route path="/TextEditor" exact={true}>
+                <TextEditor />
+          </Route>
+
+          <Route path="/NewNotes" exact={true}>
+                <AddNotePopup />
+          </Route> */}
+              
 
               <Route path="/Health-period" exact={true}>
                 <PeriodMain />

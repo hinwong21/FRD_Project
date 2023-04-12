@@ -27,6 +27,8 @@ import MemoEditor, { TextEditor } from "../TextEditor/TextEditor";
 import { DiaryViewer } from "./DiaryViewer";
 import { useLocation } from "react-router-dom";
 import modal from "bootstrap/js/dist/modal";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
+
 
 type DiaryType = {
   id: string;
@@ -44,7 +46,10 @@ export const Diaries: React.FC = () => {
   const [diaryContent, setDiaryContent] = useState<DiaryType[]>([]);
 
   async function getDiary() {
+    let token = await getName("token")
     const res = await fetch("http://localhost:8080/editors/diary", {
+      headers:{
+        Authorization:"Bearer " + token},
       method: "GET",
     });
     const diary = await res.json();
