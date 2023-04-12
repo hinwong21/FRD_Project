@@ -86,14 +86,20 @@ const NewTodoItem: React.FC<NewTodoItemProps> = ({
 };
 
 export function TodoEditor(props: {
-  handleCallback: (arg0: { todoTitle: string }) => void;
+  handleCallback: (arg0: { todoTitle: string,
+    todoDate: string,
+    todoHashtag: string[],
+    todoEmail: string[],
+    todoTask: {}[],
+    todoMemoRelated: string[] 
+  }) => void;
 }) {
   const [todoListTitle, setTodoListTitle] = useState("New Todo");
   const [elements, setElements] = useState<
     { id: string; content: string; checked: boolean }[]
   >([]);
   const [newItemInputValue, setNewItemInputValue] = useState("");
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<string>(JSON.stringify(new Date()));
   const [hashtags, setHashtags] = useState<string[]>([
     "#work",
     "#personal",
@@ -103,7 +109,7 @@ export function TodoEditor(props: {
   const [hashTagShow, setHashTagShow] = useState(false);
   const [createHashTagShow, setCreateHashTagShow] = useState(false);
   const [filteredHashtags, setFilteredHashtags] = useState([] as string[]);
-  const [memoIdRelated, setMemoIdRelated] = useState("");
+  const [memoIdRelated, setMemoIdRelated] = useState([] as string[]);
   const [isReordering, setIsReordering] = useState(false);
   const [hashTagSelected, setHashtagSelected] = useState([] as string[]);
   const [showAlertNewHashtag, setShowAlertNewHashtag] = useState(false);
@@ -197,8 +203,13 @@ export function TodoEditor(props: {
   useEffect(() => {
     props.handleCallback({
       todoTitle: todoListTitle,
+      todoDate: selectedDate,
+      todoHashtag: hashTagSelected,
+      todoEmail: sharedEmailArr,
+      todoTask: elements,
+      todoMemoRelated: memoIdRelated
     });
-  }, [todoListTitle]);
+  }, [todoListTitle,selectedDate, hashTagSelected, sharedEmailArr, elements, memoIdRelated]);
 
   const handleEmailInputChange = (event: CustomEvent) => {
     setSharedEmailInput(event.detail.value);
@@ -226,14 +237,6 @@ export function TodoEditor(props: {
     setSharedEmailArr(newSharedEmailArr);
   };
 
-  // useEffect(() => {
-  //   //if (!sharedEmailArr.includes(sharedEmail)) {
-  //   //  setSharedEmailArr([...sharedEmailArr, sharedEmail]);
-  //   //} else {
-  //   //  setShowAlertNewHashtag(true);
-  //   //  setShowAlertMsg("This email has already been selected.")
-  //   //}
-  // }, [sharedEmail]);
 
   return (
     <>
@@ -418,7 +421,7 @@ export function TodoEditor(props: {
 }
 
 interface handleMemoTodoLinkProps {
-  handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string }) => void;
+  handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[] }) => void;
 }
 
 export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
@@ -434,7 +437,7 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
   };
 
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
-  const [memoTodoLink, setMemoTodoLink] = useState("");
+  const [memoTodoLink, setMemoTodoLink] = useState([] as string[]);
 
   async function getMemo() {
     let token = await getName("token")
@@ -453,6 +456,10 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
     });
   }, [memoTodoLink]);
 
+  const handleMemoSelection = (id: string)=>{
+    setMemoTodoLink([...memoTodoLink, id])
+  }
+
   useEffect(() => {
     getMemo();
   }, []);
@@ -464,13 +471,13 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
           <div
             // className={styles.memoAContainerTodo}
             className={
-              memoTodoLink === item.id
+              memoTodoLink[index] === item.id
                 ? styles.selectedMemoTodo
                 : styles.memoAContainerTodo
             }
             key={index}
             onClick={() => {
-              setMemoTodoLink(item.id);
+              handleMemoSelection(item.id);
             }}
           >
             <div

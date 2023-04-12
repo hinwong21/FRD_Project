@@ -280,6 +280,12 @@ export const AddNotePopup: React.FC = () => {
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
     const [todoListTitle, setTodoListTitle] = useState("")
+    const [todoDate, setTodoDate] = useState("")
+    const [todoHashtag, setTodoHashtag] = useState([] as string[])
+    const [todoEmail, setTodoEmail] = useState([] as string[])
+    const [todoTask, setTodoTask] = useState([] as {}[])
+    const [todoMemoRelated, setTodoMemoRelated] = useState([] as string[])
+  
 
     function onWillDismiss_todo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
@@ -292,10 +298,39 @@ export const AddNotePopup: React.FC = () => {
       let token = await getName("token")
       modal.current?.dismiss("", 'confirm');
       props.handleTodoDismiss(false)
+
+      let id = uuidv4()
+      const todoContent = {
+        id:id,
+        title: todoListTitle,
+        due_date: todoDate,
+        hashtag: todoHashtag,
+        shared_email: todoEmail,
+        tasks: todoTask,
+        memo: todoMemoRelated
+      }
+      const res = await fetch ("http://localhost:8080/editors/new-todo",{
+        method: "POST",
+        headers:{
+          Authorization:"Bearer " + token,
+          "Content-type":"application/json"},
+        body: JSON.stringify({
+          id: id,
+          content:todoContent
+        })
+      })
+      const json= await res.json()
+      console.log(json)
     }
+
 
     function handleCallback(childData:any){
       setTodoListTitle(childData.todoTitle)
+      setTodoDate(childData.todoDate)
+      setTodoHashtag(childData.todoHashtag)
+      setTodoEmail(childData.todoEmail)
+      setTodoTask(childData.todoTask)
+      setTodoMemoRelated(childData.todoMemoRelated)
     }
 
     return (
