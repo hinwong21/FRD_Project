@@ -151,4 +151,15 @@ export class CurrentUserController {
       errorHandler(err, req, res);
     }
   };
+
+  updateGender = async (req: Request, res: Response) => {
+    try {
+      let userId = req.session.userId;
+      let gender = req.body.selectGender;
+      const result = await this.currentUserService.updateGender(userId, gender);
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
 }

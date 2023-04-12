@@ -301,7 +301,6 @@ export const AddNotePopup: React.FC = () => {
 
       let id = uuidv4()
       const todoContent = {
-        id:id,
         title: todoListTitle,
         due_date: todoDate,
         hashtag: todoHashtag,
