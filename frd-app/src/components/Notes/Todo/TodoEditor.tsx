@@ -27,8 +27,6 @@ import { faPlus, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./TodoEditor.module.css";
 
-// C:\Users\Alva\OneDrive\桌面\PersonalManagementProj\FRD_Project\frd-app\src\components
-
 //NOTE: Three React.FC-- NewTodoItem, TodoEditor, MemoTodo
 
 interface NewTodoItemProps {
