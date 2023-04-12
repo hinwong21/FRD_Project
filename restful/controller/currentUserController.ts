@@ -18,7 +18,6 @@ export class CurrentUserController {
         errMess: null,
         data: userId,
       });
-
     } catch (err) {
       errorHandler(err, req, res);
     }
@@ -100,6 +99,53 @@ export class CurrentUserController {
         age,
         weight
       );
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
+  updateUsername = async (req: Request, res: Response) => {
+    try {
+      let userId = req.session.userId;
+      let username = req.body.input;
+      const result = await this.currentUserService.updateUsername(
+        userId,
+        username
+      );
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
+  updateWeight = async (req: Request, res: Response) => {
+    try {
+      let userId = req.session.userId;
+      let weight = req.body.input;
+      const result = await this.currentUserService.updateWeight(userId, weight);
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
+  updateHeight = async (req: Request, res: Response) => {
+    try {
+      let userId = req.session.userId;
+      let height = req.body.input;
+      const result = await this.currentUserService.updateHeight(userId, height);
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
+  updateAge = async (req: Request, res: Response) => {
+    try {
+      let userId = req.session.userId;
+      let age = req.body.input;
+      const result = await this.currentUserService.updateAge(userId, age);
       res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);

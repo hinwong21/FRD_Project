@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Setting.module.css";
 import { useHistory } from "react-router-dom";
+import { getName } from "../../service/LocalStorage/LocalStorage";
 
 type Data = {
+  username: string;
   height: number;
   weight: number;
   age: number;
@@ -14,14 +16,32 @@ export const PersonalSetting = () => {
 
   // import data from db or local storage
   useEffect(() => {
-    setData([
-      {
-        height: 170,
-        weight: 60,
-        age: 23,
-        gender: "male",
-      },
-    ]);
+    const getUser = async () => {
+      let token = await getName("token");
+      const res = await fetch(
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/user`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const json = await res.json();
+      console.log(json);
+
+      setData([
+        {
+          username: json.result[0].username,
+          height: json.result[0].height,
+          weight: json.result[0].weight,
+          age: json.result[0].age,
+          gender: json.result[0].gender,
+        },
+      ]);
+    };
+    getUser();
   }, []);
 
   const history = useHistory();
@@ -63,7 +83,7 @@ export const PersonalSetting = () => {
       <div className={styles.settingContainer} onClick={goEditUsername}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>username</div>
-          <div className={styles.settingItemResult}>username</div>
+          <div className={styles.settingItemResult}>{data[0]?.username}</div>
         </div>
       </div>
 

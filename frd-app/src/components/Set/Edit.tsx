@@ -3,6 +3,7 @@ import styles from "./Edit.module.css";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { useHistory, useLocation } from "react-router";
 import { chevronBackOutline, closeOutline } from "ionicons/icons";
+import { getName } from "../../service/LocalStorage/LocalStorage";
 
 export const Edit = () => {
   const location = useLocation();
@@ -22,10 +23,57 @@ export const Edit = () => {
     setInput("");
   };
 
-  const editFinish = () => {
+  const editFinish = async () => {
+    let token = await getName("token");
     if (input === value) {
       return;
     } else {
+      if (item === "username") {
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/username`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input,
+          }),
+        });
+      } else if (item === "weight") {
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/weight`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input,
+          }),
+        });
+      } else if (item === "height") {
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/height`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input,
+          }),
+        });
+      } else {
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/age`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input,
+          }),
+        });
+      }
+
       history.goBack();
     }
   };
