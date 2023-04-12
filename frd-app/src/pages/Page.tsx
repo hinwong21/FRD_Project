@@ -56,29 +56,17 @@ const Page: React.FC = () => {
   }
 
   return (
-    <IonPage>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>{name}</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
-
-      <IonContent fullscreen>
-        {/* <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large" className="titleName">
-              {name}
-            </IonTitle>
-          </IonToolbar> */}
-        {/* </IonHeader> */}
-        {/* <ExploreContainer name={name} /> */}
-        {/* Fetch to the page that name equal to url */}
+    // <IonPage>
+      
+      /* <IonContent id="111" fullscreen> */
+        
+        
+        
+        <>        
         {fetchPage}
-      </IonContent>
-    </IonPage>
+        </>
+      // </IonContent>
+    // </IonPage>
   );
 };
 

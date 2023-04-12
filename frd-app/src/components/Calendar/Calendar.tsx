@@ -25,11 +25,6 @@ export const Calendar: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState("");
   const [dailyCheckIn, setDailyCheckIn] = useState("");
 
-  // const reset = async () => {
-  //   await Preferences.remove({ key: "dailyCheckIn" });
-  // };
-  // reset();
-
   useEffect(() => {
     const resetData = async () => {
       const { value } = await Preferences.get({ key: "dailyCheckIn" });
@@ -76,33 +71,26 @@ export const Calendar: React.FC = () => {
     getUserLocal();
   }, []);
 
-  return (
-    <IonPage>
-      <IonContent fullscreen>
-        {loggedIn === "false" ? (
-          <LoginSetup />
-        ) : loggedIn === "true" && dailyCheckIn === "false" ? (
-          <DailySummary />
-        ) : (
-          <>
-            <IonHeader>
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonMenuButton />
-                </IonButtons>
-                <IonTitle>Calendar</IonTitle>
-              </IonToolbar>
-            </IonHeader>
-            <div className={styles.calendarWrapper}>
-              <Calendar_zh />
-            </div>
-            {/* Fetch to the page that name equal to url */}
-            {fetchPage}
-          </>
-        )}
-      </IonContent>
-    </IonPage>
-  );
-};
+    return (
+      <IonPage>
+        <IonContent id="999" fullscreen>
+        <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>Calendar</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
-export default Calendar;
+          <div className={styles.calendarWrapper}>
+          <Calendar_zh/>
+          </div>
+          {/* Fetch to the page that name equal to url */}
+          {/* {fetchPage} */}
+        </IonContent>
+      </IonPage>
+    );
+  };
+  
+  export default Calendar;

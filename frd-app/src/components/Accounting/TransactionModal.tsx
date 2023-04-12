@@ -91,11 +91,7 @@ export type Data3 = {
   totalExpense: number;
 };
 
-function TransactionModal(props: {
-  isTran: boolean;
-  close: () => void;
-  addTransaction: (transaction: TransactionType) => void;
-}) {
+function TransactionModal(props: { isTran: boolean; close: () => void }) {
   // const [selectedGenre, setSelectedGenre] = useState(0);
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
   const [amount, setAmount] = useState<string>("500");

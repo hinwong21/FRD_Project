@@ -31,61 +31,96 @@ import { v4 as uuidv4 } from "uuid";
 import styles from "./Notes.module.css";
 import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
+import { getName } from "../../service/LocalStorage/LocalStorage";
+
 
 
 
 export const AddNotePopup: React.FC = () => {
+  const [diaryOpen, setDiaryOpen] = useState(false)
+  const [memoOpen, setMemoOpen] = useState (false)
+  const [todoOpen, setTodoOpen] = useState (false)
 
+  // const list = {
+  //   options: [
+  //     {
+  //       icon: <FontAwesomeIcon icon={faBook} />,
+  //       text: "Diary",
+  //       id: "openDiary",
+  //     },
+  //     {
+  //       icon: <FontAwesomeIcon icon={faPen} />,
+  //       text: "Memo",
+  //       id: "openMemo"
+  //     },
+  //     {
+  //       icon: <FontAwesomeIcon icon={faCheck} />,
+  //       text: "TodoList",
+  //       id: "openTodo"
+  //     },
+  //   ],
+  // };
 
-  const list = {
-    options: [
-      {
-        icon: <FontAwesomeIcon icon={faBook} />,
-        text: "Diary",
-        id: "openDiary",
-      },
-      {
-        icon: <FontAwesomeIcon icon={faPen} />,
-        text: "Memo",
-        id: "openMemo"
-      },
-      {
-        icon: <FontAwesomeIcon icon={faCheck} />,
-        text: "TodoList",
-        id: "openTodo"
-      },
-    ],
-  };
+  const handleOpenDiaryFunc = ()=>{
+    setDiaryOpen(true)
+  }
+
+  const handleOpenMemoFunc = ()=>{
+    setMemoOpen(true)
+  }
+
+  const handleOpenTodoFunc = ()=>{
+    setTodoOpen(true)
+  }
+
+  const handleDiaryDismiss = (status: boolean | ((prevState: boolean) => boolean))=>{
+    setDiaryOpen(status)
+  }
+
+  const handleMemoDismiss = (status: boolean | ((prevState: boolean) => boolean))=>{
+    setMemoOpen(status)
+  }
+
+  const handleTodoDismiss = (status: boolean | ((prevState: boolean) => boolean))=>{
+    setTodoOpen(status)
+    console.log(todoOpen)
+  }
 
   
     return (
       <>
+
         <IonFab slot="fixed" vertical="bottom" horizontal="end" className={styles.fabButton}>
           <IonFabButton>
             <FontAwesomeIcon icon={faPlus} />
           </IonFabButton>
           <IonFabList side="top">
-          {list.options.map((item, index) => (
-                <IonFabButton key={index}>
-                  <IonButton id={list.options[index].id} expand="block">
-                  <div>{list.options[index].icon}</div>
-                  </IonButton>
-                </IonFabButton>
-              ))}
+          
+                {/* <IonFabButton > */}
+                  <IonFabButton  id="openDiary"  onClick={handleOpenDiaryFunc}>
+                  <div><FontAwesomeIcon icon={faBook} /></div>
+                  </IonFabButton >
+                  <IonFabButton  id="openMemo"  onClick={handleOpenMemoFunc}>
+                  <div><FontAwesomeIcon icon={faPen} /></div>
+                  </IonFabButton >
+                  <IonFabButton  id="openTodo"  onClick={handleOpenTodoFunc}>
+                  <div><FontAwesomeIcon icon={faCheck} /></div>
+                  </IonFabButton >
+                {/* </IonFabButton> */}
+    
           </IonFabList>
         </IonFab>
 
-          <NewDiary/>
-          <NewMemo/>
-          <NewTodo/>
+          <NewDiary isOpenStatus = {diaryOpen} handleDiaryDismiss={handleDiaryDismiss}/>
+          <NewMemo isOpenStatus = {memoOpen} handleMemoDismiss={handleMemoDismiss}/>
+          <NewTodo isOpenStatus = {todoOpen} handleTodoDismiss={handleTodoDismiss}/>
       </>
     );
   };
 
 
-
-  const NewDiary= ()=>{
-
+  export const NewDiary= (props: { handleDiaryDismiss: (arg0: boolean) => void; isOpenStatus: boolean | undefined; })=>{
+    
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
     const [diaryWeather, setDiaryWeather] = useState("")
@@ -94,6 +129,7 @@ export const AddNotePopup: React.FC = () => {
 
     function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
+        props.handleDiaryDismiss(false)
         console.log("diary")
       }
     }
@@ -101,11 +137,14 @@ export const AddNotePopup: React.FC = () => {
     let id = uuidv4()
    async function confirm_diary() {
       modal.current?.dismiss("", 'confirm');
+      props.handleDiaryDismiss(false)
       const diaryContent = document.querySelector('.ContentEditable__root')?.innerHTML
-
+      let token = await getName("token")
       const res = await fetch ("http://localhost:8080/editors/new-diary",{
         method: "POST",
-        headers:{"Content-type":"application/json"},
+        headers:{
+          Authorization:"Bearer " + token,
+          "Content-type":"application/json"},
         body: JSON.stringify({
           id: id,
           content:diaryContent,
@@ -131,11 +170,15 @@ export const AddNotePopup: React.FC = () => {
 
     return (
       <>
-      <IonModal ref={modal} trigger="openDiary" onWillDismiss={(ev) => onWillDismiss_diary(ev)}>
+      <IonModal 
+      ref={modal}
+       isOpen={props.isOpenStatus} 
+      onWillDismiss={(ev) => onWillDismiss_diary(ev)}
+      >
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
-                <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
+                <IonButton onClick={() => props.handleDiaryDismiss(false)}>Cancel</IonButton>
               </IonButtons>
               <IonTitle>New Diary</IonTitle>
               <IonButtons slot="end">
@@ -154,39 +197,66 @@ export const AddNotePopup: React.FC = () => {
     )
   }
 
-  const NewMemo= ()=>{
-
+  export const NewMemo= (props: { handleMemoDismiss: (arg0: boolean) => void; isOpenStatus: boolean | undefined; })=>{
+   
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
 
-    function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
+   async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
         console.log("memo")
-      }
-    }
-
-    async function confirm_memo() {
-      modal.current?.dismiss("", 'confirm');
+        // props.handleMemoDismiss(false)
+        // modal.current?.dismiss("", 'confirm');
       let id = uuidv4()
       const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
+      props.handleMemoDismiss(false)
+      let token = await getName("token")
       const res = await fetch ("http://localhost:8080/editors/new-memo",{
         method: "POST",
-        headers:{"Content-type":"application/json"},
+        headers:{
+          Authorization:"Bearer " + token,
+          "Content-type":"application/json"},
         body: JSON.stringify({
           id: id,
           content:memoContent
         })
       })
+      const json= await res.json()
+      console.log(json)
+      }
+    }
 
+    async function confirm_memo() {
+      let token = await getName("token")
+      modal.current?.dismiss("", 'confirm');
+      props.handleMemoDismiss(false)
+      let id = uuidv4()
+      const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
+      const res = await fetch ("http://localhost:8080/editors/new-memo",{
+        method: "POST",
+        headers:{
+          Authorization:"Bearer" + token,
+          "Content-type":"application/json"},
+        body: JSON.stringify({
+          id: id,
+          content:memoContent
+        })
+      })
+      const json= await res.json()
+      console.log(json)
     }
 
     return (
       <>
-      <IonModal ref={modal} trigger="openMemo" onWillDismiss={(ev) => onWillDismiss_memo(ev)}>
+      <IonModal 
+      ref={modal}
+       isOpen={props.isOpenStatus} 
+      onWillDismiss={(ev) => onWillDismiss_memo(ev)}
+      >
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
-                <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
+                <IonButton onClick={() => props.handleMemoDismiss(false)}>Cancel</IonButton>
               </IonButtons>
               <IonTitle>New Memo</IonTitle>
               <IonButtons slot="end">
@@ -205,20 +275,23 @@ export const AddNotePopup: React.FC = () => {
     )
   }
 
-  const NewTodo= ()=>{
-
+  export const NewTodo= (props: { handleTodoDismiss: (arg0: boolean) => void; isOpenStatus: boolean | undefined; })=>{
+    
     const modal = useRef<HTMLIonModalElement>(null);
     const input = useRef<HTMLIonInputElement>(null);
     const [todoListTitle, setTodoListTitle] = useState("")
 
     function onWillDismiss_todo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === 'confirm') {
+        props.handleTodoDismiss(false)
         console.log("todo")
       }
     }
 
-    function confirm_todo() {
+    async function confirm_todo() {
+      let token = await getName("token")
       modal.current?.dismiss("", 'confirm');
+      props.handleTodoDismiss(false)
     }
 
     function handleCallback(childData:any){
@@ -227,11 +300,11 @@ export const AddNotePopup: React.FC = () => {
 
     return (
       <>
-      <IonModal ref={modal} trigger="openTodo" onWillDismiss={(ev) => onWillDismiss_todo(ev)}>
+      <IonModal ref={modal} isOpen={props.isOpenStatus} onWillDismiss={(ev) => onWillDismiss_todo(ev)}>
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
-                <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
+                <IonButton onClick={() => props.handleTodoDismiss(false)}>Cancel</IonButton>
               </IonButtons>
               <IonTitle>{todoListTitle}</IonTitle>
               <IonButtons slot="end">

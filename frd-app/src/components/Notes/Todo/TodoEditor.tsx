@@ -6,7 +6,6 @@ import {
   IonDatetimeButton,
   IonInput,
   IonItem,
-  IonItemDivider,
   IonItemGroup,
   IonItemOption,
   IonItemOptions,
@@ -18,14 +17,16 @@ import {
   IonPopover,
   IonReorder,
   IonReorderGroup,
+  IonToast,
   IonToolbar,
   ItemReorderEventDetail,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./TodoEditor.module.css";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
 
 //NOTE: Three React.FC-- NewTodoItem, TodoEditor, MemoTodo
 
@@ -98,13 +99,20 @@ export function TodoEditor(props: {
     "#personal",
     "#shopping",
   ]);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchTextHashtag, setSearchTextHashtag] = useState<string>("");
   const [hashTagShow, setHashTagShow] = useState(false);
   const [createHashTagShow, setCreateHashTagShow] = useState(false);
   const [filteredHashtags, setFilteredHashtags] = useState([] as string[]);
   const [memoIdRelated, setMemoIdRelated] = useState("");
   const [isReordering, setIsReordering] = useState(false);
   const [hashTagSelected, setHashtagSelected] = useState([] as string[]);
+  const [showAlertNewHashtag, setShowAlertNewHashtag] = useState(false);
+  const [sharedEmail, setSharedEmail] = useState<
+    string | undefined | null | number | any
+  >("");
+  const [sharedEmailInput, setSharedEmailInput] = useState("");
+  const [sharedEmailArr, setSharedEmailArr] = useState([] as string[]);
+  const [showAlertMsg, setShowAlertMsg] =useState("")
   // const [deletedElements, setDeletedElements] = useState<{id:string, content:string, checked:boolean}[]>([]);
 
   const handleAddNewItem = () => {
@@ -116,7 +124,6 @@ export function TodoEditor(props: {
     };
     setNewItemInputValue("");
     setElements([...elements, newItem]);
-    // setCheckedList({...checkedList, [uuid]: false})
   };
 
   const handleReorder = (event: CustomEvent<ItemReorderEventDetail>) => {
@@ -124,33 +131,29 @@ export function TodoEditor(props: {
   };
 
   const handleSearchChange = (event: CustomEvent) => {
-    setSearchText(event.detail.value);
+    setSearchTextHashtag(event.detail.value);
   };
 
   useEffect(() => {
     setFilteredHashtags(
       hashtags.filter((hashtag) =>
-        searchText === "" || searchText === "#"
+        searchTextHashtag === "" || searchTextHashtag === "#"
           ? setHashTagShow(false)
-          : hashtag.toLowerCase().includes(searchText.toLowerCase())
+          : hashtag.toLowerCase().includes(searchTextHashtag.toLowerCase())
       )
     );
     // filteredHashtags.length>0?setHashTagShow(true):setHashTagShow(false)
-    console.log("Hashtag length:" + filteredHashtags.length);
-    console.log("Search Text Length:" + searchText.length);
+
     if (filteredHashtags.length > 0) {
       setHashTagShow(true);
       setCreateHashTagShow(false);
-    } else if (filteredHashtags.length == 0 && searchText.length > 0) {
-      console.log(1);
+    } else if (filteredHashtags.length == 0 && searchTextHashtag.length > 0) {
       setHashTagShow(false);
       setCreateHashTagShow(true);
     } else {
-      console.log(2);
       setCreateHashTagShow(false);
     }
-  }, [searchText]);
-  console.log(createHashTagShow, 222);
+  }, [searchTextHashtag]);
 
   const handleCheckChange = (id: string) => {
     console.log("isReordering", isReordering);
@@ -174,12 +177,21 @@ export function TodoEditor(props: {
 
   const handleDateChange = (e: CustomEvent) => {
     setSelectedDate(e.detail.value);
-    // console.log(e.detail.value)
   };
 
   const handleMemoTodoLinkCallback = (childData: any) => {
     setMemoIdRelated(childData.memoTodoLink);
-    console.log(childData.memoTodoLink);
+    // console.log(childData.memoTodoLink);
+  };
+
+  const handelHashtagSelect = (hashtag: string) => {
+    if (!hashTagSelected.includes(hashtag)) {
+      setHashtagSelected([...hashTagSelected, hashtag]);
+    } else {
+      setShowAlertNewHashtag(true);
+      setShowAlertMsg("This hashtag has already been selected.")
+    }
+    setSearchTextHashtag("");
   };
 
   useEffect(() => {
@@ -187,6 +199,41 @@ export function TodoEditor(props: {
       todoTitle: todoListTitle,
     });
   }, [todoListTitle]);
+
+  const handleEmailInputChange = (event: CustomEvent) => {
+    setSharedEmailInput(event.detail.value);
+  };
+
+  function handleEmailSubmit(sharedEmailInput:string) {
+    if (!sharedEmailArr.includes(sharedEmailInput)) {
+      setSharedEmailArr([...sharedEmailArr, sharedEmailInput]);
+    } else {
+      setShowAlertNewHashtag(true);
+      setShowAlertMsg("This email has already been selected.")
+    }
+    setSharedEmailInput("");
+  }
+
+  const handleCancelHashtag = (index: number) => {
+    const newHashTagSelected = [...hashTagSelected];
+    newHashTagSelected.splice(index, 1);
+    setHashtagSelected(newHashTagSelected);
+  };
+
+  const handleCancelEmail = (index: number) => {
+    const newSharedEmailArr = [...sharedEmailArr];
+    newSharedEmailArr.splice(index, 1);
+    setSharedEmailArr(newSharedEmailArr);
+  };
+
+  // useEffect(() => {
+  //   //if (!sharedEmailArr.includes(sharedEmail)) {
+  //   //  setSharedEmailArr([...sharedEmailArr, sharedEmail]);
+  //   //} else {
+  //   //  setShowAlertNewHashtag(true);
+  //   //  setShowAlertMsg("This email has already been selected.")
+  //   //}
+  // }, [sharedEmail]);
 
   return (
     <>
@@ -235,37 +282,103 @@ export function TodoEditor(props: {
       <div className={styles.hashtagAndUseremailWrapper}>
         <div className={styles.hashtagGroupWrapper}>
           <IonInput
+            value={searchTextHashtag}
             placeholder="#hashtag"
             className={styles.hashtag}
             onIonChange={handleSearchChange}
             maxlength={15}
           ></IonInput>
-          {hashTagShow && searchText !== "" && (
+          {hashTagShow && searchTextHashtag !== "" && (
             <div className={styles.hashtagAutoComplete}>
               {filteredHashtags.map((hashtag, index) => (
-                <div key={uuidv4()} className={styles.hashtagItem}>
-                  {hashtag}
+                <div
+                  key={uuidv4()}
+                  className={styles.hashtagItem}
+                  onClick={() => {
+                    handelHashtagSelect(hashtag);
+                  }}
+                >
+                  <div className={styles.hashtagContent}>{hashtag}</div>
                 </div>
               ))}
             </div>
           )}
-          <div className={styles.createHashWrapper}>
-            {createHashTagShow && searchText !== "" && (
+
+          {createHashTagShow && searchTextHashtag !== "" && (
+            <div className={styles.createHashWrapper}>
               <div className={styles.createHashTagItem}>
-                <IonButton size="small" color="light">
-                  Create #
-                </IonButton>
-                {searchText}
+                <div className={styles.createHashTagBtnWrapper}>
+                  <IonButton
+                    size="small"
+                    color="light"
+                    className={styles.createHashtagBtn}
+                  >
+                    Create #
+                  </IonButton>
+                </div>
+                <div className={styles.newHashtagText}>{searchTextHashtag}</div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.hashtagAndUseremailWrapper}>
+          <div className={styles.hashtagGroupWrapper}>
+            <IonInput
+              placeholder="@User email"
+              className={styles.useremail}
+              type="email"
+              value={sharedEmailInput}
+              onIonChange={handleEmailInputChange}
+              // onKeyPress={handleKeyPress}
+            ></IonInput>
+
+            {sharedEmailInput.length > 0 && (
+              <div
+                className={styles.sharedEmailItem}
+                onClick={() => {
+                  handleEmailSubmit(sharedEmailInput);
+                }}
+              >
+                {sharedEmailInput}
               </div>
             )}
           </div>
         </div>
-
-        <IonInput
-          placeholder="@User email"
-          className={styles.useremail}
-        ></IonInput>
       </div>
+
+      {(hashTagSelected.some(Boolean) || sharedEmailArr.some(Boolean)) && (
+        <div className={styles.hashtagItemSelectedWrapper}>
+          {hashTagSelected.filter(Boolean).map((hashtag, index) => (
+            <div key={index} className={styles.adjustCancelBtn}>
+              <div className={styles.hashtagItemSelected}>{hashtag}</div>
+              <button
+                className={styles.cancelButton}
+                onClick={() => handleCancelHashtag(index)}
+              >
+                x
+              </button>
+            </div>
+          ))}
+          
+          {sharedEmailArr.filter(Boolean).map((email, index) => (
+            <div key={index} className={styles.adjustCancelBtn}>
+            
+              <div className={styles.hashtagItemSelected}>{email}</div>
+              <button
+                className={styles.cancelButton}
+                onClick={() => handleCancelEmail(index)}
+              >
+                x
+              </button>
+            
+            </div>
+          ))}
+          
+        </div>
+      )}
+
+
 
       <div className={styles.addTodoDiv}>
         <IonInput
@@ -294,6 +407,12 @@ export function TodoEditor(props: {
           ))}
         </IonReorderGroup>
       </div>
+
+      <IonToast
+        isOpen={showAlertNewHashtag}
+        message={showAlertMsg}
+        duration={5000}
+      ></IonToast>
     </>
   );
 }
@@ -318,7 +437,10 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
   const [memoTodoLink, setMemoTodoLink] = useState("");
 
   async function getMemo() {
+    let token = await getName("token")
     const res = await fetch("http://localhost:8080/editors/memo", {
+      headers:{
+        Authorization:"Bearer " + token},
       method: "GET",
     });
     const memos = await res.json();
