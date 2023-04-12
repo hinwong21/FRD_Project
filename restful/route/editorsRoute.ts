@@ -33,3 +33,8 @@ editorsRoutes.get(
     "/diary",isLoggedInAPI,
     editorsController.getDiary
   );
+
+editorsRoutes.post(
+    "/new-todo",isLoggedInAPI,
+    editorsController.newTodo
+  );

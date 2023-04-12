@@ -56,4 +56,14 @@ export class EditorsController {
         errorHandler(err, req, res);
     }
   }
+
+  newTodo= async (req:Request, res:Response)=>{
+    try{
+      console.log(req.body)
+
+
+    }catch(err){
+      errorHandler(err, req, res);
+  }
+  }
 }
