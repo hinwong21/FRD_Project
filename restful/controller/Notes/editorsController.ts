@@ -60,10 +60,20 @@ export class EditorsController {
   newTodo= async (req:Request, res:Response)=>{
     try{
       console.log(req.body)
-
+      
 
     }catch(err){
       errorHandler(err, req, res);
   }
   }
+
+  // getHashtags = async (req:Request, res:Response)=>{
+  //   try{
+  //     let hashtags = await this.editorsService
+      
+
+  //   }catch(err){
+  //     errorHandler(err, req, res);
+  // }
+  // }
 }

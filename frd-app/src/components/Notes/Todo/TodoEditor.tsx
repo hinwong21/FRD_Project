@@ -100,11 +100,7 @@ export function TodoEditor(props: {
   >([]);
   const [newItemInputValue, setNewItemInputValue] = useState("");
   const [selectedDate, setSelectedDate] = useState<string>(JSON.stringify(new Date()));
-  const [hashtags, setHashtags] = useState<string[]>([
-    "#work",
-    "#personal",
-    "#shopping",
-  ]);
+  const [hashtags, setHashtags] = useState([] as string[]);
   const [searchTextHashtag, setSearchTextHashtag] = useState<string>("");
   const [hashTagShow, setHashTagShow] = useState(false);
   const [createHashTagShow, setCreateHashTagShow] = useState(false);
@@ -119,6 +115,7 @@ export function TodoEditor(props: {
   const [sharedEmailInput, setSharedEmailInput] = useState("");
   const [sharedEmailArr, setSharedEmailArr] = useState([] as string[]);
   const [showAlertMsg, setShowAlertMsg] =useState("")
+  const [newlyCreatedHashtagArr, setNewlyCreatedHashtagArr] = useState([] as string[])
   // const [deletedElements, setDeletedElements] = useState<{id:string, content:string, checked:boolean}[]>([]);
 
   const handleAddNewItem = () => {
@@ -231,10 +228,26 @@ export function TodoEditor(props: {
     setHashtagSelected(newHashTagSelected);
   };
 
+  const handleCancelNewlyCreatedHashtag = (index: number) => {
+    const newNewlyCreatedHashtagArr = [...newlyCreatedHashtagArr];
+    newNewlyCreatedHashtagArr.splice(index, 1);
+    setNewlyCreatedHashtagArr(newNewlyCreatedHashtagArr);
+  };
+
   const handleCancelEmail = (index: number) => {
     const newSharedEmailArr = [...sharedEmailArr];
     newSharedEmailArr.splice(index, 1);
     setSharedEmailArr(newSharedEmailArr);
+  };
+
+  const handleNewlyCreatedHashtag = (text: string) => {
+    if (!newlyCreatedHashtagArr.includes(text)) {
+      setNewlyCreatedHashtagArr([...newlyCreatedHashtagArr, text]);
+    } else {
+      setShowAlertNewHashtag(true);
+      setShowAlertMsg("This hashtag has already been created.")
+    }
+    setSearchTextHashtag("");
   };
 
 
@@ -307,6 +320,7 @@ export function TodoEditor(props: {
             </div>
           )}
 
+
           {createHashTagShow && searchTextHashtag !== "" && (
             <div className={styles.createHashWrapper}>
               <div className={styles.createHashTagItem}>
@@ -315,6 +329,7 @@ export function TodoEditor(props: {
                     size="small"
                     color="light"
                     className={styles.createHashtagBtn}
+                    onClick={()=>{handleNewlyCreatedHashtag(searchTextHashtag)}}
                   >
                     Create #
                   </IonButton>
@@ -350,7 +365,7 @@ export function TodoEditor(props: {
         </div>
       </div>
 
-      {(hashTagSelected.some(Boolean) || sharedEmailArr.some(Boolean)) && (
+      {(hashTagSelected.some(Boolean) || sharedEmailArr.some(Boolean) || newlyCreatedHashtagArr.some(Boolean)) && (
         <div className={styles.hashtagItemSelectedWrapper}>
           {hashTagSelected.filter(Boolean).map((hashtag, index) => (
             <div key={index} className={styles.adjustCancelBtn}>
@@ -358,6 +373,18 @@ export function TodoEditor(props: {
               <button
                 className={styles.cancelButton}
                 onClick={() => handleCancelHashtag(index)}
+              >
+                x
+              </button>
+            </div>
+          ))}
+
+          {newlyCreatedHashtagArr.filter(Boolean).map((hashtag, index) => (
+            <div key={index} className={styles.adjustCancelBtn}>
+              <div className={styles.hashtagItemSelected}>{hashtag}</div>
+              <button
+                className={styles.cancelButton}
+                onClick={() => handleCancelNewlyCreatedHashtag(index)}
               >
                 x
               </button>
@@ -450,6 +477,17 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
     setMemoContent(memos);
   }
 
+  async function getHashtags(){
+    let token = await getName("token")
+    const res = await fetch("http://localhost:8080/editors/hashtag", {
+      headers:{
+        Authorization:"Bearer " + token},
+      method: "GET",
+    });
+    const hashtags_json = await res.json();
+    
+  }
+
   useEffect(() => {
     handleMemoTodoLinkCallback({
       memoTodoLink,
@@ -462,6 +500,7 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
 
   useEffect(() => {
     getMemo();
+
   }, []);
 
   return (
