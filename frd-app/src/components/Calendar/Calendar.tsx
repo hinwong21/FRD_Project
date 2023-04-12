@@ -62,6 +62,8 @@ export const Calendar: React.FC = () => {
       const json = await res.json();
       let data = json.result[0].age;
       if (data === null) {
+        console.log(1);
+        
         setLoggedIn("false");
       } else {
         setLoggedIn("true");
