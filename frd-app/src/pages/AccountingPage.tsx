@@ -14,7 +14,7 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Finance from "../components/Accounting/Finance";
 // import { Finance_summary } from "./Finance_summary";
 import style from "./AccountingPage.module.scss";
@@ -26,6 +26,7 @@ import { TransactionType } from "../components/Accounting/Finance";
 import Calendar from "../components/Calendar/Calendar";
 import Calculator from "../components/Accounting/Calculator";
 import { Finance_summary } from "../components/Accounting/Finance_summary";
+import { getName } from "../service/LocalStorage/LocalStorage";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -41,9 +42,29 @@ const AccountingPage: React.FC = () => {
   const [isTran, setIsTran] = useState<boolean>(false);
 
   const [calculateResult, setCalculateResult] = useState<TransactionType[]>([]);
+  const [showData, setShowData] = useState<TransactionType[]>([]);
 
   const closeTrans = useCallback(() => setIsTran(false), []);
   const closeOpen = useCallback(() => setIsOpen(false), []);
+
+  async function getDailyData() {
+    let token = await getName("token");
+    const res = await fetch(
+      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getDailyTransaction`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    let json = await res.json();
+    setShowData(json);
+    console.log(json);
+  }
+
+  useEffect(() => {
+    getDailyData();
+  }, []);
 
   const addCalculator = useCallback(
     (transaction: TransactionType) =>
@@ -80,7 +101,7 @@ const AccountingPage: React.FC = () => {
           {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
           {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
           <h1>{date}</h1>
-          <div className={style.list}>
+          {/* <div className={style.list}>
             <IonList>
               {calculateResult.map((calculateResult, idx) => (
                 <IonItem key={idx}>
@@ -89,7 +110,14 @@ const AccountingPage: React.FC = () => {
                 </IonItem>
               ))}
             </IonList>
-          </div>
+          </div> */}
+          <IonList>
+            {showData.map((item) => (
+              <IonItem key={item.id}>
+                {item.category} - $ {item.amount.toLocaleString()}
+              </IonItem>
+            ))}
+          </IonList>
           <div className={style.button}>
             <IonButton
               color={style.btn}

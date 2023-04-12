@@ -284,7 +284,7 @@ let Calculator: React.FC<{
             >
               {Genres.map((Genre) => (
                 <IonSelectOption key={Genre.id} value={Genre.id}>
-                  {Genre.name}
+                  {Genre.category}
                 </IonSelectOption>
               ))}
             </IonSelect>

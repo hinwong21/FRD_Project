@@ -84,12 +84,12 @@ export class AccountingController {
 
   getDailyTransaction = async (req: Request, res: Response) => {
     try {
-      // let userId = req.session.userId!
       let userId = req.session.userId;
+
       console.log(userId);
 
       const getDailyResult = await this.accountingService.getDailyTransaction(userId!);
-      // const tranResult = await this.accountingService.getTransaction(req.session.userId as number)
+
       console.log('accountingController : ', getDailyResult);
       res.json(getDailyResult);
 

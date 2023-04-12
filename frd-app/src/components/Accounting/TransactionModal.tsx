@@ -21,54 +21,54 @@ import AccountingChart from "./AccountingChart";
 
 export interface Genre {
   id: number;
-  name: string;
+  category: string;
   type: string;
 }
 
 export const Genres: Genre[] = [
   {
     id: 1,
-    name: "Income",
+    category: "Income",
     type: "income",
   },
   {
     id: 2,
-    name: "Food",
+    category: "Food",
     type: "expense",
   },
   {
     id: 3,
-    name: "Drink",
+    category: "Drink",
     type: "expense",
   },
   {
     id: 4,
-    name: "Transport",
+    category: "Transport",
     type: "expense",
   },
   {
     id: 5,
-    name: "Entertainment",
+    category: "Entertainment",
     type: "expense",
   },
   {
     id: 6,
-    name: "Bill",
+    category: "Bill",
     type: "expense",
   },
   {
     id: 7,
-    name: "Consumption",
+    category: "Consumption",
     type: "expense",
   },
   {
     id: 8,
-    name: "Medical",
+    category: "Medical",
     type: "expense",
   },
   {
     id: 9,
-    name: "Electronic",
+    category: "Electronic",
     type: "expense",
   },
 ];
@@ -98,7 +98,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
   const [data3, setData3] = useState<Data3[]>([]);
 
   async function getTransaction() {
-    let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
+    let type = Genres.find((obj) => obj.category === selectedGenre)?.category;
     if (!type) return;
 
     if (!amount) return;
@@ -179,7 +179,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
                   // value={Genre.id}
                   value={Genre}
                 >
-                  {Genre.name}
+                  {Genre.category}
                 </IonSelectOption>
               ))}
             </IonSelect>
