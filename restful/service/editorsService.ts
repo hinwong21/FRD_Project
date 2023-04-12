@@ -5,7 +5,7 @@ export class EditorsService {
     this.knex = knex;
   }
 
-  addMemo = async (id: number, content: string, userId: number) => {
+  addMemo = async (id: string, content: string, userId: string) => {
     await this.knex.insert({
       id: id,
       content: JSON.stringify(content),
@@ -13,7 +13,7 @@ export class EditorsService {
     }).into("memo")
   }
 
-  getMemo = async (userId: number) => {
+  getMemo = async (userId: string) => {
     const memos = await this.knex("memo")
     .select("*")
     .where("user_id",userId)
@@ -29,7 +29,7 @@ export class EditorsService {
     .where("id", id);
   }
 
-  newDiary = async (id:number, content:string, weather: string,title:string,mood:string, userId:number)=>{
+  newDiary = async (id:string, content:string, weather: string,title:string,mood:string, userId:string)=>{
     await this.knex
     .insert({
       id: id,
@@ -42,7 +42,7 @@ export class EditorsService {
     .into("dairy")
   }
 
-  getDiary = async (userId:number)=>{
+  getDiary = async (userId:string)=>{
     const diaries = await this.knex("dairy")
     .select("*")
     .where("user_id",userId)

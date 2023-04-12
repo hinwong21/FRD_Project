@@ -39,16 +39,14 @@ import { loginState } from "./atoms";
 import { MainPage } from "./components/Main/MainPage";
 import RoutesIsLogin from "./RoutesIsLogin";
 import RoutesIsNotLogin from "./RoutesIsNotLogin";
-import {
-  getName,
-  removeName,
-  setName,
-} from "./service/LocalStorage/LocalStorage";
+import { getName, removeName, setName } from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
+import PeriodDay from "./components/Health/Period/PeriodDay";
+import {PushNotifications} from "@capacitor/push-notifications"
 import { Edit } from "./components/Set/Edit";
 
+
 // import { Device } from "@capacitor/device";
-import { PushNotifications } from "@capacitor/push-notifications";
 setupIonicReact();
 // const logDeviceInfo = async () => {
 //   const info = await Device.getInfo();
@@ -63,6 +61,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     async function main() {
+      await removeName("token");
       let token = await getName("token");
 
       if (token) {
@@ -116,23 +115,30 @@ const App: React.FC = () => {
       console.log("Registration error: ", err.error);
     });
 
-    await PushNotifications.addListener(
-      "pushNotificationReceived",
-      (notification) => {
-        console.log("Push notification received: ", notification);
-      }
-    );
+    // await PushNotifications.addListener(
+    //   "pushNotificationReceived",
+    //   (notification) => {
+    //     console.log("Push notification received: ", notification);
+    //     if(notification.path===""){
+    //       // goto this page
+    //     }
+    //   }
+    // );
 
-    await PushNotifications.addListener(
-      "pushNotificationActionPerformed",
-      (notification) => {
-        console.log(
-          "Push notification action performed",
-          notification.actionId,
-          notification.inputValue
-        );
-      }
-    );
+    // await PushNotifications.addListener(
+    //   "pushNotificationActionPerformed",
+    //   (notification) => {
+    //     console.log(
+    //       "Push notification action performed",
+    //       notification.actionId,
+    //       notification.inputValue
+    //     );
+
+    //     if(notification.path===""){
+    //       // goto this page
+    //     }
+    //   }
+    // );
   };
   const reg_push_notifications_token = async () => {
     let permStatus = await PushNotifications.checkPermissions();

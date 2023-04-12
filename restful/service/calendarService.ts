@@ -5,11 +5,10 @@ export class CalendarService {
     this.knex = knex;
   }
 
-
   getGoogleCalendarEvent = async (userId: string) => {
     let data = await this.knex("google_calendar")
       .select("*")
-      .where("user_id", userId)
+      .where("user_id", userId);
 
     console.log(data);
 

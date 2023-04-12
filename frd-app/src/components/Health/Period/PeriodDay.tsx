@@ -200,6 +200,15 @@ function PeriodDay() {
   const handleHistory = () => {
     submit.push("/Health-periodRecordDetails");
   };
+
+  const [dateInfo, setDateInfo] = useState<Date | null>();
+
+  const handleDateInfo = (saveDate: Date | null) => {
+    console.log("startDate:", saveDate);
+    setDateInfo(saveDate);
+    console.log("dateInfo:", dateInfo);
+  };
+
   // const [message, setMessage] = useState(
   //   "This modal example uses the modalController to present and dismiss modals."
   // );
@@ -232,7 +241,7 @@ function PeriodDay() {
           </header> */}
         <div>
           <div className={styles.container}>
-            <Topbox
+            {/* <Topbox
               chance="low probability of pregnancy"
               subTitle="ovulation date:"
               // TODO Count the Ovulation day
@@ -240,7 +249,8 @@ function PeriodDay() {
               // TODO Count the Period day
               ovuDay="period day 3"
               btname="period end"
-            />
+              getDate={handleDateInfo}
+            /> */}
             <br></br>
             <br></br>
             <Datebox subTitle="upcoming ovulation" startDate="" endDate="" />

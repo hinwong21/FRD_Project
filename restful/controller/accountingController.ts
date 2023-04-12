@@ -63,4 +63,22 @@ export class AccountingController {
       errorHandler(error, req, res);
     }
   };
+
+  getMonthlyTransaction = async (req: Request, res: Response) => {
+    try {
+      // let userId = req.session.userId!
+      let userId = req.session.userId;
+      console.log(userId);
+
+      const getResult = await this.accountingService.getMonthlyTransaction(userId!);
+      // const tranResult = await this.accountingService.getTransaction(req.session.userId as number)
+      console.log('accountingController : ', getResult);
+      res.json(getResult);
+
+
+      return
+    } catch (error) {
+      errorHandler(error, req, res);
+    }
+  }
 }

@@ -126,28 +126,28 @@ export async function seed(knex: Knex): Promise<void> {
   await knex("period_period_status").insert([
     {
       id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusOne.id}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusOne.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusTwo.id}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusTwo.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiFeb.id}`,
-      period_status_id: `${febStatusThree.id}`,
+      period_id: namiFeb.id,
+      period_status_id: febStatusThree.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiMar.id}`,
-      period_status_id: `${marStatusOne.id}`,
+      period_id: namiMar.id,
+      period_status_id: marStatusOne.id,
     },
     {
       id: `${uuidv4()}`,
-      period_id: `${namiMar.id}`,
-      period_status_id: `${marStatusTwo.id}`,
+      period_id: namiMar.id,
+      period_status_id: marStatusTwo.id,
     },
   ]);
 }

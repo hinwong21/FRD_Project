@@ -45,37 +45,7 @@ export const Notes: React.FC = () => {
 
   return (
     <>
-      <div>Good Day, {}</div>
-
-      <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Today</IonLabel>
-        </IonItemDivider>
-
-        {/* <IonItem>
-         
-        </IonItem> */}
-      </IonItemGroup>
-
-      <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Tomorrow</IonLabel>
-        </IonItemDivider>
-
-        {/* <IonItem>
-         
-        </IonItem> */}
-      </IonItemGroup>
-
-      <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>The Day After Tomorrow</IonLabel>
-        </IonItemDivider>
-
-        {/* <IonItem>
-         
-        </IonItem> */}
-      </IonItemGroup>
+      
     </>
   );
 };
