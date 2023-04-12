@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Component } from "react";
 import {
   IonButtons,
+  IonContent,
   IonHeader,
   IonLabel,
   IonMenuButton,
@@ -32,6 +33,7 @@ export const Notepad: React.FC = () => {
 
   return (
     <>
+    <IonContent>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -59,6 +61,7 @@ export const Notepad: React.FC = () => {
       {selectedSegment==="todo" && <TodoLists />}
 
       <AddNotePopup />
+      </IonContent>
     </>
   );
 };

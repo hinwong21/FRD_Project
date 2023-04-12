@@ -27,7 +27,7 @@ export default function RoutesIsNotLogin() {
         <Route path="/Accounting" exact={true}>
           <Redirect to="/login" />
         </Route>
-        <Route path="/Diaryeditor" exact={true}>
+        <Route path="/Notepad" exact={true}>
           <Redirect to="/login" />
         </Route>
 

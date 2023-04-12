@@ -104,21 +104,18 @@
 }
 
 .hashtag{
-    /* margin-left: 15px;
-    margin-right:15px; */
     font-size: 15px;
     padding-top: 5px;
     padding-bottom: 5px;
     width:42.5vw;
     word-wrap: break-word; 
     word-break: break-all;
-    border:solid;
-    border-color: black;
 }
 
 .hashtagAndUseremailWrapper{
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
 }
 
 .memoWrapperTodo{
@@ -198,7 +195,21 @@
   .hashtagItem{
     background-color: white;
     width:100%;
-    font-size: 14px;
+    font-size: 16px;
+    height:5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .hashtagContent{
+    padding-left:4px;
+    padding-right:4px;
+    padding-top:2px;
+    padding-bottom:2px;
+    background-color: rgba(255, 255, 255, 0.565);
+    border-radius: 10px;
   }
 
   .hashtagGroupWrapper{
@@ -206,5 +217,78 @@
     flex-direction: column;
     width:42.5vw;
     margin-left: 15px;
-    /* margin-right:15px; */
+  }
+
+  .createHashtagBtn{
+    font-size: 12px;
+    font-weight: bold;
+    width:75px;
+  }
+
+  .createHashTagBtnWrapper{
+    width:50%;
+  }
+
+  .createHashTagItem{
+    background-color: white;
+    width:100%;
+    font-size: 14px;
+    height:5vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .newHashtagText{
+    width:50%;
+  }
+
+  .hashtagItemSelected{
+    display: inline-block;
+    justify-content: space-between;
+    font-size: 16px;
+    text-align: center;
+    margin-left: qpx;
+    margin-right: 0.5px;
+    /* padding-left:4px;
+    padding-right:4px;
+    padding-top:2px;
+    padding-bottom:2px;
+    background-color: rgba(255, 255, 255, 0.565);
+    border-radius: 10px;
+    margin:2px; */
+  }
+
+  .cancelButton{
+    margin-left: qpx;
+    margin-right: qpx;
+  }
+
+  .hashtagItemSelectedWrapper{
+    margin-left: 15px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .sharedEmailItem{
+    background-color: white;
+    width:100%;
+    font-size: 16px;
+    height:5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .adjustCancelBtn{
+    display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-left:4px;
+  padding-right:4px;
+  padding-top:2px;
+  padding-bottom:2px;
+  background-color: rgba(255, 255, 255, 0.565);
+  border-radius: 10px;
+  margin:2px;
   }

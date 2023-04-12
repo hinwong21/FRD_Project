@@ -21,6 +21,7 @@ import React, {
   import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
   import ReEditTextEditor from "./ReEditTextEditor";
   import { useLocation } from "react-router-dom";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
   
   type MemoType = {
     id: string;
@@ -35,7 +36,10 @@ import React, {
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
   
     async function getMemo() {
+      let token = await getName("token")
       const res = await fetch("http://localhost:8080/editors/memo", {
+        headers:{
+          Authorization:"Bearer " + token},
         method: "GET",
       });
       const memos = await res.json();
@@ -108,7 +112,8 @@ import React, {
           content:memoContent
         })
       })
-      // await res.json()
+      const json= await res.json()
+      console.log(json)
     }
   
     type dataType = {

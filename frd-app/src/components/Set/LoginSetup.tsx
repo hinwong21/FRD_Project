@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import styles from "./LoginSetup.module.css";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { useHistory } from "react-router";
 
 export const LoginSetup = () => {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
+
+  const history = useHistory();
 
   const handleSubmit = async () => {
     if (gender === "") {
@@ -53,7 +56,7 @@ export const LoginSetup = () => {
     });
 
     // fetch page to calendar
-    window.location.href = "/"
+    history.push("/");
   };
   return (
     <>
