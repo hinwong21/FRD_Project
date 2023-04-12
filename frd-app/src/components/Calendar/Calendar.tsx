@@ -62,16 +62,18 @@ export const Calendar: React.FC = () => {
       const json = await res.json();
       let data = json.result[0].age;
       if (data === null) {
-        console.log(1);
-        
         setLoggedIn("false");
+        console.log(1);
       } else {
         setLoggedIn("true");
+        console.log(2);
         const { value } = await Preferences.get({ key: "dailyCheckIn" });
         if (value == null) {
           setDailyCheckIn("false");
+          console.log(3);
         } else {
           setDailyCheckIn("true");
+          console.log(4);
         }
       }
     };

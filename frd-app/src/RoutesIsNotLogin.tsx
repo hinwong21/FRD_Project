@@ -13,43 +13,43 @@ import { Edit } from "./components/Set/Edit";
 
 export default function RoutesIsNotLogin() {
   return (
-    <IonSplitPane contentId="main">
-      <Menu />
-      <IonRouterOutlet id="main">
-        <Switch>
-          <Route path="/" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/login" exact={true}>
-            <MainPage />
-          </Route>
-          <Route path="/page/:name" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Accounting" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Diaryeditor" exact={true}>
-            <Redirect to="/login" />
-          </Route>
+    // <IonSplitPane contentId="main">
+    // <Menu />
+    <IonRouterOutlet id="main">
+      <Switch>
+        <Route path="/" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/login" exact={true}>
+          <MainPage />
+        </Route>
+        <Route path="/page/:name" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Accounting" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Diaryeditor" exact={true}>
+          <Redirect to="/login" />
+        </Route>
 
-          <Route path="/Health-period" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Health-nutrient" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Health-periodCalendar" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Edit" exact={true}>
-            <Edit />
-          </Route>
-          <Route path="*" exact={true}>
-            <div>404 not found</div>
-          </Route>
-        </Switch>
-      </IonRouterOutlet>
-    </IonSplitPane>
+        <Route path="/Health-period" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Health-nutrient" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Health-periodCalendar" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Edit" exact={true}>
+          <Edit />
+        </Route>
+        <Route path="*" exact={true}>
+          <div>404 not found</div>
+        </Route>
+      </Switch>
+    </IonRouterOutlet>
+    // </IonSplitPane>
   );
 }

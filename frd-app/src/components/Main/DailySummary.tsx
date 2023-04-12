@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import style from "./Main.module.scss";
 import { MainHeader } from "./MainHeader";
 import { Preferences } from "@capacitor/preferences";
+import { useHistory } from "react-router";
 
 export const DailySummary = () => {
   useEffect(() => {
@@ -28,8 +29,9 @@ export const DailySummary = () => {
     setDailyCheckIn();
   }, []);
 
+  const history = useHistory();
   const handleStart = () => {
-    window.location.href = "/";
+     history.push("/");
   };
 
   return (
