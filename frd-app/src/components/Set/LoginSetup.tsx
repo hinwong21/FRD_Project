@@ -26,7 +26,6 @@ export const LoginSetup = () => {
       alert("Weight is missed!");
       return;
     }
-    console.log(height, gender, age, weight);
 
     // insert to db
     let token = await getName("token");

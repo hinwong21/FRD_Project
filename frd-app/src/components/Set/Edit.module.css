@@ -1,6 +1,7 @@
 .editHeaderContainer {
   height: 30px;
   border-bottom: 1px solid black;
+  margin-top: 70px;
 }
 
 .editHeader {

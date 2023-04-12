@@ -66,4 +66,35 @@ export class CurrentUserService {
       throw new Error(`${err.message}`);
     }
   };
+  updateUsername = async (userId: string | undefined, username: string) => {
+    try {
+      await this.knex("users").update({ username }).where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
+
+  updateWeight = async (userId: string | undefined, weight: number) => {
+    try {
+      await this.knex("users").update({ weight }).where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
+
+  updateHeight = async (userId: string | undefined, height: number) => {
+    try {
+      await this.knex("users").update({ height }).where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
+
+  updateAge = async (userId: string | undefined, age: number) => {
+    try {
+      await this.knex("users").update({ age }).where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
 }
