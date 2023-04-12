@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./TodoEditor.module.css";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
 
 //NOTE: Three React.FC-- NewTodoItem, TodoEditor, MemoTodo
 
@@ -426,7 +427,10 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
   const [memoTodoLink, setMemoTodoLink] = useState("");
 
   async function getMemo() {
+    let token = await getName("token")
     const res = await fetch("http://localhost:8080/editors/memo", {
+      headers:{
+        Authorization:"Bearer " + token},
       method: "GET",
     });
     const memos = await res.json();
