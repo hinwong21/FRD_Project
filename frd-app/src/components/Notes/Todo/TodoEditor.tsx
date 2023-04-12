@@ -112,6 +112,7 @@ export function TodoEditor(props: {
   >("");
   const [sharedEmailInput, setSharedEmailInput] = useState("");
   const [sharedEmailArr, setSharedEmailArr] = useState([] as string[]);
+  const [showAlertMsg, setShowAlertMsg] =useState("")
   // const [deletedElements, setDeletedElements] = useState<{id:string, content:string, checked:boolean}[]>([]);
 
   const handleAddNewItem = () => {
@@ -180,7 +181,7 @@ export function TodoEditor(props: {
 
   const handleMemoTodoLinkCallback = (childData: any) => {
     setMemoIdRelated(childData.memoTodoLink);
-    console.log(childData.memoTodoLink);
+    // console.log(childData.memoTodoLink);
   };
 
   const handelHashtagSelect = (hashtag: string) => {
@@ -188,6 +189,7 @@ export function TodoEditor(props: {
       setHashtagSelected([...hashTagSelected, hashtag]);
     } else {
       setShowAlertNewHashtag(true);
+      setShowAlertMsg("This hashtag has already been selected.")
     }
     setSearchTextHashtag("");
   };
@@ -202,8 +204,13 @@ export function TodoEditor(props: {
     setSharedEmailInput(event.detail.value);
   };
 
-  function handleEmailSubmit() {
-    setSharedEmail(sharedEmailInput);
+  function handleEmailSubmit(sharedEmailInput:string) {
+    if (!sharedEmailArr.includes(sharedEmailInput)) {
+      setSharedEmailArr([...sharedEmailArr, sharedEmailInput]);
+    } else {
+      setShowAlertNewHashtag(true);
+      setShowAlertMsg("This email has already been selected.")
+    }
     setSharedEmailInput("");
   }
 
@@ -219,13 +226,14 @@ export function TodoEditor(props: {
     setSharedEmailArr(newSharedEmailArr);
   };
 
-  useEffect(() => {
-    if (!sharedEmailArr.includes(sharedEmail)) {
-      setSharedEmailArr([...sharedEmailArr, sharedEmail]);
-    } else {
-      setShowAlertNewHashtag(true);
-    }
-  }, [sharedEmail]);
+  // useEffect(() => {
+  //   //if (!sharedEmailArr.includes(sharedEmail)) {
+  //   //  setSharedEmailArr([...sharedEmailArr, sharedEmail]);
+  //   //} else {
+  //   //  setShowAlertNewHashtag(true);
+  //   //  setShowAlertMsg("This email has already been selected.")
+  //   //}
+  // }, [sharedEmail]);
 
   return (
     <>
@@ -329,7 +337,7 @@ export function TodoEditor(props: {
               <div
                 className={styles.sharedEmailItem}
                 onClick={() => {
-                  handleEmailSubmit();
+                  handleEmailSubmit(sharedEmailInput);
                 }}
               >
                 {sharedEmailInput}
@@ -341,7 +349,6 @@ export function TodoEditor(props: {
 
       {(hashTagSelected.some(Boolean) || sharedEmailArr.some(Boolean)) && (
         <div className={styles.hashtagItemSelectedWrapper}>
-         {/* <div className={styles.adjustCancelBtn}> */}
           {hashTagSelected.filter(Boolean).map((hashtag, index) => (
             <div key={index} className={styles.adjustCancelBtn}>
               <div className={styles.hashtagItemSelected}>{hashtag}</div>
@@ -349,26 +356,29 @@ export function TodoEditor(props: {
                 className={styles.cancelButton}
                 onClick={() => handleCancelHashtag(index)}
               >
-                X
+                x
               </button>
             </div>
           ))}
-          {/* </div> */}
-          <div className={styles.adjustCancelBtn}>
+          
           {sharedEmailArr.filter(Boolean).map((email, index) => (
-            <div key={index} className={styles.hashtagItemSelected}>
-              <div>{email}</div>
+            <div key={index} className={styles.adjustCancelBtn}>
+            
+              <div className={styles.hashtagItemSelected}>{email}</div>
               <button
                 className={styles.cancelButton}
                 onClick={() => handleCancelEmail(index)}
               >
-                X
+                x
               </button>
+            
             </div>
           ))}
-          </div>
+          
         </div>
       )}
+
+
 
       <div className={styles.addTodoDiv}>
         <IonInput
@@ -400,7 +410,7 @@ export function TodoEditor(props: {
 
       <IonToast
         isOpen={showAlertNewHashtag}
-        message="This hashtag has already been selected."
+        message={showAlertMsg}
         duration={5000}
       ></IonToast>
     </>

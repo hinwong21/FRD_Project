@@ -1,4 +1,6 @@
-
+body{
+  text-transform: none !important;
+}
 
 .addNewTodo{
     display: flex;
@@ -95,7 +97,6 @@
 }
 
 .useremail{
-    margin-left: 15px;
     margin-right: 15px;
     font-size: 15px;
     padding-top: 5px;
@@ -247,20 +248,15 @@
     justify-content: space-between;
     font-size: 16px;
     text-align: center;
-    margin-left: qpx;
-    margin-right: 0.5px;
-    /* padding-left:4px;
-    padding-right:4px;
-    padding-top:2px;
-    padding-bottom:2px;
-    background-color: rgba(255, 255, 255, 0.565);
-    border-radius: 10px;
-    margin:2px; */
+    margin-left: 1px;
+    margin-right: 1px;
   }
 
   .cancelButton{
-    margin-left: qpx;
-    margin-right: qpx;
+    margin-left: 3px;
+    margin-right: 1px;
+    font-size:12px;
+    font-weight: bold;
   }
 
   .hashtagItemSelectedWrapper{
@@ -281,8 +277,8 @@
   }
 
   .adjustCancelBtn{
-    display: flex;
-  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
   align-items: center;
   padding-left:4px;
   padding-right:4px;
