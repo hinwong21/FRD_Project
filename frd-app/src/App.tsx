@@ -39,12 +39,15 @@ import { loginState } from "./atoms";
 import { MainPage } from "./components/Main/MainPage";
 import RoutesIsLogin from "./RoutesIsLogin";
 import RoutesIsNotLogin from "./RoutesIsNotLogin";
-import { getName, removeName, setName } from "./service/LocalStorage/LocalStorage";
+import {
+  getName,
+  removeName,
+  setName,
+} from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
-import {PushNotifications} from "@capacitor/push-notifications"
+import { PushNotifications } from "@capacitor/push-notifications";
 import { Edit } from "./components/Set/Edit";
-
 
 // import { Device } from "@capacitor/device";
 setupIonicReact();

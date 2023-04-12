@@ -39,8 +39,7 @@ const AccountingPage: React.FC = () => {
     .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`; // 格式化日期
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isTran, setIsTran] = useState<boolean>(false);
-  const history = useHistory();
-  const [transactions, setTransactions] = useState<TransactionType[]>([]);
+
   const [calculateResult, setCalculateResult] = useState<TransactionType[]>([]);
 
   const closeTrans = useCallback(() => setIsTran(false), []);
@@ -48,22 +47,16 @@ const AccountingPage: React.FC = () => {
 
   const addCalculator = useCallback(
     (transaction: TransactionType) =>
-      setCalculateResult((calculateResult) => [
-        ...calculateResult,
-        transaction,
-      ]),
+      setCalculateResult((calculateResult) => {
+        let newTodo = [...calculateResult];
+        console.log(transaction, newTodo);
+        newTodo.push(transaction);
+
+        return newTodo;
+      }),
     []
   );
 
-  const addTransaction = useCallback(
-    (transaction: TransactionType) =>
-      setTransactions((transactions) => [...transactions, transaction]),
-    []
-  );
-
-  const goToTransaction = () => {
-    history.push("/Transaction");
-  };
   return (
     <>
       <IonPage>
@@ -89,15 +82,8 @@ const AccountingPage: React.FC = () => {
           <h1>{date}</h1>
           <div className={style.list}>
             <IonList>
-              {transactions.map((transaction) => (
-                <IonItem key={transaction.id}>
-                  {transaction.name} - ${transaction.amount.toLocaleString()}
-                </IonItem>
-              ))}
-            </IonList>
-            <IonList>
-              {calculateResult.map((calculateResult) => (
-                <IonItem key={calculateResult.id}>
+              {calculateResult.map((calculateResult, idx) => (
+                <IonItem key={idx}>
                   {calculateResult.name} - $
                   {calculateResult.amount.toLocaleString()}
                 </IonItem>
@@ -127,11 +113,7 @@ const AccountingPage: React.FC = () => {
           </div>
         </IonContent>
 
-        <TransactionModal
-          isTran={isTran}
-          close={closeTrans}
-          addTransaction={addTransaction}
-        ></TransactionModal>
+        <TransactionModal isTran={isTran} close={closeTrans}></TransactionModal>
         <Calculator
           isOpen={isOpen}
           close={closeOpen}
