@@ -49,7 +49,7 @@ export const PersonalSetting = () => {
   const goEditUsername = () => {
     history.push({
       pathname: "/Edit",
-      state: { item: "username", value: "username" },
+      state: { item: "username", value: data[0]?.username },
     });
   };
 
@@ -64,6 +64,13 @@ export const PersonalSetting = () => {
     history.push({
       pathname: "/Edit",
       state: { item: "weight", value: data[0]?.weight },
+    });
+  };
+
+  const goEditGender = () => {
+    history.push({
+      pathname: "/EditGender",
+      state: { item: "gender", value: data[0]?.gender },
     });
   };
 
@@ -101,7 +108,7 @@ export const PersonalSetting = () => {
         </div>
       </div>
 
-      <div className={styles.settingContainer}>
+      <div className={styles.settingContainer} onClick={goEditGender}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>gender</div>
           <div>{data[0]?.gender}</div>

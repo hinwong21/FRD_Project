@@ -14,6 +14,7 @@ import Memos from "./components/Notes/Memo/Memos";
 import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
 // import {NewMemo} from "./components/Notes/AddNotePopup"
 import AddNotePopup from "./components/Notes/AddNotePopup";
+import { EditGender } from "./components/Set/EditGender";
 
 export default function RoutesIsLogin() {
   return (
@@ -37,11 +38,11 @@ export default function RoutesIsLogin() {
             <Notepad />
           </Route> */}
           <Route path="/notepad" exact={true}>
-                <Notepad />
+            <Notepad />
           </Route>
 
           <Route path="/Memos" exact={true}>
-                <Memos />
+            <Memos />
           </Route>
 
           {/* <Route path="/TextEditor" exact={true}>
@@ -65,6 +66,11 @@ export default function RoutesIsLogin() {
           <Route path="/Edit" exact={true}>
             <Edit />
           </Route>
+
+          <Route path="/EditGender" exact={true}>
+            <EditGender />
+          </Route>
+
           <Route path="*" exact={true}>
             <div>404 not found</div>
           </Route>

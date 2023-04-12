@@ -97,4 +97,12 @@ export class CurrentUserService {
       throw new Error(`${err.message}`);
     }
   };
+
+  updateGender = async (userId: string | undefined, gender: string) => {
+    try {
+      await this.knex("users").update({ gender }).where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
 }
