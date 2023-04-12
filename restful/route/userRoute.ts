@@ -18,3 +18,11 @@ userRoutes.get(
 userRoutes.post("/getToken", currentUserController.getToken);
 userRoutes.get("/user", isLoggedInAPI, currentUserController.getUser);
 userRoutes.post("/data", isLoggedInAPI, currentUserController.updateData);
+userRoutes.post(
+  "/username",
+  isLoggedInAPI,
+  currentUserController.updateUsername
+);
+userRoutes.post("/weight", isLoggedInAPI, currentUserController.updateWeight);
+userRoutes.post("/height", isLoggedInAPI, currentUserController.updateHeight);
+userRoutes.post("/age", isLoggedInAPI, currentUserController.updateAge);

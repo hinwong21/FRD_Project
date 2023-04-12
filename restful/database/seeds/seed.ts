@@ -11,8 +11,10 @@ export async function seed(knex: Knex): Promise<void> {
   await knex("nutrition").del();
   await knex("google_calendar").del();
   await knex("calendar").del();
-  await knex("todolist_item").del();
   await knex("todolist").del();
+  await knex("todo_hashtag").del();
+  await knex("todo_shared").del();
+  await knex("todo_memo").del();
   await knex("memo").del();
   await knex("dairy").del();
   await knex("users").del();
