@@ -33,23 +33,23 @@ export default function RoutesIsNotLogin() {
             <Redirect to="/login" />
           </Route>
 
-          <Route path="/Health-period" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Health-nutrient" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Health-periodCalendar" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Edit" exact={true}>
-            <Edit />
-          </Route>
-          <Route path="*" exact={true}>
-            <div>404 not found</div>
-          </Route>
-        </Switch>
-      </IonRouterOutlet>
-    </IonSplitPane>
+        <Route path="/Health-period" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Health-nutrient" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Health-periodCalendar" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Edit" exact={true}>
+          <Edit />
+        </Route>
+        <Route path="*" exact={true}>
+          <div>404 not found</div>
+        </Route>
+      </Switch>
+    </IonRouterOutlet>
+    // </IonSplitPane>
   );
 }

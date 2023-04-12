@@ -119,23 +119,30 @@ const App: React.FC = () => {
       console.log("Registration error: ", err.error);
     });
 
-    await PushNotifications.addListener(
-      "pushNotificationReceived",
-      (notification) => {
-        console.log("Push notification received: ", notification);
-      }
-    );
+    // await PushNotifications.addListener(
+    //   "pushNotificationReceived",
+    //   (notification) => {
+    //     console.log("Push notification received: ", notification);
+    //     if(notification.path===""){
+    //       // goto this page
+    //     }
+    //   }
+    // );
 
-    await PushNotifications.addListener(
-      "pushNotificationActionPerformed",
-      (notification) => {
-        console.log(
-          "Push notification action performed",
-          notification.actionId,
-          notification.inputValue
-        );
-      }
-    );
+    // await PushNotifications.addListener(
+    //   "pushNotificationActionPerformed",
+    //   (notification) => {
+    //     console.log(
+    //       "Push notification action performed",
+    //       notification.actionId,
+    //       notification.inputValue
+    //     );
+
+    //     if(notification.path===""){
+    //       // goto this page
+    //     }
+    //   }
+    // );
   };
   const reg_push_notifications_token = async () => {
     let permStatus = await PushNotifications.checkPermissions();
