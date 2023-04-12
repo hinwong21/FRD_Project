@@ -167,7 +167,7 @@ let Calculator: React.FC<{
 
   /* Confirm button function */
   async function markCalculator() {
-    const obj = Genres.filter((genre) => genre.id === selectedGenre)[0];
+    const obj = [...Genres].filter((genre) => genre.id === selectedGenre)[0];
     // console.log(Genres, selectedGenre);
     if (!obj) {
       alert("Please select a Genres");
@@ -179,7 +179,7 @@ let Calculator: React.FC<{
       return;
     }
     let newObj = Object.assign(obj, { amount: result });
-    console.log(newObj);
+    console.log(newObj, Genres);
 
     /* Put data to database */
     // useEffect(() => {

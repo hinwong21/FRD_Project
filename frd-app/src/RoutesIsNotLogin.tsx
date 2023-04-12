@@ -13,25 +13,23 @@ import { Edit } from "./components/Set/Edit";
 
 export default function RoutesIsNotLogin() {
   return (
-    <IonSplitPane contentId="main">
-      <Menu />
-      <IonRouterOutlet id="main">
-        <Switch>
-          <Route path="/" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/login" exact={true}>
-            <MainPage />
-          </Route>
-          <Route path="/page/:name" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Accounting" exact={true}>
-            <Redirect to="/login" />
-          </Route>
-          <Route path="/Notepad" exact={true}>
-            <Redirect to="/login" />
-          </Route>
+    <IonRouterOutlet id="main">
+      <Switch>
+        <Route path="/" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/login" exact={true}>
+          <MainPage />
+        </Route>
+        <Route path="/page/:name" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Accounting" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/Notepad" exact={true}>
+          <Redirect to="/login" />
+        </Route>
 
         <Route path="/Health-period" exact={true}>
           <Redirect to="/login" />
@@ -50,6 +48,5 @@ export default function RoutesIsNotLogin() {
         </Route>
       </Switch>
     </IonRouterOutlet>
-    // </IonSplitPane>
   );
 }
