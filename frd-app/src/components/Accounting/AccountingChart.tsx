@@ -40,7 +40,7 @@ function Piechart() {
 
       setStudentsubject(sSubject);
       setStudentMarks(sMarks);
-      console.log(resData);
+      // console.log(resData);
     };
 
     getStudentdata();

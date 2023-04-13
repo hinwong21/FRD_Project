@@ -152,6 +152,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
         totalExpense: totalExpense,
       },
     ]);
+    console.log("SumbitBtn is clicked");
   }
 
   return (

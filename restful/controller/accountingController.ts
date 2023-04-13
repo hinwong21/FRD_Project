@@ -27,6 +27,7 @@ export class AccountingController {
       // return;
     } catch (error) {
       errorHandler(error, req, res);
+      throw new Error(`Error occurred while adding transaction in accountingController : ${error.message}`);
     }
   };
 
