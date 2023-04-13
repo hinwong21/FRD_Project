@@ -16,12 +16,15 @@ export const LoginSetup = () => {
   const handleSubmit = async () => {
     if (gender === "") {
       alert("Gender is missed!");
+      return;
     }
     if (age === "") {
       alert("Age is missed!");
+      return;
     }
     if (height === "") {
       alert("Height is missed!");
+      return;
     }
     if (weight === "") {
       alert("Weight is missed!");
@@ -71,22 +74,22 @@ export const LoginSetup = () => {
         </p>
 
         <div className={styles.loginSettingItem}>
-              <IonSelect
-                className={styles.loginSettingItemSelect}
-                value={gender}
-                onChange={(e) =>
-                  setGender((e.target as HTMLIonSelectElement).value)
-                }
-              >
-                <IonSelectOption value="">
-                  Please choose your gender
-                </IonSelectOption>
-                <IonSelectOption value="male">Male</IonSelectOption>
-                <IonSelectOption value="female">Female</IonSelectOption>
-                <IonSelectOption value="NA">
-                  Not convenient to answer
-                </IonSelectOption>
-              </IonSelect>
+          <IonSelect
+            className={styles.loginSettingItemSelect}
+            value={gender}
+            onChange={(e) =>
+              setGender((e.target as HTMLIonSelectElement).value)
+            }
+          >
+            <IonSelectOption value="">
+              Please choose your gender
+            </IonSelectOption>
+            <IonSelectOption value="male">Male</IonSelectOption>
+            <IonSelectOption value="female">Female</IonSelectOption>
+            <IonSelectOption value="NA">
+              Not convenient to answer
+            </IonSelectOption>
+          </IonSelect>
         </div>
 
         <div className={styles.loginSettingItem}>
