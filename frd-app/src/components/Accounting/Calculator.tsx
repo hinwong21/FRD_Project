@@ -208,8 +208,8 @@ let Calculator: React.FC<{
       clearResult();
       close();
     } catch (error) {
-      console.error(error);
-      alert("error occurred");
+      console.log(error);
+      alert("error occurred in Calculator.tsx");
     }
     //   };
     //   putAmountDate();
@@ -284,7 +284,7 @@ let Calculator: React.FC<{
             >
               {Genres.map((Genre) => (
                 <IonSelectOption key={Genre.id} value={Genre.id}>
-                  {Genre.category}
+                  {Genre.name}
                 </IonSelectOption>
               ))}
             </IonSelect>

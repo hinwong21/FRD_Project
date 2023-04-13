@@ -17,6 +17,7 @@ accountingRoutes.get(
 accountingRoutes.get("/budget", isLoggedInAPI, accountingController.getBudget);
 accountingRoutes.post("/budget", isLoggedInAPI, accountingController.updateBudget);
 accountingRoutes.post("/budget", isLoggedInAPI, accountingController.updateBudget);
+accountingRoutes.post("/addTransaction", isLoggedInAPI, accountingController.addTransaction)
 accountingRoutes.get("/getTransaction", isLoggedInAPI, accountingController.getTransaction);
 accountingRoutes.get("/getMonthlyTransaction", isLoggedInAPI, accountingController.getMonthlyTransaction);
 accountingRoutes.get("/getDailyTransaction", isLoggedInAPI, accountingController.getDailyTransaction);

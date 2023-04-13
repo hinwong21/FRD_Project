@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
 export class AccountingService {
-  constructor(private knex: Knex) {}
+  constructor(private knex: Knex) { }
 
   addTransaction = async (
     // id: number,
