@@ -52,6 +52,7 @@ import { EditMemo } from "./components/Notes/Memo/Memos";
 import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
 // import {NewMemo} from "./components/Notes/AddNotePopup"
 import AddNotePopup from "./components/Notes/AddNotePopup";
+import { AccountingSetup } from "./components/Accounting/AccountingSetup";
 
 // import { Device } from "@capacitor/device";
 setupIonicReact();
@@ -184,9 +185,11 @@ const App: React.FC = () => {
               {/* <Route path="/Transaction" exact={true}>
                 < Transaction />
               </Route> */}
+
               <Route path="/Accounting" exact={true}>
                 <AccountingPage />
               </Route>
+
               <Route path="/Notepad" exact={true}>
                 <Notepad />
               </Route>
@@ -198,7 +201,6 @@ const App: React.FC = () => {
           <Route path="/NewNotes" exact={true}>
                 <AddNotePopup />
           </Route> */}
-              
 
               <Route path="/Health-period" exact={true}>
                 <PeriodMain />
