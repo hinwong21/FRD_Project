@@ -21,54 +21,54 @@ import AccountingChart from "./AccountingChart";
 
 export interface Genre {
   id: number;
-  category: string;
+  name: string;
   type: string;
 }
 
 export const Genres: Genre[] = [
   {
     id: 1,
-    category: "Income",
+    name: "Income",
     type: "income",
   },
   {
     id: 2,
-    category: "Food",
+    name: "Food",
     type: "expense",
   },
   {
     id: 3,
-    category: "Drink",
+    name: "Drink",
     type: "expense",
   },
   {
     id: 4,
-    category: "Transport",
+    name: "Transport",
     type: "expense",
   },
   {
     id: 5,
-    category: "Entertainment",
+    name: "Entertainment",
     type: "expense",
   },
   {
     id: 6,
-    category: "Bill",
+    name: "Bill",
     type: "expense",
   },
   {
     id: 7,
-    category: "Consumption",
+    name: "Consumption",
     type: "expense",
   },
   {
     id: 8,
-    category: "Medical",
+    name: "Medical",
     type: "expense",
   },
   {
     id: 9,
-    category: "Electronic",
+    name: "Electronic",
     type: "expense",
   },
 ];
@@ -94,11 +94,11 @@ export type Data3 = {
 function TransactionModal(props: { isTran: boolean; close: () => void }) {
   // const [selectedGenre, setSelectedGenre] = useState(0);
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
-  const [amount, setAmount] = useState<string>("500");
+  const [amount, setAmount] = useState<string>("");
   const [data3, setData3] = useState<Data3[]>([]);
 
   async function getTransaction() {
-    let type = Genres.find((obj) => obj.category === selectedGenre)?.category;
+    let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
     if (!amount) return;
@@ -180,7 +180,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
                   // value={Genre.id}
                   value={Genre}
                 >
-                  {Genre.category}
+                  {Genre.name}
                 </IonSelectOption>
               ))}
             </IonSelect>

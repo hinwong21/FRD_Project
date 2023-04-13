@@ -18,7 +18,7 @@ import style from "./Finance.module.scss";
 export type TransactionType = {
   id: number;
   type: string;
-  category: string;
+  name: string;
   amount: string;
 };
 

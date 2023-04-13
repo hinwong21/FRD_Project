@@ -16,138 +16,7 @@ import { TransactionType } from "./Finance";
 import { Genres } from "./TransactionModal";
 
 import { getName } from "../../service/LocalStorage/LocalStorage";
-
-// function Calculator() {
-//     const [result, setResult] = useState("");
-//     const [lhs, setLHS] = useState(0);
-//     const [operator, setOperator] = useState<string | undefined>(undefined);
-
-//     return (
-//         <>
-//             <Display result={result} />
-//             <Panel operatingEvent={(element: number | string) => {
-//                 if (isNaN(element as any)) {
-//                     switch (element) {
-//                         case "+":
-//                             setLHS(parseInt(result));
-//                             setResult("");
-//                             setOperator("+");
-//                             break;
-//                         case "-":
-//                             setLHS(parseInt(result));
-//                             setResult("");
-//                             setOperator("-");
-//                             break;
-//                         case "x":
-//                             setLHS(parseInt(result));
-//                             setResult("");
-//                             setOperator("*");
-//                             break;
-//                         case "÷":
-//                             setLHS(parseInt(result));
-//                             setResult("");
-//                             setOperator("/");
-//                             break;
-//                         case "=":
-//                             const rhs = parseInt(result);
-//                             switch (operator) {
-//                                 case "+":
-//                                     setResult((lhs + rhs).toString());
-//                                     //setResult(currentValue=>currentValue+"00")
-//                                     break;
-//                                 case "-":
-//                                     setResult((lhs - rhs).toString());
-//                                     break;
-//                                 case "x":
-//                                     setResult((lhs * rhs).toString());
-//                                     break;
-//                                 case "÷":
-//                                     setResult((lhs / rhs).toString());
-//                                     break;
-
-//                             }
-//                             break;
-//                         case "AC":
-
-//                             break;
-//                     }
-//                 } else {
-//                     setResult(result + element)
-//                 }
-//             }} />
-//         </>
-//     );
-// }
-
-// export default Calculator;
-
-// function Calculator() {
-//     const [result, setResult] = useState("");
-//     const [lhs, setLHS] = useState(0);
-//     const [operator, setOperator] = useState<string | undefined>(undefined);
-
-//     function clearResult() {
-//         setResult("");
-//         setLHS(0);
-//         setOperator(undefined);
-//     }
-
-//     function calculateResult() {
-//         const rhs = parseInt(result);
-//         switch (operator) {
-//             case "+":
-//                 setResult((lhs + rhs).toString());
-//                 break;
-//             case "-":
-//                 setResult((lhs - rhs).toString());
-//                 break;
-//             case "x":
-//                 setResult((lhs * rhs).toString());
-//                 break;
-//             case "÷":
-//                 setResult((lhs / rhs).toString());
-//                 break;
-//             default:
-//                 break;
-//         }
-//         setLHS(0);
-//         setOperator(undefined);
-//     }
-
-//     return (
-//         <>
-//             <Display result={result} />
-//             <Panel
-//                 operatingEvent={(element: number | string) => {
-//                     if (isNaN(element as any)) {
-//                         switch (element) {
-//                             case "+":
-//                             case "-":
-//                             case "x":
-//                             case "÷":
-//                                 setLHS(parseInt(result));
-//                                 setResult("");
-//                                 setOperator(element);
-//                                 break;
-//                             case "=":
-//                                 calculateResult();
-//                                 break;
-//                             case "AC":
-//                                 clearResult();
-//                                 break;
-//                             default:
-//                                 break;
-//                         }
-//                     } else {
-//                         setResult(result + element);
-//                     }
-//                 }}
-//             />
-//         </>
-//     );
-// }
-
-// export default Calculator;
+import { useHistory } from "react-router";
 
 const Calculator: React.FC<{
   isOpen: boolean;
@@ -160,7 +29,7 @@ const Calculator: React.FC<{
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
-
+  const history = useHistory();
   /* Confirm button function */
   async function markCalculator() {
     const obj = [...Genres].filter((genre) => genre.id === selectedGenre)[0];
@@ -199,12 +68,14 @@ const Calculator: React.FC<{
         // if (!json.ok) {
         alert(json.errMess);
       }
+      // fetch page to Accounting
+      history.push("/page/Accounting");
       addCalculator(newObj);
       clearResult();
       close();
     } catch (error) {
-      console.error(error);
-      alert("error occurred");
+      console.log(error);
+      alert("error occurred in Calculator.tsx");
     }
     //   };
     //   putAmountDate();
@@ -279,7 +150,7 @@ const Calculator: React.FC<{
             >
               {Genres.map((Genre) => (
                 <IonSelectOption key={Genre.id} value={Genre.id}>
-                  {Genre.category}
+                  {Genre.name}
                 </IonSelectOption>
               ))}
             </IonSelect>

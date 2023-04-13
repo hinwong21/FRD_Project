@@ -4,7 +4,7 @@ import { errorHandler } from "../error";
 import { v4 as uuidv4 } from "uuid";
 
 export class AccountingController {
-  constructor(private accountingService: AccountingService) {}
+  constructor(private accountingService: AccountingService) { }
 
   addTransaction = async (req: Request, res: Response) => {
     try {

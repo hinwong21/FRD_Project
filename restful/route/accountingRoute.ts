@@ -21,7 +21,7 @@ accountingRoutes.post(
   accountingController.updateBudget
 );
 
-accountingRoutes.get(
+accountingRoutes.post(
   "/addTransaction",
   isLoggedInAPI,
   accountingController.addTransaction

@@ -28,6 +28,16 @@ import { AccountingHeader } from "../components/Accounting/AccountingHeader";
 //   return <div>Accounting</div>;
 // };
 
+interface TransactionTypeTemp {
+  id: number;
+  category: string;
+  type: string;
+  amount: number;
+  description?: any;
+  user_id: string;
+  created_at: string;
+}
+
 const AccountingPage: React.FC = () => {
   const today = new Date(); // 获取当前时间
   const date = `${today.getFullYear()}-${(today.getMonth() + 1)
@@ -37,7 +47,7 @@ const AccountingPage: React.FC = () => {
   const [isTran, setIsTran] = useState<boolean>(false);
 
   const [calculateResult, setCalculateResult] = useState<TransactionType[]>([]);
-  const [showData, setShowData] = useState<TransactionType[]>([]);
+  const [showData, setShowData] = useState<TransactionTypeTemp[]>([]);
 
   const closeTrans = useCallback(() => setIsTran(false), []);
   const closeOpen = useCallback(() => setIsOpen(false), []);
@@ -125,20 +135,21 @@ const AccountingPage: React.FC = () => {
               {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
               {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
               <h1>{date}</h1>
-              {/* <div className={style.list}>
-            <IonList>
-              {calculateResult.map((calculateResult, idx) => (
-                <IonItem key={idx}>
-                  {calculateResult.name} - $
-                  {calculateResult.amount.toLocaleString()}
-                </IonItem>
-              ))}
-            </IonList>
-          </div> */}
+              <div className={style.list}>
+                {/* <IonList>
+                  {calculateResult.map((calculateResult, idx) => (
+                    <IonItem key={idx}>
+                      {calculateResult.name} - $
+                      {calculateResult.amount.toLocaleString()}
+                    </IonItem>
+                  ))}
+                </IonList> */}
+              </div>
               <IonList>
-                {showData.map((item) => (
-                  <IonItem key={item.id}>
-                    {item.category} - $ {item.amount.toLocaleString()}
+                {showData.map((calculateResult) => (
+                  <IonItem key={calculateResult.id}>
+                    {calculateResult.category} - $
+                    {calculateResult.amount.toLocaleString()}
                   </IonItem>
                 ))}
               </IonList>

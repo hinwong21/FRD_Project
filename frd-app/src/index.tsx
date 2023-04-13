@@ -18,7 +18,7 @@ root.render(
         <App />
       </RecoilRoot>
     </Provider>
-  // </React.StrictMode>
+  /* </React.StrictMode>  */
 );
 
 // reportWebVitals();

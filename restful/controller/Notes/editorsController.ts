@@ -60,7 +60,7 @@ export class EditorsController {
   newTodo= async (req:Request, res:Response)=>{
     try{
       console.log(req.body)
-      
+      res.json({success:true})
 
     }catch(err){
       errorHandler(err, req, res);
