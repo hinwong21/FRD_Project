@@ -1,11 +1,13 @@
-.loginSettingContainer {
+.AccountingSettingContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-top: 70px;
+  height: Calc(100vh - 70px);
 }
 
-.loginSettingHeader {
+.AccountingSettingHeader {
   display: flex;
   justify-content: center;
   font-size: 22px;
@@ -14,14 +16,16 @@
   padding: 10px;
 }
 
-.loginSettingNotice {
+.AccountingSettingNotice {
+  display: flex;
+  justify-content: center;
   font-size: 10px;
   width: 90vw;
   color: rgb(68, 68, 68);
   padding-bottom: 10px;
 }
 
-.loginSettingItem {
+.AccountingSettingItem {
   display: flex;
   flex-direction: row;
   width: 90vw;
@@ -31,7 +35,7 @@
   font-size: 12px;
 }
 
-.loginSettingItemInput {
+.AccountingSettingItemInput {
   width: 85vw;
   padding: 10px;
   margin-left: 5px;
@@ -43,21 +47,12 @@
   appearance: none;
 }
 
-.loginSettingItemInput::-webkit-outer-spin-button,
-.loginSettingItemInput::-webkit-inner-spin-button {
+.AccountingSettingItemInput::-webkit-outer-spin-button,
+.AccountingSettingItemInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-.loginSettingItemSelect {
-  width: 85vw;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-size: 12px;
-  background-color: transparent;
-}
-
-.loginSettingFinish {
+.AccountingSettingFinish {
   display: flex;
   justify-content: center;
   width: 90vw;
@@ -67,4 +62,10 @@
   padding-bottom: 10px;
   font-size: 12px;
   background-color: #a3b7cb;
+}
+
+.AccountingHeaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

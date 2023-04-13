@@ -37,17 +37,17 @@ const Finance = (props: {
     .toString()
     .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`; // 格式化日期
 
-  const handleAddTransaction = () => {
-    const newTransaction: TransactionType = {
-      id: transactions.length + 1,
-      type,
-      name: "",
-      amount,
-    };
-    setTransactions([...transactions, newTransaction]);
-    setType("");
-    setAmount("0");
-  };
+  // const handleAddTransaction = () => {
+  //   const newTransaction: TransactionType = {
+  //     id: transactions.length + 1,
+  //     type,
+  //     name: "",
+  //     amount,
+  //   };
+  //   setTransactions([...transactions, newTransaction]);
+  //   setType("");
+  //   setAmount("0");
+  // };
 
   const handleRemoveTransaction = (id: number) => {
     const updatedTransactions = transactions.filter(

@@ -22,6 +22,7 @@ import React, {
   import ReEditTextEditor from "./ReEditTextEditor";
   import { useLocation } from "react-router-dom";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
+import { Preferences } from "@capacitor/preferences";
   
   type MemoType = {
     id: string;
@@ -36,14 +37,13 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
   
     async function getMemo() {
-      let token = await getName("token")
-      const res = await fetch("http://localhost:8080/editors/memo", {
-        headers:{
-          Authorization:"Bearer " + token},
-        method: "GET",
-      });
-      const memos = await res.json();
-      setMemoContent(memos);
+      const getTodoListLS = async () => {
+        const { value } = await Preferences.get({ key: "memo" });
+        if (value !== null) {
+          setMemoContent(JSON.parse(value));
+          console.log(JSON.parse(value))
+        }
+      };
     }
   
     useEffect(() => {

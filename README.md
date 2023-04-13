@@ -24,3 +24,22 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 ionic build
 npx cap sync
 npx cap open ios
+
+# nginx
+
+server {
+server_name api.karaoke-gcat.me;
+root /var/www/html;
+
+client_max_body_size 100M;
+
+location / {
+proxy_pass http://localhost:8090;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_cache_bypass $http_upgrade;
+}
+
+}

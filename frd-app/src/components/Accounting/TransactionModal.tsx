@@ -94,7 +94,7 @@ export type Data3 = {
 function TransactionModal(props: { isTran: boolean; close: () => void }) {
   // const [selectedGenre, setSelectedGenre] = useState(0);
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
-  const [amount, setAmount] = useState<string>("500");
+  const [amount, setAmount] = useState<string>("");
   const [data3, setData3] = useState<Data3[]>([]);
 
   async function getTransaction() {
@@ -152,6 +152,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
         totalExpense: totalExpense,
       },
     ]);
+    console.log("SumbitBtn is clicked");
   }
 
   return (

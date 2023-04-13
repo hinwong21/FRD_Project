@@ -33,7 +33,6 @@ import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-com
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
 
-
 export const AddNotePopup: React.FC = () => {
   const [diaryOpen, setDiaryOpen] = useState(false);
   const [memoOpen, setMemoOpen] = useState(false);
@@ -205,32 +204,13 @@ export const NewMemo = (props: {
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
-  const [memoContent, setMemoContent] = useState("")
+  const [memoContent, setMemoContent] = useState("");
 
   async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
       console.log("memo");
-      props.handleMemoDismiss(false)
-      modal.current?.dismiss("", 'confirm');
-      // let id = uuidv4();
-      // const memoContent = document.querySelector(
-      //   ".ContentEditable__root"
-      // )?.innerHTML;
-      // props.handleMemoDismiss(false);
-      // let token = await getName("token");
-      // const res = await fetch("http://localhost:8080/editors/new-memo", {
-      //   method: "POST",
-      //   headers: {
-      //     Authorization: "Bearer " + token,
-      //     "Content-type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     id: id,
-      //     content: memoContent,
-      //   }),
-      // });
-      // const json = await res.json();
-      // console.log(json);
+      props.handleMemoDismiss(false);
+      modal.current?.dismiss("", "confirm");
     }
   }
 
@@ -238,26 +218,43 @@ export const NewMemo = (props: {
     modal.current?.dismiss("", "confirm");
     props.handleMemoDismiss(false);
     let id = uuidv4();
-      props.handleMemoDismiss(false);
-      let token = await getName("token");
-      const res = await fetch("http://localhost:8080/editors/new-memo", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-          content: memoContent,
-        }),
-      });
-      const json = await res.json();
-      console.log(json);
+    props.handleMemoDismiss(false);
+
+    //updated DB
+    let token = await getName("token");
+    const res = await fetch("http://localhost:8080/editors/new-memo", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        content: memoContent,
+      }),
+    });
+    const json = await res.json();
+    console.log(json);
+
+    //update local storage
+    const key = "memo";
+    const data = {
+      id: id,
+      content: memoContent,
+      created_at: JSON.stringify(new Date()),
+      updated_at: "",
+      deleted: false,
+    };
+    const existingValue = await Preferences.get({ key });
+    const existingData = existingValue.value
+      ? JSON.parse(existingValue.value)
+      : [];
+    const value = JSON.stringify([...existingData, data]);
+    await Preferences.set({ key, value });
   }
 
-  function handleEditorCallback(childData:any){
-    // console.log(childData.content)
-    setMemoContent(childData.content)
+  function handleEditorCallback(childData: any) {
+    setMemoContent(childData.content);
   }
 
   return (
@@ -276,16 +273,14 @@ export const NewMemo = (props: {
             </IonButtons>
             <IonTitle>New Memo</IonTitle>
             <IonButtons slot="end">
-              <IonButton strong={true} 
-              onClick={() => confirm_memo()}
-              >
+              <IonButton strong={true} onClick={() => confirm_memo()}>
                 Confirm
               </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <TextEditor handleEditorCallback = {handleEditorCallback} />
+          <TextEditor handleEditorCallback={handleEditorCallback} />
         </IonContent>
       </IonModal>
     </>
@@ -293,16 +288,16 @@ export const NewMemo = (props: {
 };
 
 export type TodoListLS = {
-          id: string,
-          created_at: string,
-          updated_at: string,
-          deleted: boolean,
-          title: string,
-          due_date: string,
-          hashtag: [],
-          email_shared: [],
-          task: [],
-          memo: [],
+  id: string;
+  created_at: string;
+  updated_at: string;
+  deleted: boolean;
+  title: string;
+  due_date: string;
+  hashtag: [];
+  email_shared: [];
+  task: [];
+  memo: [];
 };
 
 export type HashtagLS = {
@@ -435,15 +430,16 @@ export const NewTodo = (props: {
       ]),
     });
 
-
     const addHashtagsToPreferences = async (todoNewHashtag: string[]) => {
-      const key = 'hashtags';
+      const key = "hashtags";
       for (const hashtag of todoNewHashtag) {
         const data = { name: hashtag };
         const existingValue = await Preferences.get({ key });
-        console.log(existingValue,1);
-        
-        const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+        console.log(existingValue, 1);
+
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
         const value = JSON.stringify([...existingData, data]);
         await Preferences.set({ key, value });
       }

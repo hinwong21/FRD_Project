@@ -71,26 +71,34 @@ export const Calendar: React.FC = () => {
     getUserLocal();
   }, []);
 
-    return (
-      <IonPage>
-        <IonContent id="999" fullscreen>
-        <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>Calendar</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+  return (
+    <IonPage>
+      <IonContent id="999" fullscreen>
+        {loggedIn === "false" ? (
+          <LoginSetup />
+        ) : loggedIn === "true" && dailyCheckIn === "false" ? (
+          <DailySummary />
+        ) : (
+          <>
+            <IonHeader>
+              <IonToolbar>
+                <IonButtons slot="start">
+                  <IonMenuButton />
+                </IonButtons>
+                <IonTitle>Calendar</IonTitle>
+              </IonToolbar>
+            </IonHeader>
 
-          <div className={styles.calendarWrapper}>
-          <Calendar_zh/>
-          </div>
-          {/* Fetch to the page that name equal to url */}
-          {/* {fetchPage} */}
-        </IonContent>
-      </IonPage>
-    );
-  };
-  
-  export default Calendar;
+            <div className={styles.calendarWrapper}>
+              <Calendar_zh />
+            </div>
+            {/* Fetch to the page that name equal to url */}
+            {/* {fetchPage} */}
+          </>
+        )}
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default Calendar;
