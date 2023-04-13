@@ -32,7 +32,7 @@ export const Notes: React.FC = () => {
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
 
   async function getMemo() {
-    const res = await fetch("http://localhost:8080/editors/memo", {
+    const res = await fetch("http://localhost:8090/editors/memo", {
       method: "GET",
     });
     const memos = await res.json();
@@ -69,7 +69,7 @@ export const EditMemo = () => {
     const memoContent = document.querySelector(
       ".ContentEditable__root"
     )?.innerHTML;
-    const res = await fetch("http://localhost:8080/editors/update-memo", {
+    const res = await fetch("http://localhost:8090/editors/update-memo", {
       method: "PUT",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({

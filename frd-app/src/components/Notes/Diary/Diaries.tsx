@@ -47,7 +47,7 @@ export const Diaries: React.FC = () => {
 
   async function getDiary() {
     let token = await getName("token")
-    const res = await fetch("http://localhost:8080/editors/diary", {
+    const res = await fetch("http://localhost:8090/editors/diary", {
       headers:{
         Authorization:"Bearer " + token},
       method: "GET",
