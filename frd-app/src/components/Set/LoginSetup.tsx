@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import styles from "./LoginSetup.module.css";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
