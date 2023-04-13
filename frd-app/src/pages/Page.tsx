@@ -19,6 +19,7 @@ import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
 import { EditMemo } from "../components/Notes/Notes";
 import { EditDiary } from "../components/Notes/Diary/Diaries";
+import AccountingPage from "./AccountingPage";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -37,10 +38,10 @@ const Page: React.FC = () => {
     case "Weather":
       fetchPage = <Weather />;
       break;
-    // case "Accounting":
-    //   // titleName = "記帳";
-    //   fetchPage = <AccountingPage />;
-    //   break;
+    case "Accounting":
+      // titleName = "記帳";
+      fetchPage = <AccountingPage />;
+      break;
     case "Health":
       fetchPage = <Health />;
       break;

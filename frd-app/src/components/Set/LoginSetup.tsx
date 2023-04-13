@@ -85,6 +85,7 @@ export const LoginSetup = () => {
         <div className={styles.loginSettingItem}>
           <input
             className={styles.loginSettingItemInput}
+            type="number"
             placeholder="Age"
             value={age}
             onChange={(e) => setAge(e.target.value)}
@@ -94,6 +95,7 @@ export const LoginSetup = () => {
         <div className={styles.loginSettingItem}>
           <input
             className={styles.loginSettingItemInput}
+            type="number"
             placeholder="Height (cm)"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
@@ -103,6 +105,7 @@ export const LoginSetup = () => {
         <div className={styles.loginSettingItem}>
           <input
             className={styles.loginSettingItemInput}
+            type="number"
             placeholder="Weight (kg)"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}

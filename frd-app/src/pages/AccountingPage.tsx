@@ -27,6 +27,7 @@ import Calendar from "../components/Calendar/Calendar";
 import Calculator from "../components/Accounting/Calculator";
 import { Finance_summary } from "../components/Accounting/Finance_summary";
 import { getName } from "../service/LocalStorage/LocalStorage";
+import { AccountingSetup } from "../components/Accounting/AccountingSetup";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -46,6 +47,8 @@ const AccountingPage: React.FC = () => {
 
   const closeTrans = useCallback(() => setIsTran(false), []);
   const closeOpen = useCallback(() => setIsOpen(false), []);
+
+  const [insertedBudget, setInsertedBudget] = useState("true");
 
   async function getDailyData() {
     let token = await getName("token");
@@ -78,6 +81,29 @@ const AccountingPage: React.FC = () => {
     []
   );
 
+  useEffect(() => {
+    const getBudget = async () => {
+      let token = await getName("token");
+      const res = await fetch(
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/budget`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const json = await res.json();
+      if (json.result.length > 0) {
+        setInsertedBudget("true");
+      } else {
+        setInsertedBudget("false");
+      }
+    };
+    getBudget();
+  }, []);
+
   return (
     <>
       <IonPage>
@@ -91,17 +117,21 @@ const AccountingPage: React.FC = () => {
         </IonHeader>
 
         <IonContent>
-          <div className={style.demo}>{/* <Finance_summary /> */}</div>
-          {/* <div className={style.main}><Finance /></div> */}
-          {/* <Accounting /> */}
-          {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
+          {insertedBudget === "false" ? (
+            <AccountingSetup/>
+          ) : (
+            <>
+              <div className={style.demo}>{/* <Finance_summary /> */}</div>
+              {/* <div className={style.main}><Finance /></div> */}
+              {/* <Accounting /> */}
+              {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
             {/* <Link to="/Calculator"></Link> */}
-          {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
-          {/* <Transaction isTran={isTran} tr_set={setIsTran} /> */}
-          {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
-          {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
-          <h1>{date}</h1>
-          {/* <div className={style.list}>
+              {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
+              {/* <Transaction isTran={isTran} tr_set={setIsTran} /> */}
+              {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
+              {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
+              <h1>{date}</h1>
+              {/* <div className={style.list}>
             <IonList>
               {calculateResult.map((calculateResult, idx) => (
                 <IonItem key={idx}>
@@ -111,34 +141,36 @@ const AccountingPage: React.FC = () => {
               ))}
             </IonList>
           </div> */}
-          <IonList>
-            {showData.map((item) => (
-              <IonItem key={item.id}>
-                {item.category} - $ {item.amount.toLocaleString()}
-              </IonItem>
-            ))}
-          </IonList>
-          <div className={style.button}>
-            <IonButton
-              color={style.btn}
-              className={style.btn}
-              class="ion-margin"
-              expand="block"
-              onClick={() => setIsTran(true)}
-            >
-              Review
-            </IonButton>
-            <IonButton
-              color={style.btn}
-              className={style.btn}
-              expand="block"
-              onClick={() => {
-                setIsOpen(true);
-              }}
-            >
-              Add Transaction
-            </IonButton>
-          </div>
+              <IonList>
+                {showData.map((item) => (
+                  <IonItem key={item.id}>
+                    {item.category} - $ {item.amount.toLocaleString()}
+                  </IonItem>
+                ))}
+              </IonList>
+              <div className={style.button}>
+                <IonButton
+                  color={style.btn}
+                  className={style.btn}
+                  class="ion-margin"
+                  expand="block"
+                  onClick={() => setIsTran(true)}
+                >
+                  Review
+                </IonButton>
+                <IonButton
+                  color={style.btn}
+                  className={style.btn}
+                  expand="block"
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
+                >
+                  Add Transaction
+                </IonButton>
+              </div>
+            </>
+          )}
         </IonContent>
 
         <TransactionModal isTran={isTran} close={closeTrans}></TransactionModal>
