@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import { Display } from "./Display";
 import { Panel } from "./Panel";
 import {
@@ -10,10 +9,7 @@ import {
   IonModal,
   IonButton,
   IonButtons,
-  IonContent,
-  IonPage,
   IonLabel,
-  IonInput,
 } from "@ionic/react";
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
@@ -153,7 +149,7 @@ import { getName } from "../../service/LocalStorage/LocalStorage";
 
 // export default Calculator;
 
-let Calculator: React.FC<{
+const Calculator: React.FC<{
   isOpen: boolean;
   close: () => void;
   addCalculator: (transaction: TransactionType) => void;
@@ -186,7 +182,6 @@ let Calculator: React.FC<{
     //   const putAmountDate = async () => {
     try {
       let token = await getName("token");
-
       let res = await fetch(
         `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
         {
