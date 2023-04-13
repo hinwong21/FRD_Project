@@ -31,23 +31,6 @@ export class AccountingController {
     }
   };
 
-  // getTransaction = async (req: Request, res: Response) => {
-  //     try {
-  //         const userId = '1'
-  //         if (userId) {
-  //             let { name, type, amount, description } = req.body;
-  //             console.log(name, type, amount, description);
-  //             this.accountingService.getTransaction(name, type, amount, description, userId)
-  //         } else {
-  //             return
-  //         }
-
-  //     } catch (error) {
-  //         errorHandler(error, req, res)
-  //     }
-
-  // }
-
   getTransaction = async (req: Request, res: Response) => {
     try {
       // let userId = req.session.userId!

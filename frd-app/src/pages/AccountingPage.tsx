@@ -2,32 +2,26 @@ import {
   IonPage,
   IonContent,
   IonButton,
-  IonModal,
   IonButtons,
   IonHeader,
   IonMenuButton,
   IonTitle,
   IonToolbar,
   IonItem,
-  IonLabel,
   IonList,
-  IonSelect,
-  IonSelectOption,
 } from "@ionic/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Finance from "../components/Accounting/Finance";
 // import { Finance_summary } from "./Finance_summary";
 import style from "./AccountingPage.module.scss";
-import { useHistory } from "react-router";
 import TransactionModal, {
   Genres,
 } from "../components/Accounting/TransactionModal";
 import { TransactionType } from "../components/Accounting/Finance";
-import Calendar from "../components/Calendar/Calendar";
 import Calculator from "../components/Accounting/Calculator";
-import { Finance_summary } from "../components/Accounting/Finance_summary";
 import { getName } from "../service/LocalStorage/LocalStorage";
 import { AccountingSetup } from "../components/Accounting/AccountingSetup";
+import { AccountingHeader } from "../components/Accounting/AccountingHeader";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -72,7 +66,6 @@ const AccountingPage: React.FC = () => {
     );
     let json = await res.json();
     setShowData(json);
-    console.log(json);
   }
 
   useEffect(() => {
@@ -131,6 +124,7 @@ const AccountingPage: React.FC = () => {
             <AccountingSetup />
           ) : (
             <>
+              <AccountingHeader />
               <div className={style.demo}>{/* <Finance_summary /> */}</div>
               {/* <div className={style.main}><Finance /></div> */}
               {/* <Accounting /> */}
