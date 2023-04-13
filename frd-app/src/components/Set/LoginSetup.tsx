@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./LoginSetup.module.css";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
@@ -61,6 +61,7 @@ export const LoginSetup = () => {
     // fetch page to calendar
     history.push("/");
   };
+
   return (
     <>
       <div className={styles.loginSettingContainer}>
@@ -77,7 +78,7 @@ export const LoginSetup = () => {
           <IonSelect
             className={styles.loginSettingItemSelect}
             value={gender}
-            onChange={(e) =>
+            onIonChange={(e) =>
               setGender((e.target as HTMLIonSelectElement).value)
             }
           >
