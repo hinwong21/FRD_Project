@@ -135,7 +135,7 @@ export const Calendar_zh = () => {
             googleCalendarEvent,
             eventList,
           ]}
-          eventDidMount={(info) => {
+          eventDidMount={(info:any) => {
             return new bootstrap.Popover(info.el, {
               title: info.event.title,
               placement: "auto",
@@ -145,11 +145,11 @@ export const Calendar_zh = () => {
               html: true,
             });
           }}
-          eventClick={(event) => {
+          eventClick={(event:any) => {
             // stop from redirecting to Google Calendar onclick
             event.jsEvent.preventDefault();
           }}
-          dateClick={async (info) => {
+          dateClick={async (info:any) => {
             // const res = await fetch ("/",{
             //   method: "POST",
             //   headers: {"Content-type": "application/json"},

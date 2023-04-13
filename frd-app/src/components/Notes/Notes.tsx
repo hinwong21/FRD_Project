@@ -117,7 +117,7 @@ export const EditMemo = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <ReEditTextEditor content={memoEditorContent} />
+            {/* <ReEditTextEditor content={memoEditorContent} /> */}
           </IonContent>
         </IonModal>
       </IonPage>

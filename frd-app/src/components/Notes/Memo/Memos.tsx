@@ -91,22 +91,24 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
     const input = useRef<HTMLIonInputElement>(null);
   
   
-    const [memoEditorContent, setMemoEditorContent] = useState({});
+    const [memoEditorContent, setMemoEditorContent] = useState("");
     const [memoEditorId, setMemoEditorId] = useState("")
+    const [memoContent, setMemoContent] = useState("")
   
-    function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
+    async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === "confirm") {
         console.log("memo");
       }
     }
-  
+
     async function confirm_memo () {
-      modal.current?.dismiss("", "confirm");
-  
-      const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
+        let token = await getName("token")
+        modal.current?.dismiss("", "confirm");
       const res = await fetch ("http://localhost:8080/editors/update-memo",{
         method: "PUT",
-        headers:{"Content-type":"application/json"},
+        headers:{
+        Authorization:"Bearer " + token,
+        "Content-type":"application/json"},
         body: JSON.stringify({
           id: memoEditorId,
           content:memoContent
@@ -124,10 +126,17 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
     const location = useLocation();
     const data= location.state as dataType;
     
+    
     useEffect(() => {
       setMemoEditorContent(`${JSON.parse(data.data as string)}`)
       setMemoEditorId(data.id)
     }, []);
+
+
+    function handleReEditEditorCallback (childData:any){  
+      setMemoContent(childData.content)
+    }
+
   
     return (
       <>
@@ -144,16 +153,18 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
                     <IonButton>Cancel</IonButton>
                   </Link>
                 </IonButtons>
-                <IonTitle>New Memo</IonTitle>
+                <IonTitle>Edit Memo</IonTitle>
                 <IonButtons slot="end">
+                <Link to={"./TodoList"}>
                   <IonButton strong={true} onClick={() => confirm_memo()}>
                     Confirm
                   </IonButton>
+                  </Link>
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-              <ReEditTextEditor content={memoEditorContent}/>
+              <ReEditTextEditor content={memoEditorContent} handleReEditEditorCallback={handleReEditEditorCallback}/>
             </IonContent>
           </IonModal>
         </IonPage>

@@ -27,6 +27,7 @@ import { faPlus, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./TodoEditor.module.css";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
+import { Preferences } from "@capacitor/preferences";
 
 //NOTE: Three React.FC-- NewTodoItem, TodoEditor, MemoTodo
 
@@ -38,7 +39,6 @@ interface NewTodoItemProps {
       checked: boolean;
     };
     index: number;
-    // checkedList: any
   };
   handleCheckChange: (id: string) => void;
   handleDelete: (id: string) => void;
@@ -89,6 +89,7 @@ export function TodoEditor(props: {
   handleCallback: (arg0: { todoTitle: string,
     todoDate: string,
     todoHashtag: string[],
+    todoNewHashtag: string[],
     todoEmail: string[],
     todoTask: {}[],
     todoMemoRelated: string[] 
@@ -116,7 +117,11 @@ export function TodoEditor(props: {
   const [sharedEmailArr, setSharedEmailArr] = useState([] as string[]);
   const [showAlertMsg, setShowAlertMsg] =useState("")
   const [newlyCreatedHashtagArr, setNewlyCreatedHashtagArr] = useState([] as string[])
-  // const [deletedElements, setDeletedElements] = useState<{id:string, content:string, checked:boolean}[]>([]);
+
+
+  useEffect(()=>{
+    getHashtags();
+  },[])
 
   const handleAddNewItem = () => {
     const uuid = uuidv4();
@@ -137,6 +142,15 @@ export function TodoEditor(props: {
     setSearchTextHashtag(event.detail.value);
   };
 
+  const getHashtags= async()=>{
+    const { value } = await Preferences.get({ key: "hashtags" });
+    if (value !== null) {
+      const value_json = JSON.parse(value)
+      const data = value_json.map((obj: { name: any }) => obj.name);
+      setHashtags(data);
+    }
+}
+
   useEffect(() => {
     setFilteredHashtags(
       hashtags.filter((hashtag) =>
@@ -145,7 +159,7 @@ export function TodoEditor(props: {
           : hashtag.toLowerCase().includes(searchTextHashtag.toLowerCase())
       )
     );
-    // filteredHashtags.length>0?setHashTagShow(true):setHashTagShow(false)
+    
 
     if (filteredHashtags.length > 0) {
       setHashTagShow(true);
@@ -202,6 +216,7 @@ export function TodoEditor(props: {
       todoTitle: todoListTitle,
       todoDate: selectedDate,
       todoHashtag: hashTagSelected,
+      todoNewHashtag: newlyCreatedHashtagArr,
       todoEmail: sharedEmailArr,
       todoTask: elements,
       todoMemoRelated: memoIdRelated
@@ -477,16 +492,7 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
     setMemoContent(memos);
   }
 
-  async function getHashtags(){
-    let token = await getName("token")
-    const res = await fetch("http://localhost:8080/editors/hashtag", {
-      headers:{
-        Authorization:"Bearer " + token},
-      method: "GET",
-    });
-    const hashtags_json = await res.json();
-    
-  }
+  
 
   useEffect(() => {
     handleMemoTodoLinkCallback({
@@ -500,7 +506,6 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
 
   useEffect(() => {
     getMemo();
-
   }, []);
 
   return (

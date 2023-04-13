@@ -1,55 +1,54 @@
-import {useEffect, useState} from 'react';
-import {
-  EditorComposer,
-  Editor,
-  ToolbarPlugin,
-  AlignDropdown,
-  BackgroundColorPicker,
-  BoldButton,
-  CodeFormatButton,
-  FontFamilyDropdown,
-  FontSizeDropdown,
-  InsertDropdown,
-  InsertLinkButton,
-  ItalicButton,
-  TextColorPicker,
-  TextFormatDropdown,
-  UnderlineButton,
-  Divider,
-} from 'verbum';
-import "../TextEditor/TextEditor.css"
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import ReactQuill, { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import "../TextEditor/TextEditor.css";
 
-export function ReEditTextEditor(props:any) {
-  const [addContent, setAddContent] = useState(props.content)
-  
-  
+export function ReEditTextEditor(props: { content: string; handleReEditEditorCallback: (arg0: { content: string; }) => void; }) {
+  const [textContent, setTextContent] = useState('');
+  const [memoContent, setMemoContent] = useState("")
+  const quillRef = useRef<ReactQuill | null>(null);
+
+
   useEffect(()=>{
-    let textArea  = document.querySelector(".ContentEditable__root")
-    textArea!.innerHTML = addContent;
+    let Delta = Quill.import('delta');
+    let passedDelta = new Delta(JSON.parse(props.content as string));
+    quillRef.current?.getEditor().setContents(passedDelta)
   },[])
-  
+
+  const handleEditorChange = (value: string) => {
+    setTextContent(value);
+  };
+
+  props.handleReEditEditorCallback({
+    content: memoContent
+  })
+
+
+  useEffect(()=>{
+    const delta = quillRef.current?.getEditor().getContents();
+    const content = JSON.stringify(delta);
+    console.log(content)
+    setMemoContent(content)
+  },[textContent])
+
   return (
-    <EditorComposer>
-      <Editor hashtagsEnabled={true} emojisEnabled={true} autoLinkEnabled={true} >
-        <ToolbarPlugin defaultFontSize="15px">
-          <FontFamilyDropdown />
-          <FontSizeDropdown />
-          <Divider />
-          <BoldButton />
-          <ItalicButton />
-          <UnderlineButton />
-          <CodeFormatButton />
-          <InsertLinkButton />
-          <TextColorPicker />
-          <BackgroundColorPicker />
-          <TextFormatDropdown />
-          <Divider />
-          <InsertDropdown enableYoutube={true} enableImage={true}/>
-          <Divider />
-          <AlignDropdown />
-        </ToolbarPlugin>
-      </Editor>
-    </EditorComposer>
+    <div>
+      <ReactQuill
+        ref={quillRef}
+        // value={addContent}
+        onChange={handleEditorChange}
+        modules={{
+          toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean'],
+          ],
+        }}
+        placeholder="Write something amazing..."
+      />
+    </div>
   );
 }
 
