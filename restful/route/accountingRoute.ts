@@ -10,5 +10,6 @@ let accountingService = new AccountingService(knex);
 let accountingController = new AccountingController(accountingService);
 
 accountingRoutes.post("/addTransaction", isLoggedInAPI, accountingController.addTransaction);
-accountingRoutes.get("/getTransaction", isLoggedInAPI, accountingController.getTransaction)
-accountingRoutes.get("/getMonthlyTransaction", isLoggedInAPI, accountingController.getMonthlyTransaction)
+accountingRoutes.get("/getTransaction", isLoggedInAPI, accountingController.getTransaction);
+accountingRoutes.get("/getMonthlyTransaction", isLoggedInAPI, accountingController.getMonthlyTransaction);
+accountingRoutes.get("/getDailyTransaction", isLoggedInAPI, accountingController.getDailyTransaction);

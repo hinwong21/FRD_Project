@@ -73,4 +73,19 @@ export class AccountingService {
       throw new Error(`Error occurred while getting Monthly transaction in accountingService: ${error.message}`);
     }
   }
+
+  getDailyTransaction = async (userId: string) => {
+    try {
+      let getDailyTransaction = await this.knex("transaction")
+        .where("user_id", userId)
+        .whereRaw("created_at::date = current_date");
+      console.log('accountingService : ', getDailyTransaction);
+
+      return getDailyTransaction;
+
+    } catch (error) {
+      throw new Error(`Error occurred while getting Daily transaction in accountingService: ${error.message}`);
+    }
+  }
+
 }
