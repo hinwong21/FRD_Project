@@ -3,6 +3,7 @@ import styles from "./LoginSetup.module.css";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
 import { useHistory } from "react-router";
+import { IonSelect, IonSelectOption } from "@ionic/react";
 
 export const LoginSetup = () => {
   const [gender, setGender] = useState("");
@@ -70,16 +71,22 @@ export const LoginSetup = () => {
         </p>
 
         <div className={styles.loginSettingItem}>
-          <select
-            className={styles.loginSettingItemSelect}
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <option value="">Please choose your gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="NA">Not convenient to answer</option>
-          </select>
+              <IonSelect
+                className={styles.loginSettingItemSelect}
+                value={gender}
+                onChange={(e) =>
+                  setGender((e.target as HTMLIonSelectElement).value)
+                }
+              >
+                <IonSelectOption value="">
+                  Please choose your gender
+                </IonSelectOption>
+                <IonSelectOption value="male">Male</IonSelectOption>
+                <IonSelectOption value="female">Female</IonSelectOption>
+                <IonSelectOption value="NA">
+                  Not convenient to answer
+                </IonSelectOption>
+              </IonSelect>
         </div>
 
         <div className={styles.loginSettingItem}>
