@@ -53,7 +53,7 @@ const Page: React.FC = () => {
       fetchPage = <EditMemo />;
       break;
 
-    case "EditMemo":
+    case "EditTodo":
       fetchPage = <EditTodo />;
       break;
 
