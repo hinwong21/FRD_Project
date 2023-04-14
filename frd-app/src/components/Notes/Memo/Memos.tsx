@@ -38,13 +38,13 @@ import { Preferences } from "@capacitor/preferences";
     const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
   
     async function getMemo() {
-      const getTodoListLS = async () => {
+      const getMemoLS = async () => {
         const { value } = await Preferences.get({ key: "memo" });
         if (value !== null) {
           setMemoContent(JSON.parse(value));
         }
       };
-      getTodoListLS()
+      getMemoLS()
     }
 
     function createPreview() {
@@ -155,18 +155,18 @@ import { Preferences } from "@capacitor/preferences";
       }
     }
 
-    async function updateMemo(id:string, memoContent:string) {
-      const key = "memo";
-      const existingValue = await Preferences.get({ key });
-      const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
-      const index = existingData.findIndex((item: { id: string; }) => item.id === id);
-      if (index !== -1) {
-        existingData[index].content = memoContent;
-        existingData[index].updated_at = JSON.stringify(new Date());
-      }
-      const value = JSON.stringify(existingData);
-      await Preferences.set({ key, value });
-    }
+    // async function updateMemo(id:string, memoContent:string) {
+    //   const key = "memo";
+    //   const existingValue = await Preferences.get({ key });
+    //   const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+    //   const index = existingData.findIndex((item: { id: string; }) => item.id === id);
+    //   if (index !== -1) {
+    //     existingData[index].content = memoContent;
+    //     existingData[index].updated_at = JSON.stringify(new Date());
+    //   }
+    //   const value = JSON.stringify(existingData);
+    //   await Preferences.set({ key, value });
+    // }
 
     async function confirm_memo () {
         let token = await getName("token")
