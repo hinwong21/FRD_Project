@@ -60,6 +60,11 @@ function Piechart() {
             noData: { text: "Empty Data" },
             // colors:["#f90000","#f0f"],
             labels: studentSubject,
+            legend: {
+              onItemClick: { toggleDataSeries: true },
+              onItemHover: { highlightDataSeries: true },
+              position: "right",
+            },
           }}
         ></Chart>
       </div>

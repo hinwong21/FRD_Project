@@ -40,7 +40,7 @@ const schedule = __importStar(require("node-schedule"));
 const axios_1 = __importDefault(require("axios"));
 const periodRoute_1 = require("./route/periodRoute");
 const app = (0, express_1.default)();
-app.use(express_1.default.urlencoded());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: "50mb" }));
 let url = env_1.env_config.URL;
 app.use((0, cors_1.default)({
