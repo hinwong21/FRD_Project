@@ -28,7 +28,7 @@ export class AccountingService {
       return addTransaction;
     } catch (error) {
       throw new Error(
-        `Error occurred while adding transaction: ${error.message}`
+        `Error occurred while adding transaction in accountingService: ${error.message}`
       );
     }
   };
@@ -56,7 +56,72 @@ export class AccountingService {
       return getTransaction;
     } catch (error) {
       throw new Error(
-        `Error occurred while getting transaction: ${error.message}`
+        `Error occurred while getting transaction in accountingService: ${error.message}`
+      );
+    }
+  };
+
+  getMonthlyTransaction = async (userId: string) => {
+    try {
+      let getMonthlyTransaction = await this.knex("transaction")
+        .select("*")
+        .where("user_id", userId)
+        .whereRaw(
+          `date_trunc('month', created_at) = date_trunc('month', current_date)`
+        )
+        .whereRaw(`created_at::date <= current_date::date`);
+      console.log("accountingService : ", getMonthlyTransaction);
+
+      return getMonthlyTransaction;
+    } catch (error) {
+      throw new Error(
+        `Error occurred while getting Monthly transaction in accountingService: ${error.message}`
+      );
+    }
+  };
+
+  getDailyTransaction = async (userId: string) => {
+    try {
+      let getDailyTransaction = await this.knex("transaction")
+        .where("user_id", userId)
+        .whereRaw("created_at::date = current_date");
+      console.log("accountingService : ", getDailyTransaction);
+
+      return getDailyTransaction;
+    } catch (error) {
+      throw new Error(
+        `Error occurred while getting Daily transaction in accountingService: ${error.message}`
+      );
+    }
+  };
+
+  updateBudget = async (
+    id: string,
+    userId: string | undefined,
+    budget: number
+  ) => {
+    try {
+      await this.knex("finance").insert({
+        id,
+        budget,
+        user_id: userId,
+      });
+    } catch (error) {
+      throw new Error(
+        `Error occurred while getting Daily transaction in accountingService: ${error.message}`
+      );
+    }
+  };
+
+  getBudget = async (userId: string | undefined) => {
+    try {
+      let budget = await this.knex("finance")
+        .select("*")
+        .where("user_id", userId);
+      return budget;
+    } catch (error) {
+      throw new Error(
+        `Error occurred while getting Daily transaction in accountingService: ${error.message}`
       );
     }
   };

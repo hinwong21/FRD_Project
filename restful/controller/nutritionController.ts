@@ -4,7 +4,7 @@ import { errorHandler } from "../error";
 import "../session";
 
 export class NutritionController {
-  constructor(private nutritionService: NutritionService) {}
+  constructor(private nutritionService: NutritionService) { }
 
   getDailyIntake = async (req: Request, res: Response) => {
     try {

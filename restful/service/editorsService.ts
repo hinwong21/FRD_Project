@@ -35,7 +35,7 @@ export class EditorsService {
     weather: string,
     title: string,
     mood: string,
-    userId: number
+    userId: string
   ) => {
     await this.knex
       .insert({

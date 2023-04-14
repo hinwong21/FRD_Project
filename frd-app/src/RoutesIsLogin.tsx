@@ -10,6 +10,11 @@ import Notepad from "./components/Notes/Notepad";
 import AccountingPage from "./pages/AccountingPage";
 import Page from "./pages/Page";
 import { Edit } from "./components/Set/Edit";
+import Memos from "./components/Notes/Memo/Memos";
+import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
+// import {NewMemo} from "./components/Notes/AddNotePopup"
+import AddNotePopup from "./components/Notes/AddNotePopup";
+import { EditGender } from "./components/Set/EditGender";
 
 export default function RoutesIsLogin() {
   return (
@@ -29,9 +34,24 @@ export default function RoutesIsLogin() {
           <Route path="/Accounting" exact={true}>
             <AccountingPage />
           </Route>
-          <Route path="/Diaryeditor" exact={true}>
+          {/* <Route path="/Diaryeditor" exact={true}>
+            <Notepad />
+          </Route> */}
+          <Route path="/notepad" exact={true}>
             <Notepad />
           </Route>
+
+          <Route path="/Memos" exact={true}>
+            <Memos />
+          </Route>
+
+          {/* <Route path="/TextEditor" exact={true}>
+                <TextEditor />
+          </Route>
+
+          <Route path="/NewNotes" exact={true}>
+                <AddNotePopup />
+          </Route> */}
 
           <Route path="/Health-period" exact={true}>
             <PeriodMain />
@@ -46,6 +66,11 @@ export default function RoutesIsLogin() {
           <Route path="/Edit" exact={true}>
             <Edit />
           </Route>
+
+          <Route path="/EditGender" exact={true}>
+            <EditGender />
+          </Route>
+
           <Route path="*" exact={true}>
             <div>404 not found</div>
           </Route>

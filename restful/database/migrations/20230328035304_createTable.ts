@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<void> {
       table.string("email", 255).notNullable().unique();
       table.text("gender").nullable();
       table.integer("age").nullable();
-      table.integer("height").nullable();
-      table.integer("weight").nullable();
+      table.float("height").nullable();
+      table.float("weight").nullable();
       table.string("push_notification_token").nullable();
     });
   }
@@ -20,7 +20,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text("content").nullable();
       table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
       table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("deleted_at").nullable().defaultTo(knex.fn.now());
+      table.boolean("deleted").nullable().defaultTo(false);
       table.text("weather").notNullable();
       table.text("user_id").references("users.id");
     });
@@ -32,7 +32,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text("content").nullable();
       table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
       table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("deleted_at").nullable().defaultTo(knex.fn.now());
+      table.boolean("deleted").nullable().defaultTo(false);
       table.text("user_id").references("users.id");
     });
   }
@@ -42,7 +42,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text("id").notNullable().unique();
       table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
       table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("deleted_at").nullable().defaultTo(knex.fn.now());
+      table.boolean("deleted").nullable().defaultTo(false);
       table.text("user_id").references("users.id");
     });
   }

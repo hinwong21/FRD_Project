@@ -13,9 +13,9 @@ import {
   IonToolbar,
   IonContent,
 } from "@ionic/react";
-import React, { memo, useState, useRef } from "react";
+import {useState} from "react";
 import { calendarNumberOutline } from "ionicons/icons";
-import styles from "./Setting.module.css"; // import {env} from "../../../env"
+import styles from "./Setting.module.css"; 
 import { PersonalSetting } from "./PersonalSetting";
 
 export const Setting = () => {

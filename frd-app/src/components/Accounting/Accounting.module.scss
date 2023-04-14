@@ -1,0 +1,71 @@
+.AccountingSettingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
+  height: Calc(100vh - 70px);
+}
+
+.AccountingSettingHeader {
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bolder;
+  width: 80vw;
+  padding: 10px;
+}
+
+.AccountingSettingNotice {
+  display: flex;
+  justify-content: center;
+  font-size: 10px;
+  width: 90vw;
+  color: rgb(68, 68, 68);
+  padding-bottom: 10px;
+}
+
+.AccountingSettingItem {
+  display: flex;
+  flex-direction: row;
+  width: 90vw;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.AccountingSettingItemInput {
+  width: 85vw;
+  padding: 10px;
+  margin-left: 5px;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+}
+
+.AccountingSettingItemInput::-webkit-outer-spin-button,
+.AccountingSettingItemInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.AccountingSettingFinish {
+  display: flex;
+  justify-content: center;
+  width: 90vw;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  background-color: #a3b7cb;
+}
+
+.AccountingHeaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

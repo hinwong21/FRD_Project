@@ -6,7 +6,7 @@ import { isLoggedInAPI } from "../guard";
 
 export let nutritionRoutes = express.Router();
 
-let nutritionService = new NutritionService(knex);
+export let nutritionService = new NutritionService(knex);
 let nutritionController = new NutritionController(nutritionService);
 
 nutritionRoutes.get(

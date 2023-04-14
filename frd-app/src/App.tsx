@@ -46,10 +46,15 @@ import {
 } from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
+import { PushNotifications } from "@capacitor/push-notifications";
 import { Edit } from "./components/Set/Edit";
+import { EditMemo } from "./components/Notes/Memo/Memos";
+import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
+// import {NewMemo} from "./components/Notes/AddNotePopup"
+import AddNotePopup from "./components/Notes/AddNotePopup";
+import { AccountingSetup } from "./components/Accounting/AccountingSetup";
 
 // import { Device } from "@capacitor/device";
-import { PushNotifications } from "@capacitor/push-notifications";
 setupIonicReact();
 // const logDeviceInfo = async () => {
 //   const info = await Device.getInfo();
@@ -117,23 +122,30 @@ const App: React.FC = () => {
       console.log("Registration error: ", err.error);
     });
 
-    await PushNotifications.addListener(
-      "pushNotificationReceived",
-      (notification) => {
-        console.log("Push notification received: ", notification);
-      }
-    );
+    // await PushNotifications.addListener(
+    //   "pushNotificationReceived",
+    //   (notification) => {
+    //     console.log("Push notification received: ", notification);
+    //     if(notification.path===""){
+    //       // goto this page
+    //     }
+    //   }
+    // );
 
-    await PushNotifications.addListener(
-      "pushNotificationActionPerformed",
-      (notification) => {
-        console.log(
-          "Push notification action performed",
-          notification.actionId,
-          notification.inputValue
-        );
-      }
-    );
+    // await PushNotifications.addListener(
+    //   "pushNotificationActionPerformed",
+    //   (notification) => {
+    //     console.log(
+    //       "Push notification action performed",
+    //       notification.actionId,
+    //       notification.inputValue
+    //     );
+
+    //     if(notification.path===""){
+    //       // goto this page
+    //     }
+    //   }
+    // );
   };
   const reg_push_notifications_token = async () => {
     let permStatus = await PushNotifications.checkPermissions();
@@ -172,12 +184,22 @@ const App: React.FC = () => {
               {/* <Route path="/Transaction" exact={true}>
                 < Transaction />
               </Route> */}
+
               <Route path="/Accounting" exact={true}>
                 <AccountingPage />
               </Route>
-              <Route path="/Diaryeditor" exact={true}>
+
+              <Route path="/Notepad" exact={true}>
                 <Notepad />
               </Route>
+
+              {/* <Route path="/TextEditor" exact={true}>
+                <TextEditor />
+          </Route>
+
+          <Route path="/NewNotes" exact={true}>
+                <AddNotePopup />
+          </Route> */}
 
               <Route path="/Health-period" exact={true}>
                 <PeriodMain />

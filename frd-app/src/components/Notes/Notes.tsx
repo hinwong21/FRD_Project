@@ -32,7 +32,7 @@ export const Notes: React.FC = () => {
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
 
   async function getMemo() {
-    const res = await fetch("http://localhost:8080/editors/memo", {
+    const res = await fetch("http://localhost:8090/editors/memo", {
       method: "GET",
     });
     const memos = await res.json();
@@ -45,37 +45,7 @@ export const Notes: React.FC = () => {
 
   return (
     <>
-      <div>Good Day, {}</div>
-
-      <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Today</IonLabel>
-        </IonItemDivider>
-
-        {/* <IonItem>
-         
-        </IonItem> */}
-      </IonItemGroup>
-
-      <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Tomorrow</IonLabel>
-        </IonItemDivider>
-
-        {/* <IonItem>
-         
-        </IonItem> */}
-      </IonItemGroup>
-
-      <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>The Day After Tomorrow</IonLabel>
-        </IonItemDivider>
-
-        {/* <IonItem>
-         
-        </IonItem> */}
-      </IonItemGroup>
+      
     </>
   );
 };
@@ -99,7 +69,7 @@ export const EditMemo = () => {
     const memoContent = document.querySelector(
       ".ContentEditable__root"
     )?.innerHTML;
-    const res = await fetch("http://localhost:8080/editors/update-memo", {
+    const res = await fetch("http://localhost:8090/editors/update-memo", {
       method: "PUT",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -147,7 +117,7 @@ export const EditMemo = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <ReEditTextEditor content={memoEditorContent} />
+            {/* <ReEditTextEditor content={memoEditorContent} /> */}
           </IonContent>
         </IonModal>
       </IonPage>

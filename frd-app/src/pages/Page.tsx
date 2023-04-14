@@ -17,8 +17,10 @@ import DiaryEditor from "../components/Notes/Diary/DiaryEditor";
 import { Notepad } from "../components/Notes/Notepad";
 import { Setting } from "../components/Set/Setting";
 import { Weather } from "../components/Weather/Weather";
-import { EditMemo } from "../components/Notes/Notes";
+import { EditMemo } from "../components/Notes/Memo/Memos";
 import { EditDiary } from "../components/Notes/Diary/Diaries";
+import { EditTodo } from "../components/Notes/Todo/TodoLists";
+import AccountingPage from "./AccountingPage";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -37,10 +39,10 @@ const Page: React.FC = () => {
     case "Weather":
       fetchPage = <Weather />;
       break;
-    // case "Accounting":
-    //   // titleName = "記帳";
-    //   fetchPage = <AccountingPage />;
-    //   break;
+    case "Accounting":
+      // titleName = "記帳";
+      fetchPage = <AccountingPage />;
+      break;
     case "Health":
       fetchPage = <Health />;
       break;
@@ -50,35 +52,28 @@ const Page: React.FC = () => {
     case "EditMemo":
       fetchPage = <EditMemo />;
       break;
+
+    case "EditTodo":
+      fetchPage = <EditTodo />;
+      break;
+
     case "EditDiary":
       fetchPage = <EditDiary />;
       break;
   }
 
   return (
-    <IonPage>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
-          <IonTitle>{name}</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
-
-      <IonContent fullscreen>
-        {/* <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large" className="titleName">
-              {name}
-            </IonTitle>
-          </IonToolbar> */}
-        {/* </IonHeader> */}
-        {/* <ExploreContainer name={name} /> */}
-        {/* Fetch to the page that name equal to url */}
+    // <IonPage>
+      
+      /* <IonContent id="111" fullscreen> */
+        
+        
+        
+        <>        
         {fetchPage}
-      </IonContent>
-    </IonPage>
+        </>
+      // </IonContent>
+    // </IonPage>
   );
 };
 

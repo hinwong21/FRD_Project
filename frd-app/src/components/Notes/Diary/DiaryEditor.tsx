@@ -1,17 +1,17 @@
 import React, { useEffect, useState, Component } from "react";
 import styles from "./DiaryEditor.module.css";
-import {DiaryTextEditor} from "./DiaryTextEditor"
 import {
   IonPage,
   IonInput
 } from "@ionic/react";
+import TextEditor from "../TextEditor/TextEditor";
 
 interface DiaryEditorProps {
   handleCallbackWeather :(arg0: { temperature: any; humidity: any; uvindexValue: number; uvindexdesc: string; icon: any; date: string; }) => void,
-  handleCallbackTitleAndMood : (arg0: { selected: string|null, title: string }) => void
+  handleCallbackTitleAndMoodAndContent : (arg0: { selected: string|null, title: string, content:string }) => void
 }
 
-export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, handleCallbackTitleAndMood}) =>{
+export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, handleCallbackTitleAndMoodAndContent}) =>{
   const [content, setContent] = useState("");
   const [data, setData] = useState<Data>();
   // const [value, setValue] = useState("")
@@ -80,12 +80,17 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
   }, []);
 
   useEffect(()=>{
-    handleCallbackTitleAndMood({
+    handleCallbackTitleAndMoodAndContent({
       title:title,
-      selected: selected
+      selected: selected,
+      content: content
     })
 
   },[selected,title])
+
+  function handleEditorCallback(childData: any) {
+    setContent(childData.content);
+  }
 
   
   return (
@@ -106,7 +111,7 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
         />
       </div>
 
-  <IonInput placeholder="Enter the diary title" color="dark" className={styles.diaryTitleInput} clearInput={true} maxlength={80} onIonChange={(event)=>{setTitle(event.target.value as string)}}></IonInput>
+  <IonInput placeholder="Enter the diary title" color="dark" className={styles.diaryTitleInput} clearInput={true} maxlength={25} onIonChange={(event)=>{setTitle(event.target.value as string)}}></IonInput>
 
   <div className={styles.emotionSelectionBlock}>
       <div
@@ -149,7 +154,7 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
 
       
     <div className={styles.editorWrapper}>
-    <DiaryTextEditor/>
+    <TextEditor handleEditorCallback={handleEditorCallback}/>
     </div>
       </div>
       </IonPage>
