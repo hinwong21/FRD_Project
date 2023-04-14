@@ -4,6 +4,7 @@ import { nutritionStore } from "../../../redux/Nutrition/store";
 import Header from "./Header";
 import { WaterBalance } from "./WaterBalance";
 import { NutritionTracker } from "./NutritionTracker";
+import style from "./Nutrition.module.scss";
 import {
   IonPage,
   IonHeader,
@@ -18,7 +19,10 @@ export const Nutrition = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar
+          color={style.nutritionToolbar}
+          className={style.nutritionToolbar}
+        >
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -29,7 +33,6 @@ export const Nutrition = () => {
         <Provider store={nutritionStore}>
           <Header />
         </Provider>
-
         {/* Water balance */}
         <WaterBalance />
 
