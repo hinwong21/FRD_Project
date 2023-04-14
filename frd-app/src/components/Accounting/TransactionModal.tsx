@@ -101,7 +101,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
-    console.log("SumbitBtn is clicked");
+    // console.log("SumbitBtn is clicked");
     let token = await getName("token");
 
     // TODO ajax

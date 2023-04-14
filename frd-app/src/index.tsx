@@ -13,21 +13,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
-<<<<<<< HEAD
   <Provider store={store}>
     <RecoilRoot>
       <App />
     </RecoilRoot>
   </Provider>
-  /* </React.StrictMode> */
-=======
-    <Provider store={store}>
-      <RecoilRoot>
-        <App />
-      </RecoilRoot>
-    </Provider>
   /* </React.StrictMode>  */
->>>>>>> 1fc61564649a85f806921779bb5db866cfe2ba56
 );
 
 // reportWebVitals();
