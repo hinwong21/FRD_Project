@@ -14,10 +14,10 @@ editorsRoutes.post(
   editorsController.addMemo
 );
 
-editorsRoutes.get(
-  "/memo",isLoggedInAPI,
-  editorsController.getMemo
-);
+// editorsRoutes.get(
+//   "/memo",isLoggedInAPI,
+//   editorsController.getMemo
+// );
 
 editorsRoutes.put(
     "/update-memo",isLoggedInAPI,
@@ -29,12 +29,22 @@ editorsRoutes.post(
     editorsController.newDiary
   );
 
-editorsRoutes.get(
-    "/diary",isLoggedInAPI,
-    editorsController.getDiary
-  );
+// editorsRoutes.get(
+//     "/diary",isLoggedInAPI,
+//     editorsController.getDiary
+//   );
 
 editorsRoutes.post(
     "/new-todo",isLoggedInAPI,
     editorsController.newTodo
+  );
+
+editorsRoutes.put(
+    "/update-diary",isLoggedInAPI,
+    editorsController.updateDiary
+  );
+
+editorsRoutes.put(
+    "/update-todo",isLoggedInAPI,
+    editorsController.updateTodo
   );

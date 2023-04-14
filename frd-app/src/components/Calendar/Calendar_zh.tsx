@@ -30,6 +30,7 @@ import {
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { EventInput } from "@fullcalendar/core";
 
 export const Calendar_zh = () => {
   const [modalState, setModalState] = useState(false);
@@ -99,6 +100,10 @@ export const Calendar_zh = () => {
     setModalState(false);
   }
 
+
+
+
+
   return (
     <>
       <div>
@@ -157,7 +162,8 @@ export const Calendar_zh = () => {
             // })
             // const json = await res.json();
             // console.log(json);
-
+            
+            // console.log(info);
             setModalState(true);
             setModalDate(info.dateStr);
             setModalContent("ABC");

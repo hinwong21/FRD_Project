@@ -172,6 +172,23 @@ import { Preferences } from "@capacitor/preferences";
         let token = await getName("token")
         modal.current?.dismiss("", "confirm");
 
+        //update local storage
+      async function updateMemoLS(id:string, memoContent:string) {
+        const key = "memo";
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+        const index = existingData.findIndex((item: { id: string; }) => item.id === id);
+        if (index !== -1) {
+          existingData[index].content = memoContent;
+          existingData[index].updated_at = JSON.stringify(new Date());
+        }
+        const value = JSON.stringify(existingData);
+        console.log(value)
+        await Preferences.set({ key, value });
+      }
+
+      updateMemoLS(memoEditorId, memoContent )
+
         //update db
       const res = await fetch ("http://localhost:8090/editors/update-memo",{
         method: "PUT",
@@ -186,21 +203,7 @@ import { Preferences } from "@capacitor/preferences";
       const json= await res.json()
       console.log(json)
 
-      //update local storage
-      async function updateMemoLS(id:string, memoContent:string) {
-        const key = "memo";
-        const existingValue = await Preferences.get({ key });
-        const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
-        const index = existingData.findIndex((item: { id: string; }) => item.id === id);
-        if (index !== -1) {
-          existingData[index].content = memoContent;
-          existingData[index].updated_at = JSON.stringify(new Date());
-        }
-        const value = JSON.stringify(existingData);
-        await Preferences.set({ key, value });
-      }
-
-      updateMemoLS(memoEditorId, memoContent )
+      
     }
   
     type dataType = {
