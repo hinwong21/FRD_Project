@@ -47,16 +47,17 @@ export async function seed(knex: Knex): Promise<void> {
   console.log(nami.id);
 
   // Accounting Part Table
-  await knex("transaction").insert([
-    {
-      category: "Income",
-      type: "income",
-      amount: 52,
-      user_id: 'xphm24xfEKTGnSjlReSGvo1lJQm2',
-      description: undefined,
-    },
-  ])
-    .returning("id")
+  await knex("transaction")
+    .insert([
+      {
+        category: "Income",
+        type: "income",
+        amount: 52,
+        user_id: "xphm24xfEKTGnSjlReSGvo1lJQm2",
+        description: undefined,
+      },
+    ])
+    .returning("id");
 
   // Period Part Table
   let [namiFeb, namiMar] = await knex("period")

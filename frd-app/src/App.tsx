@@ -104,7 +104,7 @@ const App: React.FC = () => {
       }
     }
     main();
-  }, []);
+  }, [setIsLogin]);
   useEffect(() => {
     const main = async () => {
       await reg_push_notifications_token();
@@ -212,6 +212,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/Health-periodRecordDetails" exact={true}>
                 <PeriodRecord />
+              </Route>
+              <Route path="/Health-periodDate" exact={true}>
+                <PeriodDay />
               </Route>
 
               {/* Setting page: edit personal information */}

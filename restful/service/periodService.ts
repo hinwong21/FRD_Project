@@ -4,13 +4,30 @@ import { v4 as uuidv4 } from "uuid";
 export class PeriodService {
   constructor(private knex: Knex) {}
 
+  // getUpcomingAt = async (userId: string) => {
+  //   try {
+  //     const upcomingDate = await this.knex("period")
+  //       .select("upcoming_at")
+  //       .where("user_id", userId);
+
+  //     console.log("upcomingDate::", upcomingDate);
+
+  //     return {
+  //       success: true,
+  //       upcomingDate,
+  //     };
+  //   } catch (error) {
+  //     throw new Error((error as Error).message);
+  //   }
+  // };
   getUpcomingAt = async (userId: string) => {
     try {
       const upcomingDate = await this.knex("period")
-        .select("upcoming_at")
-        .where("user_id", userId);
+        .select("*")
+        .where("user_id", userId)
+        .orderBy("updated_at", "asc");
 
-      console.log("upcomingDate::", upcomingDate);
+      console.log("All Period data::", upcomingDate);
 
       return {
         success: true,
@@ -48,6 +65,7 @@ export class PeriodService {
         ovu_start_at,
         ovu_end_at,
       });
+
       return {
         success: true,
       };
@@ -67,32 +85,31 @@ export class PeriodService {
     ovu_end_at?: string
   ) => {
     try {
-      console.log("id", id);
-      console.log("start_at", start_at);
-      console.log("end_at", end_at);
-      console.log("upcoming_at", upcoming_at);
-      console.log("days", days);
-      console.log("ovu_start_at", ovu_start_at);
-      console.log("ovu_end_at", ovu_end_at);
+      // console.log("id", id);
+      // console.log("start_at", start_at);
+      // console.log("end_at", end_at);
+      // console.log("upcoming_at", upcoming_at);
+      // console.log("days", days);
+      // console.log("ovu_start_at", ovu_start_at);
+      // console.log("ovu_end_at", ovu_end_at);
 
       if (start_at) {
         await this.knex("period").where({ id }).update({ start_at });
-        console.log("1");
-      } else if (end_at) {
+      }
+      if (end_at) {
         await this.knex("period").where({ id }).update({ end_at });
-        console.log("2");
-      } else if (upcoming_at) {
+      }
+      if (upcoming_at) {
         await this.knex("period").where({ id }).update({ upcoming_at });
-        console.log("2");
-      } else if (days) {
+      }
+      if (days) {
         await this.knex("period").where({ id }).update({ days });
-        console.log("3");
-      } else if (ovu_start_at) {
+      }
+      if (ovu_start_at) {
         await this.knex("period").where({ id }).update({ ovu_start_at });
-        console.log("4");
-      } else if (ovu_end_at) {
+      }
+      if (ovu_end_at) {
         await this.knex("period").where({ id }).update({ ovu_end_at });
-        console.log("5");
       }
       return {
         success: true,
@@ -178,7 +195,8 @@ export class PeriodService {
           "period_period_status.period_status_id",
           "period_status.id"
         )
-        .where("period_period_status.period_id", periodId);
+        .where("period_period_status.period_id", periodId)
+        .orderBy("updated_at", "asc");
 
       console.log("periodStatus:", periodStatus);
 

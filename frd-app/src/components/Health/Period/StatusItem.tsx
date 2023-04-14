@@ -1,6 +1,6 @@
 import { IonIcon } from "@ionic/react";
 import { waterOutline } from "ionicons/icons";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import styles from "./PeriodDate.module.scss";
 import { LevelInfo } from "./PeriodDay";
@@ -13,7 +13,16 @@ export default function StatusItem(props: {
 }) {
   const [level, setLevel] = useState<number>(0);
 
-  const handleAdd = () => {
+  // const handleAdd = () => {
+  //   if (level < props.lv) {
+  //     setLevel(level + 1);
+  //     // 呼叫父component中的函數更新level值
+  //     props.onLevelChange({ type: `${props.type}`, lv: level + 1 });
+  //   } else if (level >= props.lv) {
+  //     return;
+  //   }
+  // };
+  const handleAdd = useCallback(() => {
     if (level < props.lv) {
       setLevel(level + 1);
       // 呼叫父component中的函數更新level值
@@ -21,13 +30,13 @@ export default function StatusItem(props: {
     } else if (level >= props.lv) {
       return;
     }
-  };
+  }, [level, props]);
 
-  const handleSubtract = () => {
+  const handleSubtract = useCallback(() => {
     setLevel(level - 1);
     // 呼叫父component中的函數更新level值
     props.onLevelChange({ type: `${props.type}`, lv: level - 1 });
-  };
+  }, [level, props]);
 
   return (
     <div className={styles.statusContainer}>

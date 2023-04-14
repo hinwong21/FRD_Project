@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import moment from "moment-timezone";
 
 import styles from "./PeriodDate.module.scss";
@@ -12,20 +12,20 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonModal,
 } from "@ionic/react";
-import { OverlayEventDetail } from "@ionic/core/components";
 import { useHistory } from "react-router-dom";
 import Topbox from "./Topbox";
 import Datebox from "./Datebox";
 import AddTodayStsBtn from "./AddTodayStatusBtn";
+import { getName } from "../../../service/LocalStorage/LocalStorage";
+import { uuidv4 } from "@firebase/util";
 
 type stringDetails = {
-  pregnancyChance: string;
-  subtitle: string;
-  periodDay: string;
-  ovuDay: string;
-  btnName: string;
+  pregnancyChance?: string;
+  subtitle?: string;
+  periodDay?: string;
+  ovuDay?: string;
+  btnName?: string;
 };
 
 moment.tz.setDefault("Asia/Taipei");
@@ -37,32 +37,55 @@ const UpcomingPeriod = () => {
     submit.push("/Health-periodRecordDetails");
   }, [submit]);
 
-  // const [startInfo, setDateInfo] = useState<Date>();
-  const [startInfo, setStartInfo] = useState<Date | null>();
+  const [startInfo, setStartInfo] = useState<Date | null>(null);
   const [endInfo, setEndInfo] = useState<Date | null>();
-  const [currentDate, setCurrentDate] = useState(new Date());
-  // const [currentDate, setCurrentDate] = useState(
-  //   new Date().toLocaleDateString()
-  // );
-  const [showUpcomingPage, setShowUpcomingPage] = useState<boolean>(true);
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [upcomingInfo, setUpcomingInfo] = useState<Date | null>(null);
+  const [ovuStartInfo, setOvuStartInfo] = useState<Date | null>(null);
+  const [ovuEndInfo, setOvuEndInfo] = useState<Date | null>(null);
+  const [ovuInfo, setOvuInfo] = useState<Date | null>(null);
+
+  const [jsonData, setJsonData] = useState<any>();
+  // const [showUpcomingPage, setShowUpcomingPage] = useState<boolean>(true);
   const [showPeriodPage, setShowPeriodPage] = useState<boolean>(false);
-  // const handleDateInfo = (saveDate: Date | null) => {
-  //   console.log("DateInfo:", saveDate);
-  //   setDateInfo(saveDate!);
-  //   console.log("startInfo:", startInfo);
-  // };
+
+  // Period Start & End
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  // Ovulation Start & End
+  const [ovuStartDate, setOvuStartDate] = useState<string>("");
+  const [ovuEndDate, setOvuEndDate] = useState<string>("");
+  const [countDay, setCountDay] = useState<string>("");
+  const [pregnancyChance, setPregnancyChance] = useState<string>("");
+
+  const [stringDetails, setStringDetails] = useState<stringDetails>({
+    pregnancyChance: "",
+    subtitle: "upcoming period",
+    periodDay: "",
+    ovuDay: "",
+    btnName: "period start",
+  });
+
+  const [upcoming, setUpcoming] = useState<string | null>();
 
   const handleStartDate = (saveDate: Date | null) => {
-    console.log("startInfo:", saveDate);
+    // console.log("startInfo:", saveDate);
     setStartInfo(saveDate!);
-    console.log("StartDateInfo:", startInfo);
+    // console.log("StartDateInfo:", startInfo);
   };
 
   const handleEndDate = (saveDate: Date | null) => {
-    console.log("endInfo:", saveDate);
+    // console.log("endInfo:", saveDate);
     setEndInfo(saveDate!);
-    console.log("endDateInfo:", endInfo);
+    // console.log("endDateInfo:", endInfo);
   };
+
+  async function countEndDate(date: any) {
+    let upcomingEndDate =
+      new Date(date.upcoming_at).getTime() + date.days * 24 * 60 * 60 * 1000;
+    let theEndDate = dateToString(new Date(upcomingEndDate));
+    setEndDate(theEndDate);
+  }
 
   function dateToString(date: Date | null | undefined) {
     return date
@@ -73,65 +96,8 @@ const UpcomingPeriod = () => {
       : "";
   }
 
-  async function checkTheDate() {
-    const currentD = moment().format("DD-MM-YYY");
-
-    try {
-      //TODO fetch DB to get data of upcoming_at and change the upcoming_at format to the Date()
-      //TODO compare with currentDate
-      /* 
-      if (currentDate >= upcomingAt ) {
-        check DB 有沒有最新的upcoming_at 的年月數據,如果沒有，表示還沒來，就顯示延遲X天
-        const diffInMs = Math.abs(upcoming.getTime() - currentDate.getTime());
-      //     const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-      //     setCountDay(diffInDays > 1 ? diffInDays + " days" : diffInDays + " day");
-      //   } else if (startInfo.getTime() < currentDate.getTime()) {
-      //     const diffInMs = Math.abs(startInfo.getTime() - currentDate.getTime());
-      //     const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-      //     setCountDay(
-      //       diffInDays > 1 ? diffInDays + " days late" : diffInDays + " day late"
-      //     );
-        const ovuChange = Number(ovuStartDate) + diffInDays
-        set()
-        setStringDetails({
-          pregnancyChance: "low probability of pregnancy",
-          subtitle: "upcoming period",
-          periodDay: countDay,
-          ovuDay: "period day 3",
-          btnName: "period start",
-        });
-        console.log('日期相同!');
-      } else {
-        console.log('日期不相同!');
-      }
-    } */
-    } catch (error) {}
-  }
-
-  // Period Start & End
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  // Ovulation Start & End
-  const [ovuStartDate, setOvuStartDate] = useState<string>("");
-  const [ovuEndDate, setOvuEndDate] = useState<string>("");
-  //
-  const [countDay, setCountDay] = useState<string>("");
-  const [stringDetails, setStringDetails] = useState<stringDetails>({
-    pregnancyChance: "",
-    subtitle: "upcoming period",
-    periodDay: "",
-    ovuDay: "ovulation date: after 15 days",
-    btnName: "period start",
-  });
-
-  const [upcoming, setUpcoming] = useState<string>("");
-  // const [pregnancyChance, setPregnancyChance] = useState<string>("");
-  // const [subtitle, setSubtitle] = useState<string>("upcoming period");
-  // const [periodDay, setPeriodDay] = useState<string>("");
-  // const [ovuDay, setOvuDay] = useState<string>("ovulation date: after 15 days");
-  // const [btnName, setBtnName] = useState<string>("period start");
-
-  function countUpcomingPeriod(startInfo: Date) {
+  //For if no record of upcoming_at Case3
+  async function countUpcomingPeriod(startInfo: Date) {
     const millisecondsInDay = 24 * 60 * 60 * 1000;
     const upcomingTimestamp = new Date(
       startInfo.getTime() + 28 * millisecondsInDay
@@ -139,235 +105,492 @@ const UpcomingPeriod = () => {
     setUpcoming(dateToString(upcomingTimestamp)); //Insert to DB (upcoming_at)
   }
 
-  //TODO Insert DB
-  useEffect(() => {
-    //TODO 加多個條件判斷
-    /* if(start_at !== null && startInfo === null){ startInfo = start_at } else if(start_at !== null && startInfo !== null) {start_at = startInfo; Insert DB} else if (start_at === null && startInfo){ 
-      //
-      start_at = startInfo; //Insert to  DB (start_at)
-      countUpcomingPeriod(startInfo)
+  //Count the date
+  //Compare with the start date and the current day
+  async function countThePeriodData(date: Date) {
+    console.log("function countThePeriodData:", date);
 
-      下面的代碼
-      
+    if (currentDate.getTime() < date.getTime()) {
+      const diffInMs = Math.abs(date.getTime() - currentDate.getTime());
+      const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+      setCountDay(diffInDays > 1 ? diffInDays + " days" : diffInDays + " day");
+    } else if (currentDate.getTime() > date.getTime()) {
+      const diffInMs = Math.abs(date.getTime() - currentDate.getTime());
+      const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+      setCountDay(
+        diffInDays > 1 ? diffInDays + " days late" : diffInDays + " day late"
+      );
     }
 
-    */
-    //Case 1: upcoming_at is Null
-    if (startInfo) {
-      //Upcoming Period date
-      if (
-        (startInfo.getFullYear() === currentDate.getFullYear() &&
-          startInfo.getMonth() === currentDate.getMonth() &&
-          startInfo.getDate() === currentDate.getDate()) ||
-        startInfo.getTime() < currentDate.getTime()
-      ) {
-        //TODO Count Day
-        setStringDetails({
-          pregnancyChance: "low probability of pregnancy",
-          subtitle: "ovulation date:",
-          periodDay: "after 15 days",
-          ovuDay: "period day 3",
-          btnName: "edit the period",
-        });
-        setShowPeriodPage(true);
-      } else if (startInfo.getTime() > currentDate.getTime()) {
-        //Count the period coming day
-        const diffInMs = Math.abs(startInfo.getTime() - currentDate.getTime());
-        const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-        setCountDay(
-          diffInDays > 1 ? diffInDays + " days" : diffInDays + " day"
-        );
+    let ovuTimeStamp = date!.getTime() - 14 * 24 * 60 * 60 * 1000;
+    setOvuInfo(new Date(ovuTimeStamp));
 
-        setStringDetails({
-          //TODO Count Day
-          pregnancyChance: "",
-          subtitle: "upcoming period",
-          periodDay: countDay,
-          ovuDay: "ovulation date: after 15 days",
-          btnName: "period start",
+    let probability = "";
+
+    const diffTime = Math.abs(ovuInfo!.getTime() - currentDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log("countOvu", diffDays);
+
+    if (diffDays > 3) {
+      probability = "low probability of pregnancy";
+    } else if (diffDays > 1 && diffDays < 3) {
+      probability = "middle probability of pregnancy";
+    } else {
+      probability = "height probability of pregnancy";
+    }
+
+    setStringDetails({
+      pregnancyChance: probability,
+      subtitle: "upcoming period",
+      periodDay: countDay,
+      ovuDay: `ovulation after: ${
+        diffDays > 1 ? `${diffDays} days` : `${diffDays} day`
+      }`,
+      btnName: "period editor",
+    });
+  }
+
+  async function countTheComingData(date: Date) {
+    console.log("function countTheComingData:", date);
+
+    const diffInMs = Math.abs(currentDate.getTime() - date.getTime());
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+    let ovuTimeStamp = date!.getTime() - 14 * 24 * 60 * 60 * 1000;
+    setOvuInfo(new Date(ovuTimeStamp));
+
+    let probability = "";
+
+    const diffTime = Math.abs(ovuInfo!.getTime() - currentDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log("countOvu", diffDays);
+
+    // if (diffDays > 3) {
+    //   probability = "low probability of pregnancy";
+    // } else if (diffDays > 1 && diffDays < 3) {
+    //   probability = "middle probability of pregnancy";
+    // } else {
+    //   probability = "height probability of pregnancy";
+    // }
+
+    setStringDetails({
+      pregnancyChance: "low probability of pregnancy",
+      subtitle: "period day",
+      periodDay: diffInDays + "",
+      ovuDay: `ovulation after: ${
+        diffDays > 1 ? `${diffDays} days` : `${diffDays} day`
+      }`,
+      btnName: "period editor",
+    });
+  }
+
+  useEffect(() => {
+    const getUpcomingDate = async () => {
+      try {
+        // const currentDate = moment().format("DD-MM-YYY");
+        //TODO fetch DB to get data of upcoming_at and change the upcoming_at format to the Date()
+        let token = await getName("token");
+
+        const res = await fetch(
+          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/upcomingDate`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const json = await res.json();
+        console.log("JSONNN:", json);
+        // console.log(json.result.upcomingDate);
+
+        const allPeriodDataResult = json.result.upcomingDate;
+        const periodDateResult =
+          allPeriodDataResult[allPeriodDataResult.length - 1];
+        console.log("allPeriodDataResult of Upcoming Date:", periodDateResult);
+        setJsonData(periodDateResult);
+
+        setUpcomingInfo(new Date(periodDateResult.upcoming_at));
+
+        //TODO compare with currentDate
+        //Case 1 DB有紀錄，直接塞數據，不用計算
+        if (periodDateResult.upcoming_at && startInfo === null) {
+          setOvuStartInfo(new Date(periodDateResult.ovu_start_at));
+          setOvuEndInfo(new Date(periodDateResult.ovu_end_at));
+
+          setStartDate(periodDateResult.start_at);
+          setEndDate(periodDateResult.end_at);
+          // setStartInfo(new Date(periodDateResult.start_at));
+
+          // setStartInfo(new Date(periodDateResult.upcoming_at));
+
+          // setEndDate(periodDateResult.upcoming_at);
+          // await countEndDate(periodDateResult);
+
+          setOvuStartDate(periodDateResult.ovu_start_at);
+          setOvuEndDate(periodDateResult.ovu_end_at);
+          console.log("SEE:", startDate, endDate, ovuStartDate, ovuEndDate);
+
+          //將upcoming_at string to Date()
+          // let upcomingPeriodStringToDate = new Date(
+          //   periodDateResult.upcoming_at
+          // );
+
+          // await countThePeriodData(upcomingPeriodStringToDate);
+          await countThePeriodData(new Date(periodDateResult.start_at));
+        }
+
+        //TODO case 2
+        if (
+          (periodDateResult.upcoming_at && startInfo !== null) ||
+          (!periodDateResult.upcoming_at && startInfo !== null)
+        ) {
+          //TODO 還沒有來，來了就直接飛去另一個page
+          if (startInfo.getTime() > currentDate.getTime()) {
+            setUpcomingInfo(startInfo);
+            setUpcoming(dateToString(startInfo));
+            setStartDate(dateToString(startInfo));
+
+            //count the ovu date
+            let ovuTimeStamp = startInfo!.getTime() - 14 * 24 * 60 * 60 * 1000;
+            setOvuInfo(new Date(ovuTimeStamp));
+            console.log("update ovu1:", ovuInfo);
+
+            await countThePeriodData(startInfo);
+            await countUpcomingPeriod(startInfo);
+
+            setShowPeriodPage(false);
+
+            //TODO count ovu
+          } else if (startInfo.getTime() <= currentDate.getTime()) {
+            //count the ovu date
+            let ovuTimeStamp = startInfo!.getTime() - 14 * 24 * 60 * 60 * 1000;
+            setOvuInfo(new Date(ovuTimeStamp));
+            console.log("update ovu2:", ovuInfo);
+            countTheComingData(startInfo);
+            setShowPeriodPage(true);
+          }
+        }
+        //Case 3
+        //TODO 寫在 下面useEffect那裡？ 寫在這裡沒有效果
+        if (!periodDateResult.upcoming_at && startInfo !== null) {
+          let token = await getName("token");
+          let id = uuidv4();
+          console.log(
+            "see the result::",
+            id,
+            jsonData.user_id,
+            startDate,
+            endDate,
+            upcoming,
+            ovuStartDate,
+            ovuEndDate
+          );
+
+          fetch(
+            `${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id,
+                userId: jsonData.user_id,
+                start_at: startDate,
+                end_at: endDate,
+                upcoming_at: upcoming,
+                days: "5",
+                ovu_start_at: ovuStartDate,
+                ovu_end_at: ovuEndDate,
+              }),
+            }
+          );
+
+          console.log("tteerr:", id);
+        }
+
+        //Case 4
+        if (!periodDateResult.upcoming_at && startInfo === null) {
+        }
+        /*
+        if (allPeriodDataResult.length === 0) {
+          //TODO 表示是個新user or 第一次用 period function，將inputDate 比佢
+          // if(startDate !== null && startInfo === null){ startInfo = startDate } else if(startDate !== null && startInfo !== null) {startDate = startInfo; 
+          //Insert DB
+        } else if (startDate === null && startInfo){ 
+            //
+            startDate = startInfo; //Insert to  DB (start_at)
+            countUpcomingPeriod(startInfo)
+          
+        } else if (upcomingResult.length > 0) {
+          //TODO 如果upcoming有data，就將 upcoming的日子賦予顯示頁面的startDate，使用setStartDate()
+          const latestUpcomingDate = upcomingResult[upcomingResult.length - 1];
+
+          if (currentDate >= latestUpcomingDate) {
+          }
+        }
+        */
+      } catch (error) {}
+    };
+
+    getUpcomingDate();
+  }, [
+    countDay,
+    currentDate,
+    ovuStartDate,
+    startInfo,
+    endInfo,
+    startDate,
+    endDate,
+  ]);
+
+  //start date
+  useEffect(() => {
+    const updateStartDate = async () => {
+      // let newDate = new Date(endInfo as Date);
+      // //TODO 4 是從DB 獲取的period週期，再減 1
+      // newDate.setDate(newDate.getDate() + 4);
+      setStartDate(dateToString(startInfo));
+      if (startInfo && upcomingInfo) {
+        //Updated the DB
+        let token = await getName("token");
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`, {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: jsonData.id,
+            start_at: startDate,
+          }),
         });
-        setShowPeriodPage(false);
       }
 
-      //TODO 加多個條件判斷 if(upcoming_at !== null && startInfo)
-      // Case 2: upcoming_at is not Null
-      // if (startInfo) {
-      //   //Upcoming Period date
-      //   if (
-      //     startInfo.getFullYear() === currentDate.getFullYear() &&
-      //     startInfo.getMonth() === currentDate.getMonth() &&
-      //     startInfo.getDate() === currentDate.getDate()
-      //   ) {
-      //     handleHistory();
-      //   } else if (startInfo.getTime() > currentDate.getTime()) {
-      //     // TODO 應該用 start_at 與 currentDate比較。這裡暫時以dateInfo damo住先
-      //     const diffInMs = Math.abs(startInfo.getTime() - currentDate.getTime());
-      //     const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-      //     setCountDay(diffInDays > 1 ? diffInDays + " days" : diffInDays + " day");
-      //   } else if (startInfo.getTime() < currentDate.getTime()) {
-      //     const diffInMs = Math.abs(startInfo.getTime() - currentDate.getTime());
-      //     const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-      //     setCountDay(
-      //       diffInDays > 1 ? diffInDays + " days late" : diffInDays + " day late"
-      //     );
-      //   }
+      await countThePeriodData(startInfo as Date);
+    };
+    updateStartDate();
+  }, [startDate, startInfo]);
 
-      //Start period date
-      //TODO insert DB 計算埋 upcoming_at日期
-      setStartDate(dateToString(startInfo));
-      console.log("SATRTDATE:", startDate);
-    } else {
-      //TODO 如果upcoming_at 是有data的，就從該處拿數據，進行計算
-      // if(upcoming_at !== null)
-      //將string 格式變成 Date
-      // const dateObj = new Date(ovuStartDate);
-      // console.log("DATEOBJ:", dateObj);
-    }
-  }, [currentDate, handleHistory, startDate, startInfo, countDay]);
+  // useEffect(() => {
+  //   const insertStartDate = async () => {
+  //     if (!upcomingInfo && startInfo) {
+  //       //Insert the DB
+  //       let token = await getName("token");
+  //       let id = uuidv4();
+
+  //       fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`, {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: "Bearer " + token,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           id,
+  //           userId: jsonData.user_id,
+  //           start_at: startDate,
+  //           end_at: endDate,
+  //           upcoming_at: upcoming,
+  //           days: "5",
+  //           ovu_start_at: ovuStartDate,
+  //           ovu_end_at: ovuEndDate,
+  //         }),
+  //       });
+
+  //       console.log("tteerr:", id);
+  //     }
+  //   };
+  //   insertStartDate();
+  // }, []);
+
+  //upcoming date
+  useEffect(() => {
+    const updateUpcomingDate = async () => {
+      if (upcoming) {
+        //Updated the DB
+        let token = await getName("token");
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`, {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: jsonData.id,
+            upcoming_at: upcoming,
+          }),
+        });
+      }
+    };
+    updateUpcomingDate();
+  }, [upcoming]);
 
   //end date
   //TODO Insert DB && if(upcoming_at === null && startInfo)
   useEffect(() => {
-    if (endInfo) {
-      // let newDate = new Date(endInfo as Date);
-      // //TODO 4 是從DB 獲取的period週期，再減 1
-      // newDate.setDate(newDate.getDate() + 4);
-      setEndDate(dateToString(endInfo));
+    const updateEndDate = async () => {
+      if (endInfo) {
+        // let newDate = new Date(endInfo as Date);
+        // //TODO 4 是從DB 獲取的period週期，再減 1
+        // newDate.setDate(newDate.getDate() + 4);
+        setEndDate(dateToString(endInfo));
 
-      // console.log("END_DATE:", endDate);
-    } else if (startInfo) {
-      //else if (startInfo || start_at)
-      let newDate = new Date(startInfo as Date);
-      //TODO 4 是從DB 獲取的period週期，再減 1
-      newDate.setDate(newDate.getDate() + 4);
-      setEndDate(dateToString(newDate));
-    } else if (!endInfo) {
-      // else if (!endInfo || !end_at)
-      setEndInfo(null);
-    }
-  }, [endDate, endInfo, startInfo]);
+        //Updated the DB
+        let token = await getName("token");
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`, {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: jsonData.id,
+            end_at: endDate,
+          }),
+        });
+      }
+    };
+    updateEndDate();
+  }, [endDate, endInfo]);
 
   // Ovu start date
   //TODO Insert DB && if(upcoming_at === null && startInfo)
   useEffect(() => {
-    if (startInfo) {
-      let newDate = new Date(startInfo as Date);
-      //TODO 4 是從DB 獲取的period週期，再減 1
-      newDate.setDate(newDate.getDate() + 4 + 4);
-      setOvuStartDate(dateToString(newDate));
+    const updateOvuStartDate = async () => {
+      if (endInfo) {
+        let newDate = new Date(endInfo as Date);
 
-      // console.log("OVU_START_DATE:", ovuStartDate);
-    }
-  }, [startInfo, ovuStartDate]);
+        newDate.setDate(newDate.getDate() + 4);
+        setOvuStartDate(dateToString(newDate));
+
+        //Updated the DB
+        let token = await getName("token");
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`, {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: jsonData.id,
+            ovu_start_at: ovuStartDate,
+          }),
+        });
+      }
+    };
+    updateOvuStartDate();
+  }, [endInfo, ovuStartDate]);
 
   //Ovu end date
   //TODO Insert DB && if(upcoming_at === null && startInfo)
   useEffect(() => {
-    if (startInfo) {
-      let newDate = new Date(startInfo as Date);
-      //TODO 4 是從DB 獲取的period週期，再減 1
-      newDate.setDate(newDate.getDate() + 4 + 11);
-      setOvuEndDate(dateToString(newDate));
+    const updateOvuEndDate = async () => {
+      if (endInfo) {
+        let newDate = new Date(endInfo as Date);
 
-      console.log("OVU_END_DATE:", ovuEndDate);
-    }
-  }, [startInfo, ovuEndDate]);
+        newDate.setDate(newDate.getDate() + 9);
+        setOvuEndDate(dateToString(newDate));
+
+        //Updated the DB
+        let token = await getName("token");
+        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/period/periodData`, {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: jsonData.id,
+            ovu_end_at: ovuEndDate,
+          }),
+        });
+      }
+    };
+    updateOvuEndDate();
+  }, [endInfo, ovuEndDate]);
 
   //Count Days
-  useEffect(() => {
-    if (startInfo) {
-    }
-  });
-
-  // const handleAddStatus = () => {
-  //   const newStatus = { date: currentDate, status: "New Status" };
-  //   setLogs([...logs, newStatus]);
-  // };
-
-  // //Has record or not,
-  // const [hasRecord, setHasRecord] = useState(false);
-  // //On Period date or not
-  // const [isPeriod, setIsPeriod] = useState(false);
 
   return (
-    <IonPage>
-      <IonContent>
-        <div className={styles.home}>
-          <IonHeader>
-            <IonToolbar color={styles.pBar} className={styles.pBar}>
-              <IonButtons slot="start">
-                <IonMenuButton />
-              </IonButtons>
-              <IonTitle>Period</IonTitle>
-            </IonToolbar>
-          </IonHeader>
+    // <IonPage>
+    //   <IonContent>
+    <div className={styles.home}>
+      <IonHeader>
+        <IonToolbar color={styles.pBar} className={styles.pBar}>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
+          <IonTitle>Period</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
-          <div>
-            <div className={styles.container}>
-              {/* {!showUpcomingPage && (
+      <div>
+        <div className={styles.container}>
+          {/* {!showUpcomingPage && (
                 <> */}
-              <Topbox
-                // TODO Count the chance
-                chance={stringDetails.pregnancyChance}
-                subTitle={stringDetails.subtitle}
-                // periodDay={leftDay}
-                periodDay={stringDetails.periodDay}
-                ovuDay={stringDetails.ovuDay}
-                btname={stringDetails.btnName}
-                // getDate={handleDateInfo}
-                getStart={handleStartDate}
-                getEnd={handleEndDate}
-              />
-              {!showPeriodPage && (
-                <>
-                  <br></br>
-                  <br></br>
-                  <Datebox
-                    subTitle="upcoming period"
-                    startDate={startDate}
-                    endDate={endDate}
-                  />
-                </>
-              )}
-              {showPeriodPage && (
-                <>
-                  <div className={styles.showBox}>
-                    <AddTodayStsBtn />
-                    <IonButton color={styles.endBtn} className={styles.endBtn}>
-                      period end
-                    </IonButton>
-                  </div>
-                </>
-              )}
-
+          <Topbox
+            // TODO Count the chance
+            chance={stringDetails.pregnancyChance}
+            subTitle={stringDetails.subtitle}
+            // periodDay={leftDay}
+            periodDay={stringDetails.periodDay}
+            ovuDay={stringDetails.ovuDay}
+            btname={stringDetails.btnName}
+            // getDate={handleDateInfo}
+            getStart={handleStartDate}
+            getEnd={handleEndDate}
+          />
+          {!showPeriodPage && (
+            <>
+              <br></br>
+              <br></br>
               <Datebox
-                subTitle="fertile period"
-                startDate={ovuStartDate}
-                endDate={ovuEndDate}
+                subTitle="period"
+                startDate={startDate}
+                endDate={endDate}
               />
+            </>
+          )}
+          {showPeriodPage && (
+            <>
+              <div className={styles.showBox}>
+                <AddTodayStsBtn />
+                <IonButton color={styles.endBtn} className={styles.endBtn}>
+                  period end
+                </IonButton>
+              </div>
+            </>
+          )}
 
-              {!showPeriodPage && (
-                <>
-                  <br></br>
-                  <br></br>
-                </>
-              )}
-            </div>
-          </div>
-          <div className={styles.goStatusBtn}>
-            <IonButton
-              size="default"
-              color={styles.btnStatus}
-              className={styles.btnStatus}
-              onClick={handleHistory}
-            >
-              status record
-            </IonButton>
-          </div>
+          <Datebox
+            subTitle="fertile period"
+            startDate={ovuStartDate}
+            endDate={ovuEndDate}
+          />
+
+          {!showPeriodPage && (
+            <>
+              <br></br>
+              <br></br>
+            </>
+          )}
         </div>
-      </IonContent>
-    </IonPage>
+      </div>
+      <div className={styles.goStatusBtn}>
+        <IonButton
+          size="default"
+          color={styles.btnStatus}
+          className={styles.btnStatus}
+          onClick={handleHistory}
+        >
+          status record
+        </IonButton>
+      </div>
+    </div>
+    //   </IonContent>
+    // </IonPage>
   );
 };
 
-export default UpcomingPeriod;
+export default React.memo(UpcomingPeriod);
