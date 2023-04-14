@@ -1,8 +1,7 @@
-.ContentEditable__root{
+.ql-editor{
     resize:none;
-    height: 85vh;
-   /* min-height: 80vh; */
-   text-transform: none;
+    height: 85vh !important;
+    text-transform: none;
 }
 
 
@@ -23,4 +22,25 @@ img{
     max-width: 55vw !important;
 }
 
+@media (max-width: 768px) {
+ 
+  }
+
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+  overflow: scroll;
+  }
+
+  .editor-wrapper {
+    padding: 10px;
+  }
+
+  .rdw-editor-toolbar{
+    flex-wrap: unset !important;
+  }
+
+  .rdw-history-wrapper{
+    flex-wrap: unset !important;
+  }
 

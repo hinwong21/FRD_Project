@@ -12,6 +12,7 @@
   font-weight: bolder;
   width: 80vw;
   padding: 10px;
+  color: inherit;
 }
 
 .loginSettingNotice {

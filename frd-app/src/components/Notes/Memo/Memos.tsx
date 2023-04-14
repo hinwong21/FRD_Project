@@ -22,6 +22,7 @@ import React, {
   import ReEditTextEditor from "./ReEditTextEditor";
   import { useLocation } from "react-router-dom";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
+import { Preferences } from "@capacitor/preferences";
   
   type MemoType = {
     id: string;
@@ -34,21 +35,68 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
   
   export const Memos: React.FC = () => {
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
+    const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
   
     async function getMemo() {
-      let token = await getName("token")
-      const res = await fetch("http://localhost:8080/editors/memo", {
-        headers:{
-          Authorization:"Bearer " + token},
-        method: "GET",
+      const getTodoListLS = async () => {
+        const { value } = await Preferences.get({ key: "memo" });
+        if (value !== null) {
+          setMemoContent(JSON.parse(value));
+        }
+      };
+      getTodoListLS()
+    }
+
+    function createPreview() {
+      const previewArray: JSX.Element[] = []; 
+      memoContent.map((item, index) => { 
+        const parsedContent = JSON.parse(item.content).ops;
+        const preview = parsedContent.map((content: any, contentIndex: any) => {
+          if (content.insert) {
+            if (typeof content.insert === "string") {
+              const attrs = content.attributes || {};
+              const style: React.CSSProperties = {};
+              if (attrs.bold) style.fontWeight = "bold";
+              if (attrs.italic) style.fontStyle = "italic";
+              if (attrs.underline) style.textDecoration = "underline";
+              style.color="black";
+              return (
+                <span key={contentIndex} style={style}>
+                  {content.insert}
+                </span>
+              );
+            } else if (content.insert.image) {
+              return (
+                <img
+                  key={contentIndex}
+                  src={content.insert.image}
+                  alt="Inserted Image"
+                  style={{ maxWidth: "80px" }}
+                />
+              );
+            }
+          } else if (content.attributes && content.attributes.link) {
+            return (
+              <a href={content.attributes.link} key={contentIndex}>
+                {content.insert}
+              </a>
+            );
+          }
+          return null;
+        });
+        previewArray.push(<div key={index}>{preview}</div>); 
       });
-      const memos = await res.json();
-      setMemoContent(memos);
+    
+      return previewArray; 
     }
   
     useEffect(() => {
       getMemo();
     }, []);
+
+    useEffect(()=>{
+      setPreviewArr(createPreview())
+    },[memoContent])
   
   
     return (
@@ -61,20 +109,26 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
         <div className={styles.memoWrapper}>
           {memoContent.map((item, index) => (
             <Link
-              to={{ pathname: "./EditMemo", state: {data: item.content, id: item.id} }}
+              to={{ pathname: "./EditMemo", state: {data: JSON.parse(item.content), id: item.id} }}
               className={styles.memoAContainer}
               key={index}
             >
               <div
-                dangerouslySetInnerHTML={{ __html: JSON.parse(item.content) }}
-                className={styles.memoBlock}
-              ></div>
+                // dangerouslySetInnerHTML={{ __html: JSON.parse(item.content).ops.insert }}
+                className={styles.memoBlock}>
+                  <div>
+                    {previewArr[index]}
+                  </div>
+                </div>
+                
+              
               <div className={styles.memoUpdatedTime}>
-                {item.updated_at.slice(0, 10)}
+                {item.updated_at.slice(1, 11)}
               </div>
               <div className={styles.memoUpdatedTime}>
-                {item.updated_at.slice(11, 16)}
+                {item.updated_at.slice(12, 17)}
               </div>
+              
             </Link>
           ))}
         </div>
@@ -91,22 +145,39 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
     const input = useRef<HTMLIonInputElement>(null);
   
   
-    const [memoEditorContent, setMemoEditorContent] = useState({});
+    const [memoEditorContent, setMemoEditorContent] = useState("");
     const [memoEditorId, setMemoEditorId] = useState("")
+    const [memoContent, setMemoContent] = useState("")
   
-    function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
+    async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
       if (ev.detail.role === "confirm") {
         console.log("memo");
       }
     }
-  
+
+    async function updateMemo(id:string, memoContent:string) {
+      const key = "memo";
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+      const index = existingData.findIndex((item: { id: string; }) => item.id === id);
+      if (index !== -1) {
+        existingData[index].content = memoContent;
+        existingData[index].updated_at = JSON.stringify(new Date());
+      }
+      const value = JSON.stringify(existingData);
+      await Preferences.set({ key, value });
+    }
+
     async function confirm_memo () {
-      modal.current?.dismiss("", "confirm");
-  
-      const memoContent = document.querySelector('.ContentEditable__root')?.innerHTML
-      const res = await fetch ("http://localhost:8080/editors/update-memo",{
+        let token = await getName("token")
+        modal.current?.dismiss("", "confirm");
+
+        //update db
+      const res = await fetch ("http://localhost:8090/editors/update-memo",{
         method: "PUT",
-        headers:{"Content-type":"application/json"},
+        headers:{
+        Authorization:"Bearer " + token,
+        "Content-type":"application/json"},
         body: JSON.stringify({
           id: memoEditorId,
           content:memoContent
@@ -114,6 +185,22 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
       })
       const json= await res.json()
       console.log(json)
+
+      //update local storage
+      async function updateMemoLS(id:string, memoContent:string) {
+        const key = "memo";
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+        const index = existingData.findIndex((item: { id: string; }) => item.id === id);
+        if (index !== -1) {
+          existingData[index].content = memoContent;
+          existingData[index].updated_at = JSON.stringify(new Date());
+        }
+        const value = JSON.stringify(existingData);
+        await Preferences.set({ key, value });
+      }
+
+      updateMemoLS(memoEditorId, memoContent )
     }
   
     type dataType = {
@@ -124,10 +211,17 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
     const location = useLocation();
     const data= location.state as dataType;
     
+    
     useEffect(() => {
-      setMemoEditorContent(`${JSON.parse(data.data as string)}`)
+      setMemoEditorContent(JSON.stringify(data.data))
       setMemoEditorId(data.id)
     }, []);
+
+
+    function handleReEditEditorCallback (childData:any){  
+      setMemoContent(childData.content)
+    }
+
   
     return (
       <>
@@ -144,16 +238,18 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
                     <IonButton>Cancel</IonButton>
                   </Link>
                 </IonButtons>
-                <IonTitle>New Memo</IonTitle>
+                <IonTitle>Edit Memo</IonTitle>
                 <IonButtons slot="end">
+                <Link to={"./TodoList"}>
                   <IonButton strong={true} onClick={() => confirm_memo()}>
                     Confirm
                   </IonButton>
+                  </Link>
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-              <ReEditTextEditor content={memoEditorContent}/>
+              <ReEditTextEditor content={memoEditorContent} handleReEditEditorCallback={handleReEditEditorCallback}/>
             </IonContent>
           </IonModal>
         </IonPage>
