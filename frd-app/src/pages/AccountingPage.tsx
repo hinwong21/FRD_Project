@@ -54,21 +54,42 @@ const AccountingPage: React.FC = () => {
 
   const [insertedBudget, setInsertedBudget] = useState("true");
 
+  /* get data in local storage */
+  async function getNameData() {
+    let getNameData = await getName("transactions");
+    console.log(getNameData);
+  }
+  /* get data in database */
   async function getDailyData() {
     let token = await getName("token");
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getDailyTransaction`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    let json = await res.json();
-    setShowData(json);
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getDailyTransaction`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      let json = await res.json(); //logic 岩，曲唔岩 試try catch
+      setShowData(json);
+    } catch (error) {
+      console.log(error);
+      getNameData();
+    }
+    // if (json.value > 0) {
+    //   setShowData(json); //logic 岩，曲唔岩
+    // } else {
+    //   let getNameDataResult = await getName("amountResult");
+    //   if (getNameDataResult) {
+    //     setShowData(JSON.parse(getNameDataResult));
+    //   }
+    //   getNameData();
+    // }
   }
 
   useEffect(() => {
+    getNameData();
     getDailyData();
   }, []);
 

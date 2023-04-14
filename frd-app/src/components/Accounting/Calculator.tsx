@@ -14,12 +14,25 @@ import {
 } from "@ionic/react";
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
-import { Genres } from "./TransactionModal";
+import { Genre, Genres } from "./TransactionModal";
 
 import { setName, getName } from "../../service/LocalStorage/LocalStorage";
 import { useHistory } from "react-router";
 
+/* 修改setName函式名稱為setTransaction，並加入transactions參數 */
+export const setTransactions = async (transactions: any) => {
+  await setName("transactions", JSON.stringify(transactions));
+};
 
+/* 讀取transactions */
+export const getTransactions = async () => {
+  const transactions = await getName("transactions");
+  if (transactions) {
+    return JSON.parse(transactions);
+  } else {
+    return [];
+  }
+};
 const Calculator: React.FC<{
   isOpen: boolean;
   close: () => void;
@@ -28,6 +41,7 @@ const Calculator: React.FC<{
   const modal = useRef<HTMLIonModalElement>(null);
   const [description, setDescription] = useState("");
   const [result, setResult] = useState("");
+  const name: string = "";
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
@@ -51,12 +65,13 @@ const Calculator: React.FC<{
       { amount: result },
       { description: description }
     );
-    console.log(newObj, Genres);
-
-    
+    console.log("newObj", newObj);
 
     /* save data to local storage */
-    await setName("amountResult",JSON.stringify({amount:result,description:description}));
+
+    const transactions = await getTransactions();
+    transactions.push(newObj);
+    await setTransactions(transactions);
 
     /* Put data to database */
 
