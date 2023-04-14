@@ -6,19 +6,18 @@ import { User, getUserByUID } from "../firebaseAdmin";
 import { CurrentUserService } from "../service/currentUserService";
 
 export class CurrentUserController {
-  constructor(private currentUserService: CurrentUserService) { }
+  constructor(private currentUserService: CurrentUserService) {}
 
   verifyToken = async (req: Request, res: Response) => {
     try {
       let userId = req.session.userId!;
-      
+
       res.json({
         ok: true,
         isErr: null,
         errMess: null,
         data: userId,
       });
-
     } catch (err) {
       errorHandler(err, req, res);
     }
@@ -29,10 +28,21 @@ export class CurrentUserController {
       let { userId, pushNotificationToken } = req.body;
       let user = await getUserByUID(userId);
 
-      if (!user) { throw new Error("Not exist this userId in Firebase") }
-      let { uid, displayName, email } = user as { uid: string, displayName: string, email: string }
-      await this.currentUserService.createUser(uid, displayName, email, pushNotificationToken)
-      let token = createJwt(uid)
+      if (!user) {
+        throw new Error("Not exist this userId in Firebase");
+      }
+      let { uid, displayName, email } = user as {
+        uid: string;
+        displayName: string;
+        email: string;
+      };
+      await this.currentUserService.createUser(
+        uid,
+        displayName,
+        email,
+        pushNotificationToken
+      );
+      let token = createJwt(uid);
       console.log(token);
 
       res.json({
@@ -40,13 +50,11 @@ export class CurrentUserController {
         isErr: null,
         errMess: null,
         data: token,
-      })
+      });
     } catch (err) {
-
       errorHandler(err, req, res);
-
     }
-  }
+  };
 
   updateUser = async (req: Request, res: Response) => {
     try {

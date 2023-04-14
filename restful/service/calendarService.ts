@@ -5,17 +5,12 @@ export class CalendarService {
     this.knex = knex;
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f3113e1137665f03642942135dc633437808749a
   getGoogleCalendarEvent = async (userId: string) => {
     let data = await this.knex("google_calendar")
       .select("*")
       .where("user_id", userId);
 
     console.log(data);
-<<<<<<< HEAD
 
     return data;
   };
@@ -28,22 +23,6 @@ export class CalendarService {
     return data;
   };
 
-=======
-
-    return data;
-  }
-
-  getLocalCalendarEvent = async (userId: string) => {
-    let data = await this.knex("calendar")
-      .select("*")
-      .where("user_id", userId)
-
-    console.log(data);
-
-    return data;
-  }
-
->>>>>>> f3113e1137665f03642942135dc633437808749a
   createLocalCalendarEvent = async (eventData: any, userId: string) => {
     await this.knex
       .insert({
@@ -53,17 +32,8 @@ export class CalendarService {
         start: eventData.start,
         end: eventData.end,
         backgroundColor: eventData.backgroundColor,
-<<<<<<< HEAD
         user_id: userId,
       })
       .into("calendar");
   };
-=======
-        user_id: userId
-      })
-      .into("calendar")
-
-  }
-
->>>>>>> f3113e1137665f03642942135dc633437808749a
 }

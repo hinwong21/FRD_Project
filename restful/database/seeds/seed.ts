@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { v4 as uuid4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
@@ -22,11 +22,7 @@ export async function seed(knex: Knex): Promise<void> {
   let [tony, nami] = await knex("users")
     .insert([
       {
-<<<<<<< HEAD
-        id: `${uuid4()}`,
-=======
         id: `xphm24xfEKTGnSjlReSGvo1lJQm2`,
->>>>>>> f3113e1137665f03642942135dc633437808749a
         username: "t123",
         email: "paul6541yau@gmail.com",
         gender: "male",
@@ -35,7 +31,7 @@ export async function seed(knex: Knex): Promise<void> {
         weight: 60,
       },
       {
-        id: `${uuid4()}`,
+        id: `${uuidv4()}`,
         username: "nami",
         email: "naminami@gmail.com",
         gender: "female",
@@ -49,26 +45,23 @@ export async function seed(knex: Knex): Promise<void> {
   console.log(nami.id);
 
   // Accounting Part Table
-  await knex("transaction").insert([
-    {
-      category: "Income",
-      type: "income",
-      amount: 52,
-      user_id: 'xphm24xfEKTGnSjlReSGvo1lJQm2',
-      description: undefined,
-    },
-  ])
-    .returning("id")
+  await knex("transaction")
+    .insert([
+      {
+        category: "Income",
+        type: "income",
+        amount: 52,
+        user_id: "xphm24xfEKTGnSjlReSGvo1lJQm2",
+        description: undefined,
+      },
+    ])
+    .returning("id");
 
   // Period Part Table
   let [namiFeb, namiMar] = await knex("period")
     .insert([
       {
-<<<<<<< HEAD
-        id: `${uuid4()}`,
-=======
         id: `${uuidv4()}`,
->>>>>>> f3113e1137665f03642942135dc633437808749a
         start_at: "2023-02-07",
         end_at: "2023-02-11",
         upcoming_at: "2023-03-07",
@@ -78,11 +71,7 @@ export async function seed(knex: Knex): Promise<void> {
         user_id: nami.id,
       },
       {
-<<<<<<< HEAD
-        id: `${uuid4()}`,
-=======
         id: `${uuidv4()}`,
->>>>>>> f3113e1137665f03642942135dc633437808749a
         start_at: "2023-03-05",
         end_at: "2023-03-10",
         upcoming_at: "2023-04-02",
@@ -98,35 +87,35 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("period_status")
       .insert([
         {
-          id: `${uuid4()}`,
+          id: `${uuidv4()}`,
           type: "menstrual flow",
           content: "3",
           created_at: "2023-02-07",
           updated_at: "2023-02-07",
         },
         {
-          id: `${uuid4()}`,
+          id: `${uuidv4()}`,
           type: "lower back pain",
           content: "1",
           created_at: "2023-02-07",
           updated_at: "2023-02-07",
         },
         {
-          id: `${uuid4()}`,
+          id: `${uuidv4()}`,
           type: "headache",
           content: "1",
           created_at: "2023-02-07",
           updated_at: "2023-02-07",
         },
         {
-          id: `${uuid4()}`,
+          id: `${uuidv4()}`,
           type: "headache",
           content: "1",
           created_at: "2023-03-08",
           updated_at: "2023-03-08",
         },
         {
-          id: `${uuid4()}`,
+          id: `${uuidv4()}`,
           type: "fatigue",
           content: "2",
           created_at: "2023-03-08",
@@ -137,27 +126,27 @@ export async function seed(knex: Knex): Promise<void> {
 
   await knex("period_period_status").insert([
     {
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       period_id: namiFeb.id,
       period_status_id: febStatusOne.id,
     },
     {
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       period_id: namiFeb.id,
       period_status_id: febStatusTwo.id,
     },
     {
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       period_id: namiFeb.id,
       period_status_id: febStatusThree.id,
     },
     {
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       period_id: namiMar.id,
       period_status_id: marStatusOne.id,
     },
     {
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       period_id: namiMar.id,
       period_status_id: marStatusTwo.id,
     },

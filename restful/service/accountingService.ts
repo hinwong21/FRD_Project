@@ -1,20 +1,7 @@
 import { Knex } from "knex";
-<<<<<<< HEAD
-import { log } from "console";
 
 export class AccountingService {
   constructor(private knex: Knex) {}
-
-  addTransaction = async (
-    id: string,
-    name: string,
-    type: string,
-    amount: string,
-    description?: string
-=======
-
-export class AccountingService {
-  constructor(private knex: Knex) { }
 
   addTransaction = async (
     // id: number,
@@ -22,28 +9,12 @@ export class AccountingService {
     type: string,
     amount: string,
     description: string,
-    userId: string,
-
->>>>>>> f3113e1137665f03642942135dc633437808749a
+    userId: string
   ) => {
     try {
       let addTransaction = await this.knex("transaction")
         .insert([
           {
-<<<<<<< HEAD
-            category: name,
-            type: type,
-            amount: amount,
-            user_id: "1", //插個"1" ok?
-            description: description,
-          },
-        ])
-        .returning("*");
-      console.log(addTransaction);
-      return addTransaction;
-    } catch (error) {
-      console.error("Error occurred while adding transaction: ", error);
-=======
             // id: id,
             category: name,
             type: type,
@@ -53,11 +24,12 @@ export class AccountingService {
           },
         ])
         .returning("*");
-      console.log('accountingService.ts', addTransaction);
+      console.log("accountingService.ts", addTransaction);
       return addTransaction;
     } catch (error) {
-      throw new Error(`Error occurred while adding transaction: ${error.message}`);
->>>>>>> f3113e1137665f03642942135dc633437808749a
+      throw new Error(
+        `Error occurred while adding transaction: ${error.message}`
+      );
     }
   };
 
@@ -77,21 +49,15 @@ export class AccountingService {
     try {
       let getTransaction = await this.knex("transaction")
         .select("*")
-<<<<<<< HEAD
-        .where("user_id", userId);
-      console.log(getTransaction);
-      return getTransaction;
-    } catch (error) {
-      console.error("Error occurred while getting transaction", error);
-=======
         // .where({ user_id: userId });
-        .where("user_id", userId)
+        .where("user_id", userId);
       console.log(getTransaction);
 
       return getTransaction;
     } catch (error) {
-      throw new Error(`Error occurred while getting transaction: ${error.message}`);
->>>>>>> f3113e1137665f03642942135dc633437808749a
+      throw new Error(
+        `Error occurred while getting transaction: ${error.message}`
+      );
     }
   };
 }

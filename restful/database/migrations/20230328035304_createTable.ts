@@ -102,6 +102,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string("days").defaultTo("5");
       table.string("ovu_start_at");
       table.string("ovu_end_at");
+      table.timestamps(true, true);
       table.text("user_id").references("users.id");
     });
   }
