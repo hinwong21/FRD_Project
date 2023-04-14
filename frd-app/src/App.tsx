@@ -69,7 +69,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     async function main() {
-      await removeName("token");
       let token = await getName("token");
 
       if (token) {

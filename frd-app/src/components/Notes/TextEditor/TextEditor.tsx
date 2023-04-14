@@ -1,22 +1,4 @@
 import {useEffect, useRef, useState} from 'react';
-// import {
-//   EditorComposer,
-//   Editor,
-//   ToolbarPlugin,
-//   AlignDropdown,
-//   BackgroundColorPicker,
-//   BoldButton,
-//   CodeFormatButton,
-//   FontFamilyDropdown,
-//   FontSizeDropdown,
-//   InsertDropdown,
-//   InsertLinkButton,
-//   ItalicButton,
-//   TextColorPicker,
-//   TextFormatDropdown,
-//   UnderlineButton,
-//   Divider,
-// } from 'verbum';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import "./TextEditor.css"
@@ -29,8 +11,6 @@ export function TextEditor(props: { handleEditorCallback: (arg0: { content: stri
   const handleEditorChange = (value: string) => {
     setInputContent(value);
   };
-
-
 
   useEffect(()=>{
     const delta = quillRef.current?.getEditor().getContents();
