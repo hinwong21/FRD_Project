@@ -8,6 +8,7 @@ export const WaterBalance = () => {
 
   useEffect(() => {
     const resetData = async () => {
+      // get in local storage
       const { value } = await Preferences.get({ key: "water" });
       if (value !== null) {
         let json = JSON.parse(value);
@@ -55,7 +56,7 @@ export const WaterBalance = () => {
         // If the current time is past the reset time, set the reset time to tomorrow
         resetTime.setDate(resetTime.getDate() + 1);
       }
-
+      // save in local storage
       await Preferences.set({
         key: "water",
         value: JSON.stringify({ water: newWaterIntake, date: resetTime }),

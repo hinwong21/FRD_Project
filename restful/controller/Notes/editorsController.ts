@@ -10,10 +10,14 @@ export class EditorsController {
 
   addMemo = async (req: Request, res: Response) => {
     try {
-      console.log(req.body)
+      console.log(req.body);
       const memoContent = req.body.content;
       const id = req.body.id;
-      this.editorsService.addMemo(id, memoContent, req.session.userId as string);
+      this.editorsService.addMemo(
+        id,
+        memoContent,
+        req.session.userId as string
+      );
       res.json({ success: true });
     } catch (err) {
       errorHandler(err, req, res);
@@ -27,16 +31,23 @@ export class EditorsController {
     }catch (err){
       errorHandler(err, req, res);
     }
-  }
+  };
 
-  newDiary = async (req:Request, res:Response)=>{
-    try{
-      await this.editorsService.newDiary(req.body.id, req.body.content, req.body.weather,req.body.title, req.body.mood, req.session.userId as string)
-      res.json({success:true})
-    }catch (err){
+  newDiary = async (req: Request, res: Response) => {
+    try {
+      await this.editorsService.newDiary(
+        req.body.id,
+        req.body.content,
+        req.body.weather,
+        req.body.title,
+        req.body.mood,
+        req.session.userId as string
+      );
+      res.json({ success: true });
+    } catch (err) {
       errorHandler(err, req, res);
     }
-  }
+  };
 
   updateDiary = async (req:Request, res:Response)=>{
     try{
@@ -54,8 +65,9 @@ export class EditorsController {
 
     }catch(err){
       errorHandler(err, req, res);
-  }
-  }
+    }
+  };
+
 
   updateTodo = async (req:Request, res:Response)=>{
     try{

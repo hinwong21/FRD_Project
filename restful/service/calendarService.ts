@@ -13,17 +13,15 @@ export class CalendarService {
     console.log(data);
 
     return data;
-  }
+  };
 
   getLocalCalendarEvent = async (userId: string) => {
-    let data = await this.knex("calendar")
-      .select("*")
-      .where("user_id", userId)
+    let data = await this.knex("calendar").select("*").where("user_id", userId);
 
     console.log(data);
 
     return data;
-  }
+  };
 
   createLocalCalendarEvent = async (eventData: any, userId: string) => {
     await this.knex
@@ -34,10 +32,8 @@ export class CalendarService {
         start: eventData.start,
         end: eventData.end,
         backgroundColor: eventData.backgroundColor,
-        user_id: userId
+        user_id: userId,
       })
-      .into("calendar")
-
-  }
-
+      .into("calendar");
+  };
 }

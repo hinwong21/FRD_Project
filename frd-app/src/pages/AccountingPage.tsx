@@ -127,7 +127,6 @@ const AccountingPage: React.FC = () => {
               <AccountingHeader />
               <div className={style.demo}>{/* <Finance_summary /> */}</div>
               {/* <div className={style.main}><Finance /></div> */}
-              {/* <Accounting /> */}
               {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
             {/* <Link to="/Calculator"></Link> */}
               {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
@@ -148,7 +147,8 @@ const AccountingPage: React.FC = () => {
               <IonList>
                 {showData.map((calculateResult) => (
                   <IonItem key={calculateResult.id}>
-                    {calculateResult.category} - $
+                    {calculateResult.category + " "}
+                    {calculateResult.description} - $
                     {calculateResult.amount.toLocaleString()}
                   </IonItem>
                 ))}

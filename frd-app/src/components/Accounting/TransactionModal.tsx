@@ -101,8 +101,9 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
-    if (!amount) return;
+    // console.log("SumbitBtn is clicked");
     let token = await getName("token");
+
     // TODO ajax
     const res = await fetch(
       `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
@@ -114,9 +115,6 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     );
     let json = await res.json();
     console.log(json);
-
-    // let aaa = json.map((transaction: any) => transaction.amount);
-    // console.log(aaa);
 
     let selectedCategoryAmount = json.filter(
       (item: { category: string | undefined }) => item.category === type
@@ -152,7 +150,6 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
         totalExpense: totalExpense,
       },
     ]);
-    console.log("SumbitBtn is clicked");
   }
 
   return (
@@ -185,18 +182,19 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
               ))}
             </IonSelect>
           </IonItem>
-          <IonItem lines="none">
-            {/* <IonLabel>Current value</IonLabel>
+          {/* <IonItem lines="none"> */}
+          {/* <IonLabel>Current value</IonLabel>
             <IonInput
               type="number"
               value={amount}
               onIonChange={(e) => setAmount(+(e.detail.value || ""))}
             ></IonInput> */}
-            <IonLabel>
+
+          {/* <IonLabel>
               Current value:
               {selectedGenre !== null && selectedGenre}
-            </IonLabel>
-          </IonItem>
+            </IonLabel> */}
+          {/* </IonItem> */}
         </IonList>
         {data3.length > 0 && (
           <Finance

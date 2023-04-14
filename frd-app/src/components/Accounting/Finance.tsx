@@ -20,6 +20,7 @@ export type TransactionType = {
   type: string;
   name: string;
   amount: string;
+  description: string;
 };
 
 const Finance = (props: {
@@ -99,7 +100,7 @@ const Finance = (props: {
           </div>
         </IonItem> */}
         <IonItem>
-          <IonLabel>Amount {props.amount}</IonLabel>
+          <IonLabel>Total Amount: $ {props.amount}</IonLabel>
           {/* <IonInput
             type="number"
             value={amount}
@@ -112,13 +113,13 @@ const Finance = (props: {
       <IonList>
         <div className={style.balance}>
           <IonItem>
-            <IonLabel>Total Income: {props.totalIncome}</IonLabel>
+            <IonLabel>Total Income: $ {props.totalIncome}</IonLabel>
           </IonItem>
           <IonItem>
-            <IonLabel>Total Expense: {props.totalExpense}</IonLabel>
+            <IonLabel>Total Expense: $ {props.totalExpense}</IonLabel>
           </IonItem>
           <IonItem>
-            <IonLabel>Balance: ${balance.toFixed(2)}</IonLabel>
+            <IonLabel>Balance: ${" " + balance.toFixed(2)}</IonLabel>
           </IonItem>
         </div>
       </IonList>
