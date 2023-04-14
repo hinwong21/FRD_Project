@@ -131,9 +131,7 @@ body{
 
   .memoBlockTodo{
     padding:5px;
-    /* border-width: 5px; */
-    border-color: red;
-    font-size: 6px;
+    font-size: 10px;
     width: 150px;
     height: 150px;
     overflow:hidden;
@@ -149,6 +147,11 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
+    border-style: solid;
+    border-color:black;
+    border-width: 0.3px;
+    background-color: white;
   }
 
   .selectedMemoTodo{
@@ -158,8 +161,19 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0 0 15px 5px #dde048;
-    background-color: #dde048; 
+    box-shadow: 0 0 5px 5px #dde048;
+    width: 150px;
+    height:150px;
+    margin: 15px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    border-style: solid;
+    border-color:black;
+    border-width: 0.3px;
+    background-color: white;
   }
 
   ion-delegate-host{

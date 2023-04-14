@@ -68,9 +68,14 @@ export const TodoLists: React.FC = () => {
 
         <div className={styles.todoListContainer}>
           {todoListLS.map((todo, index) => (
-            <Link key={index} 
-            to={{pathname:"./EditTodo", state:{data: todo, id: todo.id}}}
-            className={styles.todoListWrapper}>
+            <Link
+              key={index}
+              to={{
+                pathname: "./EditTodo",
+                state: { data: todo, id: todo.id },
+              }}
+              className={styles.todoListWrapper}
+            >
               <div className={styles.todoProgressIcon}>
                 {todo.task.some((taskItem) => !taskItem.checked) ? (
                   <FontAwesomeIcon icon={faSpinner} color="red" />
@@ -79,7 +84,9 @@ export const TodoLists: React.FC = () => {
                 )}
               </div>
               <div className={styles.todoListTitle}>{todo.title}</div>
-              <div>{todo.due_date.slice(0, 10)}</div>
+              <div className={styles.todoListDate}>
+                {todo.due_date.slice(0, 10)}
+              </div>
             </Link>
           ))}
         </div>
@@ -88,14 +95,24 @@ export const TodoLists: React.FC = () => {
   );
 };
 
-
 export const EditTodo = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
-
-
+  //pass to todoReEditor
+  // const [todoContent, setTodoContent] = useState("")
   const [memoEditorContent, setMemoEditorContent] = useState({});
-  const [memoEditorId, setMemoEditorId] = useState("")
+  const [memoEditorId, setMemoEditorId] = useState("");
+  //collected from Re-editor
+  const [todoListTitle, setTodoListTitle] = useState("");
+  const [todoDate, setTodoDate] = useState("");
+  const [todoHashtag, setTodoHashtag] = useState([] as string[]);
+  const [todoNewHashtag, setTodoNewHashtag] = useState([] as string[]);
+  const [todoEmail, setTodoEmail] = useState([] as string[]);
+  const [todoTask, setTodoTask] = useState([] as {}[]);
+  const [todoMemoRelated, setTodoMemoRelated] = useState([] as string[]);
+  const [todoMemoDeleted, setTodoMemoDeleted] = useState([] as string[]);
+  const [deleteHashtagArr, setDeleteHashtagArr] = useState([] as string[]);
+  const [deleteEmailArr, setDeleteEmailArr] = useState([] as string[]);
 
   function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -103,36 +120,187 @@ export const EditTodo = () => {
     }
   }
 
-  async function confirm_memo () {
+  const todoContent = {
+    title: todoListTitle,
+    due_date: todoDate,
+    hashtag: todoHashtag,
+    newHashtag: todoNewHashtag,
+    shared_email: todoEmail,
+    tasks: todoTask,
+    memo: todoMemoRelated,
+    todoMemoDeleted: todoMemoDeleted,
+    deleteHashtagArr: deleteHashtagArr,
+    deleteEmailArr: deleteEmailArr,
+  };
+
+  async function confirm_memo() {
     modal.current?.dismiss("", "confirm");
-    let token = await getName("token")
-    
-    // const res = await fetch ("http://localhost:8090/editors/update-memo",{
-    //   method: "PUT",
-    //   headers:{
-    //   Authorization:"Bearer " + token,
-    //   "Content-type":"application/json"},
-    //   body: JSON.stringify({
-    //     id: memoEditorId,
-    //     content:memoContent
-    //   })
-    // })
-    // const json= await res.json()
-    // console.log(json)
+
+    //update local storage
+    async function updateTodoLS(
+      todoListTitle: string,
+      todoDate: string,
+      todoHashtag: string[],
+      todoNewHashtag: string[],
+      todoEmail: string[],
+      todoTask: {}[],
+      todoMemoRelated: string[],
+      memoEditorId: string
+    ) {
+      const key = "todolist";
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+      const index = existingData.findIndex(
+        (item: { id: string }) => item.id === memoEditorId
+      );
+      if (index !== -1) {
+        existingData[index].task = todoTask;
+        existingData[index].title = todoListTitle;
+        existingData[index].updated_at = JSON.stringify(new Date());
+        existingData[index].due_date = todoDate;
+        existingData[index].hashtag = [...todoHashtag, ...todoNewHashtag];
+        existingData[index].email_shared = todoEmail;
+        existingData[index].memo = todoMemoRelated;
+      }
+      const value = JSON.stringify(existingData);
+      await Preferences.set({ key, value });
+    }
+    updateTodoLS(
+      todoListTitle,
+      todoDate,
+      todoHashtag,
+      todoNewHashtag,
+      todoEmail,
+      todoTask,
+      todoMemoRelated,
+      memoEditorId
+    );
+
+    const updateTodoHashtagsInPreferences = async (
+      todoNewHashtags: string[],
+      todolistId: string
+    ) => {
+      const key = "todo_hashtag";
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+
+      const filteredData = existingData.filter(
+        (data: any) => data.todolist_id !== todolistId
+      );
+
+      const newData = todoNewHashtags.map((hashtag) => ({
+        hashtag_name: hashtag,
+        todolist_id: todolistId,
+      }));
+      const updatedData = [...filteredData, ...newData];
+
+      const value = JSON.stringify(updatedData);
+      await Preferences.set({ key, value });
+    };
+    updateTodoHashtagsInPreferences(
+      [...todoHashtag, ...todoNewHashtag],
+      memoEditorId
+    );
+
+    const updateTodoEmailInPreferences = async (
+      todoEmail: string[],
+      todolistId: string
+    ) => {
+      const key = "todo_shared";
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+
+      const filteredData = existingData.filter(
+        (data: any) => data.todolist_id !== todolistId
+      );
+
+      const newData = todoEmail.map((email) => ({
+        user_email: email,
+        todolist_id: todolistId,
+      }));
+      const updatedData = [...filteredData, ...newData];
+
+      const value = JSON.stringify(updatedData);
+      await Preferences.set({ key, value });
+    };
+    updateTodoEmailInPreferences(todoEmail, memoEditorId);
+
+    const updateTodoMemoInPreferences = async (
+      todoMemoRelated: string[],
+      todolistId: string
+    ) => {
+      const key = "todo_memo";
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+
+      const filteredData = existingData.filter(
+        (data: any) => data.todolist_id !== todolistId
+      );
+
+      const newData = todoMemoRelated.map((email) => ({
+        memo_id: email,
+        todolist_id: todolistId,
+      }));
+      const updatedData = [...filteredData, ...newData];
+
+      const value = JSON.stringify(updatedData);
+      await Preferences.set({ key, value });
+    };
+    updateTodoMemoInPreferences(todoMemoRelated, memoEditorId);
+
+
+    //update db
+    let token = await getName("token");
+    const res = await fetch("http://localhost:8090/editors/update-todo", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: memoEditorId,
+        content: todoContent,
+      }),
+    });
+    const json = await res.json();
+    console.log(json);
+
   }
 
   type dataType = {
-    data:string,
-    id:string
-  }
+    data: string;
+    id: string;
+  };
 
   const location = useLocation();
-  const data= location.state as dataType;
-  
-  
+  const data = location.state as dataType;
+  // console.log(data.data);
+
+  const handleCallback = (childData: any) => {
+    console.log(childData);
+    setTodoListTitle(childData.todoTitle);
+    setTodoDate(childData.todoDate);
+    setTodoHashtag(childData.todoHashtag);
+    setTodoNewHashtag(childData.todoNewHashtag);
+    setTodoEmail(childData.todoEmail);
+    setTodoTask(childData.todoTask);
+    setTodoMemoRelated(childData.todoMemoRelated);
+    setTodoMemoDeleted(childData.todoMemoDeleted);
+    setDeleteHashtagArr(childData.deleteHashtagArr);
+    setDeleteEmailArr(childData.deleteEmailArr);
+  };
+
   useEffect(() => {
-    setMemoEditorContent(`${JSON.parse(data.data as string)}`)
-    setMemoEditorId(data.id)
+    setMemoEditorContent(data.data);
+    setMemoEditorId(data.id);
   }, []);
 
   return (
@@ -152,16 +320,18 @@ export const EditTodo = () => {
               </IonButtons>
               <IonTitle>Edit Todo</IonTitle>
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm_memo()}>
-                  Confirm
-                </IonButton>
+                <Link to={"./TodoList"}>
+                  <IonButton strong={true} onClick={() => confirm_memo()}>
+                    Confirm
+                  </IonButton>
+                </Link>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <TodoReEditor handleCallback={function (arg0: { todoTitle: string; todoDate: string; todoHashtag: string[]; todoNewHashtag: string[]; todoEmail: string[]; todoTask: {}[]; todoMemoRelated: string[]; }): void {
-              throw new Error("Function not implemented.");
-            } }
+            <TodoReEditor
+              content={memoEditorContent}
+              handleCallback={handleCallback}
             />
           </IonContent>
         </IonModal>

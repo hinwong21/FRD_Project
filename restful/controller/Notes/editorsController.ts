@@ -24,22 +24,11 @@ export class EditorsController {
     }
   };
 
-  getMemo = async (req: Request, res: Response) => {
-    try {
-      const memos = await this.editorsService.getMemo(
-        req.session.userId as string
-      );
-      res.json(memos);
-    } catch (err) {
-      errorHandler(err, req, res);
-    }
-  };
-
-  updateMemo = async (req: Request, res: Response) => {
-    try {
-      await this.editorsService.updateMemo(req.body.id, req.body.content);
-      res.json({ success: true });
-    } catch (err) {
+  updateMemo= async (req:Request, res:Response)=>{
+    try{
+      await this.editorsService.updateMemo(req.body.id, req.body.content)
+      res.json({success:true})
+    }catch (err){
       errorHandler(err, req, res);
     }
   };
@@ -60,32 +49,33 @@ export class EditorsController {
     }
   };
 
-  getDiary = async (req: Request, res: Response) => {
-    try {
-      const diaries = await this.editorsService.getDiary(
-        req.session.userId as string
-      );
-      res.json(diaries);
-    } catch (err) {
+  updateDiary = async (req:Request, res:Response)=>{
+    try{
+      await this.editorsService.updateDiary(req.body.id, req.body.content, req.body.updated_at,req.body.title, req.body.mood)
+      res.json({success:true})
+    }catch (err){
+      errorHandler(err, req, res);
+    }
+  }
+
+  newTodo= async (req:Request, res:Response)=>{
+    try{
+      console.log(req.body)
+      res.json({success:true})
+
+    }catch(err){
       errorHandler(err, req, res);
     }
   };
 
-  newTodo = async (req: Request, res: Response) => {
-    try {
-      console.log(req.body);
-      res.json({ success: true });
-    } catch (err) {
+
+  updateTodo = async (req:Request, res:Response)=>{
+    try{
+      console.log(req.body)
+      res.json({success:true})
+
+    }catch(err){
       errorHandler(err, req, res);
-    }
-  };
-
-  // getHashtags = async (req:Request, res:Response)=>{
-  //   try{
-  //     let hashtags = await this.editorsService
-
-  //   }catch(err){
-  //     errorHandler(err, req, res);
-  // }
-  // }
+  }
+  }
 }

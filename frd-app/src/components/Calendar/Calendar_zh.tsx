@@ -30,6 +30,7 @@ import {
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { EventInput } from "@fullcalendar/core";
 
 export const Calendar_zh = () => {
   const [modalState, setModalState] = useState(false);
@@ -75,7 +76,7 @@ export const Calendar_zh = () => {
   }, []);
 
   async function getGoogleCalendarEvents() {
-    const events = await fetch("http://localhost:8080/calendar/google-events", {
+    const events = await fetch("http://localhost:8090/calendar/google-events", {
       method: "GET",
     });
     const events_json = await events.json();
@@ -85,7 +86,7 @@ export const Calendar_zh = () => {
   }
 
   async function getLocalCalendarEvents() {
-    const events = await fetch("http://localhost:8080/calendar/local-events", {
+    const events = await fetch("http://localhost:8090/calendar/local-events", {
       method: "GET",
     });
     const events_json = await events.json();
@@ -98,6 +99,10 @@ export const Calendar_zh = () => {
   function dismiss() {
     setModalState(false);
   }
+
+
+
+
 
   return (
     <>
@@ -157,7 +162,8 @@ export const Calendar_zh = () => {
             // })
             // const json = await res.json();
             // console.log(json);
-
+            
+            // console.log(info);
             setModalState(true);
             setModalDate(info.dateStr);
             setModalContent("ABC");

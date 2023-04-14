@@ -13,9 +13,7 @@ import {
   IonItemDivider,
   IonItemGroup,
   IonLabel,
-  IonItem,
   IonDatetime,
-  IonIcon,
   IonPopover,
   IonInput,
 } from "@ionic/react";
@@ -129,29 +127,29 @@ export const Diaries: React.FC = () => {
                       {JSON.parse(item.created_at).slice(8, 10)}
                     </div>
                     <div className={styles.diaryDateMonth}>
-                      {JSON.parse(item.created_at).slice(5, 7) == "01"
+                      {JSON.parse(item.created_at).slice(5, 7) === "01"
                         ? "JAN"
-                        : JSON.parse(item.created_at).slice(5, 7) == "02"
+                        : JSON.parse(item.created_at).slice(5, 7) === "02"
                         ? "FEB"
-                        : JSON.parse(item.created_at).slice(5, 7) == "03"
+                        : JSON.parse(item.created_at).slice(5, 7) === "03"
                         ? "MAR"
-                        : JSON.parse(item.created_at).slice(5, 7) == "04"
+                        : JSON.parse(item.created_at).slice(5, 7) === "04"
                         ? "APR"
-                        : JSON.parse(item.created_at).slice(5, 7) == "05"
+                        : JSON.parse(item.created_at).slice(5, 7) === "05"
                         ? "MAY"
-                        : JSON.parse(item.created_at).slice(5, 7) == "06"
+                        : JSON.parse(item.created_at).slice(5, 7) === "06"
                         ? "JUN"
-                        : JSON.parse(item.created_at).slice(5, 7) == "07"
+                        : JSON.parse(item.created_at).slice(5, 7) === "07"
                         ? "JUL"
-                        : JSON.parse(item.created_at).slice(5, 7) == "08"
+                        : JSON.parse(item.created_at).slice(5, 7) === "08"
                         ? "AUG"
-                        : JSON.parse(item.created_at).slice(5, 7) == "09"
+                        : JSON.parse(item.created_at).slice(5, 7) === "09"
                         ? "SEP"
-                        : JSON.parse(item.created_at).slice(5, 7) == "10"
+                        : JSON.parse(item.created_at).slice(5, 7) === "10"
                         ? "OCT"
-                        : JSON.parse(item.created_at).slice(5, 7) == "11"
+                        : JSON.parse(item.created_at).slice(5, 7) === "11"
                         ? "NOV"
-                        : JSON.parse(item.created_at).slice(5, 7) == "12"
+                        : JSON.parse(item.created_at).slice(5, 7) === "12"
                         ? "DEC"
                         : ""}
                     </div>
@@ -165,15 +163,15 @@ export const Diaries: React.FC = () => {
                 <div className={styles.diaryTitle}>
                   <div className={styles.diaryTitleText}>{item.title}</div>
                   <div className={styles.diaryMood}>
-                    {item.mood == "happy"
+                    {item.mood === "happy"
                       ? "😄"
-                      : item.mood == "sad"
+                      : item.mood === "sad"
                       ? "🥴"
-                      : item.mood == "shocked"
+                      : item.mood === "shocked"
                       ? "😨"
-                      : item.mood == "soso"
+                      : item.mood === "soso"
                       ? "😐"
-                      : item.mood == "angry"
+                      : item.mood === "angry"
                       ? "😡"
                       : ""}
                   </div>
@@ -214,7 +212,7 @@ export const EditDiary = () => {
     modal.current?.dismiss("", "confirm");
 
     //update db
-    const res = await fetch ("http://localhost:8090/editors/update-memo",{
+    const res = await fetch ("http://localhost:8090/editors/update-diary",{
       method: "PUT",
       headers:{
       Authorization:"Bearer " + token,
@@ -279,8 +277,6 @@ export const EditDiary = () => {
     const selectedEmotion = (event.target as HTMLDivElement).id;
     setDiaryMood(selectedEmotion);
   };
-
-
 
 
   return (

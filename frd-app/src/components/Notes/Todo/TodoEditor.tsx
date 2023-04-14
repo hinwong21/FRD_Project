@@ -466,6 +466,7 @@ interface handleMemoTodoLinkProps {
   handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[] }) => void;
 }
 
+
 export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
   handleMemoTodoLinkCallback,
 }) => {
@@ -480,29 +481,78 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
 
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
   const [memoTodoLink, setMemoTodoLink] = useState([] as string[]);
+  const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
+
 
   async function getMemo() {
-    let token = await getName("token")
-    const res = await fetch("http://localhost:8080/editors/memo", {
-      headers:{
-        Authorization:"Bearer " + token},
-      method: "GET",
-    });
-    const memos = await res.json();
-    setMemoContent(memos);
+    const getMemoLS = async () => {
+      const { value } = await Preferences.get({ key: "memo" });
+      console.log(value)
+      if (value !== null) {
+        setMemoContent(JSON.parse(value));
+      }
+    };
+    getMemoLS()
   }
 
+  function createPreview() {
+    const previewArray: JSX.Element[] = []; 
+    memoContent.map((item, index) => { 
+      const parsedContent = JSON.parse(item.content).ops;
+      const preview = parsedContent.map((content: any, contentIndex: any) => {
+        if (content.insert) {
+          if (typeof content.insert === "string") {
+            const attrs = content.attributes || {};
+            const style: React.CSSProperties = {};
+            if (attrs.bold) style.fontWeight = "bold";
+            if (attrs.italic) style.fontStyle = "italic";
+            if (attrs.underline) style.textDecoration = "underline";
+            style.color="black";
+            return (
+              <span key={contentIndex} style={style}>
+                {content.insert}
+              </span>
+            );
+          } else if (content.insert.image) {
+            return (
+              <img
+                key={contentIndex}
+                src={content.insert.image}
+                alt="Inserted Image"
+                style={{ maxWidth: "80px" }}
+              />
+            );
+          }
+        } else if (content.attributes && content.attributes.link) {
+          return (
+            <a href={content.attributes.link} key={contentIndex}>
+              {content.insert}
+            </a>
+          );
+        }
+        return null;
+      });
+      previewArray.push(<div key={index}>{preview}</div>); 
+    });
   
-
-  useEffect(() => {
-    handleMemoTodoLinkCallback({
-      memoTodoLink,
-    });
-  }, [memoTodoLink]);
-
-  const handleMemoSelection = (id: string)=>{
-    setMemoTodoLink([...memoTodoLink, id])
+    return previewArray; 
   }
+
+  useEffect(()=>{
+    setPreviewArr(createPreview())
+  },[memoContent])
+
+
+  const handleMemoSelection = (id: string) => {
+    const memoLinkContainsId = memoTodoLink.some((memoId) => memoId === id);
+  
+    if (memoLinkContainsId) {
+      const updatedMemoTodoLink = memoTodoLink.filter((memoId) => memoId !== id);
+      setMemoTodoLink(updatedMemoTodoLink);
+    } else {
+      setMemoTodoLink([...memoTodoLink, id]);
+    }
+  };
 
   useEffect(() => {
     getMemo();
@@ -513,21 +563,19 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
       <IonItemGroup className={styles.memoTodoScrollGroup}>
         {memoContent.map((item, index) => (
           <div
-            // className={styles.memoAContainerTodo}
             className={
-              memoTodoLink[index] === item.id
+              memoTodoLink.includes(item.id)
                 ? styles.selectedMemoTodo
                 : styles.memoAContainerTodo
             }
-            key={index}
+            key={item.id}
             onClick={() => {
               handleMemoSelection(item.id);
             }}
           >
-            <div
-              dangerouslySetInnerHTML={{ __html: JSON.parse(item.content) }}
-              className={styles.memoBlockTodo}
-            ></div>
+            <div className={styles.memoBlockTodo}>
+                  {previewArr[index]}
+            </div>
           </div>
         ))}
       </IonItemGroup>
