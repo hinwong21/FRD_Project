@@ -50,7 +50,7 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
 
     let id = uuidv4()
 
-    const res= await fetch("http://localhost:8080/calendar/new-local-event",{
+    const res= await fetch("http://localhost:8090/calendar/new-local-event",{
       method: "POST",
       headers:{"Content-type":"application/json"},
       body:JSON.stringify({

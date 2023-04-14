@@ -212,7 +212,7 @@ export const EditDiary = () => {
     modal.current?.dismiss("", "confirm");
 
     //update db
-    const res = await fetch ("http://localhost:8090/editors/update-memo",{
+    const res = await fetch ("http://localhost:8090/editors/update-diary",{
       method: "PUT",
       headers:{
       Authorization:"Bearer " + token,
@@ -277,8 +277,6 @@ export const EditDiary = () => {
     const selectedEmotion = (event.target as HTMLDivElement).id;
     setDiaryMood(selectedEmotion);
   };
-
-
 
 
   return (

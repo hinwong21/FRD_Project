@@ -54,5 +54,19 @@ export class EditorsService {
       .select("*")
       .where("user_id", userId);
     return diaries;
-  };
+  }
+
+  // updateDiary(req.body.id, req.body.content, req.body.updated_at,req.body.title, req.body.mood, req.session.userId as string)
+
+  updateDiary = async (id: string, content: string, updated_at: string, title:string, mood: string)=>{
+    await this.knex("dairy")
+    .update({
+      content:JSON.stringify(content),
+      updated_at: new Date(),
+      title: title,
+      mood: mood,
+    })
+    .where("id", id);
+  }
+
 }

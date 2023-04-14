@@ -21,7 +21,7 @@ import {
     IonToolbar,
     ItemReorderEventDetail,
   } from "@ionic/react";
-  import { KeyboardEvent, useEffect, useState } from "react";
+  import { KeyboardEvent, SetStateAction, useEffect, useState } from "react";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import { faPlus, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
   import { v4 as uuidv4 } from "uuid";
@@ -85,16 +85,7 @@ import {
     );
   };
   
-  export function TodoReEditor(props: {
-    handleCallback: (arg0: { todoTitle: string,
-      todoDate: string,
-      todoHashtag: string[],
-      todoNewHashtag: string[],
-      todoEmail: string[],
-      todoTask: {}[],
-      todoMemoRelated: string[] 
-    }) => void;
-  }) {
+  export function TodoReEditor(props:any) {
     const [todoListTitle, setTodoListTitle] = useState("New Todo");
     const [elements, setElements] = useState<
       { id: string; content: string; checked: boolean }[]
@@ -117,12 +108,25 @@ import {
     const [sharedEmailArr, setSharedEmailArr] = useState([] as string[]);
     const [showAlertMsg, setShowAlertMsg] =useState("")
     const [newlyCreatedHashtagArr, setNewlyCreatedHashtagArr] = useState([] as string[])
+    const [memoOpen, setMemoOpen] = useState (false)
+    const [memoToDeleteArr, setMemosToDeleteArr] = useState([] as string[])
+    const [deleteHashtagArr, setDeleteHashtagArr] = useState([] as string[])
+    const [deleteEmailArr, setDeleteEmailArr] = useState([] as string[])
   
   
     useEffect(()=>{
       getHashtags();
+      // console.log(props.content)
+      setElements(props.content.task)
+      setTodoListTitle(props.content.title)
+      setSelectedDate(props.content.due_date)
+      setHashtagSelected(props.content.hashtag)
+      setSharedEmailArr(props.content.email_shared)
+      setMemoIdRelated(props.content.memo)
     },[])
   
+  
+
     const handleAddNewItem = () => {
       const uuid = uuidv4();
       const newItem = {
@@ -173,7 +177,6 @@ import {
     }, [searchTextHashtag]);
   
     const handleCheckChange = (id: string) => {
-      console.log("isReordering", isReordering);
       if (isReordering) return;
       const updatedTodos = elements.map((todo) => {
         if (todo.id === id) {
@@ -198,6 +201,7 @@ import {
   
     const handleMemoTodoLinkCallback = (childData: any) => {
       setMemoIdRelated(childData.memoTodoLink);
+      setMemosToDeleteArr(childData.memosToDelete);
       // console.log(childData.memoTodoLink);
     };
   
@@ -219,9 +223,12 @@ import {
         todoNewHashtag: newlyCreatedHashtagArr,
         todoEmail: sharedEmailArr,
         todoTask: elements,
-        todoMemoRelated: memoIdRelated
+        todoMemoRelated: memoIdRelated,
+        todoMemoDeleted: memoToDeleteArr,
+        deleteHashtagArr: deleteHashtagArr,
+        deleteEmailArr: deleteEmailArr
       });
-    }, [todoListTitle,selectedDate, hashTagSelected, sharedEmailArr, elements, memoIdRelated]);
+    }, [todoListTitle,selectedDate, hashTagSelected, sharedEmailArr, elements, memoIdRelated, memoToDeleteArr, deleteHashtagArr, deleteEmailArr]);
   
     const handleEmailInputChange = (event: CustomEvent) => {
       setSharedEmailInput(event.detail.value);
@@ -237,22 +244,25 @@ import {
       setSharedEmailInput("");
     }
   
-    const handleCancelHashtag = (index: number) => {
+    const handleCancelHashtag = (index: number, hashtag:string) => {
       const newHashTagSelected = [...hashTagSelected];
       newHashTagSelected.splice(index, 1);
       setHashtagSelected(newHashTagSelected);
+      setDeleteHashtagArr([...deleteHashtagArr, hashtag])
     };
   
     const handleCancelNewlyCreatedHashtag = (index: number) => {
       const newNewlyCreatedHashtagArr = [...newlyCreatedHashtagArr];
       newNewlyCreatedHashtagArr.splice(index, 1);
       setNewlyCreatedHashtagArr(newNewlyCreatedHashtagArr);
+      
     };
   
-    const handleCancelEmail = (index: number) => {
+    const handleCancelEmail = (index: number, email:string) => {
       const newSharedEmailArr = [...sharedEmailArr];
       newSharedEmailArr.splice(index, 1);
       setSharedEmailArr(newSharedEmailArr);
+      setDeleteEmailArr([...deleteEmailArr, email])
     };
   
     const handleNewlyCreatedHashtag = (text: string) => {
@@ -264,6 +274,14 @@ import {
       }
       setSearchTextHashtag("");
     };
+
+    const handleChooseMemoOnclick = ()=>{
+      if (!memoOpen){
+        setMemoOpen(true)
+      }else{
+        setMemoOpen(false)
+      }
+    }
   
   
     return (
@@ -274,6 +292,7 @@ import {
             
             clearInput={true}
             maxlength={30}
+            value={todoListTitle}
             onIonChange={(event) => {
               setTodoListTitle(event.target.value as string);
             }}
@@ -281,7 +300,7 @@ import {
   
           <IonButton
             color="light"
-            id="chooseRelativeMemo"
+            onClick={()=>{handleChooseMemoOnclick()}}
             size="small"
             className={styles.diaryChooseMemo}
           >
@@ -289,7 +308,7 @@ import {
           </IonButton>
         </div>
   
-        <IonPopover trigger="chooseRelativeMemo" keepContentsMounted={true}>
+        <IonPopover  isOpen={memoOpen} keepContentsMounted={true}>
           <div className={styles.memoWrapperTodo}>
             <MemosTodo handleMemoTodoLinkCallback={handleMemoTodoLinkCallback} />
           </div>
@@ -387,7 +406,7 @@ import {
                 <div className={styles.hashtagItemSelected}>{hashtag}</div>
                 <button
                   className={styles.cancelButton}
-                  onClick={() => handleCancelHashtag(index)}
+                  onClick={() => handleCancelHashtag(index, hashtag)}
                 >
                   x
                 </button>
@@ -412,7 +431,7 @@ import {
                 <div className={styles.hashtagItemSelected}>{email}</div>
                 <button
                   className={styles.cancelButton}
-                  onClick={() => handleCancelEmail(index)}
+                  onClick={() => handleCancelEmail(index,email)}
                 >
                   x
                 </button>
@@ -463,7 +482,7 @@ import {
   }
   
   interface handleMemoTodoLinkProps {
-    handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[] }) => void;
+    handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[], memosToDelete: string[] }) => void;
   }
   
   export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
@@ -480,29 +499,87 @@ import {
   
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
     const [memoTodoLink, setMemoTodoLink] = useState([] as string[]);
+    const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
+    const [memosToDelete, setMemosToDelete] = useState([] as string[]);
   
+
     async function getMemo() {
-      let token = await getName("token")
-      const res = await fetch("http://localhost:8080/editors/memo", {
-        headers:{
-          Authorization:"Bearer " + token},
-        method: "GET",
-      });
-      const memos = await res.json();
-      setMemoContent(memos);
+      const getMemoLS = async () => {
+        const { value } = await Preferences.get({ key: "memo" });
+        console.log(value)
+        if (value !== null) {
+          setMemoContent(JSON.parse(value));
+        }
+      };
+      getMemoLS()
     }
+
+    function createPreview() {
+      const previewArray: JSX.Element[] = []; 
+      memoContent.map((item, index) => { 
+        const parsedContent = JSON.parse(item.content).ops;
+        const preview = parsedContent.map((content: any, contentIndex: any) => {
+          if (content.insert) {
+            if (typeof content.insert === "string") {
+              const attrs = content.attributes || {};
+              const style: React.CSSProperties = {};
+              if (attrs.bold) style.fontWeight = "bold";
+              if (attrs.italic) style.fontStyle = "italic";
+              if (attrs.underline) style.textDecoration = "underline";
+              style.color="black";
+              return (
+                <span key={contentIndex} style={style}>
+                  {content.insert}
+                </span>
+              );
+            } else if (content.insert.image) {
+              return (
+                <img
+                  key={contentIndex}
+                  src={content.insert.image}
+                  alt="Inserted Image"
+                  style={{ maxWidth: "80px" }}
+                />
+              );
+            }
+          } else if (content.attributes && content.attributes.link) {
+            return (
+              <a href={content.attributes.link} key={contentIndex}>
+                {content.insert}
+              </a>
+            );
+          }
+          return null;
+        });
+        previewArray.push(<div key={index}>{preview}</div>); 
+      });
+    
+      return previewArray; 
+    }
+
+    useEffect(()=>{
+      setPreviewArr(createPreview())
+    },[memoContent])
   
     
-  
     useEffect(() => {
       handleMemoTodoLinkCallback({
         memoTodoLink,
+        memosToDelete
       });
-    }, [memoTodoLink]);
-  
-    const handleMemoSelection = (id: string)=>{
-      setMemoTodoLink([...memoTodoLink, id])
-    }
+    }, [memoTodoLink, memosToDelete]);
+
+    const handleMemoSelection = (id: string) => {
+      const memoLinkContainsId = memoTodoLink.some((memoId) => memoId === id);
+    
+      if (memoLinkContainsId) {
+        const updatedMemoTodoLink = memoTodoLink.filter((memoId) => memoId !== id);
+        setMemoTodoLink(updatedMemoTodoLink);
+        setMemosToDelete([...memosToDelete, id]);
+      } else {
+        setMemoTodoLink([...memoTodoLink, id]);
+      }
+    };
   
     useEffect(() => {
       getMemo();
@@ -513,21 +590,19 @@ import {
         <IonItemGroup className={styles.memoTodoScrollGroup}>
           {memoContent.map((item, index) => (
             <div
-              // className={styles.memoAContainerTodo}
               className={
-                memoTodoLink[index] === item.id
+                memoTodoLink.includes(item.id)
                   ? styles.selectedMemoTodo
                   : styles.memoAContainerTodo
               }
-              key={index}
+              key={item.id}
               onClick={() => {
                 handleMemoSelection(item.id);
               }}
             >
-              <div
-                dangerouslySetInnerHTML={{ __html: JSON.parse(item.content) }}
-                className={styles.memoBlockTodo}
-              ></div>
+              <div className={styles.memoBlockTodo}>
+                    {previewArr[index]}
+              </div>
             </div>
           ))}
         </IonItemGroup>

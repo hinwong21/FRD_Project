@@ -39,3 +39,7 @@ h2{
     margin-bottom: 3px ;
     font-weight: bold;
 }
+
+.fc .fc-toolbar-title{
+    color: red !important;
+}
