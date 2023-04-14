@@ -10,6 +10,7 @@ import {
   IonButton,
   IonButtons,
   IonLabel,
+  IonInput,
 } from "@ionic/react";
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
@@ -24,7 +25,7 @@ const Calculator: React.FC<{
   addCalculator: (transaction: TransactionType) => void;
 }> = ({ isOpen, close, addCalculator }) => {
   const modal = useRef<HTMLIonModalElement>(null);
-  const [amount, setAmount] = useState<number>();
+  const [description, setDescription] = useState("");
   const [result, setResult] = useState("");
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
@@ -43,12 +44,15 @@ const Calculator: React.FC<{
       alert("Please record your price");
       return;
     }
-    let newObj = Object.assign(obj, { amount: result });
+    let newObj = Object.assign(
+      obj,
+      { amount: result },
+      { description: description }
+    );
     console.log(newObj, Genres);
 
     /* Put data to database */
-    // useEffect(() => {
-    //   const putAmountDate = async () => {
+
     try {
       let token = await getName("token");
       let res = await fetch(
@@ -77,9 +81,7 @@ const Calculator: React.FC<{
       console.log(error);
       alert("error occurred in Calculator.tsx");
     }
-    //   };
-    //   putAmountDate();
-    // }, []);
+
     // /* gen by chatgpt */
     // const transaction: TransactionType = {
     //   id: 1,
@@ -163,25 +165,16 @@ const Calculator: React.FC<{
                 onIonChange={(e) => setAmount(+(e.detail.value || ""))}
               ></IonInput>
             </IonItem> */}
-        </IonList>
-        {/* </IonContent> */}
-        {/* <IonList>
           <IonItem>
-            <IonSelect placeholder="Select Genre">
-              <IonSelectOption value="income">Income</IonSelectOption>
-              <IonSelectOption value="food">Food</IonSelectOption>
-              <IonSelectOption value="drink">Drink</IonSelectOption>
-              <IonSelectOption value="transport">Transport</IonSelectOption>
-              <IonSelectOption value="entertainment">
-                Entertainment
-              </IonSelectOption>
-              <IonSelectOption value="bill">Bill</IonSelectOption>
-              <IonSelectOption value="consumption">Consumption</IonSelectOption>
-              <IonSelectOption value="medical">Medical</IonSelectOption>
-              <IonSelectOption value="electronic">Electronic</IonSelectOption>
-            </IonSelect>
+            <IonLabel position="fixed">Name</IonLabel>
+            <IonInput
+              placeholder="Enter Description"
+              value={description}
+              onIonChange={(event) => setDescription(event.detail.value!)}
+            ></IonInput>
           </IonItem>
-        </IonList> */}
+        </IonList>
+
         <Display result={result} />
         <Panel
           operatingEvent={(element: number | string) => {
