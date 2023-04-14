@@ -3,7 +3,7 @@ import { UserRecord } from "firebase-admin/lib/auth/user-record";
 
 import path from 'path';
 
-let firebaseAdminJson = path.join(__dirname, 'FirebaseAdminConfig.json')
+let firebaseAdminJson = path.join(__dirname, 'firebaseAdminConfig.json')
 
 const serviceAccount = firebaseAdminJson
 admin.initializeApp({

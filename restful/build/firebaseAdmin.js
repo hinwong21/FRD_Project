@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUserByUID = exports.getUserByUID = void 0;
 const firebase_admin_1 = __importDefault(require("firebase-admin"));
 const path_1 = __importDefault(require("path"));
-let firebaseAdminJson = path_1.default.join(__dirname, 'FirebaseAdminConfig.json');
+let firebaseAdminJson = path_1.default.join(__dirname, 'firebaseAdminConfig.json');
 const serviceAccount = firebaseAdminJson;
 firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(serviceAccount),

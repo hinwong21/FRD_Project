@@ -119,7 +119,7 @@ const Finance = (props: {
             <IonLabel>Total Expense: $ {props.totalExpense}</IonLabel>
           </IonItem>
           <IonItem>
-            <IonLabel>Balance: ${balance.toFixed(2)}</IonLabel>
+            <IonLabel>Balance: ${" " + balance.toFixed(2)}</IonLabel>
           </IonItem>
         </div>
       </IonList>

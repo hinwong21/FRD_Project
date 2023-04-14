@@ -16,8 +16,9 @@ import { useRef } from "react";
 import { TransactionType } from "./Finance";
 import { Genres } from "./TransactionModal";
 
-import { getName } from "../../service/LocalStorage/LocalStorage";
+import { setName, getName } from "../../service/LocalStorage/LocalStorage";
 import { useHistory } from "react-router";
+
 
 const Calculator: React.FC<{
   isOpen: boolean;
@@ -31,6 +32,7 @@ const Calculator: React.FC<{
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
   const history = useHistory();
+
   /* Confirm button function */
   async function markCalculator() {
     const obj = [...Genres].filter((genre) => genre.id === selectedGenre)[0];
@@ -50,6 +52,11 @@ const Calculator: React.FC<{
       { description: description }
     );
     console.log(newObj, Genres);
+
+    
+
+    /* save data to local storage */
+    await setName("amountResult",JSON.stringify({amount:result,description:description}));
 
     /* Put data to database */
 

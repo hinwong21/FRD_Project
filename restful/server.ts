@@ -12,7 +12,7 @@ import axios from 'axios';
 import { periodRoutes } from "./route/periodRoute";
 
 const app = express();
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
 
 let url = env_config.URL;

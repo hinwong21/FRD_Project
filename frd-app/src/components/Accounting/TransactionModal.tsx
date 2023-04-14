@@ -101,7 +101,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
-    console.log("SumbitBtn is clicked");
+    // console.log("SumbitBtn is clicked");
     let token = await getName("token");
 
     // TODO ajax
@@ -182,18 +182,19 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
               ))}
             </IonSelect>
           </IonItem>
-          <IonItem lines="none">
-            {/* <IonLabel>Current value</IonLabel>
+          {/* <IonItem lines="none"> */}
+          {/* <IonLabel>Current value</IonLabel>
             <IonInput
               type="number"
               value={amount}
               onIonChange={(e) => setAmount(+(e.detail.value || ""))}
             ></IonInput> */}
-            <IonLabel>
+
+          {/* <IonLabel>
               Current value:
               {selectedGenre !== null && selectedGenre}
-            </IonLabel>
-          </IonItem>
+            </IonLabel> */}
+          {/* </IonItem> */}
         </IonList>
         {data3.length > 0 && (
           <Finance
