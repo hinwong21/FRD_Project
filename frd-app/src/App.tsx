@@ -53,6 +53,7 @@ import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
 // import {NewMemo} from "./components/Notes/AddNotePopup"
 import AddNotePopup from "./components/Notes/AddNotePopup";
 import { AccountingSetup } from "./components/Accounting/AccountingSetup";
+import { DietProgramme } from "./components/Health/Nutrient/DietProgramme";
 
 // import { Device } from "@capacitor/device";
 setupIonicReact();
@@ -112,6 +113,7 @@ const App: React.FC = () => {
     };
     main();
   }, []);
+  
   const reg_push_notification_listeners = async () => {
     await PushNotifications.addListener("registration", async (token) => {
       console.log("Registration token: ", token.value);
@@ -206,6 +208,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/Health-nutrient" exact={true}>
                 <Nutrition />
+              </Route>
+              <Route path="/dietProgramme" exact={true}>
+                <DietProgramme />
               </Route>
               <Route path="/Health-periodCalendar" exact={true}>
                 <PeriodCalendar />

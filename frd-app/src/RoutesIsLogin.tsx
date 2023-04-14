@@ -15,6 +15,7 @@ import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
 // import {NewMemo} from "./components/Notes/AddNotePopup"
 import AddNotePopup from "./components/Notes/AddNotePopup";
 import { EditGender } from "./components/Set/EditGender";
+import { DietProgramme } from "./components/Health/Nutrient/DietProgramme";
 
 export default function RoutesIsLogin() {
   return (
@@ -58,6 +59,9 @@ export default function RoutesIsLogin() {
           </Route>
           <Route path="/Health-nutrient" exact={true}>
             <Nutrition />
+          </Route>
+          <Route path="/dietProgramme" exact={true}>
+            <DietProgramme />
           </Route>
           <Route path="/Health-periodCalendar" exact={true}>
             <PeriodCalendar />
