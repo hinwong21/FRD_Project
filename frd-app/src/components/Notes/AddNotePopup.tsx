@@ -136,7 +136,7 @@ export const NewDiary = (props: {
       ".ContentEditable__root"
     )?.innerHTML;
     let token = await getName("token");
-    const res = await fetch("http://localhost:8080/editors/new-diary", {
+    const res = await fetch("http://localhost:8090/editors/new-diary", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,
@@ -222,7 +222,7 @@ export const NewMemo = (props: {
 
     //updated DB
     let token = await getName("token");
-    const res = await fetch("http://localhost:8080/editors/new-memo", {
+    const res = await fetch("http://localhost:8090/editors/new-memo", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,
@@ -242,7 +242,7 @@ export const NewMemo = (props: {
       id: id,
       content: memoContent,
       created_at: JSON.stringify(new Date()),
-      updated_at: "",
+      updated_at: JSON.stringify(new Date()),
       deleted: false,
     };
     const existingValue = await Preferences.get({ key });
@@ -395,7 +395,7 @@ export const NewTodo = (props: {
       memo: todoMemoRelated,
     };
     //express
-    const res = await fetch("http://localhost:8080/editors/new-todo", {
+    const res = await fetch("http://localhost:8090/editors/new-todo", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,

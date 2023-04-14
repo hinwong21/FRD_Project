@@ -1,10 +1,10 @@
 import React, { useEffect, useState, Component } from "react";
 import styles from "./DiaryEditor.module.css";
-import {DiaryTextEditor} from "./DiaryTextEditor"
 import {
   IonPage,
   IonInput
 } from "@ionic/react";
+import TextEditor from "../TextEditor/TextEditor";
 
 interface DiaryEditorProps {
   handleCallbackWeather :(arg0: { temperature: any; humidity: any; uvindexValue: number; uvindexdesc: string; icon: any; date: string; }) => void,
@@ -149,7 +149,9 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
 
       
     <div className={styles.editorWrapper}>
-    <DiaryTextEditor/>
+    <TextEditor handleEditorCallback={function (arg0: { content: string; }): void {
+              throw new Error("Function not implemented.");
+            } }/>
     </div>
       </div>
       </IonPage>

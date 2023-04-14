@@ -35,6 +35,7 @@ import { Preferences } from "@capacitor/preferences";
   
   export const Memos: React.FC = () => {
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
+    const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
   
     async function getMemo() {
       const getTodoListLS = async () => {
@@ -45,10 +46,57 @@ import { Preferences } from "@capacitor/preferences";
       };
       getTodoListLS()
     }
+
+    function createPreview() {
+      const previewArray: JSX.Element[] = []; 
+      memoContent.map((item, index) => { 
+        const parsedContent = JSON.parse(item.content).ops;
+        const preview = parsedContent.map((content: any, contentIndex: any) => {
+          if (content.insert) {
+            if (typeof content.insert === "string") {
+              const attrs = content.attributes || {};
+              const style: React.CSSProperties = {};
+              if (attrs.bold) style.fontWeight = "bold";
+              if (attrs.italic) style.fontStyle = "italic";
+              if (attrs.underline) style.textDecoration = "underline";
+              style.color="black";
+              return (
+                <span key={contentIndex} style={style}>
+                  {content.insert}
+                </span>
+              );
+            } else if (content.insert.image) {
+              return (
+                <img
+                  key={contentIndex}
+                  src={content.insert.image}
+                  alt="Inserted Image"
+                  style={{ maxWidth: "80px" }}
+                />
+              );
+            }
+          } else if (content.attributes && content.attributes.link) {
+            return (
+              <a href={content.attributes.link} key={contentIndex}>
+                {content.insert}
+              </a>
+            );
+          }
+          return null;
+        });
+        previewArray.push(<div key={index}>{preview}</div>); 
+      });
+    
+      return previewArray; 
+    }
   
     useEffect(() => {
       getMemo();
     }, []);
+
+    useEffect(()=>{
+      setPreviewArr(createPreview())
+    },[memoContent])
   
   
     return (
@@ -66,15 +114,21 @@ import { Preferences } from "@capacitor/preferences";
               key={index}
             >
               <div
-                dangerouslySetInnerHTML={{ __html: JSON.parse(item.content).ops.insert }}
-                className={styles.memoBlock}
-              ></div>
+                // dangerouslySetInnerHTML={{ __html: JSON.parse(item.content).ops.insert }}
+                className={styles.memoBlock}>
+                  <div>
+                    {previewArr[index]}
+                  </div>
+                </div>
+                
+              
               <div className={styles.memoUpdatedTime}>
-                {item.updated_at.slice(0, 10)}
+                {item.updated_at.slice(1, 11)}
               </div>
               <div className={styles.memoUpdatedTime}>
-                {item.updated_at.slice(11, 16)}
+                {item.updated_at.slice(12, 17)}
               </div>
+              
             </Link>
           ))}
         </div>
@@ -119,7 +173,7 @@ import { Preferences } from "@capacitor/preferences";
         modal.current?.dismiss("", "confirm");
 
         //update db
-      const res = await fetch ("http://localhost:8080/editors/update-memo",{
+      const res = await fetch ("http://localhost:8090/editors/update-memo",{
         method: "PUT",
         headers:{
         Authorization:"Bearer " + token,
