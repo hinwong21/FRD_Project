@@ -12,11 +12,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import sty from "./DatePicker.module.scss";
 
 function Topbox(props: {
-  chance: string;
-  subTitle: string;
-  periodDay: string;
-  ovuDay: string;
-  btname: string;
+  chance: string | undefined;
+  subTitle: string | undefined;
+  periodDay: string | undefined;
+  ovuDay: string | undefined;
+  btname: string | undefined;
   // getDate: (saveDate: Date | null) => void;
   getStart: (startDate: Date | null) => void;
   getEnd: (endDate: Date | null) => void;
@@ -98,4 +98,4 @@ function Topbox(props: {
   );
 }
 
-export default Topbox;
+export default React.memo(Topbox);

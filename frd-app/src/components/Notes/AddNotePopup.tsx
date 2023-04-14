@@ -120,6 +120,7 @@ export const NewDiary = (props: {
   const [diaryWeather, setDiaryWeather] = useState("");
   const [title, setTitle] = useState("");
   const [mood, setMood] = useState("");
+  const [diaryContent, setDiaryContent] = useState("")
 
   function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -132,9 +133,8 @@ export const NewDiary = (props: {
   async function confirm_diary() {
     modal.current?.dismiss("", "confirm");
     props.handleDiaryDismiss(false);
-    const diaryContent = document.querySelector(
-      ".ContentEditable__root"
-    )?.innerHTML;
+
+    //updated db
     let token = await getName("token");
     const res = await fetch("http://localhost:8090/editors/new-diary", {
       method: "POST",
@@ -152,17 +152,35 @@ export const NewDiary = (props: {
     });
     const json = await res.json();
     console.log(json);
+
+    //update local storage
+    const key = "diary";
+    const data = {
+      id: id,
+      content: diaryContent,
+      created_at: JSON.stringify(new Date()),
+      updated_at: JSON.stringify(new Date()),
+      deleted: false,
+      weather: diaryWeather,
+      title: title,
+      mood: mood
+    };
+    const existingValue = await Preferences.get({ key });
+    const existingData = existingValue.value
+      ? JSON.parse(existingValue.value)
+      : [];
+    const value = JSON.stringify([...existingData, data]);
+    await Preferences.set({ key, value });
   }
 
   function handleCallbackWeather(childData: any) {
     setDiaryWeather(childData);
   }
 
-  function handleCallbackTitleAndMood(childData: any) {
+  function handleCallbackTitleAndMoodAndContent(childData: any) {
     setTitle(childData.title);
     setMood(childData.selected);
-    console.log(title);
-    console.log(mood);
+    setDiaryContent(childData.content)
   }
 
   return (
@@ -190,7 +208,7 @@ export const NewDiary = (props: {
         <IonContent className="ion-padding">
           <DiaryEditor
             handleCallbackWeather={handleCallbackWeather}
-            handleCallbackTitleAndMood={handleCallbackTitleAndMood}
+            handleCallbackTitleAndMoodAndContent={handleCallbackTitleAndMoodAndContent}
           />
         </IonContent>
       </IonModal>
@@ -218,7 +236,7 @@ export const NewMemo = (props: {
     modal.current?.dismiss("", "confirm");
     props.handleMemoDismiss(false);
     let id = uuidv4();
-    props.handleMemoDismiss(false);
+    // props.handleMemoDismiss(false);
 
     //updated DB
     let token = await getName("token");

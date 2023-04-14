@@ -8,10 +8,10 @@ import TextEditor from "../TextEditor/TextEditor";
 
 interface DiaryEditorProps {
   handleCallbackWeather :(arg0: { temperature: any; humidity: any; uvindexValue: number; uvindexdesc: string; icon: any; date: string; }) => void,
-  handleCallbackTitleAndMood : (arg0: { selected: string|null, title: string }) => void
+  handleCallbackTitleAndMoodAndContent : (arg0: { selected: string|null, title: string, content:string }) => void
 }
 
-export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, handleCallbackTitleAndMood}) =>{
+export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, handleCallbackTitleAndMoodAndContent}) =>{
   const [content, setContent] = useState("");
   const [data, setData] = useState<Data>();
   // const [value, setValue] = useState("")
@@ -80,12 +80,17 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
   }, []);
 
   useEffect(()=>{
-    handleCallbackTitleAndMood({
+    handleCallbackTitleAndMoodAndContent({
       title:title,
-      selected: selected
+      selected: selected,
+      content: content
     })
 
   },[selected,title])
+
+  function handleEditorCallback(childData: any) {
+    setContent(childData.content);
+  }
 
   
   return (
@@ -149,9 +154,7 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
 
       
     <div className={styles.editorWrapper}>
-    <TextEditor handleEditorCallback={function (arg0: { content: string; }): void {
-              throw new Error("Function not implemented.");
-            } }/>
+    <TextEditor handleEditorCallback={handleEditorCallback}/>
     </div>
       </div>
       </IonPage>

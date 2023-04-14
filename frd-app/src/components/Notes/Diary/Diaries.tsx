@@ -17,6 +17,7 @@ import {
   IonDatetime,
   IonIcon,
   IonPopover,
+  IonInput,
 } from "@ionic/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
@@ -28,6 +29,8 @@ import { DiaryViewer } from "./DiaryViewer";
 import { useLocation } from "react-router-dom";
 import modal from "bootstrap/js/dist/modal";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
+import { ReEditTextEditor } from "../Memo/ReEditTextEditor";
+import { Preferences } from "@capacitor/preferences";
 
 
 type DiaryType = {
@@ -36,25 +39,35 @@ type DiaryType = {
   created_at: string;
   deleted_at: string;
   updated_at: string;
-  weather: string;
+  weather: WeatherType[];
   title: string;
   mood: string;
   user_id: number;
 };
 
+type WeatherType = {
+  temperature: string;
+  humidity: number;
+  uvindexValue: number;
+  uvindexdesc: string;
+  icon: string;
+  date: string;
+}
+
 export const Diaries: React.FC = () => {
   const [diaryContent, setDiaryContent] = useState<DiaryType[]>([]);
 
   async function getDiary() {
-    let token = await getName("token")
-    const res = await fetch("http://localhost:8090/editors/diary", {
-      headers:{
-        Authorization:"Bearer " + token},
-      method: "GET",
-    });
-    const diary = await res.json();
-    //   console.log(diary[0].content)
-    setDiaryContent(diary);
+    const getDiaryLS = async () => {
+      const { value } = await Preferences.get({ key: "diary" });
+      console.log(123)
+      if (value !== null) {
+        setDiaryContent(JSON.parse(value));
+        // console.log(JSON.parse(JSON.parse(value)[0].weather));
+        
+      }
+    };
+    getDiaryLS()
   }
 
   useEffect(() => {
@@ -109,41 +122,41 @@ export const Diaries: React.FC = () => {
               <div className={styles.diaryUpdatedTime}>
                 <div className={styles.diaryDateAdjPosition}>
                   <div className={styles.diaryWeek}>
-                    {JSON.parse(item.weather).date.slice(0, 3).toUpperCase()}
+                    {/* {item.weather.date.slice(0, 3).toUpperCase()} */}
                   </div>
                   <div className={styles.diaryDate}>
                     <div className={styles.diaryDateDay}>
-                      {item.created_at.slice(8, 10)}
+                      {JSON.parse(item.created_at).slice(8, 10)}
                     </div>
                     <div className={styles.diaryDateMonth}>
-                      {item.created_at.slice(5, 7) == "01"
+                      {JSON.parse(item.created_at).slice(5, 7) == "01"
                         ? "JAN"
-                        : item.created_at.slice(5, 7) == "02"
+                        : JSON.parse(item.created_at).slice(5, 7) == "02"
                         ? "FEB"
-                        : item.created_at.slice(5, 7) == "03"
+                        : JSON.parse(item.created_at).slice(5, 7) == "03"
                         ? "MAR"
-                        : item.created_at.slice(5, 7) == "04"
+                        : JSON.parse(item.created_at).slice(5, 7) == "04"
                         ? "APR"
-                        : item.created_at.slice(5, 7) == "05"
+                        : JSON.parse(item.created_at).slice(5, 7) == "05"
                         ? "MAY"
-                        : item.created_at.slice(5, 7) == "06"
+                        : JSON.parse(item.created_at).slice(5, 7) == "06"
                         ? "JUN"
-                        : item.created_at.slice(5, 7) == "07"
+                        : JSON.parse(item.created_at).slice(5, 7) == "07"
                         ? "JUL"
-                        : item.created_at.slice(5, 7) == "08"
+                        : JSON.parse(item.created_at).slice(5, 7) == "08"
                         ? "AUG"
-                        : item.created_at.slice(5, 7) == "09"
+                        : JSON.parse(item.created_at).slice(5, 7) == "09"
                         ? "SEP"
-                        : item.created_at.slice(5, 7) == "10"
+                        : JSON.parse(item.created_at).slice(5, 7) == "10"
                         ? "OCT"
-                        : item.created_at.slice(5, 7) == "11"
+                        : JSON.parse(item.created_at).slice(5, 7) == "11"
                         ? "NOV"
-                        : item.created_at.slice(5, 7) == "12"
+                        : JSON.parse(item.created_at).slice(5, 7) == "12"
                         ? "DEC"
                         : ""}
                     </div>
                     <div className={styles.diaryDateYear}>
-                      {item.created_at.slice(0, 4)}
+                      {JSON.parse(item.created_at).slice(0, 4)}
                     </div>
                   </div>
                 </div>
@@ -166,7 +179,6 @@ export const Diaries: React.FC = () => {
                   </div>
                 </div>
                 <div
-                  dangerouslySetInnerHTML={{ __html: JSON.parse(item.content) }}
                   className={styles.diaryBlock}
                 ></div>
               </div>
@@ -186,24 +198,60 @@ export const EditDiary = () => {
   const [weatherIcon, setWeatherIcon] = useState("");
   const [diaryMood, setDiaryMood] = useState("");
   const [diaryTitle, setDiaryTitle] = useState("");
+  const [diaryContent, setDiaryContent] = useState("")
 
-  const [memoEditorContent, setMemoEditorContent] = useState({});
-  const [memoEditorId, setMemoEditorId] = useState("");
+  const [memoEditorContent, setMemoEditorContent] = useState("");
+  const [diaryId, setDiaryId] = useState("");
 
-  function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
+  function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
-      console.log("memo");
+      console.log("diary");
     }
   }
 
-  async function confirm_memo() {
+  async function confirm_diary() {
+    let token = await getName("token")
     modal.current?.dismiss("", "confirm");
+
+    //update db
+    const res = await fetch ("http://localhost:8090/editors/update-memo",{
+      method: "PUT",
+      headers:{
+      Authorization:"Bearer " + token,
+      "Content-type":"application/json"},
+      body: JSON.stringify({
+        id: diaryId,
+        content:diaryContent,
+        updated_at: JSON.stringify(new Date()),
+        mood: diaryMood,
+        title: diaryTitle
+      })
+    })
+    const json= await res.json()
+    console.log(json)
+
+    //update local storage
+    async function updateDiaryLS(id:string, diaryContent:string, diaryMood:string, diaryTitle:string) {
+      const key = "diary";
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+      const index = existingData.findIndex((item: { id: string; }) => item.id === id);
+      if (index !== -1) {
+        existingData[index].content = diaryContent;
+        existingData[index].updated_at = JSON.stringify(new Date());
+        existingData[index].mood = diaryMood;
+        existingData[index].title = diaryTitle;
+      }
+      const value = JSON.stringify(existingData);
+      await Preferences.set({ key, value });
+    }
+    updateDiaryLS(diaryId, diaryContent, diaryMood, diaryTitle)
   }
 
   type dataType = {
     data: string;
     id: string;
-    weather: string;
+    weather: WeatherType;
     mood: string;
     title: string;
   };
@@ -212,21 +260,35 @@ export const EditDiary = () => {
   const data = location.state as dataType;
 
   useEffect(() => {
-    setMemoEditorContent(`${JSON.parse(data.data as string)}`);
-    setMemoEditorId(data.id);
-    setWeatherDate(JSON.parse(data.weather).date);
-    setWeatherTemp(JSON.parse(data.weather).temperature);
-    setWeatherIcon(JSON.parse(data.weather).icon[0]);
+    setMemoEditorContent(data.data as string);
+    setDiaryId(data.id);
+    setWeatherDate(data.weather.date);
+    setWeatherTemp(data.weather.temperature);
+    setWeatherIcon(data.weather.icon);
     setDiaryMood(data.mood);
     setDiaryTitle(data.title);
   }, []);
+
+  function handleReEditEditorCallback (childData:any){  
+    setDiaryContent(childData.content)
+  }
+
+  const selectEmotion = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const selectedEmotion = (event.target as HTMLDivElement).id;
+    setDiaryMood(selectedEmotion);
+  };
+
+
+
 
   return (
     <>
       <IonPage>
         <IonModal
           ref={modal}
-          onWillDismiss={(ev) => onWillDismiss_memo(ev)}
+          onWillDismiss={(ev) => onWillDismiss_diary(ev)}
           isOpen={true}
         >
           <IonHeader>
@@ -238,9 +300,11 @@ export const EditDiary = () => {
               </IonButtons>
               <IonTitle>Edit Diary</IonTitle>
               <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm_memo()}>
+              <Link to={"./TodoList"}>
+                <IonButton strong={true} onClick={() => confirm_diary()}>
                   Confirm
                 </IonButton>
+                </Link>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
@@ -257,34 +321,39 @@ export const EditDiary = () => {
               />
             </div>
 
-            <div className={styles.diaryTitleInput}>{diaryTitle}</div>
+            <IonInput placeholder="Enter the diary title" value={diaryTitle} color="dark" className={styles.diaryTitleInput} clearInput={true} maxlength={25} onIonChange={(event: any )=>{setDiaryTitle(event.target.value as string)}}></IonInput>
 
             <div className={styles.emotionSelectionBlock}>
               <div
+              onClick={selectEmotion}
                 id="happy"
                 className={diaryMood === "happy" ? styles.selected : ""}
               >
                 😄
               </div>
               <div
+              onClick={selectEmotion}
                 id="angry"
                 className={diaryMood === "angry" ? styles.selected : ""}
               >
                 😡
               </div>
               <div
+              onClick={selectEmotion}
                 id="soso"
                 className={diaryMood === "soso" ? styles.selected : ""}
               >
                 😐
               </div>
               <div
+              onClick={selectEmotion}
                 id="shocked"
                 className={diaryMood === "shocked" ? styles.selected : ""}
               >
                 😨
               </div>
               <div
+              onClick={selectEmotion}
                 id="sad"
                 className={diaryMood === "sad" ? styles.selected : ""}
               >
@@ -292,8 +361,7 @@ export const EditDiary = () => {
               </div>
             </div>
 
-            <DiaryViewer content={memoEditorContent} />
-            {/* <div className={styles.diaryContentDiv} dangerouslySetInnerHTML={{__html: JSON.stringify(memoEditorContent)}}/> */}
+            <ReEditTextEditor content={memoEditorContent} handleReEditEditorCallback={handleReEditEditorCallback}/>
           </IonContent>
         </IonModal>
       </IonPage>
