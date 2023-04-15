@@ -1,13 +1,13 @@
-import { env_config } from "../env";
+import { env } from "../env";
 module.exports = {
   development: {
     client: "postgresql",
     connection: {
-      database: env_config.DB_NAME,
-      user: env_config.DB_USER,
-      password: env_config.DB_PASSWORD,
-      host: env_config.DB_HOST,
-      port: env_config.DB_PORT
+      database: env.DB_NAME,
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+      host: env.DB_HOST,
+      port: env.DB_PORT,
       // host: env_config.DB_HOST,
     },
     pool: {

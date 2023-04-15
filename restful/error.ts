@@ -11,6 +11,7 @@ export function errorHandler(
     ok: false,
     isErr: true,
     errMess: `${error.message} - ${req.route.path}`,
+    error: `${error.message} - ${req.route.path}`,
     data: null,
   };
 

@@ -22,6 +22,7 @@ import Calculator from "../components/Accounting/Calculator";
 import { getName } from "../service/LocalStorage/LocalStorage";
 import { AccountingSetup } from "../components/Accounting/AccountingSetup";
 import { AccountingHeader } from "../components/Accounting/AccountingHeader";
+import { useGet } from "../hooks/useGet";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -47,51 +48,15 @@ const AccountingPage: React.FC = () => {
   const [isTran, setIsTran] = useState<boolean>(false);
 
   const [calculateResult, setCalculateResult] = useState<TransactionType[]>([]);
-  const [showData, setShowData] = useState<TransactionTypeTemp[]>([]);
 
   const closeTrans = useCallback(() => setIsTran(false), []);
   const closeOpen = useCallback(() => setIsOpen(false), []);
 
   const [insertedBudget, setInsertedBudget] = useState("true");
 
-  /* get data in local storage */
-  async function getNameData() {
-    let getNameData = await getName("transactions");
-    console.log(getNameData);
-  }
-  /* get data in database */
-  async function getDailyData() {
-    let token = await getName("token");
-    try {
-      const res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getDailyTransaction`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      let json = await res.json(); //logic 岩，曲唔岩 試try catch
-      setShowData(json);
-    } catch (error) {
-      console.log(error);
-      getNameData();
-    }
-    // if (json.value > 0) {
-    //   setShowData(json); //logic 岩，曲唔岩
-    // } else {
-    //   let getNameDataResult = await getName("amountResult");
-    //   if (getNameDataResult) {
-    //     setShowData(JSON.parse(getNameDataResult));
-    //   }
-    //   getNameData();
-    // }
-  }
-
-  useEffect(() => {
-    getNameData();
-    getDailyData();
-  }, []);
+  const [dailyTransactions, setDailyTransactions] = useGet<
+    TransactionTypeTemp[]
+  >("/account/getDailyTransaction", []);
 
   const addCalculator = useCallback(
     (transaction: TransactionType) =>
@@ -166,7 +131,7 @@ const AccountingPage: React.FC = () => {
                 </IonList> */}
               </div>
               <IonList>
-                {showData.map((calculateResult) => (
+                {dailyTransactions.map((calculateResult) => (
                   <IonItem key={calculateResult.id}>
                     {calculateResult.category + " "}
                     {calculateResult.description} - $
