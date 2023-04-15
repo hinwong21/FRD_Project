@@ -10,7 +10,6 @@ export let env = {
   DB_USER: "",
   DB_PASSWORD: "",
   PORT: 8090,
-  URL: "",
   DB_HOST: "",
   DB_PORT: "",
   SEREST: "",
