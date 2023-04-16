@@ -27,7 +27,6 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Calculator from "./components/Accounting/Calculator";
 import AccountingPage from "./pages/AccountingPage";
 import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
