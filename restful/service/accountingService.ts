@@ -118,10 +118,11 @@ export class AccountingService {
 
   getBudget = async (userId: string | undefined) => {
     try {
-      let budget = await this.knex("finance")
-        .select("*")
-        .where("user_id", userId);
-      return budget;
+      let row = await this.knex("finance")
+        .select("budget")
+        .where("user_id", userId)
+        .first();
+      return row?.budget;
     } catch (error) {
       throw new Error(
         `Error occurred while getting Daily transaction in accountingService: ${error.message}`

@@ -102,9 +102,9 @@ export class AccountingController {
 
   getBudget = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
-      const result = await this.accountingService.getBudget(userId);
-      res.json({ result });
+      let userId = getJWT(req).userId;
+      const budget = await this.accountingService.getBudget(userId);
+      res.json({ budget });
     } catch (error) {
       errorHandler(error, req, res);
     }

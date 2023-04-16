@@ -67,8 +67,8 @@ const AccountingPage: React.FC = () => {
     []
   );
 
-  const [accountBudgets] = useGet("/account/budget", { result: [] });
-  const insertedBudget = accountBudgets.result.length > 0;
+  const [accountBudgets] = useGet("/account/budget", { budget: 0 });
+  const insertedBudget = accountBudgets.budget;
 
   return (
     <>

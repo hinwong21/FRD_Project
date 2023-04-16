@@ -1,5 +1,5 @@
 import express from "express";
-import { knex } from "../database/db";
+import { knex } from "../db";
 import { CalendarOauthController } from "../controller/Calendar/GoogleCalendarOAuth/calendarOauthController";
 import { CalendarOauthService } from "../service/calendarOauthService";
 import { CalendarController } from "../controller/Calendar/calendarController";
@@ -18,15 +18,9 @@ calendarRoutes.get(
   calendarOauthController.calendarAuthorization
 );
 
-calendarRoutes.get(
-  "/google-events",
-  calendarController.getGoogleCalendarEvent
-);
+calendarRoutes.get("/google-events", calendarController.getGoogleCalendarEvent);
 
-calendarRoutes.get(
-  "/local-events",
-  calendarController.getLocalCalendarEvent
-);
+calendarRoutes.get("/local-events", calendarController.getLocalCalendarEvent);
 
 calendarRoutes.post(
   "/new-local-event",

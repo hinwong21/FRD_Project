@@ -2,7 +2,7 @@ import express from "express";
 import { CurrentUserController } from "../controller/currentUserController";
 import { isLoggedInAPI } from "../guard";
 import { CurrentUserService } from "../service/currentUserService";
-import { knex } from "../database/db";
+import { knex } from "../db";
 
 export let userRoutes = express.Router();
 

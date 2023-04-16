@@ -1,5 +1,5 @@
 import express from "express";
-import { knex } from "../database/db";
+import { knex } from "../db";
 import { PeriodController } from "../controller/periodController";
 import { PeriodService } from "../service/periodService";
 import { isLoggedInAPI } from "../guard";

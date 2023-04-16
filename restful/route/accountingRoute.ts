@@ -1,5 +1,5 @@
 import express from "express";
-import { knex } from "../database/db";
+import { knex } from "../db";
 import { AccountingService } from "../service/accountingService";
 import { AccountingController } from "../controller/accountingController";
 import { isLoggedInAPI } from "../guard";
