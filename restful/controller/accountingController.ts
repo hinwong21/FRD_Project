@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { AccountingService } from "../service/accountingService";
 import { errorHandler } from "../error";
-import { v4 as uuidv4 } from "uuid";
+import { getJWT } from "../jwt";
+import "../session";
 
 export class AccountingController {
   constructor(private accountingService: AccountingService) {}
@@ -90,10 +91,10 @@ export class AccountingController {
 
   updateBudget = async (req: Request, res: Response) => {
     try {
-      let id = uuidv4();
-      let userId = req.session.userId;
+      let user_id = getJWT(req).userId;
       let budget = req.body.budget;
-      await this.accountingService.updateBudget(id, userId, budget);
+      await this.accountingService.updateBudget({ user_id, budget });
+      res.json({});
     } catch (error) {
       errorHandler(error, req, res);
     }

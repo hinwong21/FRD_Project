@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { errorHandler } from "../../error";
 import { CalendarService } from "../../service/calendarService";
-import "../../session";
+import { getJWT } from "../../jwt";
 
 export class CalendarController {
   constructor(private calendarService: CalendarService) {
@@ -11,7 +11,7 @@ export class CalendarController {
   getGoogleCalendarEvent = async (req: Request, res: Response) => {
     try {
       let data = await this.calendarService.getGoogleCalendarEvent(
-        req.session.userId as string
+        getJWT(req).userId
       );
       res.json(data);
     } catch (err) {
@@ -21,9 +21,8 @@ export class CalendarController {
 
   getLocalCalendarEvent = async (req: Request, res: Response) => {
     try {
-      let data = await this.calendarService.getLocalCalendarEvent(
-        req.session.userId as string
-      );
+      let userId = getJWT(req).userId;
+      let data = await this.calendarService.getLocalCalendarEvent(userId);
       res.json(data);
     } catch (err) {
       errorHandler(err, req, res);
@@ -37,7 +36,7 @@ export class CalendarController {
 
       await this.calendarService.createLocalCalendarEvent(
         eventData,
-        req.session.userId as string
+        getJWT(req).userId
       );
 
       res.json({ success: true });

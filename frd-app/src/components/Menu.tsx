@@ -30,9 +30,7 @@ import {
 } from "ionicons/icons";
 import "./Menu.css";
 import { signOut } from "../service/firebaseConfig";
-import { removeName } from "../service/LocalStorage/LocalStorage";
-import { useSetRecoilState } from "recoil";
-import { loginState } from "../atoms";
+import { useToken } from "../hooks/useToken";
 
 interface AppPage {
   id: number;
@@ -101,15 +99,10 @@ const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
-  const setIsLogin = useSetRecoilState(loginState);
+  const [token, setToken] = useToken();
   async function handleSignOut() {
     await signOut();
-    await removeName("token");
-    setIsLogin((isLogin) => {
-      let newState = { ...isLogin };
-      newState.isLogin = false;
-      return newState;
-    });
+    setToken("");
   }
   console.log("location.pathname:", location.pathname);
 

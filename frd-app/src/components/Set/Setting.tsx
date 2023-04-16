@@ -5,44 +5,33 @@ import {
   IonToggle,
   IonTitle,
   IonIcon,
-  IonAlert,
   IonButtons,
   IonHeader,
   IonMenuButton,
   IonPage,
   IonToolbar,
   IonContent,
+  useIonAlert,
 } from "@ionic/react";
-import {useState} from "react";
+import { useState } from "react";
 import { calendarNumberOutline } from "ionicons/icons";
-import styles from "./Setting.module.css"; 
+import styles from "./Setting.module.css";
 import { PersonalSetting } from "./PersonalSetting";
+import { useGet } from "../../hooks/useGet";
 
 export const Setting = () => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMsg, setAlertMsg] = useState("");
+  const [presentAlert] = useIonAlert();
 
-  async function getGoogleCalendarEvents() {
-    // let port = env.EXPRESS_SERVER_URL
-    const res = await fetch(
-      "http://localhost:8080/calendar/google-calendar-authorization",
-      {
-        method: "GET",
-      }
-    );
-    const json = await res.json();
-    if (json.success) {
-      setShowAlert(true);
-      setAlertMsg("Successfully imported events from your Google Calendar!");
-    } else {
-      setShowAlert(false);
-      setAlertMsg("Failed! Please try again later!");
-    }
+  const [shouldGet, setShouldGet] = useState(false);
+
+  const [getResult] = useGet(
+    shouldGet ? "/calendar/google-calendar-authorization" : "",
+    { success: false }
+  );
+
+  if (getResult.success) {
+    presentAlert("Successfully imported events from your Google Calendar!");
   }
-
-  const handleAlertDismiss = () => {
-    setShowAlert(false);
-  };
 
   return (
     <>
@@ -68,17 +57,11 @@ export const Setting = () => {
               </IonLabel>
               <IonToggle
                 slot="end"
-                onIonFocus={getGoogleCalendarEvents}
+                checked={shouldGet}
+                onIonChange={(e) => setShouldGet(e.detail.value)}
               ></IonToggle>
             </IonItem>
           </IonList>
-
-          <IonAlert
-            isOpen={showAlert}
-            onDidDismiss={handleAlertDismiss}
-            message={alertMsg}
-            buttons={["OK"]}
-          ></IonAlert>
 
           <PersonalSetting />
         </IonContent>

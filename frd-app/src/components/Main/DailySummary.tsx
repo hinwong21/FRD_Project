@@ -3,35 +3,35 @@ import style from "./Main.module.scss";
 import { MainHeader } from "./MainHeader";
 import { Preferences } from "@capacitor/preferences";
 import { useHistory } from "react-router";
+import { useDailyCheckIn } from "../../hooks/useDailyCheckIn";
 
 export const DailySummary = () => {
+  const [dailyCheckIn, setDailyCheckIn] = useDailyCheckIn();
   useEffect(() => {
-    async function setDailyCheckIn() {
-      const now = new Date();
-      const resetTime = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        6,
-        0,
-        0
-      );
+    const now = new Date();
+    const resetTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      6,
+      0,
+      0
+    );
 
-      if (now > resetTime) {
-        // If the current time is past the reset time, set the reset time to tomorrow
-        resetTime.setDate(resetTime.getDate() + 1);
-      }
-      await Preferences.set({
-        key: "dailyCheckIn",
-        value: JSON.stringify({ check: "Checked In", date: resetTime }),
-      });
+    if (now > resetTime) {
+      // If the current time is past the reset time, set the reset time to tomorrow
+      resetTime.setDate(resetTime.getDate() + 1);
     }
-    setDailyCheckIn();
+
+    setDailyCheckIn({
+      check: "Checked In",
+      date: resetTime.toISOString(),
+    });
   }, []);
 
   const history = useHistory();
   const handleStart = () => {
-     history.push("/");
+    history.push("/");
   };
 
   return (

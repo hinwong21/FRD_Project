@@ -15,36 +15,12 @@ export default function RoutesIsNotLogin() {
   return (
     <IonRouterOutlet id="main">
       <Switch>
-        <Route path="/" exact={true}>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/login" exact={true}>
+        <Route path="/login">
           <MainPage />
         </Route>
-        <Route path="/page/:name" exact={true}>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/Accounting" exact={true}>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/Notepad" exact={true}>
-          <Redirect to="/login" />
-        </Route>
 
-        <Route path="/Health-period" exact={true}>
+        <Route>
           <Redirect to="/login" />
-        </Route>
-        <Route path="/Health-nutrient" exact={true}>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/Health-periodCalendar" exact={true}>
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/Edit" exact={true}>
-          <Edit />
-        </Route>
-        <Route path="*" exact={true}>
-          <div>404 not found</div>
         </Route>
       </Switch>
     </IonRouterOutlet>

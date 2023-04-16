@@ -16,8 +16,8 @@ import { useRef } from "react";
 import { TransactionType } from "./Finance";
 import { Genre, Genres } from "./TransactionModal";
 import { useHistory } from "react-router";
-import { post } from "../../service/api";
 import { useTransactions } from "../../hooks/useTransactions";
+import { useFetch } from "../../hooks/useFetch";
 
 const Calculator: React.FC<{
   isOpen: boolean;
@@ -25,6 +25,7 @@ const Calculator: React.FC<{
   addCalculator: (transaction: TransactionType) => void;
 }> = ({ isOpen, close, addCalculator }) => {
   const modal = useRef<HTMLIonModalElement>(null);
+  const fetch = useFetch();
   const [description, setDescription] = useState("");
   const [result, setResult] = useState("");
   const name: string = "";
@@ -61,8 +62,9 @@ const Calculator: React.FC<{
 
     /* Put data to database */
 
-    await post("/account/addTransaction", newObj);
-    // fetch page to Accounting
+    await fetch("post", "/account/addTransaction", newObj);
+
+    /* fetch page to Accounting */
     history.push("/page/Accounting");
     addCalculator(newObj);
     clearResult();
@@ -130,19 +132,21 @@ const Calculator: React.FC<{
         </IonButtons>
         {/* <IonContent> */}
         <IonList>
-          <IonItem>
-            <IonLabel>Select Genre</IonLabel>
-            <IonSelect
-              onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
-              value={selectedGenre}
-            >
-              {Genres.map((Genre) => (
-                <IonSelectOption key={Genre.id} value={Genre.id}>
-                  {Genre.name}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-          </IonItem>
+          <div>
+            <IonItem color="red">
+              <IonLabel>Select Genre</IonLabel>
+              <IonSelect
+                onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
+                value={selectedGenre}
+              >
+                {Genres.map((Genre) => (
+                  <IonSelectOption key={Genre.id} value={Genre.id}>
+                    {Genre.name}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+          </div>
           {/* <IonItem lines="none">
               <IonLabel>Current value</IonLabel>
               <IonInput

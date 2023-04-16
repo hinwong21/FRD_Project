@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import { v4 as uuidv4 } from "uuid";
 
 export class AccountingService {
   constructor(private knex: Knex) {}
@@ -95,22 +96,24 @@ export class AccountingService {
     }
   };
 
-  updateBudget = async (
-    id: string,
-    userId: string | undefined,
-    budget: number
-  ) => {
-    try {
-      await this.knex("finance").insert({
-        id,
-        budget,
-        user_id: userId,
-      });
-    } catch (error) {
-      throw new Error(
-        `Error occurred while getting Daily transaction in accountingService: ${error.message}`
-      );
-    }
+  updateBudget = async (input: { user_id: string; budget: number }) => {
+    await this.knex.transaction(async (knex) => {
+      let row = await knex("finance")
+        .select("id")
+        .where({ user_id: input.user_id })
+        .first();
+      if (row) {
+        await knex("finance")
+          .where({ id: row.id })
+          .update({ budget: input.budget });
+      } else {
+        await knex("finance").insert({
+          id: uuidv4(),
+          user_id: input.user_id,
+          budget: input.budget,
+        });
+      }
+    });
   };
 
   getBudget = async (userId: string | undefined) => {

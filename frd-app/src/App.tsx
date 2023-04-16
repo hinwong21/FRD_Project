@@ -54,6 +54,8 @@ import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
 import AddNotePopup from "./components/Notes/AddNotePopup";
 import { AccountingSetup } from "./components/Accounting/AccountingSetup";
 import { DietProgramme } from "./components/Health/Nutrient/DietProgramme";
+import { useGet } from "./hooks/useGet";
+import { useToken } from "./hooks/useToken";
 
 // import { Device } from "@capacitor/device";
 setupIonicReact();
@@ -65,47 +67,16 @@ setupIonicReact();
 // };
 // logDeviceInfo();
 const App: React.FC = () => {
-  const setIsLogin = useSetRecoilState(loginState);
-  const getIsLogin = useRecoilValue(loginState);
+  const [token, setToken] = useToken();
 
-  useEffect(() => {
-    async function main() {
-      let token = await getName("token");
+  const [verifyState] = useGet<{ ok: boolean | "loading" }>(
+    token ? "/user/verifyToken" : "",
+    { ok: "loading" as const }
+  );
+  if (verifyState.ok === false) {
+    setToken("");
+  }
 
-      if (token) {
-        let res = await fetch(
-          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/verifyToken`,
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        let json = await res.json();
-
-        if (json.ok) {
-          setIsLogin((isLogin) => {
-            let newState = { ...isLogin };
-            newState.isLogin = true;
-            return newState;
-          });
-        } else {
-          setIsLogin((isLogin) => {
-            let newState = { ...isLogin };
-            newState.isLogin = false;
-            return newState;
-          });
-        }
-      } else {
-        setIsLogin((isLogin) => {
-          let newState = { ...isLogin };
-          newState.isLogin = false;
-          return newState;
-        });
-      }
-    }
-    main();
-  }, [setIsLogin]);
   useEffect(() => {
     const main = async () => {
       await reg_push_notifications_token();
@@ -113,7 +84,7 @@ const App: React.FC = () => {
     };
     main();
   }, []);
-  
+
   const reg_push_notification_listeners = async () => {
     await PushNotifications.addListener("registration", async (token) => {
       console.log("Registration token: ", token.value);
@@ -233,8 +204,7 @@ const App: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonSplitPane>
-        {getIsLogin.isLogin && <RoutesIsLogin />}
-        {!getIsLogin.isLogin && <RoutesIsNotLogin />}
+        {token ? <RoutesIsLogin /> : <RoutesIsNotLogin />}
       </IonReactRouter>
     </IonApp>
   );

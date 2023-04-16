@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { errorHandler } from "../error";
 import "../session";
-import { createJwt } from "../jwt";
 import { User, getUserByUID } from "../firebaseAdmin";
 import { CurrentUserService } from "../service/currentUserService";
+import { encodeJWT, getJWT } from "../jwt";
 
 export class CurrentUserController {
   constructor(private currentUserService: CurrentUserService) {}
 
   verifyToken = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId!;
+      let userId = getJWT(req).userId;
 
       res.json({
         ok: true,
@@ -28,22 +28,20 @@ export class CurrentUserController {
       // must checked userId is valid firebase uid
       let { userId, pushNotificationToken } = req.body;
       let user = await getUserByUID(userId);
-
-      if (!user) {
-        throw new Error("Not exist this userId in Firebase");
+      if (!user.email) {
+        throw new Error("Missing user email");
       }
-      let { uid, displayName, email } = user as {
-        uid: string;
-        displayName: string;
-        email: string;
-      };
-      await this.currentUserService.createUser(
-        uid,
-        displayName,
-        email,
-        pushNotificationToken
-      );
-      let token = createJwt(uid);
+      if (!user.displayName) {
+        throw new Error("Missing displayName");
+      }
+
+      await this.currentUserService.createUser({
+        userId: user.uid,
+        username: user.displayName,
+        email: user.email,
+        pushNotificationToken,
+      });
+      let token = encodeJWT({ userId: user.uid });
       console.log(token);
 
       res.json({
@@ -78,8 +76,8 @@ export class CurrentUserController {
   getUser = async (req: Request, res: Response) => {
     try {
       let userId = req.session.userId;
-      const result = await this.currentUserService.getUser(userId);
-      res.json({ result });
+      const user = await this.currentUserService.getUser(userId);
+      res.json(user);
     } catch (err) {
       errorHandler(err, req, res);
     }

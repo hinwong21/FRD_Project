@@ -9,21 +9,17 @@ admin.initializeApp({
   serviceAccountId: "106079113441621459217.apps.googleusercontent.com",
 });
 
-type UserType = {
-  uid?: string;
-};
-
 export let getUserByUID = async (uid: string) => {
   // console.log(uid)
   let result: UserRecord = await admin.auth().getUser(uid);
   if (result) {
     // See the UserRecord reference doc for the contents of userRecord.
-    let user: UserType = result.toJSON();
-    console.log("Successfully fetched user data: ", user);
+    // let user: UserType = result.toJSON();
+    console.log("Successfully fetched user data: ", result);
 
-    return user;
+    return result;
   } else {
-    throw new Error("Not exist this uid");
+    throw new Error("User not found in Firebase");
   }
 };
 
