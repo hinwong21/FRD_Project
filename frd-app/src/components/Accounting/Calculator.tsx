@@ -14,11 +14,10 @@ import {
 } from "@ionic/react";
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
-import { Genres } from "./TransactionModal";
-
-import { setName, getName } from "../../service/LocalStorage/LocalStorage";
+import { Genre, Genres } from "./TransactionModal";
 import { useHistory } from "react-router";
-
+import { post } from "../../service/api";
+import { useTransactions } from "../../hooks/useTransactions";
 
 const Calculator: React.FC<{
   isOpen: boolean;
@@ -28,10 +27,13 @@ const Calculator: React.FC<{
   const modal = useRef<HTMLIonModalElement>(null);
   const [description, setDescription] = useState("");
   const [result, setResult] = useState("");
+  const name: string = "";
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
   const history = useHistory();
+
+  const [transactions, setTransactions] = useTransactions();
 
   /* Confirm button function */
   async function markCalculator() {
@@ -51,43 +53,20 @@ const Calculator: React.FC<{
       { amount: result },
       { description: description }
     );
-    console.log(newObj, Genres);
-
-    
+    console.log("newObj", newObj);
 
     /* save data to local storage */
-    await setName("amountResult",JSON.stringify({amount:result,description:description}));
+
+    setTransactions([...transactions, newObj]);
 
     /* Put data to database */
 
-    try {
-      let token = await getName("token");
-      let res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(newObj),
-        }
-      );
-      let json = await res.json();
-      console.log(json);
-      if (!res.ok) {
-        // if (!json.ok) {
-        alert(json.errMess);
-      }
-      // fetch page to Accounting
-      history.push("/page/Accounting");
-      addCalculator(newObj);
-      clearResult();
-      close();
-    } catch (error) {
-      console.log(error);
-      alert("error occurred in Calculator.tsx");
-    }
+    await post("/account/addTransaction", newObj);
+    // fetch page to Accounting
+    history.push("/page/Accounting");
+    addCalculator(newObj);
+    clearResult();
+    close();
 
     // /* gen by chatgpt */
     // const transaction: TransactionType = {

@@ -21,7 +21,12 @@
   margin-top: 15px;
 }
 .btn {
+  // position: absolute;
   margin-top: 15px;
   background-color: rgb(167, 182, 201);
   border-radius: 10px;
+  // bottom: 0;
+}
+Ion-Content {
+  overflow: scroll;
 }

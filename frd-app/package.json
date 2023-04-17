@@ -70,6 +70,7 @@
     "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.3.4",
+    "react-use-storage-state": "^1.0.5",
     "reactstrap": "^9.1.6",
     "recoil": "^0.7.7",
     "redux": "^4.2.1",
