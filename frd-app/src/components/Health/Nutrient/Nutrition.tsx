@@ -14,6 +14,8 @@ import {
   IonTitle,
   IonContent,
 } from "@ionic/react";
+import { SelectDietPrgm } from "./SelectDietPrgm";
+import WeeklySummary from "../../Summary/WeeklySummary";
 
 export const Nutrition = () => {
   return (
@@ -33,6 +35,7 @@ export const Nutrition = () => {
         <Provider store={nutritionStore}>
           <Header />
         </Provider>
+        <SelectDietPrgm />
         {/* Water balance */}
         <WaterBalance />
 

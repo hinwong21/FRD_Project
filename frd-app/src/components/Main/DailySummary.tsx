@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect} from "react";
 import style from "./Main.module.scss";
 import { MainHeader } from "./MainHeader";
 import { Preferences } from "@capacitor/preferences";
@@ -26,12 +26,13 @@ export const DailySummary = () => {
         value: JSON.stringify({ check: "Checked In", date: resetTime }),
       });
     }
+
     setDailyCheckIn();
   }, []);
 
   const history = useHistory();
   const handleStart = () => {
-     history.push("/");
+    history.push("/");
   };
 
   return (
@@ -60,7 +61,7 @@ export const DailySummary = () => {
 
       <footer className={style.mainFooter}>
         <div className={style.calenderBtn} onClick={handleStart}>
-          Start a Great Day
+         Enjoy Your Dat!
         </div>
       </footer>
     </div>

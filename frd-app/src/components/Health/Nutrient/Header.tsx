@@ -5,8 +5,8 @@ import { NutritionState } from "../../../redux/Nutrition/store";
 import { HeaderNutrient } from "./HeaderNutrient";
 import { NutrientProgressBar } from "./NutrientProgressBar";
 import style from "./Nutrition.module.scss";
-import { useHistory } from "react-router";
 import { Preferences } from "@capacitor/preferences";
+import { SelectDietPrgm } from "./SelectDietPrgm";
 
 type DailyIntake = {
   caloriesDailyIntake?: number | any;
@@ -27,7 +27,6 @@ const HealthNutrition = () => {
   const intake = useSelector((state: NutritionState) => state);
   const [dietProgramme, setDietProgramme] = useState("");
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     const getDailyIntake = async () => {
@@ -111,10 +110,6 @@ const HealthNutrition = () => {
     getDailyIntake();
   }, [dietProgramme, dispatch]);
 
-  const handleFetchDiet = () => {
-    history.push("/dietProgramme");
-  };
-
   return (
     <>
       <div className={style.nutrientHeader}>
@@ -174,10 +169,6 @@ const HealthNutrition = () => {
             Intake={intake?.fatIntake}
             DailyIntake={dailyIntake?.minFatDailyIntake}
           />
-        </div>
-
-        <div className={style.dietProgrammeSelectBtn} onClick={handleFetchDiet}>
-          Select your weight loss diet programme
         </div>
       </div>
     </>
