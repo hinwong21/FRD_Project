@@ -19,6 +19,8 @@ export const Login = () => {
   const [pushNotificationToken, setPushNotificationToken] =
     usePushNotificationToken();
 
+  const [error, setError] = useState("");
+
   let googleIcon =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327";
 
@@ -31,23 +33,27 @@ export const Login = () => {
   }
 
   async function handleSignIn(signIn: () => Promise<User | null>) {
-    let user = await signIn();
-    if (!user) {
-      setToken("");
-      return;
-    }
+    try {
+      let user = await signIn();
+      if (!user) {
+        setToken("");
+        return;
+      }
 
-    // login success
-    let json = await fetch("post", "/user/getToken", {
-      userId: user.uid,
-      pushNotificationToken,
-    });
+      // login success
+      let json = await fetch("post", "/user/getToken", {
+        userId: user.uid,
+        pushNotificationToken,
+      });
 
-    if (json.ok) {
-      setToken(json.data);
-    } else {
-      await signOut();
-      setToken("");
+      if (json.ok) {
+        setToken(json.data);
+      } else {
+        await signOut();
+        setToken("");
+      }
+    } catch (error) {
+      setError(String(error));
     }
   }
 
@@ -91,6 +97,8 @@ export const Login = () => {
                   />
                   Sign in with Apple
                 </div>
+
+                <p>{error}</p>
               </div>
             </div>
           </div>
