@@ -1,0 +1,160 @@
+# Visualize on https://erd.surge.sh
+# or https://quick-erd.surge.sh
+#
+# Relationship Types
+#  -    - one to one
+#  -<   - one to many
+#  >-   - many to one
+#  >-<  - many to many
+#  -0   - one to zero or one
+#  0-   - zero or one to one
+#  0-0  - zero or one to zero or one
+#  -0<  - one to zero or many
+#  >0-  - zero or many to one
+#
+////////////////////////////////////
+
+
+users
+-----
+height real NULL
+weight real NULL
+age integer NULL
+gender text NULL
+id text unique
+push_notification_token varchar(255) NULL
+username varchar(60)
+email varchar(255) unique
+
+
+memo
+----
+deleted boolean NULL
+id text unique
+content text NULL
+user_id text NULL FK >- users.id
+
+
+google_calendar
+---------------
+id text unique
+content text
+user_id text NULL FK >- users.id
+
+
+nutrition
+---------
+protein real
+calories real
+carbs real
+fat real
+date date
+id text unique
+user_id text NULL FK >- users.id
+
+
+period
+------
+end_at varchar(255) NULL
+upcoming_at varchar(255) NULL
+days varchar(255) NULL
+ovu_start_at varchar(255) NULL
+ovu_end_at varchar(255) NULL
+id text unique
+user_id text NULL FK >- users.id
+start_at varchar(255) NULL
+
+
+period_period_status
+--------------------
+id text unique
+period_id text NULL FK >- period.id
+period_status_id text NULL FK >- period_status.id
+
+
+period_status
+-------------
+id text unique
+type varchar(255) NULL
+content text NULL
+
+
+finance
+-------
+budget real
+id text unique
+user_id text NULL FK >- users.id
+
+
+transaction
+-----------
+amount real
+id integer PK
+user_id text NULL FK >- users.id
+description text NULL
+category enum('Income','Food','Drink','Transport','Entertainment','Bill','Consumption','Medical','Electronic')
+type enum('income','expense')
+
+
+calendar
+--------
+id text unique
+title text
+description text NULL
+user_id text NULL FK >- users.id
+backgroundColor text NULL
+start text NULL
+end text NULL
+
+
+dairy
+-----
+deleted boolean NULL
+user_id text NULL FK >- users.id
+title text NULL
+id text unique
+mood text NULL
+content text NULL
+weather text
+
+
+hashtags
+--------
+id text unique
+name text
+user_id text NULL FK >- users.id
+
+
+todolist
+--------
+deleted boolean NULL
+due_date text NULL
+hashtag text NULL
+email_shared text NULL
+task text NULL
+id text unique
+memo text NULL
+user_id text NULL FK >- users.id
+title text NULL
+
+
+todo_memo
+---------
+id text unique
+memo_id text NULL FK >- memo.id
+todolist_id text NULL FK >- todolist.id
+
+
+todo_hashtag
+------------
+id text unique
+hashtags_id text NULL FK >- hashtags.id
+todolist_id text NULL FK >- todolist.id
+memo_id text NULL FK >- memo.id
+
+
+todo_shared
+-----------
+id text unique
+todolist_id text NULL FK >- todolist.id
+users_id text NULL FK >- users.id
