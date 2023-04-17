@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   IonButtons,
   IonButton,
@@ -8,11 +8,9 @@ import {
   IonTitle,
   IonPage,
   useIonModal,
-  IonMenuButton,
 } from "@ionic/react";
 import { OverlayEventDetail } from "@ionic/core/components";
 import styles from "./PeriodDate.module.scss";
-import Topbox from "./Topbox";
 
 import { useForm } from "react-hook-form";
 import StatusItem from "./StatusItem";
@@ -23,17 +21,17 @@ import {
   sadOutline,
   waterOutline,
 } from "ionicons/icons";
-import Button from "./Button";
+
 import { useHistory } from "react-router";
-import Datebox from "./Datebox";
 
 type OtherStatus = {
   content: string;
 };
 
-export type LevelInfo = {
+export type ItemInfo = {
   type: string;
   lv: number;
+  content?: string;
 };
 
 // const statusInfo: Array<object> = [];
@@ -45,40 +43,79 @@ const ModalPeriod = ({
 }) => {
   const inputRef = useRef<HTMLIonInputElement>(null);
   // Submit Form
+  //For Input other status
   const { register, handleSubmit } = useForm<OtherStatus>();
   const formSubmitBtnRef = useRef<any>(null);
-  const [statusInfo, setStatusInfo] = useState<Array<object>>([]);
+  const [otherInfo, setOtherInfo] = useState<Array<OtherStatus>>([]);
+
+  //For StatusItems
+  const [statusInfo, setStatusInfo] = useState<Array<ItemInfo>>([]);
+  const [item, setItem] = useState<ItemInfo>({
+    type: "",
+    lv: 0,
+  });
+  const [newItem, setNewItem] = useState<ItemInfo>({
+    type: "",
+    lv: 0,
+  });
 
   useEffect(() => {
-    // TODO Insert into the DB here?(use useEffect()) Save the data into the variable
     console.log("Data Object", statusInfo);
   }, [statusInfo]);
 
-  const submitHandler = (data: OtherStatus) => {
-    console.log("dat::", data);
-    const newStatusInfo = [...statusInfo];
+  const submitHandler = (data: OtherStatus /*item:  OtherStatus*/) => {
+    console.log("submitHandler ", data);
+    // const newOtherInfo = [...otherInfo];
+    const newItemInfo = [...statusInfo];
 
-    newStatusInfo.push(data);
-    console.log("newStatusInfo After:", newStatusInfo);
-    setStatusInfo(newStatusInfo);
+    // newOtherInfo.push(data);
+    // console.log("newOtherInfo After:", newOtherInfo);
+    // setOtherInfo(newOtherInfo);
+    newItemInfo.push(item);
+    console.log("newItemInfo After:", newItemInfo);
+    setStatusInfo(newItemInfo);
   };
 
   const submitControl = () => {
     formSubmitBtnRef.current.click();
   };
 
-  const [level, setLevel] = useState<LevelInfo>({
-    type: "",
-    lv: 0,
-  });
+  const handleLevelChange = (newItem: ItemInfo) => {
+    console.log("newLevel:", newItem);
+    console.log("newLevel type:", newItem.type);
+    console.log("item type:", item.type);
+    console.log(item);
 
-  const handleLevelChange = (newLevel: LevelInfo) => {
-    console.log("newLevel:", newLevel);
+    const newLevelInfo = [];
+    if (statusInfo.length === 0) {
+      newLevelInfo.push(newItem);
+      setStatusInfo(newLevelInfo);
+      setItem(newItem);
+      console.log("look ITEM", item);
+    } else if (statusInfo.length > 0) {
+      for (let index = 0; index < statusInfo.length; index++) {
+        if (newItem.type === statusInfo[index].type && newItem.lv !== 0) {
+          statusInfo[index].lv = newItem.lv;
+          console.log("if ", statusInfo);
+        } else {
+          newLevelInfo.push(newItem);
+          setStatusInfo(newLevelInfo);
+        }
+      }
+    }
 
-    setLevel(newLevel);
-    const newLevelInfo = [...statusInfo];
-    newLevelInfo.push(newLevel);
-    setStatusInfo(newLevelInfo);
+    // if (newLevel.type === item.type) {
+    //   console.log("Here");
+
+    //   const newLevelInfo = [...statusInfo];
+    //   const newLevelInfo = [];
+    //   newLevelInfo.push(newLevel);
+    //   setStatusInfo(newLevelInfo);
+    // } else if (newLevel.type !== item.type) {
+    //   const newLevelInfo = [...statusInfo];
+    //   newLevelInfo.push(newLevel);
+    //   setStatusInfo(newLevelInfo);
+    // }
   };
 
   return (
