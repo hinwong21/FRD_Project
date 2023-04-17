@@ -40,7 +40,7 @@ export class CurrentUserService {
   getUser = async (userId: string | undefined) => {
     try {
       let user = await this.knex("users")
-        .select("*")
+        .select("*") // age,
         .where({ id: userId })
         .first();
       if (!user) {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Provider } from "react-redux";
 import { nutritionStore } from "../../../redux/Nutrition/store";
 import Header from "./Header";
@@ -14,6 +13,7 @@ import {
   IonTitle,
   IonContent,
 } from "@ionic/react";
+import { SelectDietPrgm } from "./SelectDietPrgm";
 
 export const Nutrition = () => {
   return (
@@ -33,6 +33,7 @@ export const Nutrition = () => {
         <Provider store={nutritionStore}>
           <Header />
         </Provider>
+        <SelectDietPrgm />
         {/* Water balance */}
         <WaterBalance />
 

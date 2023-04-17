@@ -2,6 +2,40 @@
   background-color: #a8bab4;
 }
 
+// Nutrition Page Notice
+.nutritionNoticeContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.nutritionNotice {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  background-color: #c17b85;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.nutritionNoticePeriod {
+  width: 10px;
+  background-color: #e4c5c5;
+  margin-right: 5px;
+}
+
+.nutritionNoticeContent {
+  margin: 5px;
+  font-size: 12px;
+  color: white;
+}
+
+.nutritionNoticeContent header {
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
 .nutrientHeader {
   height: 140px;
   display: flex;
@@ -60,6 +94,12 @@
   flex-direction: row;
   justify-content: space-between;
   width: 300px;
+}
+
+.dietProgrammeSelectContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }
 
 .dietProgrammeSelectBtn {

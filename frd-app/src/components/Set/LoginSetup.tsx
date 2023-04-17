@@ -3,7 +3,15 @@ import styles from "./LoginSetup.module.css";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
 import { useHistory } from "react-router";
-import { IonSelect, IonSelectOption } from "@ionic/react";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 
 export const LoginSetup = () => {
   const [gender, setGender] = useState("");
@@ -63,70 +71,77 @@ export const LoginSetup = () => {
   };
 
   return (
-    <>
-      <div className={styles.loginSettingContainer}>
-        <header className={styles.loginSettingHeader}>
-          Personal Information Setup
-        </header>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Account Setup</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <div className={styles.loginSettingContainer}>
+          <header className={styles.loginSettingHeader}>
+            Personal Information Setup
+          </header>
 
-        <p className={styles.loginSettingNotice}>
-          Fill out your information for your new account. You can always change
-          your information later.
-        </p>
+          <p className={styles.loginSettingNotice}>
+            Fill out your information for your new account. You can always
+            change your information later.
+          </p>
 
-        <div className={styles.loginSettingItem}>
-          <IonSelect
-            className={styles.loginSettingItemSelect}
-            value={gender}
-            onIonChange={(e) =>
-              setGender((e.target as HTMLIonSelectElement).value)
-            }
-          >
-            <IonSelectOption value="">
-              Please choose your gender
-            </IonSelectOption>
-            <IonSelectOption value="male">Male</IonSelectOption>
-            <IonSelectOption value="female">Female</IonSelectOption>
-            <IonSelectOption value="NA">
-              Not convenient to answer
-            </IonSelectOption>
-          </IonSelect>
+          <div className={styles.loginSettingItem}>
+            <IonSelect
+              className={styles.loginSettingItemSelect}
+              value={gender}
+              onIonChange={(e) =>
+                setGender((e.target as HTMLIonSelectElement).value)
+              }
+            >
+              <IonSelectOption value="">
+                Please choose your gender
+              </IonSelectOption>
+              <IonSelectOption value="male">Male</IonSelectOption>
+              <IonSelectOption value="female">Female</IonSelectOption>
+              <IonSelectOption value="NA">
+                Not convenient to answer
+              </IonSelectOption>
+            </IonSelect>
+          </div>
+
+          <div className={styles.loginSettingItem}>
+            <input
+              className={styles.loginSettingItemInput}
+              type="number"
+              placeholder="Age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            ></input>
+          </div>
+
+          <div className={styles.loginSettingItem}>
+            <input
+              className={styles.loginSettingItemInput}
+              type="number"
+              placeholder="Height (cm)"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+            ></input>
+          </div>
+
+          <div className={styles.loginSettingItem}>
+            <input
+              className={styles.loginSettingItemInput}
+              type="number"
+              placeholder="Weight (kg)"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+            ></input>
+          </div>
+
+          <div className={styles.loginSettingFinish} onClick={handleSubmit}>
+            finish
+          </div>
         </div>
-
-        <div className={styles.loginSettingItem}>
-          <input
-            className={styles.loginSettingItemInput}
-            type="number"
-            placeholder="Age"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-          ></input>
-        </div>
-
-        <div className={styles.loginSettingItem}>
-          <input
-            className={styles.loginSettingItemInput}
-            type="number"
-            placeholder="Height (cm)"
-            value={height}
-            onChange={(e) => setHeight(e.target.value)}
-          ></input>
-        </div>
-
-        <div className={styles.loginSettingItem}>
-          <input
-            className={styles.loginSettingItemInput}
-            type="number"
-            placeholder="Weight (kg)"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-          ></input>
-        </div>
-
-        <div className={styles.loginSettingFinish} onClick={handleSubmit}>
-          finish
-        </div>
-      </div>
-    </>
+      </IonContent>
+    </IonPage>
   );
 };

@@ -1,34 +1,9 @@
 import React, { useEffect } from "react";
 import style from "./Main.module.scss";
 import { MainHeader } from "./MainHeader";
-import { Preferences } from "@capacitor/preferences";
 import { useHistory } from "react-router";
-import { useDailyCheckIn } from "../../hooks/useDailyCheckIn";
 
 export const DailySummary = () => {
-  const [dailyCheckIn, setDailyCheckIn] = useDailyCheckIn();
-  useEffect(() => {
-    const now = new Date();
-    const resetTime = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      6,
-      0,
-      0
-    );
-
-    if (now > resetTime) {
-      // If the current time is past the reset time, set the reset time to tomorrow
-      resetTime.setDate(resetTime.getDate() + 1);
-    }
-
-    setDailyCheckIn({
-      check: "Checked In",
-      date: resetTime.toISOString(),
-    });
-  }, []);
-
   const history = useHistory();
   const handleStart = () => {
     history.push("/");
@@ -60,7 +35,7 @@ export const DailySummary = () => {
 
       <footer className={style.mainFooter}>
         <div className={style.calenderBtn} onClick={handleStart}>
-          Start a Great Day
+          Enjoy Your Day!
         </div>
       </footer>
     </div>
