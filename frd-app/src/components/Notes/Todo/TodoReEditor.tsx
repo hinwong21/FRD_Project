@@ -116,16 +116,18 @@ import {
   
     useEffect(()=>{
       getHashtags();
-      // console.log(props.content)
       setElements(props.content.task)
       setTodoListTitle(props.content.title)
       setSelectedDate(props.content.due_date)
       setHashtagSelected(props.content.hashtag)
       setSharedEmailArr(props.content.email_shared)
       setMemoIdRelated(props.content.memo)
-    },[])
-  
-  
+    },[props.content.memo])
+
+    useEffect(()=>{
+      setMemoIdRelated(props.content.memo)
+    },[props.content.memo])
+      
 
     const handleAddNewItem = () => {
       const uuid = uuidv4();
@@ -202,7 +204,6 @@ import {
     const handleMemoTodoLinkCallback = (childData: any) => {
       setMemoIdRelated(childData.memoTodoLink);
       setMemosToDeleteArr(childData.memosToDelete);
-      // console.log(childData.memoTodoLink);
     };
   
     const handelHashtagSelect = (hashtag: string) => {
@@ -310,7 +311,7 @@ import {
   
         <IonPopover  isOpen={memoOpen} keepContentsMounted={true}>
           <div className={styles.memoWrapperTodo}>
-            <MemosTodo handleMemoTodoLinkCallback={handleMemoTodoLinkCallback} />
+            <MemosTodo handleMemoTodoLinkCallback={handleMemoTodoLinkCallback} content={memoIdRelated}/>
           </div>
         </IonPopover>
   
@@ -323,6 +324,7 @@ import {
           <IonDatetime
             id="datetime"
             presentation="date"
+            value={selectedDate}
             onIonChange={(e) => {
               handleDateChange(e);
             }}
@@ -483,11 +485,13 @@ import {
   
   interface handleMemoTodoLinkProps {
     handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[], memosToDelete: string[] }) => void;
+    content:string[]
   }
   
   export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
-    handleMemoTodoLinkCallback,
+    handleMemoTodoLinkCallback, content
   }) => {
+
     type MemoType = {
       id: string;
       content: string;
@@ -498,7 +502,7 @@ import {
     };
   
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
-    const [memoTodoLink, setMemoTodoLink] = useState([] as string[]);
+    const [memoTodoLink, setMemoTodoLink] = useState(content);
     const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
     const [memosToDelete, setMemosToDelete] = useState([] as string[]);
   
@@ -559,19 +563,31 @@ import {
 
     useEffect(()=>{
       setPreviewArr(createPreview())
+      setMemoTodoLink(content)
     },[memoContent])
-  
+
+
+    //for fixing the useState delay problem
+    //coloring the selected memo for todolist
+    useEffect(()=>{
+      console.log("the state has changed.", memoTodoLink)
+    },[memoTodoLink])
+
     
+  
     useEffect(() => {
       handleMemoTodoLinkCallback({
         memoTodoLink,
         memosToDelete
       });
-    }, [memoTodoLink, memosToDelete]);
+      // console.log(memoTodoLink)
+    }, [memoTodoLink, memosToDelete, memoContent]);
+
+
 
     const handleMemoSelection = (id: string) => {
       const memoLinkContainsId = memoTodoLink.some((memoId) => memoId === id);
-    
+      console.log(memoTodoLink)
       if (memoLinkContainsId) {
         const updatedMemoTodoLink = memoTodoLink.filter((memoId) => memoId !== id);
         setMemoTodoLink(updatedMemoTodoLink);

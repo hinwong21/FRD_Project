@@ -18,7 +18,7 @@ export class CalendarService {
   getLocalCalendarEvent = async (userId: string) => {
     let data = await this.knex("calendar").select("*").where("user_id", userId);
 
-    console.log(data);
+    console.log("calendarService",data);
 
     return data;
   };

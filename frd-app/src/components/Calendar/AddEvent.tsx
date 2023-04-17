@@ -18,6 +18,7 @@ import {
   IonList,
   IonAlert,
   IonToast,
+  IonToggle,
 } from "@ionic/react";
 import { useState} from "react";
 //   import { useParams } from "react-router";
@@ -27,6 +28,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./Calendar.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
+import { getName } from "../../service/LocalStorage/LocalStorage";
+import { Preferences } from "@capacitor/preferences";
 
 const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
 
@@ -35,24 +38,47 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
 
   //add new event form data
   const [title, setTitle] = useState("");
-  const [startDateTime, setStartDateTime] = useState("");
-  const [endDateTime, setEndDateTime] = useState("");
+  const [startDateTime, setStartDateTime] = useState(JSON.stringify(new Date()));
+  const [endDateTime, setEndDateTime] = useState(JSON.stringify(new Date()));
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("Hong Kong");
   const [color, setColor] = useState("blue");
-
+  const [dateTimePicker, setDateTimePicker] = useState("date-time")
+  const [ fullDayMode, setFullDayMode] = useState(false)
 
 
   async function handleSubmit () {
     // event.preventDefault();
-
     onDismiss("", "confirm")
 
-    let id = uuidv4()
+    let id = uuidv4();
 
+    console.log("add event",startDateTime, endDateTime)
+
+    //update local storage
+    const key = "calendar";
+    const data = {
+      id: id.slice(1,-1),
+      title:title.slice(1,-1),
+      description:description.slice(1,-1),
+      start: startDateTime.slice(1,11)+ ' '+startDateTime.slice(12,17),
+      end: endDateTime.slice(1,11)+' '+endDateTime.slice(12,17),
+      backgroundColor:color
+    }
+    const existingValue = await Preferences.get({ key });
+    const existingData = existingValue.value
+      ? JSON.parse(existingValue.value)
+      : [];
+    const value = JSON.stringify([...existingData, data]);
+    await Preferences.set({ key, value });
+
+    //update db
+    let token = await getName("token")
     const res= await fetch("http://localhost:8090/calendar/new-local-event",{
       method: "POST",
-      headers:{"Content-type":"application/json"},
+      headers:{
+        Authorization:"Bearer " + token,
+        "Content-type":"application/json"},
       body:JSON.stringify({
         id: id.slice(1,-1),
         title:title.slice(1,-1),
@@ -72,6 +98,16 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
       setAlertMsgNewEvent("Something went wrong! Please try again later!")
     }
   }
+
+  const setFullDay = ()=>{
+    if (!fullDayMode){
+      setFullDayMode(true)
+    }else{
+      setFullDayMode(false)
+    }
+  }
+
+ 
 
   return (
     <>
@@ -103,12 +139,21 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
               <IonInput type="text" onIonChange={(e)=>setTitle(JSON.stringify(e.target.value))} placeholder="Event name" />
             </IonItem>
             <IonItem>
-              <IonLabel position="stacked">Event Start</IonLabel>
-              <IonDatetimeButton
-                datetime="datetime1"
+              <IonLabel>All day</IonLabel>
+            <IonToggle
+                slot="end"
+                onIonChange={setFullDay}
+              ></IonToggle>
+              </IonItem>
+
+              {!fullDayMode &&(
+              <div>
+              <IonItem>
+               <IonLabel position="stacked">Event Start</IonLabel>
+              <IonDatetimeButton datetime="datetime1"
               ></IonDatetimeButton>
               <IonModal keepContentsMounted={true}>
-                <IonDatetime id="datetime1"
+                <IonDatetime id="datetime1" presentation="date-time"
                 onIonChange={(e)=>setStartDateTime(JSON.stringify(e.target.value))}></IonDatetime>
               </IonModal>
             </IonItem>
@@ -118,23 +163,40 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
                 datetime="datetime2"
               ></IonDatetimeButton>
               <IonModal keepContentsMounted={true}>
-                <IonDatetime id="datetime2"
+                <IonDatetime id="datetime2" presentation="date-time"
                 onIonChange={(e)=>setEndDateTime(JSON.stringify(e.target.value))}></IonDatetime>
               </IonModal>
             </IonItem>
+            </div>
+           ) }
+
+            {fullDayMode &&(
+              <div>
+              <IonItem>
+               <IonLabel position="stacked">Event Start</IonLabel>
+              <IonDatetimeButton datetime="datetime3"
+              ></IonDatetimeButton>
+              <IonModal keepContentsMounted={true}>
+                <IonDatetime id="datetime3" presentation="date"
+                onIonChange={(e)=>setStartDateTime(JSON.stringify(e.target.value))}></IonDatetime>
+              </IonModal>
+            </IonItem>
+            <IonItem>
+              <IonLabel position="stacked">Event End</IonLabel>
+              <IonDatetimeButton
+                datetime="datetime4"
+              ></IonDatetimeButton>
+              <IonModal keepContentsMounted={true}>
+                <IonDatetime id="datetime4" presentation="date"
+                onIonChange={(e)=>setEndDateTime(JSON.stringify(e.target.value))}></IonDatetime>
+              </IonModal>
+            </IonItem>
+            </div>
+            )}
 
             <IonItem>
               <IonLabel position="stacked">Description</IonLabel>
               <IonInput placeholder="About the event" onIonChange={(e)=>setDescription(JSON.stringify(e.target.value))}/>
-            </IonItem>
-
-            <IonItem>
-              <IonLabel position="stacked">Location</IonLabel>
-              <IonInput
-                 value={location}
-                placeholder="Where's the event location? Google map api?"
-                onIonChange={(e)=>setLocation(JSON.stringify(e.target.value))}
-              />
             </IonItem>
 
             <IonItem>
@@ -155,12 +217,6 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
               </IonSelect>
             </IonItem>
 
-            <IonItem>
-              <IonLabel position="stacked">Link to</IonLabel>
-              <IonInput 
-                placeholder="Link to specific notes/todo list--auto complete input???"
-              />
-            </IonItem>
           </form>
         </IonContent>
       </IonPage>

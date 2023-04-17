@@ -4,6 +4,7 @@ import { CalendarOauthController } from "../controller/Calendar/GoogleCalendarOA
 import { CalendarOauthService } from "../service/calendarOauthService";
 import { CalendarController } from "../controller/Calendar/calendarController";
 import { CalendarService } from "../service/calendarService";
+import { isLoggedInAPI } from "../guard";
 
 export let calendarRoutes = express.Router();
 
@@ -14,21 +15,21 @@ let calendarService = new CalendarService(knex);
 let calendarController = new CalendarController(calendarService);
 
 calendarRoutes.get(
-  "/google-calendar-authorization",
+  "/google-calendar-authorization", isLoggedInAPI,
   calendarOauthController.calendarAuthorization
 );
 
 calendarRoutes.get(
-  "/google-events",
+  "/google-events",isLoggedInAPI,
   calendarController.getGoogleCalendarEvent
 );
 
 calendarRoutes.get(
-  "/local-events",
+  "/local-events",isLoggedInAPI,
   calendarController.getLocalCalendarEvent
 );
 
 calendarRoutes.post(
-  "/new-local-event",
+  "/new-local-event",isLoggedInAPI,
   calendarController.createLocalCalendarEvent
 );

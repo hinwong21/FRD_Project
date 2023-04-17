@@ -73,7 +73,7 @@ export const Calendar: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent id="999" fullscreen>
+      <IonContent fullscreen>
         {loggedIn === "false" ? (
           <LoginSetup />
         ) : loggedIn === "true" && dailyCheckIn === "false" ? (
@@ -92,8 +92,6 @@ export const Calendar: React.FC = () => {
             <div className={styles.calendarWrapper}>
               <Calendar_zh />
             </div>
-            {/* Fetch to the page that name equal to url */}
-            {/* {fetchPage} */}
           </>
         )}
       </IonContent>

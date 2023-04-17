@@ -5,12 +5,23 @@ import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 import FullCalendar from "@fullcalendar/react";
-//change language to zh-tw // import locale from '@fullcalendar/core/locales/zh-tw';
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+import {
+  isSameDay,
+  parseISO,
+  isWithinInterval,
+  differenceInDays,
+  isAfter,
+  isBefore,
+} from "date-fns";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
+import { v4 as uuidv4 } from "uuid";
+import { isToday } from "date-fns";
+import moment from "moment-timezone";
+import { DateClickArg } from "@fullcalendar/interaction";
 import { AddEvent } from "./AddEvent";
 import {
   IonContent,
@@ -26,72 +37,140 @@ import {
   IonHeader,
   IonItemDivider,
   IonItemGroup,
+  IonPopover,
 } from "@ionic/react";
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EventInput } from "@fullcalendar/core";
+import { EventApi, EventInput } from "@fullcalendar/core";
+import { getName } from "../../service/LocalStorage/LocalStorage";
+import { Preferences } from "@capacitor/preferences";
+import { Link } from "react-router-dom";
+import Header from "../Health/Nutrient/Header";
+import { nutritionStore } from "../../redux/Nutrition/store";
+import { Provider } from "react-redux";
 
 export const Calendar_zh = () => {
   const [modalState, setModalState] = useState(false);
   const [modalDate, setModalDate] = useState("");
   const [modalContent, setModalContent] = useState("");
-  const [googleCalendarEvent, setGoogleCalendarEvent] = useState([{}]);
-  const [localCalendarEvent, setLocalCalendarEvent] = useState([{}]);
-
-  const eventList = [
-    {
-      title: "Piano Lesson",
-      start: "2023-03-20 12:30",
-      end: "2023-03-21 16:30",
-      extendedProps: { description: "Pay lesson fee" },
-      backgroundColor: "blue",
-      textColor: "white",
-    },
-    {
-      title: "Tecky Group Project Discussion",
-      start: "2023-03-20 10:30",
-      extendedProps: { description: "Brain Storm-- Karaoke App" },
-      end: "2023-03-21 12:30",
-      backgroundColor: "red",
-      textColor: "white",
-    },
-    {
-      title: "Revision Time",
-      start: "2023-03-24 09:30",
-      end: "2023-03-27 07:30",
-      extendedProps: { description: "I can do it!" },
-      backgroundColor: "brown",
-      textColor: "white",
-      image_url:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png",
-    },
-  ];
-
-  const googleCalendarEventArr: {}[] = [];
+  const [googleCalendarEvent, setGoogleCalendarEvent] = useState([] as {}[]);
+  const [localCalendarEvent, setLocalCalendarEvent] = useState([] as {}[]);
+  const [todoList, setTodoList] = useState([] as {}[]);
+  const [diary, setDiary] = useState([] as {}[]);
+  const [period, setPeriod] = useState([] as {}[]);
+  const [periodList, setPeriodList] = useState([] as {}[]);
+  const [ovuList, setOvuList] = useState([] as {}[]);
 
   useEffect(() => {
     getGoogleCalendarEvents();
     getLocalCalendarEvents();
+    getTodoList();
+    getDiary();
+    getPeriod();
+    // let key = "calendar"
+    // async function deleteKey(key: string) {
+    //   await Preferences.remove({ key});
+    //   console.log(`Key '${key}' deleted from preferences`);
+    // }
+    // deleteKey(key)
   }, []);
 
+  useEffect(() => {
+    configPeriodList();
+    configOvuList();
+  }, [period]);
+
   async function getGoogleCalendarEvents() {
-    const events = await fetch("http://localhost:8090/calendar/google-events", {
-      method: "GET",
-    });
-    const events_json = await events.json();
-    const events_json2 = events_json[0].content.replace(/\\/g, "");
-    const events_json3 = JSON.parse(events_json2);
-    setGoogleCalendarEvent(events_json3);
+    const getGoogleCalendarLS = async () => {
+      const { value } = await Preferences.get({ key: "google_calendar" });
+      // console.log(value)
+      if (value !== null) {
+        setGoogleCalendarEvent(JSON.parse(value));
+      }
+    };
+    getGoogleCalendarLS();
   }
 
   async function getLocalCalendarEvents() {
-    const events = await fetch("http://localhost:8090/calendar/local-events", {
-      method: "GET",
-    });
-    const events_json = await events.json();
-    console.log(events_json);
-    setLocalCalendarEvent(events_json);
+    const getLocalEventLS = async () => {
+      const { value } = await Preferences.get({ key: "calendar" });
+      console.log(value);
+      if (value !== null) {
+        setLocalCalendarEvent(JSON.parse(value));
+      }
+    };
+    getLocalEventLS();
+  }
+
+  async function getTodoList() {
+    const getTodoListLS = async () => {
+      const { value } = await Preferences.get({ key: "todolist" });
+      // console.log(value)
+      if (value !== null) {
+        setTodoList(JSON.parse(value));
+      }
+    };
+    getTodoListLS();
+  }
+
+  async function getDiary() {
+    const getDiaryLS = async () => {
+      const { value } = await Preferences.get({ key: "diary" });
+      // console.log(value)
+      if (value !== null) {
+        setDiary(JSON.parse(value));
+      }
+    };
+    getDiaryLS();
+  }
+
+  const getPeriodLS = async () => {
+    const { value } = await Preferences.get({ key: "period" });
+    // console.log(value)
+    if (value !== null) {
+      const periodData = JSON.parse(value);
+      setPeriod(periodData);
+      console.log(1, period);
+    }
+  };
+  async function getPeriod() {
+    await getPeriodLS();
+  }
+
+  function configPeriodList() {
+    console.log("period", period);
+    // console.log("periodList", periodList);
+    period.forEach((item: any, index) =>
+      setPeriodList([
+        ...periodList,
+        {
+          title: "🩸Peiord",
+          start: item.start_at,
+          end: item.end_at,
+          extendedProps: { description: "Upcoming at " + item.upcoming_at },
+          backgroundColor: "pink",
+          textColor: "white",
+        },
+      ])
+    );
+    console.log("periodList", periodList);
+  }
+
+  function configOvuList() {
+    period.forEach((item: any, index) =>
+      setOvuList([
+        ...periodList,
+        {
+          title: "🌸Ovulation Period",
+          start: item.ovu_start_at,
+          end: item.ovu_end_at,
+          extendedProps: { description: "Ovulation Period" },
+          backgroundColor: "#4d86d2",
+          textColor: "white",
+        },
+      ])
+    );
   }
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -100,9 +179,80 @@ export const Calendar_zh = () => {
     setModalState(false);
   }
 
+  // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [clickedEventList, setClickedEventList] = useState([] as {}[]);
+  const [clickedTodoList, setClickedTodoList] = useState([] as {}[]);
+  const [clickedDiary, setClickedDiary] = useState([] as {}[]);
+  const [clickedPeriod, setClickedPeriod] = useState([] as {}[]);
+  const [clickedOvu, setClickedOvu] = useState([] as {}[]);
+  const [publicHoliday, setPublicHoliday] = useState<EventApi[]>([]);
 
+  const handleDateClick = (arg: DateClickArg) => {
+    const clickedDate = arg.date;
+    const clickedEvents = localCalendarEvent.filter(
+      (event: any) =>
+        isSameDay(parseISO(event.start as string), clickedDate) ||
+        isSameDay(parseISO(event.end as string), clickedDate) ||
+        (isAfter(clickedDate, parseISO(event.start as string)) &&
+          isBefore(clickedDate, parseISO(event.end as string)))
+    );
 
+    const clickedGoogleEvents = googleCalendarEvent.filter(
+      (event: any) =>
+        isSameDay(parseISO(event.start as string), clickedDate) ||
+        isSameDay(parseISO(event.end as string), clickedDate) ||
+        // isWithinInterval(clickedDate,{ start: new Date(event.start as string), end: new Date(event.end as string) })||
+        (isAfter(clickedDate, parseISO(event.start as string)) &&
+          isBefore(clickedDate, parseISO(event.end as string)))
+    );
+    const clickedTodoList = todoList.filter((todo: any) =>
+      isSameDay(parseISO(todo.due_date as string), clickedDate)
+    );
+    const clickedPeriod = periodList.filter((period: any) =>
+      isWithinInterval(clickedDate, {
+        start: parseISO(period.start as string),
+        end: parseISO(period.end as string),
+      })
+    );
+    const clickedOvu = ovuList.filter((period: any) =>
+      isWithinInterval(clickedDate, {
+        start: parseISO(period.start as string),
+        end: parseISO(period.end as string),
+      })
+    );
 
+    const calendarApi = arg.view.calendar;
+    const calendarEvents = calendarApi.getEvents();
+    console.log(calendarEvents[0].start);
+    const publicHolidays = calendarEvents.filter(
+      (event: any) =>
+        event.start.toString().slice(0, 15) ===
+          clickedDate.toString().slice(0, 15) &&
+        event.extendedProps.description === "Public holiday"
+    );
+    // console.log(publicHolidays)
+
+    setClickedEventList([...clickedEvents, ...clickedGoogleEvents]);
+    setClickedTodoList(clickedTodoList);
+    setClickedDiary(clickedDiary);
+    setClickedPeriod(clickedPeriod);
+    setClickedOvu(clickedOvu);
+    setPublicHoliday(publicHolidays);
+    setModalState(true);
+    setModalDate(clickedDate.toString().slice(0, 15));
+    setModalContent("ABC");
+  };
+
+  const handleEventDidMount = (info: any) => {
+    return new bootstrap.Popover(info.el, {
+      title: info.event.title,
+      placement: "auto",
+      trigger: "hover",
+      sanitize: false,
+      customClass: "popoverStyle",
+      html: true,
+    });
+  };
 
   return (
     <>
@@ -138,115 +288,177 @@ export const Calendar_zh = () => {
             },
             localCalendarEvent,
             googleCalendarEvent,
-            eventList,
+            periodList,
+            ovuList,
           ]}
-          eventDidMount={(info:any) => {
-            return new bootstrap.Popover(info.el, {
-              title: info.event.title,
-              placement: "auto",
-              trigger: "hover",
-              customClass: "popoverStyle",
-              content: info.event.extendedProps.description,
-              html: true,
-            });
-          }}
-          eventClick={(event:any) => {
+          eventDidMount={handleEventDidMount}
+          eventClick={(event: any) => {
             // stop from redirecting to Google Calendar onclick
             event.jsEvent.preventDefault();
           }}
-          dateClick={async (info:any) => {
-            // const res = await fetch ("/",{
-            //   method: "POST",
-            //   headers: {"Content-type": "application/json"},
-            //   body: JSON.stringify(info.dateStr)
-            // })
-            // const json = await res.json();
-            // console.log(json);
-            
-            // console.log(info);
-            setModalState(true);
-            setModalDate(info.dateStr);
-            setModalContent("ABC");
-          }}
+          dateClick={handleDateClick}
         />
       </div>
 
       <AddEvent />
 
+
       <IonModal id="example-modal" ref={modal} isOpen={modalState}>
-        <IonContent className={styles.modalContentStyle}>
+        <IonContent>
           <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start"></IonButtons>
-            <IonTitle>{modalDate}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton color="light" onClick={() => dismiss()}>
-                Close
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
+            <IonToolbar>
+              <IonButtons slot="start"></IonButtons>
+              <IonTitle>{modalDate}</IonTitle>
+              <IonButtons slot="end">
+                <IonButton color="light" onClick={() => dismiss()}>
+                  Close
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
           </IonHeader>
 
-          <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Events</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-    </IonItemGroup>
+          <div className={styles.contentContainer}>
+            <div className={styles.modalContentStyle}>
+              <IonItemGroup>
+                <IonItemDivider>
+                  <IonLabel>📢 Notice</IonLabel>
+                </IonItemDivider>
+              </IonItemGroup>
 
-    <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Todo List</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-    </IonItemGroup>
+              <IonItemGroup>
+                <IonItemDivider>
+                  <IonLabel>📝 Public Holiday</IonLabel>
+                </IonItemDivider>
+                {publicHoliday.length < 1 ? (
+                  <div>No Public Holiday.</div>
+                ) : (
+                  publicHoliday.map((holiday: any, index) => (
+                    <div key={uuidv4()}>{holiday.title}</div>
+                  ))
+                )}
+              </IonItemGroup>
 
-    <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Diary</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-    </IonItemGroup>
+              <IonItemGroup>
+                <IonItemDivider>
+                  <IonLabel className={styles.dayViewLabel}>📅 Events</IonLabel>
+                </IonItemDivider>
 
-    <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Period</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-            <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
-    </IonItemGroup>
+                {clickedEventList.length < 1 ? (
+                  <div>This day has no scheduled events.</div>
+                ) : (
+                  clickedEventList.map((event: any, index: any) => (
+                    <Link
+                      key={uuidv4()}
+                      to={{
+                        pathname: "./ModifyEvent",
+                        state: { data: event, id: event.id },
+                      }}
+                    >
+                      <div className={styles.calendarEventDayViewWrapper}>
+                        <div>{event.title}</div>
+                        <div>{event.description}</div>
+                        <div>{event.start}</div>
+                      </div>
+                    </Link>
+                  ))
+                )}
+              </IonItemGroup>
 
+              <IonItemGroup>
+                <IonItemDivider>
+                  <IonLabel>📝 Todo List</IonLabel>
+                </IonItemDivider>
+                {clickedTodoList.length < 1 ? (
+                  <div>No Todo due on this day.</div>
+                ) : (
+                  clickedTodoList.map((todo: any, index) => (
+                    <div key={uuidv4()}>
+                      <Link
+                        key={index}
+                        to={{
+                          pathname: "./EditTodo",
+                          state: { data: todo, id: todo.id },
+                        }}
+                        className={styles.todoListWrapper}
+                      >
+                        <div>{todo.title}</div>
+                      </Link>
+                    </div>
+                  ))
+                )}
+              </IonItemGroup>
+              {clickedPeriod.length < 1 ? (
+                <div></div>
+              ) : (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel>🩸 Period</IonLabel>
+                  </IonItemDivider>
+                  {clickedPeriod.map((period: any, index) => (
+                    <div key={uuidv4()}>
+                      <div>
+                        {"Day " +
+                          Math.min(
+                            Math.max(
+                              differenceInDays(
+                                parseISO(modalDate as string),
+                                parseISO(period.start as string)
+                              ) + 1,
+                              1
+                            ),
+                            differenceInDays(
+                              parseISO(period.end as string),
+                              parseISO(period.start as string)
+                            ) + 1
+                          )}
+                      </div>
+                    </div>
+                  ))}
+                </IonItemGroup>
+              )}
+              {clickedOvu.length < 1 ? (
+                <div></div>
+              ) : (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel>🌸 Ovulation Period</IonLabel>
+                  </IonItemDivider>
+                  {clickedOvu.map((period: any, index) => (
+                    <div key={uuidv4()}>
+                      {"Day " +
+                        Math.min(
+                          Math.max(
+                            differenceInDays(
+                              parseISO(modalDate as string),
+                              parseISO(period.start as string)
+                            ) + 1,
+                            1
+                          ),
+                          differenceInDays(
+                            parseISO(period.end as string),
+                            parseISO(period.start as string)
+                          ) + 1
+                        )}
+                    </div>
+                  ))}
+                </IonItemGroup>
+              )}
+
+              {isToday(new Date(modalDate)) && (
+                <div>
+                  <IonItemGroup>
+                    <IonItemDivider>
+                      <IonLabel>📢 Health</IonLabel>
+                    </IonItemDivider>
+                  </IonItemGroup>
+
+                  <Provider store={nutritionStore}>
+                    <Header />
+                  </Provider>
+                </div>
+              )}
+            </div>
+          </div>
         </IonContent>
       </IonModal>
     </>
