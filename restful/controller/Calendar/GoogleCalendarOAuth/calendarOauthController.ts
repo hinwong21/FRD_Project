@@ -1,7 +1,5 @@
 import { errorHandler } from "../../../error";
 const fs = require("fs").promises;
-import path from "path";
-import process from "process";
 import { Response, Request } from "express";
 import { authenticate } from "@google-cloud/local-auth";
 import { OAuth2Client } from "google-auth-library";
@@ -16,7 +14,7 @@ export class CalendarOauthController {
 
   calendarAuthorization = async (req: Request, res: Response) => {
     const SCOPES = ["https://www.googleapis.com/auth/calendar"];
-    const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
+    const CREDENTIALS_PATH = "credentials.json";
     try {
       async function loadCredentialInSession(): Promise<
         OAuth2Client | null | any
@@ -92,13 +90,13 @@ export class CalendarOauthController {
             title: event.summary,
             start: event.start.dateTime
               ? event.start.dateTime.slice(0, 10) +
-              " " +
-              event.start.dateTime.slice(11, 16)
+                " " +
+                event.start.dateTime.slice(11, 16)
               : event.start.date,
             end: event.end.dateTime
               ? event.end.dateTime.slice(0, 10) +
-              " " +
-              event.end.dateTime.slice(11, 16)
+                " " +
+                event.end.dateTime.slice(11, 16)
               : event.end.date,
             extendedProps: {
               description: event.description
