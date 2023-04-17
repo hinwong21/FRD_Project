@@ -65,16 +65,10 @@ user_id text NULL FK >- users.id
 start_at varchar(255) NULL
 
 
-period_period_status
---------------------
-id text unique
-period_id text NULL FK >- period.id
-period_status_id text NULL FK >- period_status.id
-
-
 period_status
 -------------
 id text unique
+period_id text NULL FK >- period.id
 type varchar(255) NULL
 content text NULL
 

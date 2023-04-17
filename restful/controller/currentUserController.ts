@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { errorHandler } from "../error";
-import "../session";
 import { User, getUserByUID } from "../firebaseAdmin";
 import { CurrentUserService } from "../service/currentUserService";
 import { encodeJWT, getJWT } from "../jwt";
@@ -75,7 +74,7 @@ export class CurrentUserController {
 
   getUser = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       const user = await this.currentUserService.getUser(userId);
       res.json(user);
     } catch (err) {
@@ -85,7 +84,7 @@ export class CurrentUserController {
 
   updateData = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let height = req.body.height;
       let gender = req.body.gender;
       let age = req.body.age;
@@ -105,7 +104,7 @@ export class CurrentUserController {
 
   updateUsername = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let username = req.body.input;
       const result = await this.currentUserService.updateUsername(
         userId,
@@ -119,7 +118,7 @@ export class CurrentUserController {
 
   updateWeight = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let weight = req.body.input;
       const result = await this.currentUserService.updateWeight(userId, weight);
       res.json({ result });
@@ -130,7 +129,7 @@ export class CurrentUserController {
 
   updateHeight = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let height = req.body.input;
       const result = await this.currentUserService.updateHeight(userId, height);
       res.json({ result });
@@ -141,7 +140,7 @@ export class CurrentUserController {
 
   updateAge = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let age = req.body.input;
       const result = await this.currentUserService.updateAge(userId, age);
       res.json({ result });
@@ -152,7 +151,7 @@ export class CurrentUserController {
 
   updateGender = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let gender = req.body.selectGender;
       const result = await this.currentUserService.updateGender(userId, gender);
       res.json({ result });

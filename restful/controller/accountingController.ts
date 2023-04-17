@@ -9,7 +9,7 @@ export class AccountingController {
 
   addTransaction = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId!;
+      let userId = getJWT(req).userId!;
       let { name, type, amount, description } = req.body;
       console.log(name, type, amount, description, userId);
       const addResult = await this.accountingService.addTransaction(
@@ -36,8 +36,7 @@ export class AccountingController {
 
   getTransaction = async (req: Request, res: Response) => {
     try {
-      // let userId = req.session.userId!
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       console.log(userId);
 
       const tranResult = await this.accountingService.getTransaction(userId!);
@@ -53,8 +52,7 @@ export class AccountingController {
 
   getMonthlyTransaction = async (req: Request, res: Response) => {
     try {
-      // let userId = req.session.userId!
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       console.log(userId);
 
       const getResult = await this.accountingService.getMonthlyTransaction(
@@ -72,7 +70,7 @@ export class AccountingController {
 
   getDailyTransaction = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
 
       console.log(userId);
 
