@@ -4,4 +4,4 @@ set -x
 npm run build
 npx cap sync ios
 npx cap open ios
-npx cap run ios
+# npx cap run ios
