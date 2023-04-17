@@ -32,43 +32,41 @@ export const NutritionTracker = () => {
   const [foodItems, setFoodItems] = useState<{ [key: number]: Food[] }>({});
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const resetData = async () => {
-      const { value } = await Preferences.get({ key: "meals" });
-      if (value !== null) {
-        let json = JSON.parse(value);
-        let date = new Date(json[json.length - 1].date).getTime();
-        let now = new Date().getTime();
+  const resetData = async () => {
+    const { value } = await Preferences.get({ key: "meals" });
+    if (value !== null) {
+      let json = JSON.parse(value);
+      let date = new Date(json[json.length - 1].date).getTime();
+      let now = new Date().getTime();
 
-        if (now >= date) {
-          await Preferences.remove({ key: "meals" });
-          await Preferences.remove({ key: "nutrient" });
-          setMeals([]);
-          setNutrients({});
-        }
+      if (now >= date) {
+        await Preferences.remove({ key: "meals" });
+        await Preferences.remove({ key: "nutrient" });
+        await Preferences.remove({ key: "nutrientIntake" });
+        setMeals([]);
+        setNutrients({});
       }
-    };
+    }
+  };
+
+  const getMealsLocal = async () => {
+    const { value } = await Preferences.get({ key: "meals" });
+
+    if (value !== null) {
+      setMeals(JSON.parse(value));
+    }
+  };
+
+  const getNutrientLocal = async () => {
+    const { value } = await Preferences.get({ key: "nutrient" });
+    if (value !== null) {
+      setNutrients(JSON.parse(value));
+    }
+  };
+
+  useEffect(() => {
     resetData();
-  }, []);
-
-  useEffect(() => {
-    const getMealsLocal = async () => {
-      const { value } = await Preferences.get({ key: "meals" });
-
-      if (value !== null) {
-        setMeals(JSON.parse(value));
-      }
-    };
     getMealsLocal();
-  }, []);
-
-  useEffect(() => {
-    const getNutrientLocal = async () => {
-      const { value } = await Preferences.get({ key: "nutrient" });
-      if (value !== null) {
-        setNutrients(JSON.parse(value));
-      }
-    };
     getNutrientLocal();
   }, []);
 
@@ -251,24 +249,28 @@ export const NutritionTracker = () => {
             });
           };
           setNutrientLocal();
+
           let id = uuidv4();
           let token = await getName("token");
           // update daily intake to database
-          fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/nutrition/dailyIntake`, {
-            method: "PUT",
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: id,
-              calories: caloriesNutrient.value,
-              carbs: carbsNutrient.value,
-              protein: proteinNutrient.value,
-              fat: fatNutrient.value,
-              date: new Date().toISOString().slice(0, 10),
-            }),
-          });
+          fetch(
+            `${process.env.REACT_APP_EXPRESS_SERVER_URL}/nutrition/dailyIntake`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: id,
+                calories: caloriesNutrient.value,
+                carbs: carbsNutrient.value,
+                protein: proteinNutrient.value,
+                fat: fatNutrient.value,
+                date: new Date().toISOString().slice(0, 10),
+              }),
+            }
+          );
 
           dispatch({
             type: "INCREMENT",
@@ -277,6 +279,34 @@ export const NutritionTracker = () => {
             protein: proteinNutrient.value,
             fat: fatNutrient.value,
           });
+
+          // get and set from local storage
+          const { value } = await Preferences.get({ key: "nutrientIntake" });
+          if (value === null) {
+            await Preferences.set({
+              key: "nutrientIntake",
+              value: JSON.stringify({
+                calories: caloriesNutrient.value,
+                carbs: carbsNutrient.value,
+                protein: proteinNutrient.value,
+                fat: fatNutrient.value,
+              }),
+            });
+          } else {
+            let calories = JSON.parse(value).calories + caloriesNutrient.value;
+            let carbs = JSON.parse(value).carbs + carbsNutrient.value;
+            let protein = JSON.parse(value).protein + proteinNutrient.value;
+            let fat = JSON.parse(value).fat + fatNutrient.value;
+            await Preferences.set({
+              key: "nutrientIntake",
+              value: JSON.stringify({
+                calories,
+                carbs,
+                protein,
+                fat,
+              }),
+            });
+          }
 
           foodName.value = "";
           setFoodItems([]);

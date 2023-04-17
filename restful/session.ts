@@ -12,9 +12,9 @@ export let sessionMiddleware = expressSession({
 declare module "express-session" {
   interface SessionData {
     userId?: string;
-    email?: string;
+    // email?: string;
     isLogin?: boolean;
-    CalendarAuthorized?: boolean;
+    // CalendarAuthorized?: boolean;
     GoogleOauth?: {
       type?: string | undefined;
       client_id?: string | undefined;

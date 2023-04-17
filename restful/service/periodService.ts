@@ -1,5 +1,4 @@
 import { Knex } from "knex";
-import { v4 as uuidv4 } from "uuid";
 
 export class PeriodService {
   constructor(private knex: Knex) {}
@@ -75,137 +74,89 @@ export class PeriodService {
   };
 
   //This is for update the period data
-  updatePeriodData = async (
-    id: string,
-    start_at?: string,
-    end_at?: string,
-    upcoming_at?: string,
-    days?: string,
-    ovu_start_at?: string,
-    ovu_end_at?: string
-  ) => {
-    try {
-      // console.log("id", id);
-      // console.log("start_at", start_at);
-      // console.log("end_at", end_at);
-      // console.log("upcoming_at", upcoming_at);
-      // console.log("days", days);
-      // console.log("ovu_start_at", ovu_start_at);
-      // console.log("ovu_end_at", ovu_end_at);
+  updatePeriodData = async (input: {
+    period_id: string;
+    fields: {
+      start_at?: string;
+      end_at?: string;
+      upcoming_at?: string;
+      days?: string;
+      ovu_start_at?: string;
+      ovu_end_at?: string;
+    };
+    user_id: string;
+  }) => {
+    await this.checkPeriodUser(input);
 
-      if (start_at) {
-        await this.knex("period").where({ id }).update({ start_at });
-      }
-      if (end_at) {
-        await this.knex("period").where({ id }).update({ end_at });
-      }
-      if (upcoming_at) {
-        await this.knex("period").where({ id }).update({ upcoming_at });
-      }
-      if (days) {
-        await this.knex("period").where({ id }).update({ days });
-      }
-      if (ovu_start_at) {
-        await this.knex("period").where({ id }).update({ ovu_start_at });
-      }
-      if (ovu_end_at) {
-        await this.knex("period").where({ id }).update({ ovu_end_at });
-      }
-      return {
-        success: true,
-      };
-    } catch (error) {
-      throw new Error((error as Error).message);
-    }
+    await this.knex("period")
+      .where({ id: input.period_id })
+      .update(input.fields);
   };
 
+  async checkPeriodUser(input: { period_id: string; user_id: string }) {
+    let period = await this.knex
+      .select("user_id")
+      .from("period")
+      .where("id", input.period_id)
+      .first();
+
+    if (!period) throw new Error("period not found");
+
+    if (period !== input.user_id) throw new Error("the period is not yours");
+  }
+
   //For the first time to insert period status
-  inputPeriodStatus = async (
-    statusId: string, //TODO frontend gen
-    periodId: string, //TODO frontend gen
-    type: string,
-    content: string
-  ) => {
-    try {
-      console.log("Input STS run");
-      console.log("sts id:", statusId);
-      console.log("per id:", periodId);
-      console.log("type:", type);
-      console.log("content:", content);
-
-      // TODO DB refresh insert 到但係大眼仔 係false,而且要hard code，大眼仔入唔得
-      //Insert into period_status table
-      await this.knex("period_status").insert({
-        id: statusId,
-        type,
-        content,
-      });
-      console.log("Input STS run 1");
-
-      // TODO Insert 唔到
-      //Insert into period_period_status table
-      await this.knex("period_period_status").insert({
-        id: uuidv4(),
-        period_id: periodId,
-        period_status_id: statusId,
-      });
-      console.log("Input STS run 2");
-
-      return {
-        success: true,
-      };
-    } catch (error) {
-      throw new Error((error as Error).message);
-    }
+  inputPeriodStatus = async (input: {
+    period_id: string;
+    user_id: string;
+    type: string;
+    content: string;
+    status_id: string;
+  }) => {
+    await this.checkPeriodUser(input);
+    await this.knex("period_status").insert({
+      id: input.status_id,
+      period_id: input.period_id,
+      type: input.type,
+      content: input.content,
+    });
   };
 
   //For update the period status
   //TODO 大眼仔error，但controller hard code先得，但唔識update update_at
-  updatePeriodStatus = async (
-    statusId: string,
-    type: string,
-    content: string
-  ) => {
-    try {
-      console.log("updatePeriodStatus");
-      console.log("statusId", statusId);
-      console.log("type", type);
-      console.log("content", content);
+  updatePeriodStatus = async (input: {
+    user_id: string;
+    type: string;
+    content: string;
+    status_id: string;
+  }) => {
+    let period_status = await this.knex("period_status")
+      .select("period_id")
+      .where("id", input.status_id)
+      .first();
 
-      await this.knex("period_status")
-        .where({ id: statusId })
-        .update({ type, content });
-      return {
-        success: true,
-      };
-    } catch (error) {
-      throw new Error((error as Error).message);
-    }
+    await this.checkPeriodUser({
+      period_id: period_status?.period_id,
+      user_id: input.user_id,
+    });
+
+    await this.knex("period_status")
+      .where({ id: input.status_id })
+      .update({ type: input.type, content: input.content });
   };
 
   //For get the period status data
-  getPeriodStatus = async (periodId: string) => {
-    try {
-      const periodStatus = await this.knex("period_period_status")
-        .select("type", "content")
-        // .select("*")
-        .innerJoin("period", "period_period_status.period_id", "period.id")
-        .innerJoin(
-          "period_status",
-          "period_period_status.period_status_id",
-          "period_status.id"
-        )
-        .where("period_period_status.period_id", periodId)
-        .orderBy("updated_at", "asc");
+  getPeriodStatus = async (input: { period_id: string; user_id: string }) => {
+    await this.checkPeriodUser(input);
 
-      console.log("periodStatus:", periodStatus);
+    let periodStatus = await this.knex
+      .from("period_status")
+      .select("period_status.type", "period_status.content")
+      .where("period_status.period_id", input.period_id);
 
-      return {
-        success: true,
-        periodStatus,
-      };
-    } catch (error) {
-      throw new Error((error as Error).message);
-    }
+    return {
+      success: true,
+      periodStatus,
+    };
   };
 }

@@ -16,11 +16,15 @@ export class CalendarService {
   };
 
   getLocalCalendarEvent = async (userId: string) => {
-    let data = await this.knex("calendar").select("*").where("user_id", userId);
+    let row = await this.knex("calendar")
+      .select("content")
+      .where("user_id", userId)
+      .first();
 
-    console.log("calendarService",data);
-
-    return data;
+    if (row?.content) {
+      return JSON.parse(row.content);
+    }
+    return [];
   };
 
   createLocalCalendarEvent = async (eventData: any, userId: string) => {

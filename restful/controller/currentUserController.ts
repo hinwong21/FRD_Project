@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
 import { errorHandler } from "../error";
-import "../session";
-import { createJwt } from "../jwt";
 import { User, getUserByUID } from "../firebaseAdmin";
 import { CurrentUserService } from "../service/currentUserService";
+import { encodeJWT, getJWT } from "../jwt";
 
 export class CurrentUserController {
   constructor(private currentUserService: CurrentUserService) {}
 
   verifyToken = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId!;
+      let userId = getJWT(req).userId;
 
       res.json({
         ok: true,
@@ -28,22 +27,20 @@ export class CurrentUserController {
       // must checked userId is valid firebase uid
       let { userId, pushNotificationToken } = req.body;
       let user = await getUserByUID(userId);
-
-      if (!user) {
-        throw new Error("Not exist this userId in Firebase");
+      if (!user.email) {
+        throw new Error("Missing user email");
       }
-      let { uid, displayName, email } = user as {
-        uid: string;
-        displayName: string;
-        email: string;
-      };
-      await this.currentUserService.createUser(
-        uid,
-        displayName,
-        email,
-        pushNotificationToken
-      );
-      let token = createJwt(uid);
+      if (!user.displayName) {
+        throw new Error("Missing displayName");
+      }
+
+      await this.currentUserService.createUser({
+        userId: user.uid,
+        username: user.displayName,
+        email: user.email,
+        pushNotificationToken,
+      });
+      let token = encodeJWT({ userId: user.uid });
       console.log(token);
 
       res.json({
@@ -77,9 +74,9 @@ export class CurrentUserController {
 
   getUser = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
-      const result = await this.currentUserService.getUser(userId);
-      res.json({ result });
+      let userId = getJWT(req).userId;
+      const user = await this.currentUserService.getUser(userId);
+      res.json(user);
     } catch (err) {
       errorHandler(err, req, res);
     }
@@ -87,7 +84,7 @@ export class CurrentUserController {
 
   updateData = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let height = req.body.height;
       let gender = req.body.gender;
       let age = req.body.age;
@@ -107,7 +104,7 @@ export class CurrentUserController {
 
   updateUsername = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let username = req.body.input;
       const result = await this.currentUserService.updateUsername(
         userId,
@@ -121,7 +118,7 @@ export class CurrentUserController {
 
   updateWeight = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let weight = req.body.input;
       const result = await this.currentUserService.updateWeight(userId, weight);
       res.json({ result });
@@ -132,7 +129,7 @@ export class CurrentUserController {
 
   updateHeight = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let height = req.body.input;
       const result = await this.currentUserService.updateHeight(userId, height);
       res.json({ result });
@@ -143,7 +140,7 @@ export class CurrentUserController {
 
   updateAge = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let age = req.body.input;
       const result = await this.currentUserService.updateAge(userId, age);
       res.json({ result });
@@ -154,7 +151,7 @@ export class CurrentUserController {
 
   updateGender = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       let gender = req.body.selectGender;
       const result = await this.currentUserService.updateGender(userId, gender);
       res.json({ result });

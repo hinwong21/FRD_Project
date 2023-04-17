@@ -11,27 +11,34 @@ import {
   IonButtons,
   IonLabel,
   IonInput,
+  IonHeader,
+  IonContent,
+  IonToolbar,
+  IonTitle,
 } from "@ionic/react";
 import { useRef } from "react";
 import { TransactionType } from "./Finance";
-import { Genres } from "./TransactionModal";
-
-import { setName, getName } from "../../service/LocalStorage/LocalStorage";
+import { Genre, Genres } from "./TransactionModal";
 import { useHistory } from "react-router";
-
+import { useTransactions } from "../../hooks/useTransactions";
+import { useFetch } from "../../hooks/useFetch";
+import styles from "./Calculator.module.scss";
 
 const Calculator: React.FC<{
   isOpen: boolean;
   close: () => void;
   addCalculator: (transaction: TransactionType) => void;
 }> = ({ isOpen, close, addCalculator }) => {
-  const modal = useRef<HTMLIonModalElement>(null);
+  const fetch = useFetch();
   const [description, setDescription] = useState("");
   const [result, setResult] = useState("");
+  const name: string = "";
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
   const history = useHistory();
+
+  const [transactions, setTransactions] = useTransactions();
 
   /* Confirm button function */
   async function markCalculator() {
@@ -51,43 +58,21 @@ const Calculator: React.FC<{
       { amount: result },
       { description: description }
     );
-    console.log(newObj, Genres);
-
-    
+    console.log("newObj", newObj);
 
     /* save data to local storage */
-    await setName("amountResult",JSON.stringify({amount:result,description:description}));
+
+    setTransactions([...transactions, newObj]);
 
     /* Put data to database */
 
-    try {
-      let token = await getName("token");
-      let res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/addTransaction`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(newObj),
-        }
-      );
-      let json = await res.json();
-      console.log(json);
-      if (!res.ok) {
-        // if (!json.ok) {
-        alert(json.errMess);
-      }
-      // fetch page to Accounting
-      history.push("/page/Accounting");
-      addCalculator(newObj);
-      clearResult();
-      close();
-    } catch (error) {
-      console.log(error);
-      alert("error occurred in Calculator.tsx");
-    }
+    await fetch("post", "/account/addTransaction", newObj);
+
+    /* fetch page to Accounting */
+    history.push("/page/Accounting");
+    addCalculator(newObj);
+    clearResult();
+    close();
 
     // /* gen by chatgpt */
     // const transaction: TransactionType = {
@@ -138,33 +123,32 @@ const Calculator: React.FC<{
       {/* <IonPage>
                 <IonContent > */}
       {/* <IonModal isOpen={props.isOpen} onDidDismiss={handleModalDIdDismiss}> */}
-      <IonModal ref={modal} isOpen={isOpen}>
-        <IonButtons slot="start">
-          <IonButton
-            onClick={() => {
-              modal.current?.dismiss();
-              close();
-            }}
-          >
-            Close
-          </IonButton>
-        </IonButtons>
-        {/* <IonContent> */}
-        <IonList>
-          <IonItem>
-            <IonLabel>Select Genre</IonLabel>
-            <IonSelect
-              onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
-              value={selectedGenre}
-            >
-              {Genres.map((Genre) => (
-                <IonSelectOption key={Genre.id} value={Genre.id}>
-                  {Genre.name}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-          </IonItem>
-          {/* <IonItem lines="none">
+
+      <IonModal isOpen={isOpen} class={styles.Calculator}>
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonButtons slot="start">
+              <IonButton onClick={close}>Close</IonButton>
+            </IonButtons>
+            <IonTitle>Add Transaction</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonList color="primary">
+            <IonItem color="primary">
+              <IonLabel>Select Genre</IonLabel>
+              <IonSelect
+                onIonChange={(ev) => setSelectedGenre(ev.detail.value)}
+                value={selectedGenre}
+              >
+                {Genres.map((Genre) => (
+                  <IonSelectOption key={Genre.id} value={Genre.id}>
+                    {Genre.name}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+            {/* <IonItem lines="none">
               <IonLabel>Current value</IonLabel>
               <IonInput
                 type="number"
@@ -172,54 +156,55 @@ const Calculator: React.FC<{
                 onIonChange={(e) => setAmount(+(e.detail.value || ""))}
               ></IonInput>
             </IonItem> */}
-          <IonItem>
-            <IonLabel position="fixed">Name</IonLabel>
-            <IonInput
-              placeholder="Enter Description"
-              value={description}
-              onIonChange={(event) => setDescription(event.detail.value!)}
-            ></IonInput>
-          </IonItem>
-        </IonList>
+            <IonItem color="primary">
+              <IonLabel position="fixed">Name</IonLabel>
+              <IonInput
+                placeholder="Enter Description"
+                value={description}
+                onIonChange={(event) => setDescription(event.detail.value!)}
+              ></IonInput>
+            </IonItem>
+          </IonList>
 
-        <Display result={result} />
-        <Panel
-          operatingEvent={(element: number | string) => {
-            if (isNaN(element as any)) {
-              switch (element) {
-                case "+":
-                case "-":
-                case "x":
-                case "÷":
-                  setLHS(result);
-                  setResult("");
-                  setOperator(element);
-                  break;
-                case "=":
-                  calculateResult();
-                  break;
-                case "AC":
-                  clearResult();
-                  break;
-                case "⌫":
-                  deleteResult();
-                  break;
-                case ".":
-                  if (result.indexOf(".") === -1) {
-                    setResult(result + ".");
-                  }
-                  break;
-                case "✔":
-                  markCalculator(); // Call the markCalculator function
-                  break;
-                default:
-                  break;
+          <Display result={result} />
+          <Panel
+            operatingEvent={(element: number | string) => {
+              if (isNaN(element as any)) {
+                switch (element) {
+                  case "+":
+                  case "-":
+                  case "x":
+                  case "÷":
+                    setLHS(result);
+                    setResult("");
+                    setOperator(element);
+                    break;
+                  case "=":
+                    calculateResult();
+                    break;
+                  case "AC":
+                    clearResult();
+                    break;
+                  case "⌫":
+                    deleteResult();
+                    break;
+                  case ".":
+                    if (result.indexOf(".") === -1) {
+                      setResult(result + ".");
+                    }
+                    break;
+                  case "✔":
+                    markCalculator(); // Call the markCalculator function
+                    break;
+                  default:
+                    break;
+                }
+              } else {
+                setResult(result + element);
               }
-            } else {
-              setResult(result + element);
-            }
-          }}
-        />
+            }}
+          />
+        </IonContent>
       </IonModal>
       {/* </IonContent>
             </IonPage> */}

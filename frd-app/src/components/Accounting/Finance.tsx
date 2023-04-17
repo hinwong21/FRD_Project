@@ -90,7 +90,7 @@ const Finance = (props: {
         {/* <IonTitle>
           <div className={style.title}>My Account</div>{" "}
         </IonTitle> */}
-        {/* <IonItem>
+        {/* <IonItem className={style.IonItem}>
           <div className={style.type}>
             <IonLabel>Type</IonLabel>
             <IonInput
@@ -99,7 +99,7 @@ const Finance = (props: {
             ></IonInput>
           </div>
         </IonItem> */}
-        <IonItem>
+        <IonItem className={style.IonItem}>
           <IonLabel>Total Amount: $ {props.amount}</IonLabel>
           {/* <IonInput
             type="number"
@@ -112,19 +112,19 @@ const Finance = (props: {
       </IonList>
       <IonList>
         <div className={style.balance}>
-          <IonItem>
+          <IonItem className={style.IonItem}>
             <IonLabel>Total Income: $ {props.totalIncome}</IonLabel>
           </IonItem>
-          <IonItem>
+          <IonItem className={style.IonItem}>
             <IonLabel>Total Expense: $ {props.totalExpense}</IonLabel>
           </IonItem>
-          <IonItem>
+          <IonItem className={style.IonItem}>
             <IonLabel>Balance: ${" " + balance.toFixed(2)}</IonLabel>
           </IonItem>
         </div>
       </IonList>
       <IonList>
-        <IonItem>
+        <IonItem className={style.IonItem}>
           <IonLabel>Income</IonLabel>
         </IonItem>
         {incomeTransactions.map((transaction) => (
@@ -142,7 +142,7 @@ const Finance = (props: {
         ))}
       </IonList>
       <IonList>
-        <IonItem>
+        <IonItem className={style.IonItem}>
           <IonLabel>Expenses</IonLabel>
         </IonItem>
         {expenseTransactions.map((transaction) => (
@@ -159,13 +159,13 @@ const Finance = (props: {
           </IonItem>
         ))}
       </IonList>
-      {/* <IonItem>
+      {/* <IonItem className={style.IonItem}>
                 <Link to="/page/Calculator"><IonButton onClick={handleAddTransaction}>
                     <IonIcon slot="start" icon={add} />
                     Add Transaction
                 </IonButton></Link>
             </IonItem> */}
-      {/* <IonItem>
+      {/* <IonItem className={style.IonItem}>
                 <Link to="/page/Transaction"><IonButton onClick={handleAddTransaction}>
                     <IonIcon slot="start" icon={add} />
                     Review

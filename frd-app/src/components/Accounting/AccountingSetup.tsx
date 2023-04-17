@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styles from "./Accounting.module.scss";
 import { useHistory } from "react-router";
-import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { useFetch } from "../../hooks/useFetch";
 
 export const AccountingSetup = () => {
   const [budget, setBudget] = useState("");
-
+  const fetch = useFetch();
   const history = useHistory();
   const handleSubmit = async () => {
     if (budget === "") {
@@ -14,17 +14,7 @@ export const AccountingSetup = () => {
     }
 
     // insert to db
-    let token = await getName("token");
-    fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/budget`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        budget,
-      }),
-    });
+    await fetch("post", "/account/budget", { budget });
 
     const setBudgetToLocal = async () => {
       await Preferences.set({
@@ -36,7 +26,6 @@ export const AccountingSetup = () => {
 
     // fetch page to Accounting
     history.push("/page/Accounting");
-    
   };
   return (
     <>

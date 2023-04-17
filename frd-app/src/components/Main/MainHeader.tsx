@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import style from "./Main.module.scss";
+import { getName } from "../../service/LocalStorage/LocalStorage";
 
 type Weather = {
   icon: number;
   temp: number;
 };
+
 export const MainHeader = () => {
   const [weather, setWeather] = useState<Weather>();
+  const [username, setUsername] = useState("");
 
   const today = new Date().toLocaleDateString("en-Us", {
     weekday: "short",
@@ -29,6 +32,7 @@ export const MainHeader = () => {
     greeting = "Good night";
   }
 
+  // calc the lucky number
   const todayLuckyNumber: number = Math.random() * 101;
   let fortune;
   if (todayLuckyNumber > 97.5) {
@@ -47,19 +51,37 @@ export const MainHeader = () => {
     fortune = "大凶";
   }
 
+  const getUser = async () => {
+    let token = await getName("token");
+    const res = await fetch(
+      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/user`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const json = await res.json();
+    setUsername(json.result[0].username);
+  };
+
+  const todayWeather = async () => {
+    let res = await fetch(
+      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
+    );
+    let json = await res.json();
+    let todayIcon = json.icon;
+    let todayTemp = json.temperature.data[0].value;
+    setWeather({
+      icon: todayIcon,
+      temp: todayTemp,
+    });
+  };
+
   useEffect(() => {
-    const todayWeather = async () => {
-      let res = await fetch(
-        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
-      );
-      let json = await res.json();
-      let todayIcon = json.icon;
-      let todayTemp = json.temperature.data[0].value;
-      setWeather({
-        icon: todayIcon,
-        temp: todayTemp,
-      });
-    };
+    getUser();
     todayWeather();
   }, []);
 
@@ -68,7 +90,9 @@ export const MainHeader = () => {
       <div className={style.mainDate}>{today}</div>
       <div className={style.mainHeader}>
         <div className={style.leftMainHeader}>
-          <div className={style.mainGreeting}>{greeting}, user</div>
+          <div className={style.mainGreeting}>
+            {greeting}, {username}
+          </div>
           <div className={style.mainFortune}>
             Today fortune: <span className={style.fortuneColor}>{fortune}</span>
           </div>

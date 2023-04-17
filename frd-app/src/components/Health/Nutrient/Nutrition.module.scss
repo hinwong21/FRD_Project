@@ -2,6 +2,40 @@
   background-color: #a8bab4;
 }
 
+// Nutrition Page Notice
+.nutritionNoticeContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.nutritionNotice {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  background-color: #c17b85;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.nutritionNoticePeriod {
+  width: 10px;
+  background-color: #e4c5c5;
+  margin-right: 5px;
+}
+
+.nutritionNoticeContent {
+  margin: 5px;
+  font-size: 12px;
+  color: white;
+}
+
+.nutritionNoticeContent header {
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
 .nutrientHeader {
   height: 140px;
   display: flex;
@@ -35,7 +69,9 @@
   justify-content: center;
   align-items: center;
   font-size: 10px;
+  font-weight: 500;
   background-color: #a8bab4;
+  color: #32393f;
   padding: 0px 5px;
   border-radius: 10px;
   margin-bottom: 5px;
@@ -60,13 +96,21 @@
   width: 300px;
 }
 
+.dietProgrammeSelectContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
 .dietProgrammeSelectBtn {
   display: flex;
   justify-content: center;
   margin-top: 20px;
   padding: 7px;
   font-size: 12px;
+  font-weight: 500;
   background-color: #a8bab4;
+  color: #32393f;
   border-radius: 15px;
   width: 300px;
 }
@@ -147,8 +191,8 @@
   width: 20px;
   height: 20px;
   margin: 10px;
-  color: #08c4ff;
-  background-color: #ddf4fc;
+  color: white;
+  background-color: #08c4ff;
   border: transparent;
   border-radius: 5px;
   font-size: 20px;

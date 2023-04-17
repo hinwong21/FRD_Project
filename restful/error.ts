@@ -6,11 +6,13 @@ export function errorHandler(
   res: express.Response
 ) {
   // for logging errors
+  console.error(error);
 
   let result = {
     ok: false,
     isErr: true,
     errMess: `${error.message} - ${req.route.path}`,
+    error: `${error.message} - ${req.route.path}`,
     data: null,
   };
 
