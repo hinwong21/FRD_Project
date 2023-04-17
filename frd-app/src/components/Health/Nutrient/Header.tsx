@@ -6,7 +6,6 @@ import { HeaderNutrient } from "./HeaderNutrient";
 import { NutrientProgressBar } from "./NutrientProgressBar";
 import style from "./Nutrition.module.scss";
 import { Preferences } from "@capacitor/preferences";
-import { SelectDietPrgm } from "./SelectDietPrgm";
 
 type DailyIntake = {
   caloriesDailyIntake?: number | any;

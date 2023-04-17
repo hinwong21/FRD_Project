@@ -22,61 +22,59 @@ export const Calendar: React.FC = () => {
   let titleName = "";
   let fetchPage = <></>;
 
-  const [loggedIn, setLoggedIn] = useState("");
-  const [dailyCheckIn, setDailyCheckIn] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [dailyCheckIn, setDailyCheckIn] = useState(false);
 
-  useEffect(() => {
-    const resetData = async () => {
+  const resetData = async () => {
+    const { value } = await Preferences.get({ key: "dailyCheckIn" });
+    if (value !== null) {
+      let json = JSON.parse(value);
+      let date = new Date(json.date).getTime();
+      let now = new Date().getTime();
+
+      if (now >= date) {
+        await Preferences.remove({ key: "dailyCheckIn" });
+      }
+    }
+  };
+  const getUserLocal = async () => {
+    let token = await getName("token");
+    const res = await fetch(
+      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/user`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const json = await res.json();
+    let data = json.result[0].age;
+    if (data === null) {
+      setLoggedIn(false);
+    } else {
+      setLoggedIn(true);
       const { value } = await Preferences.get({ key: "dailyCheckIn" });
-      if (value !== null) {
-        let json = JSON.parse(value);
-        let date = new Date(json.date).getTime();
-        let now = new Date().getTime();
-
-        if (now >= date) {
-          await Preferences.remove({ key: "dailyCheckIn" });
-        }
+      if (value == null) {
+        setDailyCheckIn(false);
+      } else {
+        setDailyCheckIn(true);
       }
-    };
-    resetData();
-  }, []);
+    }
+  };
 
   useEffect(() => {
-    const getUserLocal = async () => {
-      let token = await getName("token");
-      const res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/user`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const json = await res.json();
-      let data = json.result[0].age;
-      if (data === null) {
-        setLoggedIn("false");
-      } else {
-        setLoggedIn("true");
-        const { value } = await Preferences.get({ key: "dailyCheckIn" });
-        if (value == null) {
-          setDailyCheckIn("false");
-        } else {
-          setDailyCheckIn("true");
-        }
-      }
-    };
+    resetData();
     getUserLocal();
   }, []);
 
   return (
     <IonPage>
       <IonContent id="999" fullscreen>
-        {loggedIn === "false" ? (
+        {!loggedIn ? (
           <LoginSetup />
-        ) : loggedIn === "true" && dailyCheckIn === "false" ? (
+        ) : loggedIn && !dailyCheckIn ? (
           <DailySummary />
         ) : (
           <>

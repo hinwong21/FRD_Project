@@ -61,7 +61,7 @@ export const DailySummary = () => {
 
       <footer className={style.mainFooter}>
         <div className={style.calenderBtn} onClick={handleStart}>
-         Enjoy Your Dat!
+         Enjoy Your Day!
         </div>
       </footer>
     </div>
