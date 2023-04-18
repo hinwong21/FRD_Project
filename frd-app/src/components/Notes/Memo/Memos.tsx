@@ -15,6 +15,7 @@ import {
   IonLabel,
   IonCard,
   IonAlert,
+  IonToast,
 } from "@ionic/react";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 import ReEditTextEditor from "./ReEditTextEditor";
@@ -23,8 +24,11 @@ import { getName } from "../../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
 import { useDispatch } from "react-redux";
 import { setShouldGetDataMemo } from "../../../redux/Notes/memoSlice";
+import { setNotesAlertMsg } from "../../../redux/Notes/notesAlertMsgSlice";
+import { setNotesAlertShow } from "../../../redux/Notes/notesAlertSlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../redux/store/store";
+
 
 export type MemoType = {
   id: string;
@@ -39,6 +43,8 @@ export const Memos: React.FC = () => {
   const shouldGetDataMemo = useSelector(
     (state: IRootState) => state.memo.shouldGetDataMemo
   );
+  const setNotesAlertShow = useSelector((state:IRootState)=> state.alert.errMsgShow)
+  const setNotesAlertMsg = useSelector((state:IRootState)=> state.alertMsg.errMsg)
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
   const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
   const [presentAlert, setPresentAlert] = useState(false);
@@ -172,6 +178,8 @@ export const Memos: React.FC = () => {
           onDidDismiss={() => setPresentAlert(false)}
         ></IonAlert>
 
+    <IonToast isOpen={setNotesAlertShow} message={setNotesAlertMsg} duration={5000}></IonToast>
+
         <div className={styles.mainMemoContainer}>
           <div className={styles.memoWrapper}>
             {memoContent.map((item, index) => (
@@ -219,6 +227,7 @@ export const EditMemo = () => {
   const [memoEditorContent, setMemoEditorContent] = useState("");
   const [memoEditorId, setMemoEditorId] = useState("");
   const [memoContent, setMemoContent] = useState("");
+  const [showAlert, setShowAlert] = useState(false)
 
   async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -226,18 +235,6 @@ export const EditMemo = () => {
     }
   }
 
-  // async function updateMemo(id:string, memoContent:string) {
-  //   const key = "memo";
-  //   const existingValue = await Preferences.get({ key });
-  //   const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
-  //   const index = existingData.findIndex((item: { id: string; }) => item.id === id);
-  //   if (index !== -1) {
-  //     existingData[index].content = memoContent;
-  //     existingData[index].updated_at = JSON.stringify(new Date());
-  //   }
-  //   const value = JSON.stringify(existingData);
-  //   await Preferences.set({ key, value });
-  // }
 
   async function confirm_memo() {
     let token = await getName("token");
@@ -257,13 +254,21 @@ export const EditMemo = () => {
         existingData[index].content = memoContent;
         existingData[index].updated_at = JSON.stringify(new Date());
       }
-      const value = JSON.stringify(existingData);
+      try{
+        const value = JSON.stringify(existingData);
       console.log(value);
       await Preferences.set({ key, value });
       dispatch(setShouldGetDataMemo(true));
+      } catch (error) {
+      // console.log(error)
+      dispatch(setNotesAlertShow(true))
+      dispatch(setNotesAlertMsg("Exceeded size limit. Please try inserting fewer images."))
+  }
+      
     }
-
-    updateMemoLS(memoEditorId, memoContent);
+updateMemoLS(memoEditorId, memoContent);
+    
+    
 
     //update db
     const res = await fetch("http://localhost:8090/editors/update-memo", {
@@ -324,6 +329,16 @@ export const EditMemo = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
+
+
+          {/* <IonAlert
+      isOpen={showAlert}
+      onDidDismiss={() => setShowAlert(false)}
+      header={'Error'}
+      message={'Failed to add to-do list. The storage quota has been exceeded.'}
+      buttons={['OK']}
+    /> */}
+
             <ReEditTextEditor
               content={memoEditorContent}
               handleReEditEditorCallback={handleReEditEditorCallback}
