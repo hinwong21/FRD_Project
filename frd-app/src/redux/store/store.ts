@@ -3,9 +3,17 @@
 //case: Users login / logout needs to use Redux
 import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./UsersSlice";
+import todoReducer from "../Notes/todoSlice"
+import memoReducer from "../Notes/memoSlice"
+import diaryReducer from "../Notes/diarySlice"
 
 export let store = configureStore({
-  reducer: { users: usersReducer },
+  reducer: { 
+    users: usersReducer,
+    todo: todoReducer,
+    memo: memoReducer,
+    diary: diaryReducer,
+    },
 });
 
 export type IRootState = ReturnType<typeof store.getState>;

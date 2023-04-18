@@ -140,3 +140,42 @@
 .calenderBtn:hover {
   color: #222222;
 }
+
+// ShakeAnimation.tsx
+.shakeContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.shakingCylinder {
+  animation: shake 2s infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(25deg);
+  }
+  10%,
+  90% {
+    transform: rotate(-25deg);
+  }
+  20%,
+  80% {
+    transform: rotate(25deg);
+  }
+  30%,
+  50%,
+  70% {
+    transform: rotate(-25deg);
+  }
+  40%,
+  60% {
+    transform: rotate(25deg);
+  }
+  100% {
+    transform: rotate(25deg);
+  }
+}

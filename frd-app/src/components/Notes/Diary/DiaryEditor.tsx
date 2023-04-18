@@ -86,7 +86,7 @@ export const DiaryEditor: React.FC<DiaryEditorProps> = ({handleCallbackWeather, 
       content: content
     })
 
-  },[selected,title])
+  },[selected,title,content])
 
   function handleEditorCallback(childData: any) {
     setContent(childData.content);

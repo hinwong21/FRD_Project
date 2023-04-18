@@ -32,6 +32,10 @@ import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { useDispatch } from 'react-redux';
+import { setShouldGetDataMemo } from '../../redux/Notes/memoSlice';
+import { setShouldGetDataTodo } from '../../redux/Notes/todoSlice';
+import { setShouldGetDataDiary } from '../../redux/Notes/diarySlice';
 
 export const AddNotePopup: React.FC = () => {
   const [diaryOpen, setDiaryOpen] = useState(false);
@@ -117,6 +121,7 @@ export const NewDiary = (props: {
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
+  const dispatch = useDispatch();
   const [diaryWeather, setDiaryWeather] = useState("");
   const [title, setTitle] = useState("");
   const [mood, setMood] = useState("");
@@ -133,25 +138,6 @@ export const NewDiary = (props: {
   async function confirm_diary() {
     modal.current?.dismiss("", "confirm");
     props.handleDiaryDismiss(false);
-
-    //updated db
-    let token = await getName("token");
-    const res = await fetch("http://localhost:8090/editors/new-diary", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        content: diaryContent,
-        weather: diaryWeather,
-        title: title,
-        mood: mood,
-      }),
-    });
-    const json = await res.json();
-    console.log(json);
 
     //update local storage
     const key = "diary";
@@ -171,6 +157,26 @@ export const NewDiary = (props: {
       : [];
     const value = JSON.stringify([...existingData, data]);
     await Preferences.set({ key, value });
+    dispatch(setShouldGetDataDiary(true))
+
+    //updated db
+    let token = await getName("token");
+    const res = await fetch("http://localhost:8090/editors/new-diary", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        content: diaryContent,
+        weather: diaryWeather,
+        title: title,
+        mood: mood,
+      }),
+    });
+    const json = await res.json();
+    console.log(json);
   }
 
   function handleCallbackWeather(childData: any) {
@@ -222,6 +228,7 @@ export const NewMemo = (props: {
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
+  const dispatch = useDispatch();
   const [memoContent, setMemoContent] = useState("");
 
   async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
@@ -238,22 +245,6 @@ export const NewMemo = (props: {
     let id = uuidv4();
     // props.handleMemoDismiss(false);
 
-    //updated DB
-    let token = await getName("token");
-    const res = await fetch("http://localhost:8090/editors/new-memo", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        content: memoContent,
-      }),
-    });
-    const json = await res.json();
-    console.log(json);
-
     //update local storage
     const key = "memo";
     const data = {
@@ -269,10 +260,29 @@ export const NewMemo = (props: {
       : [];
     const value = JSON.stringify([...existingData, data]);
     await Preferences.set({ key, value });
+    dispatch(setShouldGetDataMemo(true))
+
+
+    //updated DB
+    let token = await getName("token");
+    const res = await fetch("http://localhost:8090/editors/new-memo", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        content: memoContent,
+      }),
+    });
+    const json = await res.json();
+    console.log(json);
   }
 
   function handleEditorCallback(childData: any) {
     setMemoContent(childData.content);
+    console.log(memoContent)
   }
 
   return (
@@ -328,6 +338,7 @@ export const NewTodo = (props: {
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
+  const dispatch = useDispatch();
   const [todoListTitle, setTodoListTitle] = useState("");
   const [todoDate, setTodoDate] = useState("");
   const [todoHashtag, setTodoHashtag] = useState([] as string[]);
@@ -360,21 +371,7 @@ export const NewTodo = (props: {
       memo: todoMemoRelated,
     };
 
-    //update db
-    const res = await fetch("http://localhost:8090/editors/new-todo", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        content: todoContent,
-      }),
-    });
-    const json = await res.json();
-    console.log(json);
-
+  
     //local storage
     const addTodolistToPreferences= async (todoListTitle:string,todoDate:string, todoHashtag:string[], todoNewHashtag:string[], todoEmail:string[],todoTask:{}[],todoMemoRelated:string[])=>{
       const key = "todolist";
@@ -396,6 +393,7 @@ export const NewTodo = (props: {
       : [];
     const value = JSON.stringify([...existingData, data]);
     await Preferences.set({ key, value });
+    dispatch(setShouldGetDataTodo(true))
     }
 
     addTodolistToPreferences(todoListTitle,todoDate, todoHashtag, todoNewHashtag, todoEmail,todoTask,todoMemoRelated);
@@ -475,6 +473,21 @@ export const NewTodo = (props: {
     })
   }
   addTodoEmailToPreferences(todoEmail, id)
+
+  //update db
+  const res = await fetch("http://localhost:8090/editors/new-todo", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: id,
+      content: todoContent,
+    }),
+  });
+  const json = await res.json();
+  console.log(json);
 
   }
 

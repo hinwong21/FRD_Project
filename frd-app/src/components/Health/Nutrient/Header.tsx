@@ -67,21 +67,21 @@ const HealthNutrition = () => {
           }
 
           if (dietProgramme === "") {
-            carbsDailyIntake = Math.round(caloriesDailyIntake * 0.65);
+            carbsDailyIntake = Math.round((caloriesDailyIntake * 0.65) / 4);
             proteinDailyIntake = Math.round(weight * 0.8);
             fatDailyIntake = Math.round(caloriesDailyIntake * 0.2);
           } else if (dietProgramme === "Low Carbs") {
             carbsDailyIntake = 57;
             proteinDailyIntake = Math.round(weight * 0.8);
-            fatDailyIntake = Math.round(caloriesDailyIntake * 0.2);
+            fatDailyIntake = Math.round((caloriesDailyIntake * 0.2) / 9);
           } else if (dietProgramme === "Ketogenic") {
-            carbsDailyIntake = Math.round(caloriesDailyIntake * 0.1);
-            proteinDailyIntake = Math.round(weight * 0.35);
-            fatDailyIntake = Math.round(caloriesDailyIntake * 0.6);
+            carbsDailyIntake = Math.round((caloriesDailyIntake * 0.1) / 4);
+            proteinDailyIntake = Math.round((caloriesDailyIntake * 0.2) / 4);
+            fatDailyIntake = Math.round((caloriesDailyIntake * 0.6) / 9);
           } else if (dietProgramme === "IMF") {
-            carbsDailyIntake = Math.round(caloriesDailyIntake * 0.65);
+            carbsDailyIntake = Math.round((caloriesDailyIntake * 0.65) / 4);
             proteinDailyIntake = Math.round(weight);
-            fatDailyIntake = Math.round(caloriesDailyIntake * 0.35);
+            fatDailyIntake = Math.round((caloriesDailyIntake * 0.35) / 9);
           }
 
           setDailyIntake({
