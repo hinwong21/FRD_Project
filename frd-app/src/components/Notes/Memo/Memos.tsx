@@ -121,7 +121,7 @@ export const Memos: React.FC = () => {
   let timer: any;
   function handlePointerDown(id: string) {
     timer = setTimeout(() => {
-      console.log("Long press event detected!");
+      // console.log("Long press event detected!");
       setPresentAlert(true);
       setSelectedMemo(id);
     }, 500);
@@ -263,6 +263,12 @@ export const EditMemo = () => {
       // console.log(error)
       dispatch(setNotesAlertShow(true))
       dispatch(setNotesAlertMsg("Exceeded size limit. Please try inserting fewer images."))
+      //reset the alert show value to false
+      const timer = setTimeout(() => {
+        dispatch(setNotesAlertShow(false))
+      }, 5000);
+      return () => clearTimeout(timer);
+      
   }
       
     }
