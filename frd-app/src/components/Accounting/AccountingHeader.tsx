@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Accounting.module.scss";
 import { getName } from "../../service/LocalStorage/LocalStorage";
+import { useGet } from "../../hooks/useGet";
 
 export const AccountingHeader = () => {
   const date = new Date();
@@ -14,24 +15,9 @@ export const AccountingHeader = () => {
   const [budgetedAmount, setBudgetedAmount] = useState(Number);
   const [budgetedAmountThisMonth, setBudgetedAmountThisMonth] =
     useState(Number);
-  async function getBudget() {
-    let token = await getName("token");
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/budget`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const json = await res.json();
-    let budget = json.result[0].budget;
-    // not finish - hard code "0"
-    setBudgetedAmountThisMonth(budget - 0);
-    setBudgetedAmount(budget);
-  }
+
+  const [budgetData, setBudgetData] = useGet("/account/budget", { budget: 0 });
+  console.log({ budgetData });
 
   // not finish
   async function getMonthlyTran() {
@@ -51,8 +37,8 @@ export const AccountingHeader = () => {
   }
 
   useEffect(() => {
-    getBudget();
-    getMonthlyTran();
+    // getBudget();
+    // getMonthlyTran();
   }, []);
 
   return (

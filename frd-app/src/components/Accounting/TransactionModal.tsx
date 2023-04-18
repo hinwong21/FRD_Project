@@ -102,9 +102,10 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
 
     if (!type) return;
 
+    // TODO ajax
+
     let token = await getName("token");
 
-    // TODO ajax
     const res = await fetch(
       `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
       {

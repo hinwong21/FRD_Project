@@ -111,4 +111,18 @@ export class CurrentUserService {
       throw new Error(`${err.message}`);
     }
   };
+
+  updateField = async (
+    userId: string | undefined,
+    field: string,
+    value: string | number
+  ) => {
+    try {
+      await this.knex("users")
+        .update({ [field]: value })
+        .where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
 }

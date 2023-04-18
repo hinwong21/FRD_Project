@@ -4,6 +4,7 @@ import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { useHistory, useLocation } from "react-router";
 import { chevronBackOutline, closeOutline } from "ionicons/icons";
 import { getName } from "../../service/LocalStorage/LocalStorage";
+import { useFetch } from "../../hooks/useFetch";
 
 export const Edit = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ export const Edit = () => {
 
   const [input, setInput] = useState(value);
   const [textStyle, setTextStyle] = useState({ color: "#74777a" });
+  const fetch = useFetch();
 
   const history = useHistory();
   const goBack = () => {
@@ -24,56 +26,10 @@ export const Edit = () => {
   };
 
   const editFinish = async () => {
-    let token = await getName("token");
     if (input === value) {
       return;
     } else {
-      if (item === "username") {
-        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/username`, {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input,
-          }),
-        });
-      } else if (item === "weight") {
-        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/weight`, {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input,
-          }),
-        });
-      } else if (item === "height") {
-        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/height`, {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input,
-          }),
-        });
-      } else {
-        fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/age`, {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input,
-          }),
-        });
-      }
-
+      await fetch("POST", "/user/" + item, { input });
       history.goBack();
     }
   };

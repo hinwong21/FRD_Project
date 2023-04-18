@@ -71,8 +71,8 @@ export const Calendar_zh = () => {
   const googleCalendarEventArr: {}[] = [];
 
   useEffect(() => {
-    getGoogleCalendarEvents();
-    getLocalCalendarEvents();
+    // getGoogleCalendarEvents();
+    // getLocalCalendarEvents();
   }, []);
 
   async function getGoogleCalendarEvents() {
@@ -99,10 +99,6 @@ export const Calendar_zh = () => {
   function dismiss() {
     setModalState(false);
   }
-
-
-
-
 
   return (
     <>
@@ -140,7 +136,7 @@ export const Calendar_zh = () => {
             googleCalendarEvent,
             eventList,
           ]}
-          eventDidMount={(info:any) => {
+          eventDidMount={(info: any) => {
             return new bootstrap.Popover(info.el, {
               title: info.event.title,
               placement: "auto",
@@ -150,11 +146,11 @@ export const Calendar_zh = () => {
               html: true,
             });
           }}
-          eventClick={(event:any) => {
+          eventClick={(event: any) => {
             // stop from redirecting to Google Calendar onclick
             event.jsEvent.preventDefault();
           }}
-          dateClick={async (info:any) => {
+          dateClick={async (info: any) => {
             // const res = await fetch ("/",{
             //   method: "POST",
             //   headers: {"Content-type": "application/json"},
@@ -162,7 +158,7 @@ export const Calendar_zh = () => {
             // })
             // const json = await res.json();
             // console.log(json);
-            
+
             // console.log(info);
             setModalState(true);
             setModalDate(info.dateStr);
@@ -176,77 +172,76 @@ export const Calendar_zh = () => {
       <IonModal id="example-modal" ref={modal} isOpen={modalState}>
         <IonContent className={styles.modalContentStyle}>
           <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start"></IonButtons>
-            <IonTitle>{modalDate}</IonTitle>
-            <IonButtons slot="end">
-              <IonButton color="light" onClick={() => dismiss()}>
-                Close
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
+            <IonToolbar>
+              <IonButtons slot="start"></IonButtons>
+              <IonTitle>{modalDate}</IonTitle>
+              <IonButtons slot="end">
+                <IonButton color="light" onClick={() => dismiss()}>
+                  Close
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
           </IonHeader>
 
           <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Events</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
+            <IonItemDivider>
+              <IonLabel>Events</IonLabel>
+            </IonItemDivider>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
-    </IonItemGroup>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+          </IonItemGroup>
 
-    <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Todo List</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
+          <IonItemGroup>
+            <IonItemDivider>
+              <IonLabel>Todo List</IonLabel>
+            </IonItemDivider>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
-    </IonItemGroup>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+          </IonItemGroup>
 
-    <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Diary</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
+          <IonItemGroup>
+            <IonItemDivider>
+              <IonLabel>Diary</IonLabel>
+            </IonItemDivider>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
-    </IonItemGroup>
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+          </IonItemGroup>
 
-    <IonItemGroup>
-        <IonItemDivider>
-          <IonLabel>Period</IonLabel>
-        </IonItemDivider>
-        <IonItem>
-              <div>{modalContent}</div>
-            </IonItem>
+          <IonItemGroup>
+            <IonItemDivider>
+              <IonLabel>Period</IonLabel>
+            </IonItemDivider>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
             <IonItem>
               <div>{modalContent}</div>
             </IonItem>
-    </IonItemGroup>
-
+            <IonItem>
+              <div>{modalContent}</div>
+            </IonItem>
+          </IonItemGroup>
         </IonContent>
       </IonModal>
     </>
