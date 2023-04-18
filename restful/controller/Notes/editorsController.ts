@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { errorHandler } from "../../error";
 import { EditorsService } from "../../service/editorsService";
 import "../../session";
+import { getJWT } from "../../jwt";
 
 export class EditorsController {
   constructor(private editorsService: EditorsService) {
@@ -24,11 +25,11 @@ export class EditorsController {
     }
   };
 
-  updateMemo= async (req:Request, res:Response)=>{
-    try{
-      await this.editorsService.updateMemo(req.body.id, req.body.content)
-      res.json({success:true})
-    }catch (err){
+  updateMemo = async (req: Request, res: Response) => {
+    try {
+      await this.editorsService.updateMemo(req.body.id, req.body.content);
+      res.json({ success: true });
+    } catch (err) {
       errorHandler(err, req, res);
     }
   };
@@ -49,33 +50,55 @@ export class EditorsController {
     }
   };
 
-  updateDiary = async (req:Request, res:Response)=>{
-    try{
-      await this.editorsService.updateDiary(req.body.id, req.body.content, req.body.updated_at,req.body.title, req.body.mood)
-      res.json({success:true})
-    }catch (err){
-      errorHandler(err, req, res);
-    }
-  }
-
-  newTodo= async (req:Request, res:Response)=>{
-    try{
-      console.log(req.body)
-      res.json({success:true})
-
-    }catch(err){
+  updateDiary = async (req: Request, res: Response) => {
+    try {
+      await this.editorsService.updateDiary(
+        req.body.id,
+        req.body.content,
+        req.body.updated_at,
+        req.body.title,
+        req.body.mood
+      );
+      res.json({ success: true });
+    } catch (err) {
       errorHandler(err, req, res);
     }
   };
 
-
-  updateTodo = async (req:Request, res:Response)=>{
-    try{
-      console.log(req.body)
-      res.json({success:true})
-
-    }catch(err){
+  newTodo = async (req: Request, res: Response) => {
+    let userId = getJWT(req).userId;
+    let id = req.body.id;
+    let title = req.body.content.title;
+    let dueDate = req.body.content.due_date;
+    let hashtag = req.body.content.hashtag;
+    let newHashtag = req.body.content.newHashtag;
+    let sharedEmail = req.body.content.shared_email;
+    let task = req.body.content.tasks;
+    let memo = req.body.content.memo;
+    try {
+      await this.editorsService.newTodo(
+        id,
+        userId,
+        title,
+        dueDate,
+        hashtag,
+        newHashtag,
+        sharedEmail,
+        task,
+        memo
+      );
+      res.json({ success: true });
+    } catch (err) {
       errorHandler(err, req, res);
-  }
-  }
+    }
+  };
+
+  updateTodo = async (req: Request, res: Response) => {
+    try {
+      console.log(req.body);
+      res.json({ success: true });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
 }
