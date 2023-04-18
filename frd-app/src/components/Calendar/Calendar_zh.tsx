@@ -1,4 +1,13 @@
-import { useRef, useEffect, useState } from "react";
+import {
+  useRef,
+  useEffect,
+  useState,
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+} from "react";
 import "@ionic/react/css/core.css";
 /* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
@@ -57,9 +66,17 @@ import { setShouldGetDataEvent } from "../../redux/Calendar/eventSlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../redux/store/store";
 import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSquareCheck,
+  faSquare,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Calendar_zh = () => {
-  const shouldGetDataEvent = useSelector((state: IRootState) => state.event.shouldGetDataEvent);
+  const shouldGetDataEvent = useSelector(
+    (state: IRootState) => state.event.shouldGetDataEvent
+  );
   const [modalState, setModalState] = useState(false);
   const [modalDate, setModalDate] = useState("");
   const [modalContent, setModalContent] = useState("");
@@ -70,13 +87,12 @@ export const Calendar_zh = () => {
   const [period, setPeriod] = useState([] as {}[]);
   const [periodList, setPeriodList] = useState([] as {}[]);
   const [ovuList, setOvuList] = useState([] as {}[]);
-  // const [presentAlertTodo, setPresentAlertTodo] = useState(false);
-  // const [selectedTodo, setSelectedTodo] = useState("");
+  const [presentAlertTodo, setPresentAlertTodo] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState("");
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
-
 
   useEffect(() => {
     getGoogleCalendarEvents();
@@ -331,7 +347,7 @@ export const Calendar_zh = () => {
         const value = JSON.stringify(newData);
         await Preferences.set({ key, value });
         dispatch(setShouldGetDataEvent(true));
-        history.push("/Calendar")
+        history.push("/Calendar");
       };
       deleteEventFromPreferences(selectedEvent);
     } else if (buttonIndex === 0) {
@@ -344,7 +360,42 @@ export const Calendar_zh = () => {
     clearTimeout(timer);
   }
 
- 
+  //for deletion
+  let timer_todo: any;
+  function handlePointerDownTodo(id: string) {
+    timer_todo = setTimeout(() => {
+      console.log("Long press event detected!");
+      setPresentAlertTodo(true);
+      setSelectedTodo(id);
+    }, 500);
+  }
+
+  const handleAlertButtonClickTodo = async (buttonIndex: number) => {
+    if (buttonIndex === 1) {
+      setPresentAlertTodo(false);
+      const deleteTodoListFromPreferences = async (id: string) => {
+        const key = "todolist";
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
+        const newData = existingData.filter(
+          (todoList: any) => todoList.id !== id
+        );
+        const value = JSON.stringify(newData);
+        await Preferences.set({ key, value });
+        dispatch(setShouldGetDataTodo(true));
+      };
+      deleteTodoListFromPreferences(selectedTodo);
+    } else if (buttonIndex === 0) {
+      setPresentAlertTodo(false);
+      return;
+    }
+  };
+
+  function handlePointerUpTodo() {
+    clearTimeout(timer);
+  }
 
   return (
     <>
@@ -362,13 +413,13 @@ export const Calendar_zh = () => {
             start: "title",
             end: "prev,dayGridMonth,timeGridWeek,listWeek,next",
           }}
-          editable={true}
+          // editable={true}
           // locale= {locale}
           contentHeight={600}
-          droppable={true}
-          selectable={true}
+          // droppable={true}
+          // selectable={true}
           nowIndicator={true}
-          longPressDelay={500}
+          // longPressDelay={500}
           googleCalendarApiKey="AIzaSyCudYRoPMFcW8GuaTTNTgO9a0IGsz6lYak"
           eventSources={[
             {
@@ -389,7 +440,7 @@ export const Calendar_zh = () => {
             event.jsEvent.preventDefault();
           }}
           dateClick={handleDateClick}
-          dayMaxEventRows= {true} // for all non-TimeGrid views
+          dayMaxEventRows={true}
         />
       </div>
 
@@ -412,16 +463,20 @@ export const Calendar_zh = () => {
             <div className={styles.modalContentStyle}>
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel className={styles.dayViewLabel}>📢 About Today</IonLabel>
+                  <IonLabel className={styles.dayViewLabel}>
+                    📢 About Today
+                  </IonLabel>
                 </IonItemDivider>
               </IonItemGroup>
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel className={styles.dayViewLabel}>🔥 Public Holiday</IonLabel>
+                  <IonLabel className={styles.dayViewLabel}>
+                    🔥 Public Holiday
+                  </IonLabel>
                 </IonItemDivider>
                 {publicHoliday.length < 1 ? (
-                  <div>No Public Holiday.</div>
+                  <div className={styles.emptyMsg}>No Public Holiday.</div>
                 ) : (
                   publicHoliday.map((holiday: any, index) => (
                     <div key={uuidv4()}>{holiday.title}</div>
@@ -435,7 +490,9 @@ export const Calendar_zh = () => {
                 </IonItemDivider>
 
                 {clickedEventList.length < 1 ? (
-                  <div>This day has no scheduled events.</div>
+                  <div className={styles.emptyMsg}>
+                    This day has no scheduled events.
+                  </div>
                 ) : (
                   clickedEventList.map((event: any, index: any) => (
                     <div>
@@ -476,10 +533,14 @@ export const Calendar_zh = () => {
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel className={styles.dayViewLabel}>📝 Todo List</IonLabel>
+                  <IonLabel className={styles.dayViewLabel}>
+                    📝 Todo List
+                  </IonLabel>
                 </IonItemDivider>
                 {clickedTodoList.length < 1 ? (
-                  <div>No Todo due on this day.</div>
+                  <div className={styles.emptyMsg}>
+                    No Todo due on this day.
+                  </div>
                 ) : (
                   clickedTodoList.map((todo: any, index) => (
                     <div key={uuidv4()}>
@@ -491,7 +552,58 @@ export const Calendar_zh = () => {
                         }}
                         className={styles.todoListWrapper}
                       >
-                        <div>{todo.title}</div>
+                        <IonCard
+                          className={styles.todoListWrapper2}
+                          onPointerDown={() => handlePointerDownTodo(todo.id)}
+                          onPointerUp={handlePointerUpTodo}
+                        >
+                          <div className={styles.todoProgressIcon}>
+                            {todo.task.some(
+                              (taskItem: { checked: any }) => !taskItem.checked
+                            ) ? (
+                              <FontAwesomeIcon icon={faSpinner} color="red" />
+                            ) : (
+                              <FontAwesomeIcon
+                                icon={faSquareCheck}
+                                color="blue"
+                              />
+                            )}
+                          </div>
+                          <div className={styles.titleAndHashtagContainer}>
+                            <div className={styles.todoListTitle}>
+                              {todo.title}
+                            </div>
+                            <div className={styles.todoPreviewHashtag}>
+                              {todo.hashtag.map(
+                                (
+                                  item:
+                                    | string
+                                    | number
+                                    | boolean
+                                    | ReactElement<
+                                        any,
+                                        string | JSXElementConstructor<any>
+                                      >
+                                    | ReactFragment
+                                    | ReactPortal
+                                    | null
+                                    | undefined,
+                                  index: Key | null | undefined
+                                ) => (
+                                  <div
+                                    key={index}
+                                    className={styles.todoPreviewHashtagStyle}
+                                  >
+                                    {item}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                          <div className={styles.todoListDate}>
+                            Due on: {todo.due_date.slice(0, 10)}
+                          </div>
+                        </IonCard>
                       </Link>
                     </div>
                   ))
@@ -502,7 +614,9 @@ export const Calendar_zh = () => {
               ) : (
                 <IonItemGroup>
                   <IonItemDivider>
-                    <IonLabel className={styles.dayViewLabel}>🩸 Period</IonLabel>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🩸 Period
+                    </IonLabel>
                   </IonItemDivider>
                   {clickedPeriod.map((period: any, index) => (
                     <div key={uuidv4()}>
@@ -531,10 +645,12 @@ export const Calendar_zh = () => {
               ) : (
                 <IonItemGroup>
                   <IonItemDivider>
-                    <IonLabel className={styles.dayViewLabel}>🌸 Ovulation Period</IonLabel>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🌸 Ovulation Period
+                    </IonLabel>
                   </IonItemDivider>
                   {clickedOvu.map((period: any, index) => (
-                    <div key={uuidv4()}>
+                    <div key={uuidv4()} className={styles.emptyMsg}>
                       {"Day " +
                         Math.min(
                           Math.max(
@@ -558,7 +674,9 @@ export const Calendar_zh = () => {
                 <div>
                   <IonItemGroup>
                     <IonItemDivider>
-                      <IonLabel className={styles.dayViewLabel}>📢 Health</IonLabel>
+                      <IonLabel className={styles.dayViewLabel}>
+                        📢 Nutrition
+                      </IonLabel>
                     </IonItemDivider>
                   </IonItemGroup>
 
@@ -569,25 +687,44 @@ export const Calendar_zh = () => {
               )}
             </div>
           </div>
-   
+
           <IonAlert
-          header="Delete this event?"
-          isOpen={presentAlertEvent}
-          animated={true}
-          buttons={[
-            {
-              text: "Cancel",
-              role: "cancel",
-              handler: () => handleAlertButtonClickEvent(0),
-            },
-            {
-              text: "Delete",
-              role: "confirm",
-              handler: () => handleAlertButtonClickEvent(1),
-            },
-          ]}
-          onDidDismiss={() => setPresentAlertEvent(false)}
-        ></IonAlert>
+            header="Delete this event?"
+            isOpen={presentAlertEvent}
+            animated={true}
+            buttons={[
+              {
+                text: "Cancel",
+                role: "cancel",
+                handler: () => handleAlertButtonClickEvent(0),
+              },
+              {
+                text: "Delete",
+                role: "confirm",
+                handler: () => handleAlertButtonClickEvent(1),
+              },
+            ]}
+            onDidDismiss={() => setPresentAlertEvent(false)}
+          ></IonAlert>
+
+          <IonAlert
+            header="Delete this todolist?"
+            isOpen={presentAlertTodo}
+            animated={true}
+            buttons={[
+              {
+                text: "Cancel",
+                role: "cancel",
+                handler: () => handleAlertButtonClickTodo(0),
+              },
+              {
+                text: "Delete",
+                role: "confirm",
+                handler: () => handleAlertButtonClickTodo(1),
+              },
+            ]}
+            onDidDismiss={() => setPresentAlertTodo(false)}
+          ></IonAlert>
         </IonContent>
       </IonModal>
     </>

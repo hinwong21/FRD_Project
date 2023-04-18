@@ -63,6 +63,7 @@ h2{
 
 .dayViewLabel{
     width:85vw;
+    margin-top: 5px;
 }
 
 .calendarEventDayViewWrapper{
@@ -124,3 +125,77 @@ h2{
     word-wrap: break-word; 
     word-break: break-all;
 }
+
+.emptyMsg{
+    margin-left:25px;
+}
+
+.todoListWrapper{
+    text-decoration: none; 
+  }
+  
+  .todoListWrapper2{
+    width:85vw;
+    background-color: rgba(255, 255, 255, 0.702);
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+  }
+  
+  .todoProgressIcon{
+    font-size: 18px;
+  }
+  
+  .todoPreviewHashtagStyle{
+    background-color: rgb(227, 198, 188);
+    padding-left:2px;
+    padding-right:2px;
+    margin-left:1.5px;
+    margin-right:1.5px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+  
+  .todoPreviewHashtag{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    width:30vw;
+  }
+  
+  .titleAndHashtagContainer{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .todoListContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    overflow: scroll;
+  }
+  
+  .todoListTitle{
+    word-wrap: break-word; 
+    word-break: break-all;
+  }
+  
+  .memoBlock img {
+    max-width: 100%; 
+    max-height: 100%; 
+  }
+  
+  .todoListDate{
+    font-size: 13px;
+    color: gray
+  }
