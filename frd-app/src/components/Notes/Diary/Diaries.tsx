@@ -35,6 +35,8 @@ import { useDispatch } from "react-redux";
 import { setShouldGetDataDiary } from "../../../redux/Notes/diarySlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../redux/store/store";
+import { setNotesAlertMsg } from "../../../redux/Notes/notesAlertMsgSlice";
+import { setNotesAlertShow } from "../../../redux/Notes/notesAlertSlice";
 
 export type DiaryType = {
   id: string;
@@ -63,6 +65,8 @@ export const Diaries: React.FC = () => {
   const shouldGetDataDiary = useSelector(
     (state: IRootState) => state.diary.shouldGetDataDiary
   );
+  const notesAlertShow = useSelector((state:IRootState)=> state.alert.errMsgShow)
+  const notesAlertMsg = useSelector((state:IRootState)=> state.alertMsg.errMsg)
   const [diaryContent, setDiaryContent] = useState<DiaryType[]>([]);
   const [previewTextArray, setPreviewTextArray] = useState<JSX.Element[]>([]);
   const [previewImageArray, setPreviewImageArray] = useState<JSX.Element[]>([]);
@@ -425,6 +429,7 @@ export const Diaries: React.FC = () => {
               </Link>
             ))):<></>}
         </div>
+        <IonToast isOpen={notesAlertShow} message={notesAlertMsg} duration={5000}></IonToast>
       </IonItemGroup>
     </>
   );
@@ -477,9 +482,21 @@ export const EditDiary = () => {
         existingData[index].mood = diaryMood;
         existingData[index].title = diaryTitle;
       }
-      const value = JSON.stringify(existingData);
-      await Preferences.set({ key, value });
-      dispatch(setShouldGetDataDiary(true));
+
+      try{
+        const value = JSON.stringify(existingData);
+        await Preferences.set({ key, value });
+        dispatch(setShouldGetDataDiary(true));
+      }catch{
+        dispatch(setNotesAlertShow(true))
+      dispatch(setNotesAlertMsg("Exceeded size limit. Please try inserting fewer images."))
+      //reset the alert show value to false
+      const timer = setTimeout(() => {
+        dispatch(setNotesAlertShow(false))
+      }, 5000);
+      return () => clearTimeout(timer);
+      }
+      
     }
 
     updateDiaryLS(diaryId, diaryContent, diaryMood, diaryTitle);

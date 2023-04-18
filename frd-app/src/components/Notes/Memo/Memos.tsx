@@ -43,8 +43,8 @@ export const Memos: React.FC = () => {
   const shouldGetDataMemo = useSelector(
     (state: IRootState) => state.memo.shouldGetDataMemo
   );
-  const setNotesAlertShow = useSelector((state:IRootState)=> state.alert.errMsgShow)
-  const setNotesAlertMsg = useSelector((state:IRootState)=> state.alertMsg.errMsg)
+  const notesAlertShow = useSelector((state:IRootState)=> state.alert.errMsgShow)
+  const notesAlertMsg = useSelector((state:IRootState)=> state.alertMsg.errMsg)
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
   const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
   const [presentAlert, setPresentAlert] = useState(false);
@@ -178,7 +178,7 @@ export const Memos: React.FC = () => {
           onDidDismiss={() => setPresentAlert(false)}
         ></IonAlert>
 
-    <IonToast isOpen={setNotesAlertShow} message={setNotesAlertMsg} duration={5000}></IonToast>
+    <IonToast isOpen={notesAlertShow} message={notesAlertMsg} duration={5000}></IonToast>
 
         <div className={styles.mainMemoContainer}>
           <div className={styles.memoWrapper}>
@@ -227,14 +227,14 @@ export const EditMemo = () => {
   const [memoEditorContent, setMemoEditorContent] = useState("");
   const [memoEditorId, setMemoEditorId] = useState("");
   const [memoContent, setMemoContent] = useState("");
-  const [showAlert, setShowAlert] = useState(false)
+  // const [showAlert, setShowAlert] = useState(false)
+  // const [alertMsg, setAlertMsg] = useState("")
 
   async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
       console.log("memo");
     }
   }
-
 
   async function confirm_memo() {
     let token = await getName("token");
@@ -267,15 +267,12 @@ export const EditMemo = () => {
       const timer = setTimeout(() => {
         dispatch(setNotesAlertShow(false))
       }, 5000);
-      return () => clearTimeout(timer);
-      
+      return () => clearTimeout(timer);     
   }
-      
-    }
+}
 updateMemoLS(memoEditorId, memoContent);
     
     
-
     //update db
     const res = await fetch("http://localhost:8090/editors/update-memo", {
       method: "PUT",
@@ -305,8 +302,20 @@ updateMemoLS(memoEditorId, memoContent);
     setMemoEditorId(data.id);
   }, []);
 
-  function handleReEditEditorCallback(childData: any) {
+  function handleReEditEditorCallback(childData: {content:string}) {
     setMemoContent(childData.content);
+      // const parsedContent = JSON.parse(childData.content).ops as any;
+      // parsedContent.map((content: any, contentIndex: any) => {
+      //   if (content.insert.image){
+      //     setShowAlert(true)
+      //     setAlertMsg("Caution: You may exceed the size limit. To avoid losing your content, please insert no more than one image.")
+      //     const timer = setTimeout(() => {
+      //      setShowAlert(false)
+      //     }, 5000);
+      //     return () => clearTimeout(timer);
+      //   }
+
+      // })
   }
 
   return (
@@ -336,14 +345,7 @@ updateMemoLS(memoEditorId, memoContent);
           </IonHeader>
           <IonContent className="ion-padding">
 
-
-          {/* <IonAlert
-      isOpen={showAlert}
-      onDidDismiss={() => setShowAlert(false)}
-      header={'Error'}
-      message={'Failed to add to-do list. The storage quota has been exceeded.'}
-      buttons={['OK']}
-    /> */}
+          {/* <IonToast isOpen={showAlert} message={alertMsg} duration={5000}></IonToast> */}
 
             <ReEditTextEditor
               content={memoEditorContent}

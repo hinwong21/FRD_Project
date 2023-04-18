@@ -100,7 +100,7 @@ export function TodoEditor(props: {
     { id: string; content: string; checked: boolean }[]
   >([]);
   const [newItemInputValue, setNewItemInputValue] = useState("");
-  const [selectedDate, setSelectedDate] = useState<string>(JSON.stringify(new Date()));
+  const [selectedDate, setSelectedDate] = useState<string>(JSON.stringify(new Date()).slice(1,11));
   const [hashtags, setHashtags] = useState([] as string[]);
   const [searchTextHashtag, setSearchTextHashtag] = useState<string>("");
   const [hashTagShow, setHashTagShow] = useState(false);
