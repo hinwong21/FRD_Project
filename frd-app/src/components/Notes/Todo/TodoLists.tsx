@@ -32,6 +32,7 @@ import { useDispatch } from 'react-redux';
 import { setShouldGetDataTodo } from '../../../redux/Notes/todoSlice';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../../redux/store/store';
+import {isAfter} from "date-fns"
 
 export interface TodoListLSItem {
   id: string;
@@ -61,12 +62,20 @@ export const TodoLists: React.FC = () => {
     const { value } = await Preferences.get({ key: "todolist" });
     if (value !== null) {
       // console.log(value);
-      
-      setTodoListLS(JSON.parse(value));
+  const sortTodoListsByDueDate = (a:any, b:any) => {
+    const aDueDate = new Date(b.due_date) as any;
+    const bDueDate = new Date(a.due_date) as any;
+    return aDueDate - bDueDate;
+  };      
+      setTodoListLS(JSON.parse(value).sort(sortTodoListsByDueDate));
     }
     console.log(JSON.parse(value as string));
     dispatch(setShouldGetDataTodo(false))
   };
+
+
+ 
+
 
   useEffect(() => {
     getTodoListLS();
@@ -137,7 +146,12 @@ export const TodoLists: React.FC = () => {
         onDidDismiss={() => setPresentAlert(false)}
       ></IonAlert>
 
+       
+        
+        
+
         <div className={styles.todoListContainer}>
+         
           {todoListLS.map((todo, index) => (
             <Link
               key={index}
@@ -160,13 +174,13 @@ export const TodoLists: React.FC = () => {
                 <div key={index} className={styles.todoPreviewHashtagStyle}>{item}</div>
               ))}</div>
               </div>
-              <div className={styles.todoListDate}>
+              <div className={styles.todoListDate} >
                 Due on: {todo.due_date.slice(0, 10)}
               </div>
               </IonCard>
             </Link>
           ))}
-        </div>
+          </div>
       </IonItemGroup>
     </>
   );

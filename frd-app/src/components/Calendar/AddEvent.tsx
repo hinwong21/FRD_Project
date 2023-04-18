@@ -30,9 +30,14 @@ import styles from "./Calendar.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { useDispatch } from "react-redux";
+import { setShouldGetDataEvent } from "../../redux/Calendar/eventSlice";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../redux/store/store";
 
 const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
 
+  const dispatch = useDispatch();
   const [showAlertNewEvent, setShowAlertNewEvent] = useState(false);
   const [alertMsgNewEvent, setAlertMsgNewEvent] = useState("");
 
@@ -71,6 +76,7 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
       : [];
     const value = JSON.stringify([...existingData, data]);
     await Preferences.set({ key, value });
+    dispatch(setShouldGetDataEvent(true));
 
     //update db
     let token = await getName("token")

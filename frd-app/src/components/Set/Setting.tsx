@@ -48,7 +48,7 @@ export const Setting = () => {
     const events_json2 = events_json[0].content.replace(/\\/g, "");
     const events_json3 = JSON.parse(events_json2);
     //insert them into local storage
-    const key = "calendar";
+    const key = "google_calendar";
     const data = events_json3
     const existingValue = await Preferences.get({ key });
     const existingData = existingValue.value
