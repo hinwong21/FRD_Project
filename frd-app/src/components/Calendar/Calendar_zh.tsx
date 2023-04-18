@@ -72,6 +72,8 @@ import {
   faSquare,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
+import { useGet } from "../../hooks/useGet";
+import {useToken} from "../../hooks/useToken"
 
 export const Calendar_zh = () => {
   const shouldGetDataEvent = useSelector(
@@ -86,6 +88,7 @@ export const Calendar_zh = () => {
   const [diary, setDiary] = useState([] as {}[]);
   const [period, setPeriod] = useState([] as {}[]);
   const [periodList, setPeriodList] = useState([] as {}[]);
+  // const [period, sePeriod] = useGet("/period/period_calendar", []);
   const [ovuList, setOvuList] = useState([] as {}[]);
   const [presentAlertTodo, setPresentAlertTodo] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState("");
@@ -93,6 +96,8 @@ export const Calendar_zh = () => {
   const [selectedEvent, setSelectedEvent] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
+  const [token] = useToken();
+  // console.log(token)
 
   useEffect(() => {
     // getGoogleCalendarEvents();
@@ -172,7 +177,22 @@ export const Calendar_zh = () => {
   };
   async function getPeriod() {
     await getPeriodLS();
+    // await getPeriodDB();
   }
+
+const getPeriodDB = async()=>{
+  const res = await fetch ("http://localhost:8090/period/period_calendar",{
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-type": "application/json",
+    },
+  })
+  const res_json = await res.json()
+  console.log(res_json)
+  setPeriod(res_json)
+}
+
 
   function configPeriodList() {
     console.log("period", period);
@@ -281,50 +301,17 @@ export const Calendar_zh = () => {
     setModalContent("ABC");
   };
 
-  const handleEventDidMount = (info: any) => {
-    return new bootstrap.Popover(info.el, {
-      title: info.event.title,
-      placement: "auto",
-      trigger: "hover",
-      sanitize: false,
-      customClass: "popoverStyle",
-      html: true,
-    });
-  };
-
-  //for deletion
-  // let timer: any;
-  // function handlePointerDown(id:string) {
-  //   timer = setTimeout(() => {
-  //     console.log('Long press event detected!');
-  //     setPresentAlert(true)
-  //     setSelectedTodo(id)
-
-  //   }, 500);
-  // }
-
-  // const handleAlertButtonClick = async (buttonIndex: number) => {
-  //   if (buttonIndex === 1) {
-  //     setPresentAlert(false)
-  //     const deleteTodoListFromPreferences = async (id: string) => {
-  //       const key = "todolist";
-  //       const existingValue = await Preferences.get({ key });
-  //       const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
-  //       const newData = existingData.filter((todoList: any) => todoList.id !== id);
-  //       const value = JSON.stringify(newData);
-  //       await Preferences.set({ key, value });
-  //       dispatch(setShouldGetDataTodo(true));
-  //     }
-  //   deleteTodoListFromPreferences(selectedTodo)
-  //   } else if (buttonIndex === 0) {
-  //     setPresentAlert(false)
-  //     return;
-  //   }
+  // const handleEventDidMount = (info: any) => {
+  //   return new bootstrap.Popover(info.el, {
+  //     title: info.event.title,
+  //     placement: "auto",
+  //     trigger: "hover",
+  //     sanitize: false,
+  //     customClass: "popoverStyle",
+  //     html: true,
+  //   });
   // };
 
-  // function handlePointerUp() {
-  //   clearTimeout(timer);
-  // }
 
   //for deletion
   let timer: any;
@@ -471,20 +458,19 @@ export const Calendar_zh = () => {
                 </IonItemDivider>
               </IonItemGroup>
 
-              <IonItemGroup>
+              {publicHoliday.length > 0 &&
+              (<IonItemGroup>
                 <IonItemDivider>
                   <IonLabel className={styles.dayViewLabel}>
                     🔥 Public Holiday
                   </IonLabel>
                 </IonItemDivider>
-                {publicHoliday.length < 1 ? (
-                  <div className={styles.emptyMsg}>No Public Holiday.</div>
-                ) : (
-                  publicHoliday.map((holiday: any, index) => (
-                    <div key={uuidv4()}>{holiday.title}</div>
-                  ))
-                )}
+                  {publicHoliday.map((holiday: any, index) => (
+                    <div key={uuidv4()} className={styles.emptyMsg}>{holiday.title}</div>
+                  ))}
               </IonItemGroup>
+              )}
+
 
               <IonItemGroup>
                 <IonItemDivider>
@@ -627,16 +613,17 @@ export const Calendar_zh = () => {
                           Math.min(
                             Math.max(
                               differenceInDays(
-                                parseISO(modalDate as string),
-                                parseISO(period.start as string)
-                              ) + 1,
+                                new Date(modalDate),
+                                new Date(period.start)
+                              ) + 2,
                               1
                             ),
                             differenceInDays(
-                              parseISO(period.end as string),
-                              parseISO(period.start as string)
+                              new Date(period.end),
+                              new Date(period.start)
                             ) + 1
-                          )}
+                          )
+                          }
                       </div>
                     </div>
                   ))}
@@ -657,16 +644,18 @@ export const Calendar_zh = () => {
                         Math.min(
                           Math.max(
                             differenceInDays(
-                              parseISO(modalDate as string),
-                              parseISO(period.start as string)
-                            ) + 1,
+                              new Date(modalDate),
+                              new Date(period.start)
+                            ) + 2,
                             1
                           ),
                           differenceInDays(
-                            parseISO(period.end as string),
-                            parseISO(period.start as string)
+                            new Date(period.end),
+                            new Date(period.start)
                           ) + 1
-                        )}
+                        )
+                        // {Math.ceil((new Date(modalDate).getTime() - new Date(period.start).getTime()) / (1000 * 60 * 60 * 24))}
+                        }
                     </div>
                   ))}
                 </IonItemGroup>
@@ -677,7 +666,7 @@ export const Calendar_zh = () => {
                   <IonItemGroup>
                     <IonItemDivider>
                       <IonLabel className={styles.dayViewLabel}>
-                        📢 Nutrition
+                      🍔 Nutrition
                       </IonLabel>
                     </IonItemDivider>
                   </IonItemGroup>
