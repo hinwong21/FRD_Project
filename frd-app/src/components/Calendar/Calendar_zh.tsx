@@ -95,7 +95,7 @@ export const Calendar_zh = () => {
   const history = useHistory();
 
   useEffect(() => {
-    getGoogleCalendarEvents();
+    // getGoogleCalendarEvents();
     getLocalCalendarEvents();
     getTodoList();
     getDiary();
@@ -103,7 +103,7 @@ export const Calendar_zh = () => {
   }, []);
 
   useEffect(() => {
-    getGoogleCalendarEvents();
+    // getGoogleCalendarEvents();
     getLocalCalendarEvents();
     getTodoList();
     getDiary();
@@ -233,14 +233,14 @@ export const Calendar_zh = () => {
           isBefore(clickedDate, parseISO(event.end as string)))
     );
 
-    const clickedGoogleEvents = googleCalendarEvent.filter(
-      (event: any) =>
-        isSameDay(parseISO(event.start as string), clickedDate) ||
-        isSameDay(parseISO(event.end as string), clickedDate) ||
-        // isWithinInterval(clickedDate,{ start: new Date(event.start as string), end: new Date(event.end as string) })||
-        (isAfter(clickedDate, parseISO(event.start as string)) &&
-          isBefore(clickedDate, parseISO(event.end as string)))
-    );
+    // const clickedGoogleEvents = googleCalendarEvent.filter(
+    //   (event: any) =>
+    //     isSameDay(parseISO(event.start as string), clickedDate) ||
+    //     isSameDay(parseISO(event.end as string), clickedDate) ||
+    //     // isWithinInterval(clickedDate,{ start: new Date(event.start as string), end: new Date(event.end as string) })||
+    //     (isAfter(clickedDate, parseISO(event.start as string)) &&
+    //       isBefore(clickedDate, parseISO(event.end as string)))
+    // );
     const clickedTodoList = todoList.filter((todo: any) =>
       isSameDay(parseISO(todo.due_date as string), clickedDate)
     );
@@ -268,7 +268,9 @@ export const Calendar_zh = () => {
     );
     // console.log(publicHolidays)
 
-    setClickedEventList([...clickedEvents, ...clickedGoogleEvents]);
+    setClickedEventList([...clickedEvents
+      // , ...clickedGoogleEvents
+    ]);
     setClickedTodoList(clickedTodoList);
     setClickedDiary(clickedDiary);
     setClickedPeriod(clickedPeriod);
