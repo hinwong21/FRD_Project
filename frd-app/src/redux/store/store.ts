@@ -6,6 +6,7 @@ import usersReducer from "./UsersSlice";
 import todoReducer from "../Notes/todoSlice"
 import memoReducer from "../Notes/memoSlice"
 import diaryReducer from "../Notes/diarySlice"
+import eventReducer from "../Calendar/eventSlice"
 
 export let store = configureStore({
   reducer: { 
@@ -13,6 +14,7 @@ export let store = configureStore({
     todo: todoReducer,
     memo: memoReducer,
     diary: diaryReducer,
+    event: eventReducer,
     },
 });
 

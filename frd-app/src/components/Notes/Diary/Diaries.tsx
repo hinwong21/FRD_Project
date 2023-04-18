@@ -17,6 +17,7 @@ import {
   IonPopover,
   IonInput,
   IonToast,
+  IonCard,
 } from "@ionic/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
@@ -207,6 +208,8 @@ export const Diaries: React.FC = () => {
     filteredDiary.length = 0
   }
 
+ 
+
   return (
     <>
       <IonItemGroup>
@@ -257,8 +260,7 @@ export const Diaries: React.FC = () => {
                   },
                 }}
                 className={styles.diaryAContainer}
-                key={index}
-              >
+                key={index}>
                 <div className={styles.diaryUpdatedTime}>
                   <div className={styles.diaryDateAdjPosition}>
                     <div className={styles.diaryWeek}>

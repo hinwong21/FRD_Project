@@ -195,9 +195,7 @@ export const NewEventFormModify = () => {
           <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-            {/* <Link to={"./Calendar"}> */}
                 <IonButton onClick={handelCancel}>Cancel</IonButton>
-            {/* </Link> */}
             </IonButtons>
             <IonButtons slot="end">
               <IonButton

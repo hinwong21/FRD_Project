@@ -59,6 +59,12 @@ h2{
     background-color: red;
 }
 
+
+
+.dayViewLabel{
+    width:85vw;
+}
+
 .calendarEventDayViewWrapper{
     /* border-style: solid; */
     width:85vw;
@@ -66,8 +72,54 @@ h2{
     margin-top:8px;
     color:black;
     text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    padding:8px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-height: 120px;
 }
 
-.dayViewLabel{
-    width:85vw;
+.calendarPreviewTimeWrapper{
+    display: flex;
+    flex-direction: row;
+    width:100%;
+    /* justify-content: space-between; */
+    margin-bottom: 5px;
+    background-color: #c1d9f1;
+}
+
+.calendarPreviewTextWrapper{
+    display: flex;
+    flex-direction: row;
+    width:100%;
+    /* justify-content: space-around; */
+}
+
+.calendarPreviewStartTime{
+    text-decoration: none;
+    font-size: 14px;
+
+}
+
+.calendarPreviewEndTime{
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.calendarPreviewTitle{
+    text-decoration: none;
+    width:50%;
+    word-wrap: break-word; 
+    word-break: break-all;
+}
+
+.calendarPreviewDescription{
+    text-decoration: none;
+    width:50%;
+    word-wrap: break-word; 
+    word-break: break-all;
 }

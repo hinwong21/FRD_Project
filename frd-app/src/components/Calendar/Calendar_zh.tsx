@@ -38,6 +38,8 @@ import {
   IonItemDivider,
   IonItemGroup,
   IonPopover,
+  IonCard,
+  IonAlert,
 } from "@ionic/react";
 import * as bootstrap from "bootstrap";
 import styles from "./Calendar.module.css";
@@ -49,6 +51,8 @@ import { Link } from "react-router-dom";
 import Header from "../Health/Nutrient/Header";
 import { nutritionStore } from "../../redux/Nutrition/store";
 import { Provider } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setShouldGetDataTodo } from "../../redux/Notes/todoSlice";
 
 export const Calendar_zh = () => {
   const [modalState, setModalState] = useState(false);
@@ -61,6 +65,12 @@ export const Calendar_zh = () => {
   const [period, setPeriod] = useState([] as {}[]);
   const [periodList, setPeriodList] = useState([] as {}[]);
   const [ovuList, setOvuList] = useState([] as {}[]);
+  // const [presentAlertTodo, setPresentAlertTodo] = useState(false);
+  // const [selectedTodo, setSelectedTodo] = useState("");
+  const [presentAlertEvent, setPresentAlertEvent] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState("");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getGoogleCalendarEvents();
@@ -254,6 +264,75 @@ export const Calendar_zh = () => {
     });
   };
 
+  //for deletion
+  // let timer: any;
+  // function handlePointerDown(id:string) {
+  //   timer = setTimeout(() => {
+  //     console.log('Long press event detected!');
+  //     setPresentAlert(true)
+  //     setSelectedTodo(id)
+
+  //   }, 500);
+  // }
+
+  // const handleAlertButtonClick = async (buttonIndex: number) => {
+  //   if (buttonIndex === 1) {
+  //     setPresentAlert(false)
+  //     const deleteTodoListFromPreferences = async (id: string) => {
+  //       const key = "todolist";
+  //       const existingValue = await Preferences.get({ key });
+  //       const existingData = existingValue.value ? JSON.parse(existingValue.value) : [];
+  //       const newData = existingData.filter((todoList: any) => todoList.id !== id);
+  //       const value = JSON.stringify(newData);
+  //       await Preferences.set({ key, value });
+  //       dispatch(setShouldGetDataTodo(true));
+  //     }
+  //   deleteTodoListFromPreferences(selectedTodo)
+  //   } else if (buttonIndex === 0) {
+  //     setPresentAlert(false)
+  //     return;
+  //   }
+  // };
+
+  // function handlePointerUp() {
+  //   clearTimeout(timer);
+  // }
+
+  //for deletion
+  let timer: any;
+  function handlePointerDownEvent(id: string) {
+    timer = setTimeout(() => {
+      console.log("Long press event detected!");
+      setPresentAlertEvent(true);
+      setSelectedEvent(id);
+    }, 500);
+  }
+
+  const handleAlertButtonClickEvent = async (buttonIndex: number) => {
+    if (buttonIndex === 1) {
+      setPresentAlertEvent(false);
+      const deleteEventFromPreferences = async (id: string) => {
+        const key = "calendar";
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
+        const newData = existingData.filter((memo: any) => memo.id !== id);
+        const value = JSON.stringify(newData);
+        await Preferences.set({ key, value });
+        // dispatch(setShouldGetDataEvent(true));
+      };
+      deleteEventFromPreferences(selectedEvent);
+    } else if (buttonIndex === 0) {
+      setPresentAlertEvent(false);
+      return;
+    }
+  };
+
+  function handlePointerUpEvent() {
+    clearTimeout(timer);
+  }
+
   return (
     <>
       <div>
@@ -302,7 +381,6 @@ export const Calendar_zh = () => {
 
       <AddEvent />
 
-
       <IonModal id="example-modal" ref={modal} isOpen={modalState}>
         <IonContent>
           <IonHeader>
@@ -316,7 +394,6 @@ export const Calendar_zh = () => {
               </IonButtons>
             </IonToolbar>
           </IonHeader>
-
           <div className={styles.contentContainer}>
             <div className={styles.modalContentStyle}>
               <IonItemGroup>
@@ -347,19 +424,38 @@ export const Calendar_zh = () => {
                   <div>This day has no scheduled events.</div>
                 ) : (
                   clickedEventList.map((event: any, index: any) => (
-                    <Link
-                      key={uuidv4()}
-                      to={{
-                        pathname: "./ModifyEvent",
-                        state: { data: event, id: event.id },
-                      }}
-                    >
-                      <div className={styles.calendarEventDayViewWrapper}>
-                        <div>{event.title}</div>
-                        <div>{event.description}</div>
-                        <div>{event.start}</div>
-                      </div>
-                    </Link>
+                    <div>
+                      <Link
+                        key={uuidv4()}
+                        to={{
+                          pathname: "./ModifyEvent",
+                          state: { data: event, id: event.id },
+                        }}
+                      >
+                        <IonCard
+                          className={styles.calendarEventDayViewWrapper}
+                          onPointerDown={() => handlePointerDownEvent(event.id)}
+                          onPointerUp={handlePointerUpEvent}
+                        >
+                          <div className={styles.calendarPreviewTimeWrapper}>
+                            <div className={styles.calendarPreviewStartTime}>
+                              {event.start} &nbsp; to &nbsp;
+                            </div>
+                            <div className={styles.calendarPreviewEndTime}>
+                              {event.end}
+                            </div>
+                          </div>
+                          <div className={styles.calendarPreviewTextWrapper}>
+                            <div className={styles.calendarPreviewTitle}>
+                              {event.title}
+                            </div>
+                            <div className={styles.calendarPreviewDescription}>
+                              {event.description}
+                            </div>
+                          </div>
+                        </IonCard>
+                      </Link>
+                    </div>
                   ))
                 )}
               </IonItemGroup>
@@ -459,6 +555,25 @@ export const Calendar_zh = () => {
               )}
             </div>
           </div>
+          //delete event alert
+          <IonAlert
+          header="Delete this event?"
+          isOpen={presentAlertEvent}
+          animated={true}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => handleAlertButtonClickEvent(0),
+            },
+            {
+              text: "Delete",
+              role: "confirm",
+              handler: () => handleAlertButtonClickEvent(1),
+            },
+          ]}
+          onDidDismiss={() => setPresentAlertEvent(false)}
+        ></IonAlert>
         </IonContent>
       </IonModal>
     </>
