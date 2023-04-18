@@ -320,7 +320,7 @@ export const Notepad: React.FC = () => {
                     pathname: "./EditTodo",
                     state: { data: todo, id: todo.id },
                   }}
-                  className={styles.todoListWrapper}
+                  className={styles.todoListWrapper2}
                 >
                   <div className={styles.todoProgressIcon}>
                     {todo.task.some((taskItem) => !taskItem.checked) ? (

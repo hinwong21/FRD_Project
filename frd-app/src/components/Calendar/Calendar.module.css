@@ -90,11 +90,12 @@ h2{
     /* justify-content: space-between; */
     margin-bottom: 5px;
     background-color: #c1d9f1;
+    border-radius: 5px;
 }
 
 .calendarPreviewTextWrapper{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width:100%;
     /* justify-content: space-around; */
 }
@@ -102,7 +103,7 @@ h2{
 .calendarPreviewStartTime{
     text-decoration: none;
     font-size: 14px;
-
+    padding-left:2px;
 }
 
 .calendarPreviewEndTime{
@@ -112,14 +113,14 @@ h2{
 
 .calendarPreviewTitle{
     text-decoration: none;
-    width:50%;
+    width:100%;
     word-wrap: break-word; 
     word-break: break-all;
 }
 
 .calendarPreviewDescription{
     text-decoration: none;
-    width:50%;
+    width:100%;
     word-wrap: break-word; 
     word-break: break-all;
 }

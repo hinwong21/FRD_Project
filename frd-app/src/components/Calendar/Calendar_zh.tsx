@@ -53,8 +53,13 @@ import { nutritionStore } from "../../redux/Nutrition/store";
 import { Provider } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setShouldGetDataTodo } from "../../redux/Notes/todoSlice";
+import { setShouldGetDataEvent } from "../../redux/Calendar/eventSlice";
+import { useSelector } from "react-redux";
+import { IRootState } from "../../redux/store/store";
+import { useHistory } from "react-router-dom";
 
 export const Calendar_zh = () => {
+  const shouldGetDataEvent = useSelector((state: IRootState) => state.event.shouldGetDataEvent);
   const [modalState, setModalState] = useState(false);
   const [modalDate, setModalDate] = useState("");
   const [modalContent, setModalContent] = useState("");
@@ -69,8 +74,9 @@ export const Calendar_zh = () => {
   // const [selectedTodo, setSelectedTodo] = useState("");
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState("");
-
   const dispatch = useDispatch();
+  const history = useHistory();
+
 
   useEffect(() => {
     getGoogleCalendarEvents();
@@ -78,13 +84,15 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
-    // let key = "calendar"
-    // async function deleteKey(key: string) {
-    //   await Preferences.remove({ key});
-    //   console.log(`Key '${key}' deleted from preferences`);
-    // }
-    // deleteKey(key)
   }, []);
+
+  useEffect(() => {
+    getGoogleCalendarEvents();
+    getLocalCalendarEvents();
+    getTodoList();
+    getDiary();
+    getPeriod();
+  }, [shouldGetDataEvent]);
 
   useEffect(() => {
     configPeriodList();
@@ -100,6 +108,7 @@ export const Calendar_zh = () => {
       }
     };
     getGoogleCalendarLS();
+    dispatch(setShouldGetDataEvent(false));
   }
 
   async function getLocalCalendarEvents() {
@@ -111,6 +120,7 @@ export const Calendar_zh = () => {
       }
     };
     getLocalEventLS();
+    dispatch(setShouldGetDataEvent(false));
   }
 
   async function getTodoList() {
@@ -320,7 +330,8 @@ export const Calendar_zh = () => {
         const newData = existingData.filter((memo: any) => memo.id !== id);
         const value = JSON.stringify(newData);
         await Preferences.set({ key, value });
-        // dispatch(setShouldGetDataEvent(true));
+        dispatch(setShouldGetDataEvent(true));
+        history.push("/Calendar")
       };
       deleteEventFromPreferences(selectedEvent);
     } else if (buttonIndex === 0) {
@@ -370,7 +381,7 @@ export const Calendar_zh = () => {
             periodList,
             ovuList,
           ]}
-          eventDidMount={handleEventDidMount}
+          // eventDidMount={handleEventDidMount}
           eventClick={(event: any) => {
             // stop from redirecting to Google Calendar onclick
             event.jsEvent.preventDefault();
@@ -398,13 +409,13 @@ export const Calendar_zh = () => {
             <div className={styles.modalContentStyle}>
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel>📢 Notice</IonLabel>
+                  <IonLabel>📢 About Today</IonLabel>
                 </IonItemDivider>
               </IonItemGroup>
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel>📝 Public Holiday</IonLabel>
+                  <IonLabel>🔥 Public Holiday</IonLabel>
                 </IonItemDivider>
                 {publicHoliday.length < 1 ? (
                   <div>No Public Holiday.</div>
@@ -555,7 +566,7 @@ export const Calendar_zh = () => {
               )}
             </div>
           </div>
-          //delete event alert
+   
           <IonAlert
           header="Delete this event?"
           isOpen={presentAlertEvent}
