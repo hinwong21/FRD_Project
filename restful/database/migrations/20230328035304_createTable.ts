@@ -157,9 +157,20 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp("created_at").defaultTo(knex.fn.now());
     });
   }
+
+  if (!(await knex.schema.hasTable("fortune"))) {
+    await knex.schema.createTable("fortune", (table) => {
+      table.text("id").notNullable().unique();
+      table.integer("fortune").notNullable();
+      table.timestamp("date").notNullable();
+      table.text("user_id").unsigned();
+      table.foreign("user_id").references("users.id");
+    });
+  }
 }
 
 export async function down(knex: Knex): Promise<void> {
+  await knex.schema.dropTableIfExists("fortune");
   await knex.schema.dropTableIfExists("transaction");
   await knex.schema.dropTableIfExists("finance");
   await knex.schema.dropTableIfExists("period_period_state");

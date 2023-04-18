@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
+  await knex("fortune").del();
   await knex("transaction").del();
   await knex("finance").del();
   await knex("period_period_status").del();
