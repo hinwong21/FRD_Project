@@ -9,7 +9,7 @@ import {
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import style from "./Weather.module.scss";
-import { Loading } from "./Loading";
+import { Loading } from "../Main/Loading";
 
 type Data = {
   temperature: number;
@@ -37,47 +37,46 @@ export function Weather() {
   const [data, setData] = useState<Data>();
   const [data2, setData2] = useState<Data2>();
 
+  const todayWeather = async () => {
+    let res = await fetch(
+      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
+    );
+
+    let json = await res.json();
+
+    // define the change of uvIndex at night and morning
+    let uvIndex = 0;
+    if (typeof json.uvindex != "string") {
+      uvIndex = json.uvindex.data[0].value;
+    }
+
+    let uvLevel = "";
+    if (typeof json.uvindex != "string") {
+      uvLevel += "(" + json.uvindex.data[0].desc + ")";
+    }
+
+    setData({
+      temperature: json.temperature.data[0].value,
+      humidity: json.humidity.data[0].value,
+      uvindexValue: uvIndex,
+      uvindexdesc: uvLevel,
+    });
+  };
+
+  const nineDayWeather = async () => {
+    let res = await fetch(
+      "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en"
+    );
+
+    let json = await res.json();
+
+    setData2({
+      nineDayWeather: json.weatherForecast,
+    });
+  };
+
   useEffect(() => {
-    const todayWeather = async () => {
-      let res = await fetch(
-        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
-      );
-
-      let json = await res.json();
-
-      // define the change of uvIndex at night and morning
-      let uvIndex = 0;
-      if (typeof json.uvindex != "string") {
-        uvIndex = json.uvindex.data[0].value;
-      }
-
-      let uvLevel = "";
-      if (typeof json.uvindex != "string") {
-        uvLevel += "(" + json.uvindex.data[0].desc + ")";
-      }
-
-      setData({
-        temperature: json.temperature.data[0].value,
-        humidity: json.humidity.data[0].value,
-        uvindexValue: uvIndex,
-        uvindexdesc: uvLevel,
-      });
-    };
     todayWeather();
-  }, []);
-
-  useEffect(() => {
-    const nineDayWeather = async () => {
-      let res = await fetch(
-        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en"
-      );
-
-      let json = await res.json();
-
-      setData2({
-        nineDayWeather: json.weatherForecast,
-      });
-    };
     nineDayWeather();
   }, []);
 

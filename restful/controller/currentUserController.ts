@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { errorHandler } from "../error";
 import { User, getUserByUID } from "../firebaseAdmin";
 import { CurrentUserService } from "../service/currentUserService";
@@ -154,6 +154,33 @@ export class CurrentUserController {
       let userId = getJWT(req).userId;
       let gender = req.body.selectGender;
       const result = await this.currentUserService.updateGender(userId, gender);
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
+  updateField = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let userId = getJWT(req).userId;
+      let field = req.params.field;
+      switch (field) {
+        case "username":
+        case "weight":
+        case "height":
+        case "age":
+        case "gender":
+          break;
+        default:
+          next();
+          return;
+      }
+      let value = req.body.input;
+      const result = await this.currentUserService.updateField(
+        userId,
+        field,
+        value
+      );
       res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);
