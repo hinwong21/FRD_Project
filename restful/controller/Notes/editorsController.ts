@@ -71,10 +71,11 @@ export class EditorsController {
     let title = req.body.content.title;
     let dueDate = req.body.content.due_date;
     let hashtag = req.body.content.hashtag;
-    let newHashtag = req.body.content.newHashtag;
     let sharedEmail = req.body.content.shared_email;
     let task = req.body.content.tasks;
     let memo = req.body.content.memo;
+    console.log(req.body);
+
     try {
       await this.editorsService.newTodo(
         id,
@@ -82,7 +83,6 @@ export class EditorsController {
         title,
         dueDate,
         hashtag,
-        newHashtag,
         sharedEmail,
         task,
         memo

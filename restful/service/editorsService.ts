@@ -75,24 +75,27 @@ export class EditorsService {
       .where("id", id);
   };
 
-  // newTodo = async (
-  //   id: string,
-  //   userId: string,
-  //   title: string,
-  //   dueDate: string,
-  //   hashtag: string,
-  //   newHashtag: string,
-  //   shared_email: string,
-  //   tasks: string,
-  //   memo: string
-  // ) => {
-  //   await this.knex("todolist").update({
-  //     id,
-  //     user_id: userId,
-  //     title,
-  //     due_date:dueDate,
-  //     hashtag,
-  //     newHashtag
-  //   });
-  // };
+  newTodo = async (
+    id: string,
+    userId: string,
+    title: string,
+    dueDate: string,
+    hashtag: string,
+    shared_email: string,
+    tasks: string,
+    memo: string
+  ) => {
+    await this.knex
+      .insert({
+        id,
+        user_id: userId,
+        title,
+        due_date: dueDate,
+        hashtag,
+        email_shared: shared_email,
+        task: tasks,
+        memo,
+      })
+      .into("todolist");
+  };
 }
