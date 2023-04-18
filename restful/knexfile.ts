@@ -1,4 +1,5 @@
-import { env } from "../env";
+import { env } from "./env";
+
 module.exports = {
   development: {
     client: "postgresql",

@@ -27,33 +27,29 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Calculator from "./components/Accounting/Calculator";
 import AccountingPage from "./pages/AccountingPage";
 import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState } from "./atoms";
-import { MainPage } from "./components/Main/MainPage";
-import RoutesIsLogin from "./RoutesIsLogin";
-import RoutesIsNotLogin from "./RoutesIsNotLogin";
-import {
-  getName,
-  removeName,
-  setName,
-} from "./service/LocalStorage/LocalStorage";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import { setName } from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { Edit } from "./components/Set/Edit";
-import { EditMemo } from "./components/Notes/Memo/Memos";
+import Memos, { EditMemo } from "./components/Notes/Memo/Memos";
 import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
 // import {NewMemo} from "./components/Notes/AddNotePopup"
 import AddNotePopup from "./components/Notes/AddNotePopup";
 import { AccountingSetup } from "./components/Accounting/AccountingSetup";
 import { DietProgramme } from "./components/Health/Nutrient/DietProgramme";
+import { useGet } from "./hooks/useGet";
+import { useToken } from "./hooks/useToken";
+import { Login } from "./pages/Login/Login";
+import { useAge } from "./hooks/useAge";
+import { EditGender } from "./components/Set/EditGender";
+import { LoginSetup } from "./components/Set/LoginSetup";
 
 // import { Device } from "@capacitor/device";
 setupIonicReact();
@@ -64,48 +60,40 @@ setupIonicReact();
 //   }
 // };
 // logDeviceInfo();
+
+function ProtectedRoute(props: {
+  path: string;
+  exact?: boolean;
+  children?: ReactElement;
+}) {
+  const [token] = useToken();
+  const [age] = useAge();
+  return (
+    <Route path={props.path} exact={props.exact}>
+      {!token ? <Login /> : !age ? <LoginSetup /> : props.children}
+    </Route>
+  );
+}
+
+type User = { age?: number } | "loading";
+
 const App: React.FC = () => {
-  const setIsLogin = useSetRecoilState(loginState);
-  const getIsLogin = useRecoilValue(loginState);
+  const [token, setToken] = useToken();
+  const [user] = useGet<User>(token ? "/user/user" : "", "loading");
+  const [age, setAge] = useAge();
 
   useEffect(() => {
-    async function main() {
-      let token = await getName("token");
+    setAge(user === "loading" ? "loading" : user.age);
+  }, [user]);
 
-      if (token) {
-        let res = await fetch(
-          `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/verifyToken`,
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        let json = await res.json();
+  const [verifyState] = useGet<{ ok: boolean | "loading" }>(
+    token ? "/user/verifyToken" : "",
+    { ok: "loading" as const }
+  );
+  if (verifyState.ok === false) {
+    setToken("");
+  }
 
-        if (json.ok) {
-          setIsLogin((isLogin) => {
-            let newState = { ...isLogin };
-            newState.isLogin = true;
-            return newState;
-          });
-        } else {
-          setIsLogin((isLogin) => {
-            let newState = { ...isLogin };
-            newState.isLogin = false;
-            return newState;
-          });
-        }
-      } else {
-        setIsLogin((isLogin) => {
-          let newState = { ...isLogin };
-          newState.isLogin = false;
-          return newState;
-        });
-      }
-    }
-    main();
-  }, [setIsLogin]);
   useEffect(() => {
     const main = async () => {
       await reg_push_notifications_token();
@@ -113,7 +101,7 @@ const App: React.FC = () => {
     };
     main();
   }, []);
-  
+
   const reg_push_notification_listeners = async () => {
     await PushNotifications.addListener("registration", async (token) => {
       console.log("Registration token: ", token.value);
@@ -163,7 +151,6 @@ const App: React.FC = () => {
     await PushNotifications.register();
   };
 
-  // const [isLogin, setIsLogin] = useState<boolean>(false);
   // const cbLoginFunc = useCallback(() => changeLogin, []);
   // function changeLogin() {
   //   setIsLogin(true);
@@ -176,65 +163,76 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Switch>
-              <Route path="/" exact={true}>
-                <Redirect to="/page/Main" />
+              <ProtectedRoute path="/" exact={true}>
+                <Redirect to="/page/Calender" />
+              </ProtectedRoute>
+
+              <Route path="/login" exact={true}>
+                {!token ? <Login /> : <Redirect to="/" />}
               </Route>
-              <Route path="/page/:name" exact={true}>
+
+              <ProtectedRoute path="/page/:name" exact={true}>
                 <Page />
-              </Route>
+              </ProtectedRoute>
 
               {/* <Route path="/Transaction" exact={true}>
                 < Transaction />
               </Route> */}
 
-              <Route path="/Accounting" exact={true}>
+              <ProtectedRoute path="/Accounting" exact={true}>
                 <AccountingPage />
-              </Route>
+              </ProtectedRoute>
 
-              <Route path="/Notepad" exact={true}>
+              <ProtectedRoute path="/Notepad" exact={true}>
                 <Notepad />
+              </ProtectedRoute>
+
+              <Route path="/Memos" exact={true}>
+                {/* TODO use full page */}
+                <Memos />
               </Route>
 
               {/* <Route path="/TextEditor" exact={true}>
                 <TextEditor />
-          </Route>
+              </Route> */}
 
-          <Route path="/NewNotes" exact={true}>
+              <Route path="/NewNotes" exact={true}>
                 <AddNotePopup />
-          </Route> */}
+              </Route>
 
-              <Route path="/Health-period" exact={true}>
+              <ProtectedRoute path="/Health-period" exact={true}>
                 <PeriodMain />
-              </Route>
-              <Route path="/Health-nutrient" exact={true}>
+              </ProtectedRoute>
+              <ProtectedRoute path="/Health-nutrient" exact={true}>
                 <Nutrition />
-              </Route>
-              <Route path="/dietProgramme" exact={true}>
+              </ProtectedRoute>
+              <ProtectedRoute path="/dietProgramme" exact={true}>
                 <DietProgramme />
-              </Route>
-              <Route path="/Health-periodCalendar" exact={true}>
+              </ProtectedRoute>
+              <ProtectedRoute path="/Health-periodCalendar" exact={true}>
                 <PeriodCalendar />
-              </Route>
-              <Route path="/Health-periodRecordDetails" exact={true}>
+              </ProtectedRoute>
+              <ProtectedRoute path="/Health-periodRecordDetails" exact={true}>
                 <PeriodRecord />
-              </Route>
-              <Route path="/Health-periodDate" exact={true}>
+              </ProtectedRoute>
+              <ProtectedRoute path="/Health-periodDate" exact={true}>
                 <PeriodDay />
-              </Route>
+              </ProtectedRoute>
 
               {/* Setting page: edit personal information */}
-              <Route path="/Edit" exact={true}>
+              <ProtectedRoute path="/Edit" exact={true}>
                 <Edit />
+              </ProtectedRoute>
+              <Route path="/EditGender" exact={true}>
+                <EditGender />
               </Route>
 
-              <Route path="*" exact={true}>
+              <ProtectedRoute path="*" exact={true}>
                 <div>404 not found</div>
-              </Route>
+              </ProtectedRoute>
             </Switch>
           </IonRouterOutlet>
         </IonSplitPane>
-        {getIsLogin.isLogin && <RoutesIsLogin />}
-        {!getIsLogin.isLogin && <RoutesIsNotLogin />}
       </IonReactRouter>
     </IonApp>
   );

@@ -1,4 +1,4 @@
-import { Preferences } from '@capacitor/preferences';
+import { Preferences } from "@capacitor/preferences";
 
 export const setName = async (key: string, value: string) => {
   await Preferences.set({
@@ -10,7 +10,7 @@ export const setName = async (key: string, value: string) => {
 export const getName = async (key: string) => {
   const { value } = await Preferences.get({ key: key });
 
-  return value
+  return value;
 };
 
 export const removeName = async (key: string) => {

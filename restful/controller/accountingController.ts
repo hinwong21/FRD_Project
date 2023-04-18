@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import { AccountingService } from "../service/accountingService";
 import { errorHandler } from "../error";
-import { v4 as uuidv4 } from "uuid";
+import { getJWT } from "../jwt";
+import "../session";
 
 export class AccountingController {
   constructor(private accountingService: AccountingService) {}
 
   addTransaction = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId!;
+      let userId = getJWT(req).userId!;
       let { name, type, amount, description } = req.body;
       console.log(name, type, amount, description, userId);
       const addResult = await this.accountingService.addTransaction(
@@ -35,8 +36,7 @@ export class AccountingController {
 
   getTransaction = async (req: Request, res: Response) => {
     try {
-      // let userId = req.session.userId!
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       console.log(userId);
 
       const tranResult = await this.accountingService.getTransaction(userId!);
@@ -52,8 +52,7 @@ export class AccountingController {
 
   getMonthlyTransaction = async (req: Request, res: Response) => {
     try {
-      // let userId = req.session.userId!
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
       console.log(userId);
 
       const getResult = await this.accountingService.getMonthlyTransaction(
@@ -71,7 +70,7 @@ export class AccountingController {
 
   getDailyTransaction = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
+      let userId = getJWT(req).userId;
 
       console.log(userId);
 
@@ -90,10 +89,10 @@ export class AccountingController {
 
   updateBudget = async (req: Request, res: Response) => {
     try {
-      let id = uuidv4();
-      let userId = req.session.userId;
+      let user_id = getJWT(req).userId;
       let budget = req.body.budget;
-      await this.accountingService.updateBudget(id, userId, budget);
+      await this.accountingService.updateBudget({ user_id, budget });
+      res.json({});
     } catch (error) {
       errorHandler(error, req, res);
     }
@@ -101,9 +100,9 @@ export class AccountingController {
 
   getBudget = async (req: Request, res: Response) => {
     try {
-      let userId = req.session.userId;
-      const result = await this.accountingService.getBudget(userId);
-      res.json({ result });
+      let userId = getJWT(req).userId;
+      const budget = await this.accountingService.getBudget(userId);
+      res.json({ budget });
     } catch (error) {
       errorHandler(error, req, res);
     }

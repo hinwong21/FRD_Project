@@ -2,101 +2,52 @@ import React, { useState } from "react";
 import style from "./Login.module.scss";
 import { logoApple } from "ionicons/icons";
 import { IonContent, IonIcon, IonPage } from "@ionic/react";
-import { Preferences } from "@capacitor/preferences";
 
 import {
   googleSignIn,
   signInWithApple,
   signOut,
 } from "../../service/firebaseConfig";
-import { getName, setName } from "../../service/LocalStorage/LocalStorage";
-import { useSetRecoilState } from "recoil";
-import { loginState } from "../../atoms";
+import { useToken } from "../../hooks/useToken";
+import { usePushNotificationToken } from "../../hooks/usePushNotificationToken";
+import { User } from "@capacitor-firebase/authentication";
+import { useFetch } from "../../hooks/useFetch";
+
 export const Login = () => {
-  const setIsLogin = useSetRecoilState(loginState);
-  const [loggedIn, setIsLoggedIn] = useState("false");
+  const [token, setToken] = useToken();
+  const fetch = useFetch();
+  const [pushNotificationToken, setPushNotificationToken] =
+    usePushNotificationToken();
+
   let googleIcon =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327";
 
   async function handleGoogleSignIn() {
-    let user = await googleSignIn();
-
-    if (user) {
-      // login success
-      let pushNotificationToken = await getName("push_notification_token");
-      let res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/getToken`,
-        {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({
-            userId: user.uid,
-            pushNotificationToken: pushNotificationToken,
-          }),
-        }
-      );
-      let json = await res.json();
-      if (json.ok) {
-        await setName("token", json.data);
-        setIsLogin((isLogin) => {
-          let newState = { ...isLogin };
-          newState.isLogin = true;
-          setIsLoggedIn("true");
-          return newState;
-        });
-      } else {
-        await signOut();
-        setIsLogin((isLogin) => {
-          let newState = { ...isLogin };
-          newState.isLogin = false;
-          return newState;
-        });
-      }
-    } else {
-      setIsLogin((isLogin) => {
-        let newState = { ...isLogin };
-        newState.isLogin = false;
-        return newState;
-      });
-    }
+    handleSignIn(googleSignIn);
   }
 
   async function handleAppleSignIn() {
-    let user = await signInWithApple();
-    console.log(user);
-    if (user) {
-      // login success
-      let res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/getToken`,
-        {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({
-            userId: user.uid,
-          }),
-        }
-      );
-      let json = await res.json();
-      if (json.ok) {
-        await setName("token", json.data);
-        setIsLogin((isLogin) => {
-          let newState = { ...isLogin };
-          newState.isLogin = true;
-          return newState;
-        });
-      } else {
-        setIsLogin((isLogin) => {
-          let newState = { ...isLogin };
-          newState.isLogin = false;
-          return newState;
-        });
-      }
+    handleSignIn(signInWithApple);
+  }
+
+  async function handleSignIn(signIn: () => Promise<User | null>) {
+    let user = await signIn();
+    if (!user) {
+      setToken("");
+      return;
+    }
+
+    // login success
+    let json = await fetch("post", "/user/getToken", {
+      userId: user.uid,
+      pushNotificationToken,
+    });
+
+    if (json.ok) {
+      setToken(json.data);
     } else {
-      setIsLogin((isLogin) => {
-        let newState = { ...isLogin };
-        newState.isLogin = false;
-        return newState;
-      });
+      await signOut();
+      setToken("");
     }
   }
 

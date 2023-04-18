@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./Setting.module.css";
 import { useHistory } from "react-router-dom";
 import { getName } from "../../service/LocalStorage/LocalStorage";
+import { useGet } from "../../hooks/useGet";
 
-type Data = {
+type User = {
   username: string;
   height: number;
   weight: number;
@@ -12,72 +13,46 @@ type Data = {
 };
 
 export const PersonalSetting = () => {
-  const [data, setData] = useState<Data[]>([]);
-
-  // import data from db or local storage
-  useEffect(() => {
-    const getUser = async () => {
-      let token = await getName("token");
-      const res = await fetch(
-        `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/user`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const json = await res.json();
-      console.log(json);
-
-      setData([
-        {
-          username: json.result[0].username,
-          height: json.result[0].height,
-          weight: json.result[0].weight,
-          age: json.result[0].age,
-          gender: json.result[0].gender,
-        },
-      ]);
-    };
-    getUser();
-  }, []);
+  const [user, setUser] = useGet<User | null>("/user/user", null);
 
   const history = useHistory();
+
+  if (!user) {
+    return <div>Loading user data...</div>;
+  }
 
   const goEditUsername = () => {
     history.push({
       pathname: "/Edit",
-      state: { item: "username", value: data[0]?.username },
+      state: { item: "username", value: user.username },
     });
   };
 
   const goEditHeight = () => {
     history.push({
       pathname: "/Edit",
-      state: { item: "height", value: data[0]?.height },
+      state: { item: "height", value: user.height },
     });
   };
 
   const goEditWeight = () => {
     history.push({
       pathname: "/Edit",
-      state: { item: "weight", value: data[0]?.weight },
+      state: { item: "weight", value: user.weight },
     });
   };
 
   const goEditGender = () => {
     history.push({
       pathname: "/EditGender",
-      state: { item: "gender", value: data[0]?.gender },
+      state: { item: "gender", value: user.gender },
     });
   };
 
   const goEditAge = () => {
     history.push({
       pathname: "/Edit",
-      state: { item: "age", value: data[0]?.age },
+      state: { item: "age", value: user.age },
     });
   };
 
@@ -90,35 +65,35 @@ export const PersonalSetting = () => {
       <div className={styles.settingContainer} onClick={goEditUsername}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>username</div>
-          <div className={styles.settingItemResult}>{data[0]?.username}</div>
+          <div className={styles.settingItemResult}>{user.username}</div>
         </div>
       </div>
 
       <div className={styles.settingContainer} onClick={goEditHeight}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>height</div>
-          <div className={styles.settingItemResult}>{data[0]?.height} cm</div>
+          <div className={styles.settingItemResult}>{user.height} cm</div>
         </div>
       </div>
 
       <div className={styles.settingContainer} onClick={goEditWeight}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>weight</div>
-          <div className={styles.settingItemResult}>{data[0]?.weight} kg</div>
+          <div className={styles.settingItemResult}>{user.weight} kg</div>
         </div>
       </div>
 
       <div className={styles.settingContainer} onClick={goEditGender}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>gender</div>
-          <div>{data[0]?.gender}</div>
+          <div>{user.gender}</div>
         </div>
       </div>
 
       <div className={styles.settingContainer} onClick={goEditAge}>
         <div className={styles.settingItemContainer}>
           <div className={styles.settingItem}>age</div>
-          <div>{data[0]?.age}</div>
+          <div>{user.age}</div>
         </div>
       </div>
     </>

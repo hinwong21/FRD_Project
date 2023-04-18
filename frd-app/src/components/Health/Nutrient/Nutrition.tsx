@@ -1,4 +1,3 @@
-import React from "react";
 import { Provider } from "react-redux";
 import { nutritionStore } from "../../../redux/Nutrition/store";
 import Header from "./Header";

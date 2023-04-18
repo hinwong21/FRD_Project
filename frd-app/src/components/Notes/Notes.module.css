@@ -40,12 +40,18 @@ button.item-native::after{
   .memoWrapper{
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    /* align-items: center; */
+    justify-content: space-between;
     margin-right:15px;
     margin-left: 15px;
     margin-top: 10px;
     margin-bottom: 40px;    
+  }
+
+  .mainMemoContainer{
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
   }
 
   .memoBlock{
@@ -70,7 +76,7 @@ button.item-native::after{
     margin-top: 2px;
     font-size: 12px;
     text-align: center;
-    color: gray;
+    color: #32393F;
   }
 
   .todayLabel{
@@ -92,7 +98,7 @@ button.item-native::after{
   }
 
   .todoLabel{
-    background-color: rgba(123, 224, 209, 0.374);
+    background-color: rgba(110, 152, 230, 0.374);
     padding: 2px;
     border-radius: 5px;
   }
@@ -150,10 +156,21 @@ button.item-native::after{
   border-width: 5px;
   border-color: red;
   font-size: 10px;
-  /* width: 65vw; */
-  height: 167px;
+  height: 130px;
+  width:85vw;
   overflow:hidden;
   background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: flex-start;
+}
+
+.previewText{
+  width:50%;
+}
+
+.previewImage{
+  width:50%;
+  overflow: scroll;
 }
 
 .diaryAContainer{
@@ -162,30 +179,27 @@ button.item-native::after{
   margin: 6px;
   text-decoration: none;
   display: flex;
-  flex-direction: row;
-  border-color:white;
-  border-radius: 5px;
-  border-width: 5px;
-  border-style: solid;
+  flex-direction: column;
   margin-top: 20px;
 }
 
 .diaryMood{
   position: relative;
-  bottom: 46px;
-  left: 244px;
+  bottom: 205px;
+  left: 300px;
   font-size: 33px;
 }
 
 .diaryUpdatedTime{
   font-size: 16px;
   color: rgb(110, 110, 110);
-  width:17vw;
+  width:85vw;
+  height: 32px;
   background-color: #a0a2c0c0;
   padding:6px;
-  text-align: center;
+  /* text-align: center; */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .diaryTitleText{
@@ -194,8 +208,9 @@ button.item-native::after{
 }
 
 .diaryDateAdjPosition{
-  position: relative;
-  top: 22px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .diaryContent{
@@ -212,11 +227,13 @@ button.item-native::after{
 
 .diaryDate{
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
   margin-left: 3px;
   margin-right: 3px;
   font-weight: bold;
-  color:aliceblue
+  color:aliceblue;
+  font-size:16px;
 }
 
 .diaryDateDay{
@@ -235,11 +252,21 @@ button.item-native::after{
   color:black;
   font-weight: bold;
   font-size: 16px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   height:25px;
+  width:85vw;
+  display: flex;
+  align-items: center;
 }
 
 .diaryChooseDate{
+  position: absolute;
+  right: 5vw;
+  top:135px;
+  z-index:999;
+}
+
+.clearDateFilter{
   position: absolute;
   right: 5vw;
   top:135px;
@@ -273,6 +300,10 @@ button.item-native::after{
 }
 
 .todoListWrapper{
+  text-decoration: none; 
+}
+
+.todoListWrapper2{
   width:85vw;
   background-color: rgba(255, 255, 255, 0.702);
   margin-bottom: 10px;
@@ -292,12 +323,35 @@ button.item-native::after{
   font-size: 18px;
 }
 
+.todoPreviewHashtagStyle{
+  background-color: rgb(227, 198, 188);
+  padding-left:2px;
+  padding-right:2px;
+  margin-left:1.5px;
+  margin-right:1.5px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.todoPreviewHashtag{
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  width:30vw;
+}
+
+.titleAndHashtagContainer{
+  display: flex;
+  flex-direction: column;
+}
+
 .todoListContainer{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 15px;
+  overflow: scroll;
 }
 
 .todoListTitle{
@@ -313,4 +367,20 @@ button.item-native::after{
 .todoListDate{
   font-size: 13px;
   color: gray
+}
+
+.filteredDateDiv{
+  padding: 3px;
+  background-color: rgb(177, 177, 177);
+  color: white;
+  display: inline-block;
+  margin-left: 18px;
+  margin-top: 10px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.filterBtnGroup{
+  display: flex;
+  flex-direction: column;
 }

@@ -86,7 +86,7 @@ http://ionicframework.com/docs/theming/ */
   /* background color setting */
   --ion-background-color: #e5e5e5;
   /* Left bar setting  */
-  --ion-item-background: #a3b7cb;
+  --ion-item-background: transparent;
   --ion-toolbar-background: #a3b7cb;
   --ion-tab-bar-background: #a3b7cb;
   --ion-card-background: #a3b7cb;

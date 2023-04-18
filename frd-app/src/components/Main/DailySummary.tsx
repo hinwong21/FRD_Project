@@ -1,32 +1,11 @@
 import React, { useEffect, useState } from "react";
 import style from "./Main.module.scss";
 import { MainHeader } from "./MainHeader";
-import { Preferences } from "@capacitor/preferences";
 import { useHistory } from "react-router";
 import { ShakeAnimation } from "./ShakeAnimation";
 
 export const DailySummary = () => {
   const [shaking, setShaking] = useState(true);
-  async function setDailyCheckIn() {
-    const now = new Date();
-    const resetTime = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      6,
-      0,
-      0
-    );
-
-    if (now > resetTime) {
-      // If the current time is past the reset time, set the reset time to tomorrow
-      resetTime.setDate(resetTime.getDate() + 1);
-    }
-    await Preferences.set({
-      key: "dailyCheckIn",
-      value: JSON.stringify({ check: "Checked In", date: resetTime }),
-    });
-  }
 
   useEffect(() => {
     if (shaking) {
@@ -34,7 +13,6 @@ export const DailySummary = () => {
         setShaking(false);
       }, 2000);
     }
-    setDailyCheckIn();
   }, [shaking]);
 
   const history = useHistory();

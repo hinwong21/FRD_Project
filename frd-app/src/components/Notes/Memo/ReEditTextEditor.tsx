@@ -39,9 +39,11 @@ export function ReEditTextEditor(props: { content: string; handleReEditEditorCal
         onChange={handleEditorChange}
         modules={{
           toolbar: [
-            [{ header: [1, 2, false] }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{color :[]}],
+            [{background :[]}],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
+            [{align:[]}],
             ['link', 'image'],
             ['clean'],
           ],

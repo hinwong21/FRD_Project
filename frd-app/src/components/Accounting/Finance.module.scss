@@ -1,27 +1,27 @@
 h1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.title{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.balance{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.balance {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-ion-item {
+.IonItem {
   display: flex;
   align-items: center;
   border-bottom: 1px solid gray;
   width: 100%;
 }
-ion-label{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.IonLabel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

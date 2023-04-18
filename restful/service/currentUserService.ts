@@ -6,20 +6,20 @@ export class CurrentUserService {
     this.knex = knex;
   }
 
-  createUser = async (
-    userId: string,
-    username: string,
-    email: string,
-    pushNotificationToken: string
-  ) => {
-    let [user] = await this.knex("users").select("*").where("id", userId);
+  createUser = async (input: {
+    userId: string;
+    username: string;
+    email: string;
+    pushNotificationToken: string;
+  }) => {
+    let [user] = await this.knex("users").select("*").where("id", input.userId);
     if (!user) {
       // insert DB
       await this.knex("users").insert({
-        id: userId,
-        username: username,
-        email: email,
-        push_notification_token: pushNotificationToken,
+        id: input.userId,
+        username: input.username,
+        email: input.email,
+        push_notification_token: input.pushNotificationToken,
       });
     }
     return;
@@ -39,7 +39,13 @@ export class CurrentUserService {
 
   getUser = async (userId: string | undefined) => {
     try {
-      let user = await this.knex("users").select("*").where({ id: userId });
+      let user = await this.knex("users")
+        .select("*") // age,
+        .where({ id: userId })
+        .first();
+      if (!user) {
+        throw new Error("User not found");
+      }
       return user;
     } catch (err) {
       throw new Error(`${err.message}`);

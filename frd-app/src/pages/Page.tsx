@@ -20,6 +20,7 @@ import { Weather } from "../components/Weather/Weather";
 import { EditMemo } from "../components/Notes/Memo/Memos";
 import { EditDiary } from "../components/Notes/Diary/Diaries";
 import { EditTodo } from "../components/Notes/Todo/TodoLists";
+import { NewEventFormModify } from "../components/Calendar/ModifyEvent";
 import AccountingPage from "./AccountingPage";
 
 const Page: React.FC = () => {
@@ -59,6 +60,10 @@ const Page: React.FC = () => {
 
     case "EditDiary":
       fetchPage = <EditDiary />;
+      break;
+
+    case "ModifyEvent":
+      fetchPage = <NewEventFormModify/>;
       break;
   }
 

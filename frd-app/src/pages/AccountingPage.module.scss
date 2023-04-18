@@ -1,3 +1,7 @@
+.toolbarColor {
+  background-color: #e1cca8;
+}
+
 .demo {
   display: flex;
   justify-content: center;
@@ -23,10 +27,18 @@
 .btn {
   // position: absolute;
   margin-top: 15px;
-  background-color: rgb(167, 182, 201);
+  background-color: #e1cca8;
   border-radius: 10px;
   // bottom: 0;
 }
 Ion-Content {
   overflow: scroll;
+}
+.h1 {
+  display: flex;
+}
+.reviewBtn {
+  margin-top: 15px;
+  background-color: #e1cca8;
+  border-radius: 10px;
 }
