@@ -33,13 +33,17 @@ import {
   faSquare,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
+import { setSelectedSegment } from '../../redux/Notes/notepadSlice';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store/store';
+import { useDispatch } from 'react-redux';
 
 export const Notepad: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   let titleName = "";
   let fetchPage = <></>;
 
-  const [selectedSegment, setSelectedSegment] = useState<string>("todo");
+  // const [selectedSegment, setSelectedSegment] = useState<string>("todo");
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredTodoList, setFilteredTodoList] = useState<TodoListLSItem[]>(
@@ -57,9 +61,13 @@ export const Notepad: React.FC = () => {
   const [previewTextArray, setPreviewTextArray] = useState<JSX.Element[]>([]);
   const [previewImageArray, setPreviewImageArray] = useState<JSX.Element[]>([]);
 
+  const selectedSegment = useSelector((state: IRootState) => state.notepad.selectedSegment);
+  const dispatch = useDispatch(); 
+
   const handleSegmentChange = (event: CustomEvent) => {
     setSearchMode(false)
-    setSelectedSegment(event.detail.value);
+    // setSelectedSegment(event.detail.value);
+    dispatch(setSelectedSegment(event.detail.value))
   };
 
   const getTodoList = async () => {

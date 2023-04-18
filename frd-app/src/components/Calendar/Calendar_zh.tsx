@@ -344,6 +344,8 @@ export const Calendar_zh = () => {
     clearTimeout(timer);
   }
 
+ 
+
   return (
     <>
       <div>
@@ -387,6 +389,7 @@ export const Calendar_zh = () => {
             event.jsEvent.preventDefault();
           }}
           dateClick={handleDateClick}
+          dayMaxEventRows= {true} // for all non-TimeGrid views
         />
       </div>
 
@@ -409,13 +412,13 @@ export const Calendar_zh = () => {
             <div className={styles.modalContentStyle}>
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel>📢 About Today</IonLabel>
+                  <IonLabel className={styles.dayViewLabel}>📢 About Today</IonLabel>
                 </IonItemDivider>
               </IonItemGroup>
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel>🔥 Public Holiday</IonLabel>
+                  <IonLabel className={styles.dayViewLabel}>🔥 Public Holiday</IonLabel>
                 </IonItemDivider>
                 {publicHoliday.length < 1 ? (
                   <div>No Public Holiday.</div>
@@ -473,7 +476,7 @@ export const Calendar_zh = () => {
 
               <IonItemGroup>
                 <IonItemDivider>
-                  <IonLabel>📝 Todo List</IonLabel>
+                  <IonLabel className={styles.dayViewLabel}>📝 Todo List</IonLabel>
                 </IonItemDivider>
                 {clickedTodoList.length < 1 ? (
                   <div>No Todo due on this day.</div>
@@ -499,7 +502,7 @@ export const Calendar_zh = () => {
               ) : (
                 <IonItemGroup>
                   <IonItemDivider>
-                    <IonLabel>🩸 Period</IonLabel>
+                    <IonLabel className={styles.dayViewLabel}>🩸 Period</IonLabel>
                   </IonItemDivider>
                   {clickedPeriod.map((period: any, index) => (
                     <div key={uuidv4()}>
@@ -528,7 +531,7 @@ export const Calendar_zh = () => {
               ) : (
                 <IonItemGroup>
                   <IonItemDivider>
-                    <IonLabel>🌸 Ovulation Period</IonLabel>
+                    <IonLabel className={styles.dayViewLabel}>🌸 Ovulation Period</IonLabel>
                   </IonItemDivider>
                   {clickedOvu.map((period: any, index) => (
                     <div key={uuidv4()}>
@@ -555,7 +558,7 @@ export const Calendar_zh = () => {
                 <div>
                   <IonItemGroup>
                     <IonItemDivider>
-                      <IonLabel>📢 Health</IonLabel>
+                      <IonLabel className={styles.dayViewLabel}>📢 Health</IonLabel>
                     </IonItemDivider>
                   </IonItemGroup>
 
