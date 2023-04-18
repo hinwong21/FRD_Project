@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { v4 as uuidv4 } from "uuid";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
+import { IonButton, IonSelect, IonSelectOption } from "@ionic/react";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";
 
@@ -97,10 +98,10 @@ export const NutritionTracker = () => {
     });
   };
 
-  let mealSelectRef = useRef<HTMLSelectElement>(null);
+  let mealSelectRef = useRef<HTMLIonSelectElement>(null);
 
   const handleAddMeal = () => {
-    let mealSelect = mealSelectRef.current as HTMLSelectElement;
+    let mealSelect = mealSelectRef.current as HTMLIonSelectElement;
 
     // if no choose meal type, it will return nothing
     if (mealSelect.value === "") {
@@ -111,7 +112,7 @@ export const NutritionTracker = () => {
 
     const newMeals = [...meals];
 
-    setMealsLocal(newMeals, mealSelect);
+    setMealsLocal(newMeals, mealSelect.value);
 
     // reset the select tag value
     mealSelect.value = "";
@@ -318,19 +319,28 @@ export const NutritionTracker = () => {
       <div className={style.foodTrackerContainer}>
         <header className={style.foodTrackerContainerHeader}>
           <div>Food tracking</div>
-          <select className={style.selectMealType} ref={mealSelectRef}>
-            <option value="">Select meal type</option>
-            <option value="Breakfast">breakfast</option>
-            <option value="Brunch">brunch</option>
-            <option value="Lunch">lunch</option>
-            <option value="Tea">tea</option>
-            <option value="Snack">snack</option>
-            <option value="Dinner">dinner</option>
-            <option value="Siu Ye">siu ye</option>
-          </select>
-          <button className={style.addMealBtn} onClick={handleAddMeal}>
+          <IonSelect
+            className={style.selectMealType}
+            ref={mealSelectRef}
+            aria-label="meal type"
+            placeholder="Select meal type"
+          >
+            <IonSelectOption value="Breakfast">Breakfast</IonSelectOption>
+            <IonSelectOption value="Brunch">Brunch</IonSelectOption>
+            <IonSelectOption value="Lunch">Lunch</IonSelectOption>
+            <IonSelectOption value="Tea">Tea</IonSelectOption>
+            <IonSelectOption value="Snack">Snack</IonSelectOption>
+            <IonSelectOption value="Dinner">Dinner</IonSelectOption>
+            <IonSelectOption value="Siu Ye">siu ye</IonSelectOption>
+          </IonSelect>
+          <IonButton
+            className={style.addMealBtn}
+            onClick={handleAddMeal}
+            shape="round"
+            color="light"
+          >
             Add meal
-          </button>
+          </IonButton>
         </header>
 
         {/* show each meal and the intake food */}
@@ -341,6 +351,7 @@ export const NutritionTracker = () => {
               <div className={style.foodSearchResult}>
                 <input
                   className={`food-search-bar-${meal.id}`}
+                  id={style.foodSearchBarInput}
                   placeholder="Enter food name"
                   type="text"
                   key={meal.id}

@@ -32,10 +32,11 @@ import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
-import { useDispatch } from 'react-redux';
-import { setShouldGetDataMemo } from '../../redux/Notes/memoSlice';
-import { setShouldGetDataTodo } from '../../redux/Notes/todoSlice';
-import { setShouldGetDataDiary } from '../../redux/Notes/diarySlice';
+import { useDispatch } from "react-redux";
+import { setShouldGetDataMemo } from "../../redux/Notes/memoSlice";
+import { setShouldGetDataTodo } from "../../redux/Notes/todoSlice";
+import { setShouldGetDataDiary } from "../../redux/Notes/diarySlice";
+import { useFetch } from "../../hooks/useFetch";
 
 export const AddNotePopup: React.FC = () => {
   const [diaryOpen, setDiaryOpen] = useState(false);
@@ -125,7 +126,7 @@ export const NewDiary = (props: {
   const [diaryWeather, setDiaryWeather] = useState("");
   const [title, setTitle] = useState("");
   const [mood, setMood] = useState("");
-  const [diaryContent, setDiaryContent] = useState("")
+  const [diaryContent, setDiaryContent] = useState("");
 
   function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -149,7 +150,7 @@ export const NewDiary = (props: {
       deleted: false,
       weather: diaryWeather,
       title: title,
-      mood: mood
+      mood: mood,
     };
     const existingValue = await Preferences.get({ key });
     const existingData = existingValue.value
@@ -157,7 +158,7 @@ export const NewDiary = (props: {
       : [];
     const value = JSON.stringify([...existingData, data]);
     await Preferences.set({ key, value });
-    dispatch(setShouldGetDataDiary(true))
+    dispatch(setShouldGetDataDiary(true));
 
     //updated db
     let token = await getName("token");
@@ -186,7 +187,7 @@ export const NewDiary = (props: {
   function handleCallbackTitleAndMoodAndContent(childData: any) {
     setTitle(childData.title);
     setMood(childData.selected);
-    setDiaryContent(childData.content)
+    setDiaryContent(childData.content);
   }
 
   return (
@@ -214,7 +215,9 @@ export const NewDiary = (props: {
         <IonContent className="ion-padding">
           <DiaryEditor
             handleCallbackWeather={handleCallbackWeather}
-            handleCallbackTitleAndMoodAndContent={handleCallbackTitleAndMoodAndContent}
+            handleCallbackTitleAndMoodAndContent={
+              handleCallbackTitleAndMoodAndContent
+            }
           />
         </IonContent>
       </IonModal>
@@ -260,8 +263,7 @@ export const NewMemo = (props: {
       : [];
     const value = JSON.stringify([...existingData, data]);
     await Preferences.set({ key, value });
-    dispatch(setShouldGetDataMemo(true))
-
+    dispatch(setShouldGetDataMemo(true));
 
     //updated DB
     let token = await getName("token");
@@ -282,7 +284,7 @@ export const NewMemo = (props: {
 
   function handleEditorCallback(childData: any) {
     setMemoContent(childData.content);
-    console.log(memoContent)
+    console.log(memoContent);
   }
 
   return (
@@ -346,7 +348,7 @@ export const NewTodo = (props: {
   const [todoEmail, setTodoEmail] = useState([] as string[]);
   const [todoTask, setTodoTask] = useState([] as {}[]);
   const [todoMemoRelated, setTodoMemoRelated] = useState([] as string[]);
-
+  const fetch = useFetch();
 
   function onWillDismiss_todo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -371,32 +373,47 @@ export const NewTodo = (props: {
       memo: todoMemoRelated,
     };
 
-  
     //local storage
-    const addTodolistToPreferences= async (todoListTitle:string,todoDate:string, todoHashtag:string[], todoNewHashtag:string[], todoEmail:string[],todoTask:{}[],todoMemoRelated:string[])=>{
+    const addTodolistToPreferences = async (
+      todoListTitle: string,
+      todoDate: string,
+      todoHashtag: string[],
+      todoNewHashtag: string[],
+      todoEmail: string[],
+      todoTask: {}[],
+      todoMemoRelated: string[]
+    ) => {
       const key = "todolist";
       const data = {
-      id: id,
-      created_at: JSON.stringify(new Date()),
-      updated_at: "",
-      deleted: false,
-      title: todoListTitle,
-      due_date: todoDate,
-      hashtag: [...todoHashtag, ...todoNewHashtag],
-      email_shared: todoEmail,
-      task: todoTask,
-      memo: todoMemoRelated,
-    }
-    const existingValue = await Preferences.get({ key });
-    const existingData = existingValue.value
-      ? JSON.parse(existingValue.value)
-      : [];
-    const value = JSON.stringify([...existingData, data]);
-    await Preferences.set({ key, value });
-    dispatch(setShouldGetDataTodo(true))
-    }
+        id: id,
+        created_at: JSON.stringify(new Date()),
+        updated_at: "",
+        deleted: false,
+        title: todoListTitle,
+        due_date: todoDate,
+        hashtag: [...todoHashtag, ...todoNewHashtag],
+        email_shared: todoEmail,
+        task: todoTask,
+        memo: todoMemoRelated,
+      };
+      const existingValue = await Preferences.get({ key });
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+      const value = JSON.stringify([...existingData, data]);
+      await Preferences.set({ key, value });
+      dispatch(setShouldGetDataTodo(true));
+    };
 
-    addTodolistToPreferences(todoListTitle,todoDate, todoHashtag, todoNewHashtag, todoEmail,todoTask,todoMemoRelated);
+    addTodolistToPreferences(
+      todoListTitle,
+      todoDate,
+      todoHashtag,
+      todoNewHashtag,
+      todoEmail,
+      todoTask,
+      todoMemoRelated
+    );
 
     const addHashtagsToPreferences = async (todoNewHashtag: string[]) => {
       const key = "hashtags";
@@ -414,84 +431,95 @@ export const NewTodo = (props: {
     };
     addHashtagsToPreferences(todoNewHashtag);
 
-    const addTodoMemoRelatedToPreferences = async (todoMemoRelated: string[],id:string)=>{
+    const addTodoMemoRelatedToPreferences = async (
+      todoMemoRelated: string[],
+      id: string
+    ) => {
       const key = "todo_memo";
       todoMemoRelated.map(async (memo, index) => {
-      const data = { memo_id: memo, todolist_id: id }
-      const existingValue = await Preferences.get({ key });
-      const existingData = existingValue.value
-        ? JSON.parse(existingValue.value)
-        : [];
-      const value = JSON.stringify([...existingData, data]);
-      await Preferences.set({ key, value });
-      })
-    }
+        const data = { memo_id: memo, todolist_id: id };
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
+        const value = JSON.stringify([...existingData, data]);
+        await Preferences.set({ key, value });
+      });
+    };
 
-    addTodoMemoRelatedToPreferences(todoMemoRelated, id)
+    addTodoMemoRelatedToPreferences(todoMemoRelated, id);
 
-
-    const addTodoHashtagToPreferences = async (todoHashtag: string[],id:string)=>{
+    const addTodoHashtagToPreferences = async (
+      todoHashtag: string[],
+      id: string
+    ) => {
       const key = "todo_hashtag";
       todoHashtag.map(async (hashtag, index) => {
-      const data = { hashtag_name: hashtag, todolist_id: id }
-      const existingValue = await Preferences.get({ key });
-      const existingData = existingValue.value
-        ? JSON.parse(existingValue.value)
-        : [];
-      const value = JSON.stringify([...existingData, data]);
-      await Preferences.set({ key, value });
-      })
-    }
-    addTodoHashtagToPreferences(todoHashtag,id)
+        const data = { hashtag_name: hashtag, todolist_id: id };
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
+        const value = JSON.stringify([...existingData, data]);
+        await Preferences.set({ key, value });
+      });
+    };
+    addTodoHashtagToPreferences(todoHashtag, id);
 
-    const addTodoNewHashtagToPreferences = async (todoNewHashtag: string[],id:string)=>{
+    const addTodoNewHashtagToPreferences = async (
+      todoNewHashtag: string[],
+      id: string
+    ) => {
       const key = "todo_hashtag";
       todoNewHashtag.map(async (hashtag, index) => {
-      const data = { hashtag_name: hashtag, todolist_id: id }
-      const existingValue = await Preferences.get({ key });
-      const existingData = existingValue.value
-        ? JSON.parse(existingValue.value)
-        : [];
-      const value = JSON.stringify([...existingData, data]);
-      await Preferences.set({ key, value });
-      })
-    }
-    addTodoNewHashtagToPreferences(todoNewHashtag, id)
+        const data = { hashtag_name: hashtag, todolist_id: id };
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
+        const value = JSON.stringify([...existingData, data]);
+        await Preferences.set({ key, value });
+      });
+    };
+    addTodoNewHashtagToPreferences(todoNewHashtag, id);
 
-  
+    const addTodoEmailToPreferences = async (
+      todoEmail: string[],
+      id: string
+    ) => {
+      const key = "todo_shared";
+      todoEmail.map(async (email, index) => {
+        const data = { user_email: email, todolist_id: id };
+        const existingValue = await Preferences.get({ key });
+        const existingData = existingValue.value
+          ? JSON.parse(existingValue.value)
+          : [];
+        const value = JSON.stringify([...existingData, data]);
+        await Preferences.set({ key, value });
+      });
+    };
+    addTodoEmailToPreferences(todoEmail, id);
 
-  const addTodoEmailToPreferences = async (todoEmail: string[],id:string)=>{
-    const key = "todo_shared";
-    todoEmail.map(async (email, index) => {
-    const data = { user_email: email, todolist_id: id }
-    const existingValue = await Preferences.get({ key });
-    const existingData = existingValue.value
-      ? JSON.parse(existingValue.value)
-      : [];
-    const value = JSON.stringify([...existingData, data]);
-    await Preferences.set({ key, value });
-    })
-  }
-  addTodoEmailToPreferences(todoEmail, id)
-
-  //update db
-  const res = await fetch("http://localhost:8090/editors/new-todo", {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({
+    await fetch("post", "/editors/new-todo", {
       id: id,
       content: todoContent,
-    }),
-  });
-  const json = await res.json();
-  console.log(json);
+    });
 
+    //update db
+    // const res = await fetch("http://localhost:8090/editors/new-todo", {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + token,
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     id: id,
+    //     content: todoContent,
+    //   }),
+    // });
+    // const json = await res.json();
+    // console.log(json);
   }
-
-
 
   function handleCallback(childData: any) {
     setTodoListTitle(childData.todoTitle);

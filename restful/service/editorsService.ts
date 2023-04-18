@@ -54,19 +54,45 @@ export class EditorsService {
       .select("*")
       .where("user_id", userId);
     return diaries;
-  }
+  };
 
   // updateDiary(req.body.id, req.body.content, req.body.updated_at,req.body.title, req.body.mood, req.session.userId as string)
 
-  updateDiary = async (id: string, content: string, updated_at: string, title:string, mood: string)=>{
+  updateDiary = async (
+    id: string,
+    content: string,
+    updated_at: string,
+    title: string,
+    mood: string
+  ) => {
     await this.knex("dairy")
-    .update({
-      content:JSON.stringify(content),
-      updated_at: new Date(),
-      title: title,
-      mood: mood,
-    })
-    .where("id", id);
-  }
+      .update({
+        content: JSON.stringify(content),
+        updated_at: new Date(),
+        title: title,
+        mood: mood,
+      })
+      .where("id", id);
+  };
 
+  // newTodo = async (
+  //   id: string,
+  //   userId: string,
+  //   title: string,
+  //   dueDate: string,
+  //   hashtag: string,
+  //   newHashtag: string,
+  //   shared_email: string,
+  //   tasks: string,
+  //   memo: string
+  // ) => {
+  //   await this.knex("todolist").update({
+  //     id,
+  //     user_id: userId,
+  //     title,
+  //     due_date:dueDate,
+  //     hashtag,
+  //     newHashtag
+  //   });
+  // };
 }
