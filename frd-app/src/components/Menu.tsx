@@ -111,7 +111,7 @@ const Menu: React.FC = () => {
       <IonContent>
         <IonList id="inbox-list">
           {/* TODO Project name, PENDING */}
-          <IonListHeader>FRD Project</IonListHeader>
+          <IonListHeader>NOTICIAS</IonListHeader>
           {/* TODO Show the user name or user ac here, set a variable here */}
           <IonNote>hi@ionicframework.com</IonNote>
           {appPages.map((appPage, index) => {

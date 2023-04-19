@@ -30,7 +30,7 @@ ion-modal#example-modal ion-toolbar {
   height: 320px;
   width: 320px;
   border-radius: 50%;
-  outline: 5px solid #c1222b;
+  border: 5px solid #c1222b;
 }
 
 .shakeFortuneBorder {

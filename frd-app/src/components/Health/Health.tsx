@@ -14,7 +14,6 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import WeeklySummary from "../Summary/WeeklySummary";
 import Popup from "../Main/Popup";
 
 const Health = () => {
@@ -35,11 +34,10 @@ const Health = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Health</IonTitle>
+            <IonTitle>Weekly Summary</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className={styles.mainBox}>
-          {/* <WeeklySummary /> */}
           <Popup />
 
           <div className={styles.innerBox}>

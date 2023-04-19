@@ -12,6 +12,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { useFetch } from "../../hooks/useFetch";
 
 export const LoginSetup = () => {
   const [gender, setGender] = useState("");
@@ -20,6 +21,7 @@ export const LoginSetup = () => {
   const [weight, setWeight] = useState("");
 
   const history = useHistory();
+  const fetch = useFetch();
 
   const handleSubmit = async () => {
     if (gender === "") {
@@ -40,19 +42,11 @@ export const LoginSetup = () => {
     }
 
     // insert to db
-    let token = await getName("token");
-    fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/data`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        height,
-        gender,
-        age,
-        weight,
-      }),
+    await fetch("post", "/user/data", {
+      height,
+      gender,
+      age,
+      weight,
     });
 
     // save data to local storage

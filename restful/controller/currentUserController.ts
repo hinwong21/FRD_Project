@@ -89,6 +89,7 @@ export class CurrentUserController {
       let gender = req.body.gender;
       let age = req.body.age;
       let weight = req.body.weight;
+
       const result = await this.currentUserService.updateData(
         userId,
         height,
