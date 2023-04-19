@@ -116,7 +116,7 @@ const Menu: React.FC = () => {
   }
   // console.log("location.pathname:", location.pathname);
 
-  const [user] = useGet<User|null>("/user/user", null);
+  // const [user] = useGet<User|null>("/user/user", null);
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -126,7 +126,7 @@ const Menu: React.FC = () => {
           <div className="menuDivStyle">
           <IonListHeader>NOTICIAS</IonListHeader>
           {/* TODO Show the user name or user ac here, set a variable here */}
-          <IonNote>{user?.username}</IonNote>
+          {/* <IonNote>{user?.username}</IonNote> */}
           <button onClick={handleSignOut} className="signoutBtn">Sign out</button>
           </div>
           {appPages.map((appPage, index) => {
