@@ -358,7 +358,7 @@ export function TodoEditor(props: {
         <div className={styles.hashtagAndUseremailWrapper}>
           <div className={styles.hashtagGroupWrapper}>
             <IonInput
-              placeholder="@User email"
+              placeholder="People"
               className={styles.useremail}
               type="email"
               value={sharedEmailInput}

@@ -74,6 +74,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useGet } from "../../hooks/useGet";
 import {useToken} from "../../hooks/useToken"
+import AccountingChart from "../Accounting/AccountingChart";
+import isSameDayOrBefore from "date-fns"
+import { MainHeader } from "../Main/MainHeader";
 
 export const Calendar_zh = () => {
   const shouldGetDataEvent = useSelector(
@@ -94,6 +97,7 @@ export const Calendar_zh = () => {
   const [selectedTodo, setSelectedTodo] = useState("");
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState("");
+  const [fortune, setFortune] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
   const [token] = useToken();
@@ -105,6 +109,7 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
+    getFortune()
   }, []);
 
   useEffect(() => {
@@ -113,6 +118,7 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
+    getFortune();
   }, [shouldGetDataEvent]);
 
   useEffect(() => {
@@ -166,6 +172,17 @@ export const Calendar_zh = () => {
     getDiaryLS();
   }
 
+  async function getFortune() {
+    const getFortuneLS = async () => {
+      const { value } = await Preferences.get({ key: "fortune" });
+      // console.log(value)
+      if (value !== null) {
+        setFortune(JSON.parse(value));
+      }
+    };
+    getFortuneLS();
+  }
+
   const getPeriodLS = async () => {
     const { value } = await Preferences.get({ key: "period" });
     // console.log(value)
@@ -180,18 +197,18 @@ export const Calendar_zh = () => {
     // await getPeriodDB();
   }
 
-const getPeriodDB = async()=>{
-  const res = await fetch ("http://localhost:8090/period/period_calendar",{
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-type": "application/json",
-    },
-  })
-  const res_json = await res.json()
-  console.log(res_json)
-  setPeriod(res_json)
-}
+// const getPeriodDB = async()=>{
+//   const res = await fetch ("http://localhost:8090/period/period_calendar",{
+//     method: "GET",
+//     headers: {
+//       Authorization: "Bearer " + token,
+//       "Content-type": "application/json",
+//     },
+//   })
+//   const res_json = await res.json()
+//   console.log(res_json)
+//   setPeriod(res_json)
+// }
 
 
   function configPeriodList() {
@@ -386,6 +403,8 @@ const getPeriodDB = async()=>{
     clearTimeout(timer);
   }
 
+
+
   return (
     <>
       <div>
@@ -450,12 +469,14 @@ const getPeriodDB = async()=>{
           </IonHeader>
           <div className={styles.contentContainer}>
             <div className={styles.modalContentStyle}>
+              <MainHeader/>
               <IonItemGroup>
                 <IonItemDivider>
                   <IonLabel className={styles.dayViewLabel}>
                     📢 About Today
                   </IonLabel>
                 </IonItemDivider>
+
               </IonItemGroup>
 
               {publicHoliday.length > 0 &&
@@ -660,6 +681,19 @@ const getPeriodDB = async()=>{
                   ))}
                 </IonItemGroup>
               )}
+
+              {isToday(new Date(modalDate)) && (
+                <IonItemGroup>
+                <IonItemDivider>
+                  <IonLabel className={styles.dayViewLabel}>
+                    📢 Finance
+                  </IonLabel>
+                </IonItemDivider>
+                <div className={styles.chartInCalendar}><AccountingChart/></div>
+                </IonItemGroup>
+              )}
+
+                
 
               {isToday(new Date(modalDate)) && (
                 <div>
