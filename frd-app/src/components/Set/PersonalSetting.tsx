@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./Setting.module.css";
 import { useHistory } from "react-router-dom";
-import { getName } from "../../service/LocalStorage/LocalStorage";
 import { useGet } from "../../hooks/useGet";
 
 type User = {
@@ -13,7 +12,7 @@ type User = {
 };
 
 export const PersonalSetting = () => {
-  const [user, setUser] = useGet<User | null>("/user/user", null);
+  const [user] = useGet<User | null>("/user/user", null);
 
   const history = useHistory();
 

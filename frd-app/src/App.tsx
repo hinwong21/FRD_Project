@@ -69,8 +69,6 @@ function ProtectedRoute(props: {
   const [token] = useToken();
   const [age] = useAge();
   
-  console.log(age);
-  
   return (
     <Route path={props.path} exact={props.exact}>
       {!token ? <Login /> : !age ? <LoginSetup /> : props.children}

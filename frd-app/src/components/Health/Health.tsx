@@ -33,7 +33,7 @@ const Health = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Weekly Summary</IonTitle>
+            <IonTitle>Health</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className={styles.mainBox}>
