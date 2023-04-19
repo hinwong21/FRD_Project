@@ -12,12 +12,12 @@ import "./main.css";
 import { ShakeAnimation } from "./ShakeAnimation";
 import "animate.css";
 import { useFetch } from "../../hooks/useFetch";
-import { setName } from "../../service/LocalStorage/LocalStorage";
+import { getName, setName } from "../../service/LocalStorage/LocalStorage";
 
 function Popup() {
   const modal = useRef<HTMLIonModalElement>(null);
   const [shaking, setShaking] = useState(true);
-  const [isOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
   const [fortune, setFortune] = useState("");
   const fetch = useFetch();
 
@@ -55,9 +55,24 @@ function Popup() {
     await setName("dailyShake", today.toString());
   }
 
+  const handleDailyShake = async () => {
+    const dailyData = await getName("dailyShake");
+
+    if (dailyData !== null) {
+      let todayNum = new Date().getDate();
+      let today = todayNum.toString();
+      if (today === dailyData) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    }
+  };
+
   // insert to db and local
   useEffect(() => {
     handleFortune();
+    handleDailyShake();
   }, []);
 
   useEffect(() => {
@@ -74,7 +89,6 @@ function Popup() {
 
   return (
     <>
-      {/* <div className={styles.popupContainer}> */}
       <IonModal
         id="example-modal2"
         ref={modal}
@@ -103,7 +117,6 @@ function Popup() {
           )}
         </IonContent>
       </IonModal>
-      {/* </div> */}
     </>
   );
 }
