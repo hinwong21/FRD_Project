@@ -494,20 +494,6 @@ export const Calendar_zh = () => {
     return dayDiff <= 5 && dayDiff >= 0;
   }
 
-  function calDate(current: string, start: string): number {
-    const startDateMs = new Date(start).getTime();
-    const currentDateMs = new Date(current).getTime();
-
-    if (Number.isNaN(startDateMs) || Number.isNaN(currentDateMs)) {
-      throw new Error("Invalid date string");
-    }
-
-    const diffDays =
-      Math.floor(Math.abs(startDateMs - currentDateMs) + 2) /
-      (1000 * 60 * 60 * 24);
-
-    return Math.ceil(diffDays);
-  }
 
   return (
     <>
@@ -650,17 +636,6 @@ export const Calendar_zh = () => {
                 </IonItemGroup>
               )}
 
-              {clickedPeriod.length < 1 ? (
-                <div></div>
-              ) : (
-                <IonItemGroup>
-                  <IonItemDivider>
-                    <IonLabel className={styles.dayViewLabel}>
-                      🩸 Period
-                    </IonLabel>
-                  </IonItemDivider>
-                </IonItemGroup>
-              )}
 
               {clickedOvu.length < 1 ? (
                 <div></div>
@@ -799,6 +774,69 @@ export const Calendar_zh = () => {
                   ))
                 )}
               </IonItemGroup>
+              {clickedPeriod.length < 1 ? (
+                <div></div>
+              ) : (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🩸 Period
+                    </IonLabel>
+                  </IonItemDivider>
+                  {clickedPeriod.map((period: any, index) => (
+                    <div key={uuidv4()} className={styles.emptyMsg}>
+                      <div>
+                        {"Day " +
+                          Math.min(
+                            Math.max(
+                              differenceInDays(
+                                new Date(modalDate),
+                                new Date(period.start)
+                              ) + 2,
+                              1
+                            ),
+                            differenceInDays(
+                              new Date(period.end),
+                              new Date(period.start)
+                            ) + 1
+                          )
+                          }
+                      </div>
+                    </div>
+                  ))}
+                </IonItemGroup>
+              )}
+              {clickedOvu.length < 1 ? (
+                <div></div>
+              ) : (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🌸 Ovulation Period
+                    </IonLabel>
+                  </IonItemDivider>
+                  {clickedOvu.map((period: any, index) => (
+                    <div key={uuidv4()} className={styles.emptyMsg}>
+                      {"Day " +
+                        Math.min(
+                          Math.max(
+                            differenceInDays(
+                              new Date(modalDate),
+                              new Date(period.start)
+                            ) + 2,
+                            1
+                          ),
+                          differenceInDays(
+                            new Date(period.end),
+                            new Date(period.start)
+                          ) + 1
+                        )
+                        // {Math.ceil((new Date(modalDate).getTime() - new Date(period.start).getTime()) / (1000 * 60 * 60 * 24))}
+                        }
+                    </div>
+                  ))}
+                </IonItemGroup>
+              )}
 
               {isToday(new Date(modalDate)) && (
                 <IonItemGroup>

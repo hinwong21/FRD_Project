@@ -1,0 +1,12 @@
+.actChartDiv{
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submitBtn{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
