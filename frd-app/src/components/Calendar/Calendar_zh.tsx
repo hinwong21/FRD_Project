@@ -97,6 +97,7 @@ export const Calendar_zh = () => {
   const [selectedTodo, setSelectedTodo] = useState("");
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState("");
+  const [weatherData, setWeatherData] = useState<WeatherDataType>();
   const [fortune, setFortune] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
@@ -109,7 +110,6 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
-    getFortune()
   }, []);
 
   useEffect(() => {
@@ -118,7 +118,6 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
-    getFortune();
   }, [shouldGetDataEvent]);
 
   useEffect(() => {
@@ -172,16 +171,6 @@ export const Calendar_zh = () => {
     getDiaryLS();
   }
 
-  async function getFortune() {
-    const getFortuneLS = async () => {
-      const { value } = await Preferences.get({ key: "fortune" });
-      // console.log(value)
-      if (value !== null) {
-        setFortune(JSON.parse(value));
-      }
-    };
-    getFortuneLS();
-  }
 
   const getPeriodLS = async () => {
     const { value } = await Preferences.get({ key: "period" });
@@ -403,6 +392,44 @@ export const Calendar_zh = () => {
     clearTimeout(timer);
   }
 
+  type WeatherDataType = {
+    temperature: number;
+    humidity: number;
+    uvindexValue: number;
+    uvindexdesc: string;
+    icon: string;
+  };
+
+
+  useEffect(() => {
+    const todayWeather = async () => {
+      let res = await fetch(
+        "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
+      );
+
+      let json = await res.json();
+
+      // define the change of uvIndex at night and morning
+      let uvIndex = 0;
+      if (typeof json.uvindex != "string") {
+        uvIndex = json.uvindex.data[0].value;
+      }
+
+      let uvLevel = "";
+      if (typeof json.uvindex != "string") {
+        uvLevel += "(" + json.uvindex.data[0].desc + ")";
+      }
+
+      setWeatherData({
+        temperature: json.temperature.data[0].value,
+        humidity: json.humidity.data[0].value,
+        uvindexValue: uvIndex,
+        uvindexdesc: uvLevel,
+        icon: json.icon
+      });
+    }
+      todayWeather()
+    },[])
 
 
   return (
@@ -476,7 +503,17 @@ export const Calendar_zh = () => {
                     📢 About Today
                   </IonLabel>
                 </IonItemDivider>
+                <ul className={styles.reminderMsg}>
+                {(weatherData?.icon == "53"||weatherData?.icon == "54"||weatherData?.icon == "62"||weatherData?.icon == "63"||weatherData?.icon == "64"||weatherData?.icon == "65")?
+                  (<li>There's a high probability of rain today, so don't forget to bring your umbrella with you.</li>):
+                  (weatherData?.icon == "50"||weatherData?.icon == "51")?
+                  (<li>It's sunny for most of the day today, so don't forget to apply sunscreen.</li>):
+                  (weatherData?.icon == "90"||weatherData?.icon == "91")?
+                  (<li>It's quite hot today, so remember to drink plenty of water and avoid staying outdoors for extended periods of time.</li>):
+                  <div></div>
+                }
 
+              </ul>
               </IonItemGroup>
 
               {publicHoliday.length > 0 &&

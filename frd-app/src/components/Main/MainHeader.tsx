@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import style from "./Main.module.scss";
 import { getName } from "../../service/LocalStorage/LocalStorage";
+import { Preferences } from "@capacitor/preferences";
 
 type Weather = {
   icon: number;
@@ -10,6 +11,7 @@ type Weather = {
 export const MainHeader = () => {
   const [weather, setWeather] = useState<Weather>();
   const [username, setUsername] = useState("");
+  const [fortune, setFortune] = useState("")
 
   const today = new Date().toLocaleDateString("en-Us", {
     weekday: "short",
@@ -33,23 +35,23 @@ export const MainHeader = () => {
   }
 
   // calc the lucky number
-  const todayLuckyNumber: number = Math.random() * 101;
-  let fortune;
-  if (todayLuckyNumber > 97.5) {
-    fortune = "大吉";
-  } else if (todayLuckyNumber > 87.5 && todayLuckyNumber <= 97.5) {
-    fortune = "中吉";
-  } else if (todayLuckyNumber > 67.5 && todayLuckyNumber <= 87.5) {
-    fortune = "小吉";
-  } else if (todayLuckyNumber > 32.5 && todayLuckyNumber <= 67.5) {
-    fortune = "吉";
-  } else if (todayLuckyNumber > 12.5 && todayLuckyNumber <= 32.5) {
-    fortune = "末吉";
-  } else if (todayLuckyNumber > 2.5 && todayLuckyNumber <= 12.5) {
-    fortune = "凶";
-  } else {
-    fortune = "大凶";
-  }
+  // const todayLuckyNumber: number = Math.random() * 101;
+  // let fortune;
+  // if (todayLuckyNumber > 97.5) {
+  //   fortune = "大吉";
+  // } else if (todayLuckyNumber > 87.5 && todayLuckyNumber <= 97.5) {
+  //   fortune = "中吉";
+  // } else if (todayLuckyNumber > 67.5 && todayLuckyNumber <= 87.5) {
+  //   fortune = "小吉";
+  // } else if (todayLuckyNumber > 32.5 && todayLuckyNumber <= 67.5) {
+  //   fortune = "吉";
+  // } else if (todayLuckyNumber > 12.5 && todayLuckyNumber <= 32.5) {
+  //   fortune = "末吉";
+  // } else if (todayLuckyNumber > 2.5 && todayLuckyNumber <= 12.5) {
+  //   fortune = "凶";
+  // } else {
+  //   fortune = "大凶";
+  // }
 
   const getUser = async () => {
     let token = await getName("token");
@@ -67,6 +69,17 @@ export const MainHeader = () => {
     setUsername(json.result[0].username);
   };
 
+  async function getFortune() {
+    const getFortuneLS = async () => {
+      const { value } = await Preferences.get({ key: "fortune" });
+      console.log(value)
+      if (value !== null) {
+        setFortune(value);
+      }
+    };
+    getFortuneLS();
+  }
+
   const todayWeather = async () => {
     let res = await fetch(
       "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=en"
@@ -82,6 +95,7 @@ export const MainHeader = () => {
 
   useEffect(() => {
     getUser();
+    getFortune();
     todayWeather();
   }, []);
 

@@ -130,6 +130,11 @@ h2{
     margin-left:25px;
 }
 
+.reminderMsg{
+    margin-left:25px;
+    color:rgb(213, 126, 19);
+}
+
 /* .todoListWrapper{
     text-decoration: none; 
   }

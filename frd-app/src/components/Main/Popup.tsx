@@ -43,8 +43,8 @@ function Popup() {
   }
 
   const handleFortune = async () => {
-    await fetch("post", "/user/fortune", { fortune });
     await setName("fortune", fortune);
+    await fetch("post", "/user/fortune", { fortune });
   };
 
   // insert to db and local
