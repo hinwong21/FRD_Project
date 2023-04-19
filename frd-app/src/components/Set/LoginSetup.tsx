@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styles from "./LoginSetup.module.css";
 import { getName, setName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { useIonRouter } from "@ionic/react";
+
 import { useHistory } from "react-router";
 import {
   IonContent,
@@ -12,16 +14,18 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useFetch } from "../../hooks/useFetch";
+import { api_origin } from "../../service/api";
+import { useAge } from "../../hooks/useAge";
 
 export const LoginSetup = () => {
+  const routerIon = useIonRouter();
+
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
 
-  const history = useHistory();
-  const fetch = useFetch();
+  const [ageGolbal, setAgeGolbal] = useAge();
 
   const handleSubmit = async () => {
     if (gender === "") {
@@ -41,12 +45,25 @@ export const LoginSetup = () => {
       return;
     }
 
+    console.log(gender, age, height, weight);
+
     // insert to db
-    await fetch("post", "/user/data", {
-      height,
-      gender,
-      age,
-      weight,
+    let token = await getName("token");
+
+    console.log("token", token);
+
+    fetch(`${api_origin}/user/data`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        height,
+        gender,
+        age,
+        weight,
+      }),
     });
 
     // save data to local storage
@@ -54,7 +71,7 @@ export const LoginSetup = () => {
     await setName("weight", weight);
     await setName("age", age);
     await setName("gender", gender);
-    
+
     // await Preferences.set({
     //   key: "userData",
     //   value: JSON.stringify({
@@ -65,8 +82,12 @@ export const LoginSetup = () => {
     //   }),
     // });
 
+    // history.push("/page/Calender");
+
+    setAgeGolbal(+age);
+    routerIon.push("/page/Calender");
+
     // fetch page to calendar
-    history.push("/");
   };
 
   return (

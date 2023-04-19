@@ -9,13 +9,11 @@ const PeriodMain = () => {
   //TODO 默認是顯示UpcomingPeriod，當periodDay = true，就顯示PeriodDay
   return (
     <IonPage>
-      <IonContent>
-        <UpcomingPeriod />
+      <UpcomingPeriod />
 
-        {/* <PeriodDay /> */}
-        {/* <PeriodRecord /> */}
-        {/* <PeriodCalendar /> */}
-      </IonContent>
+      {/* <PeriodDay /> */}
+      {/* <PeriodRecord /> */}
+      {/* <PeriodCalendar /> */}
     </IonPage>
   );
 };

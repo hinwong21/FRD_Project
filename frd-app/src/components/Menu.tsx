@@ -8,7 +8,7 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
-  IonButton
+  IonButton,
 } from "@ionic/react";
 
 import { useLocation } from "react-router-dom";
@@ -109,14 +109,14 @@ const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
+
   const [token, setToken] = useToken();
   async function handleSignOut() {
     await signOut();
     setToken("");
   }
-  // console.log("location.pathname:", location.pathname);
 
-  // const [user] = useGet<User|null>("/user/user", null);
+  console.log("location.pathname:", location.pathname);
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -124,10 +124,12 @@ const Menu: React.FC = () => {
         <IonList id="inbox-list">
           {/* TODO Project name, PENDING */}
           <div className="menuDivStyle">
-          <IonListHeader>NOTICIAS</IonListHeader>
-          {/* TODO Show the user name or user ac here, set a variable here */}
-          {/* <IonNote>{user?.username}</IonNote> */}
-          <button onClick={handleSignOut} className="signoutBtn">Sign out</button>
+            <IonListHeader>NOTICIAS</IonListHeader>
+            {/* TODO Show the user name or user ac here, set a variable here */}
+            {/* <IonNote>{user?.username}</IonNote> */}
+            <button onClick={handleSignOut} className="signoutBtn">
+              Sign out
+            </button>
           </div>
           {appPages.map((appPage, index) => {
             return (
@@ -152,19 +154,7 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
-          
         </IonList>
-
-        {/* TODO Label Part, PENDING...Maybe Delete?  */}
-        {/* <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon aria-hidden="true" slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList> */}
       </IonContent>
     </IonMenu>
   );

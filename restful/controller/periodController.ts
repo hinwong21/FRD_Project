@@ -13,7 +13,7 @@ export class PeriodController {
 
       const result = await this.periodService.getUpcomingAt(userId);
 
-      res.json({ result });
+      res.json(result);
     } catch (err) {
       errorHandler(err, req, res);
     }

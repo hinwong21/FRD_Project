@@ -11,13 +11,20 @@ export type JWTPayload = {
 
 export function getJWT(req: express.Request) {
   let token = permit.check(req);
+
   if (!token) {
     throw new Error("Not exist token in header");
   }
+
   try {
+    console.log("DECODE", token, env.SEREST);
+
     let payload = jwt.decode(token, env.SEREST);
+
     return payload as JWTPayload;
   } catch (error) {
+    console.log(error);
+
     throw new Error("signature is not match provided in the token");
   }
 }

@@ -15,7 +15,7 @@ import {
 } from "@ionic/react";
 import { OverlayEventDetail } from "@ionic/core/components";
 import styles from "./PeriodDate.module.scss";
-import Topbox from "./Topbox";
+import TopBox from "./Topbox";
 
 import { useForm } from "react-hook-form";
 import StatusItem from "./StatusItem";

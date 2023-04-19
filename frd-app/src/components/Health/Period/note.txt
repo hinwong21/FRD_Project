@@ -1,0 +1,26 @@
+
+
+
+
+
+
+
+
+1: start_at
+
+start_at+14 - 5 day: ovu_start_at
+start_at+14 + 1 day: ovu_end_at
+
+diff = start_at+14 - now
+
+3 < diff: low probability of pregnancy
+1 < diff < 3: middle probability of pregnancy
+diff < 1: high probability of pregnancy
+
+
+start_at + 28: up_coming_period_start_at
+
+start_at + 28 + 14 - 5: up_coming_ovu_start_at
+
+
+start_at < now < end_at: 

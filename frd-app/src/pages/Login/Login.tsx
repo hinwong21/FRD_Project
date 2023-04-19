@@ -12,6 +12,7 @@ import { useToken } from "../../hooks/useToken";
 import { usePushNotificationToken } from "../../hooks/usePushNotificationToken";
 import { User } from "@capacitor-firebase/authentication";
 import { useFetch } from "../../hooks/useFetch";
+import { setName } from "../../service/LocalStorage/LocalStorage";
 
 export const Login = () => {
   const [token, setToken] = useToken();
@@ -48,6 +49,7 @@ export const Login = () => {
 
       if (json.ok) {
         setToken(json.data);
+        setName("token", json.data);
       } else {
         await signOut();
         setToken("");
