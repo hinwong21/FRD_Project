@@ -3,8 +3,18 @@ import styles from "./Health.module.scss";
 import { Provider } from "react-redux";
 import { nutritionStore } from "../../redux/Nutrition/store";
 
-import { IonButton, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import { useHistory } from "react-router-dom";
+import Popup from "../Main/Popup";
 
 const Health = () => {
   const submit = useHistory();
@@ -24,10 +34,11 @@ const Health = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Health</IonTitle>
+            <IonTitle>Weekly Summary</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent className={styles.mainBox}>
+          <Popup />
 
           <div className={styles.innerBox}>
             <IonButton

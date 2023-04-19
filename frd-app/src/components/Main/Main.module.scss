@@ -152,12 +152,14 @@
 .shakeContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
+  // align-items: center;
   width: 100vw;
   height: 100vh;
 }
 
 .shakingCylinder {
+  margin-top: 50px;
+  height: 35vh;
   animation: shake 2s infinite;
 }
 

@@ -69,7 +69,7 @@ const HealthNutrition = () => {
           if (dietProgramme === "") {
             carbsDailyIntake = Math.round((caloriesDailyIntake * 0.65) / 4);
             proteinDailyIntake = Math.round(weight * 0.8);
-            fatDailyIntake = Math.round(caloriesDailyIntake * 0.2);
+            fatDailyIntake = Math.round((caloriesDailyIntake * 0.2) / 9);
           } else if (dietProgramme === "Low Carbs") {
             carbsDailyIntake = 57;
             proteinDailyIntake = Math.round(weight * 0.8);
