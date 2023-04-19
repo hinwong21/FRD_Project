@@ -726,7 +726,7 @@ const getUpcomingDate = async ()=>{
                     </IonLabel>
                   </IonItemDivider>
                   {clickedPeriod.map((period: any, index) => (
-                    <div key={uuidv4()}>
+                    <div key={uuidv4()} className={styles.emptyMsg}>
                       <div>
                         {"Day " +
                           Math.min(
