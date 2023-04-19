@@ -45,10 +45,10 @@ function formatDaysLate(ms: number) {
 
 function dateToString(date: Date | null | undefined) {
   return date
-    ? `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+    ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
         2,
         "0"
-      )}/${String(date.getDate()).padStart(2, "0")}`
+      )}-${String(date.getDate()).padStart(2, "0")}`
     : "";
 }
 
@@ -231,8 +231,8 @@ function TopBox(
   // const period_start = dateToString(
   //   props.startDate || props.up_coming_period_start_at
   // );
-  console.log("props.startDate", props.startDate);
-  console.log("props.start_at", props.start_at);
+  console.log("@@@@@@", typeof upcomingDate);
+  console.log("@@@@@@", upcomingDate);
 
   // const period_start = dateToString(props.startDate || props.start_at);
   // const period_end = dateToString(props.endDate || props.end);
