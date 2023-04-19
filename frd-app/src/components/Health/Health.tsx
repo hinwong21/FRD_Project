@@ -14,7 +14,6 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import Popup from "../Main/Popup";
 
 const Health = () => {
   const submit = useHistory();
@@ -38,8 +37,6 @@ const Health = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className={styles.mainBox}>
-          <Popup />
-
           <div className={styles.innerBox}>
             <IonButton
               color={styles.togoP}
