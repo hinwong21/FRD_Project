@@ -34,15 +34,6 @@ function formatDaysLate(ms: number) {
   return days + " day late";
 }
 
-// function dateToString(date_: Date | null | undefined | number | string) {
-//   if (!date_) return "";
-//   let date = new Date(date_);
-//   let y = date.getFullYear();
-//   let m = String(date.getMonth() + 1).padStart(2, "0");
-//   let d = String(date.getDate()).padStart(2, "0");
-//   return `${y}-${m}-${d}`;
-// }
-
 function dateToString(date: Date | null | undefined) {
   return date
     ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
@@ -227,15 +218,6 @@ function TopBox(
   );
   const [token] = useToken();
   const fetch = useFetch();
-
-  // const period_start = dateToString(
-  //   props.startDate || props.up_coming_period_start_at
-  // );
-  console.log("@@@@@@", typeof upcomingDate);
-  console.log("@@@@@@", upcomingDate);
-
-  // const period_start = dateToString(props.startDate || props.start_at);
-  // const period_end = dateToString(props.endDate || props.end);
 
   const handleDateChange = (start: Date | null, end: Date | null) => {
     console.log("%%%%%%", start);
