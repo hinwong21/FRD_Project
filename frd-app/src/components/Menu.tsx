@@ -8,6 +8,7 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  IonButton,
 } from "@ionic/react";
 
 import { useLocation } from "react-router-dom";
@@ -31,6 +32,7 @@ import {
 import "./Menu.css";
 import { signOut } from "../service/firebaseConfig";
 import { useToken } from "../hooks/useToken";
+import { useGet } from "../hooks/useGet";
 
 interface AppPage {
   id: number;
@@ -39,6 +41,14 @@ interface AppPage {
   mdIcon: string;
   title: string;
 }
+
+type User = {
+  username: string;
+  height: number;
+  weight: number;
+  age: number;
+  gender: string;
+};
 
 const appPages: AppPage[] = [
   // {
@@ -113,9 +123,14 @@ const Menu: React.FC = () => {
       <IonContent>
         <IonList id="inbox-list">
           {/* TODO Project name, PENDING */}
-          <IonListHeader>FRD Project</IonListHeader>
-          {/* TODO Show the user name or user ac here, set a variable here */}
-          <IonNote>hi@ionicframework.com</IonNote>
+          <div className="menuDivStyle">
+            <IonListHeader>NOTICIAS</IonListHeader>
+            {/* TODO Show the user name or user ac here, set a variable here */}
+            {/* <IonNote>{user?.username}</IonNote> */}
+            <button onClick={handleSignOut} className="signoutBtn">
+              Sign out
+            </button>
+          </div>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={appPage.id} autoHide={false}>
@@ -139,7 +154,6 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
-          <button onClick={handleSignOut}>Sign out</button>
         </IonList>
       </IonContent>
     </IonMenu>

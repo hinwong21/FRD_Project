@@ -108,7 +108,7 @@ const AccountingPage: React.FC = () => {
                 </IonList> */}
               </div>
               <IonList>
-                {dailyTransactions.map((calculateResult) => (
+                {dailyTransactions.map((calculateResult: any) => (
                   <IonItem key={calculateResult.id}>
                     {calculateResult.category + " "}
                     {calculateResult.description} - $

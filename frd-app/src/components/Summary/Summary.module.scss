@@ -1,3 +1,22 @@
+.weeklySummaryContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+}
+
 .chartContainer {
   margin: 10px;
+}
+
+.weeklySummaryFortuneResult {
+  background-color: #733b3a;
+  color: white;
+  padding: 3px 10px;
+}
+
+.weeklySummaryNutritionResult {
+  background-color: #7f8a75;
+  color: white;
+  padding: 3px 10px;
 }

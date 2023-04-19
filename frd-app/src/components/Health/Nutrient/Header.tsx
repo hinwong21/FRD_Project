@@ -14,12 +14,12 @@ type DailyIntake = {
   maxCarbsDailyIntake?: number;
 };
 
-interface UserData {
-  height: string;
-  gender: string;
-  weight: string;
-  age: string;
-}
+// interface UserData {
+//   height: string;
+//   gender: string;
+//   weight: string;
+//   age: string;
+// }
 
 const HealthNutrition = () => {
   const [dailyIntake, setDailyIntake] = useState<DailyIntake>();
@@ -30,14 +30,33 @@ const HealthNutrition = () => {
   useEffect(() => {
     const getDailyIntake = async () => {
       try {
-        const { value } = await Preferences.get({ key: "userData" });
-
+        const value = await Preferences.get({ key: "age" });
         if (value) {
-          const userData: UserData = JSON.parse(value);
-          let height = parseFloat(userData.height);
-          let age = parseInt(userData.age);
-          let weight = parseFloat(userData.weight);
-          let gender = userData.gender;
+          // const userData: UserData = JSON.parse(value);
+          // let height = parseFloat(userData.height);
+          // let age = parseInt(userData.age);
+          // let weight = parseFloat(userData.weight);
+          // let gender = userData.gender;
+          let weight = 0,
+            height = 0,
+            age = 0;
+          let gender = "";
+          const objHeight = await Preferences.get({ key: "height" });
+          const objAge = await Preferences.get({ key: "age" });
+          const objWeight = await Preferences.get({ key: "weight" });
+          const objGender = await Preferences.get({ key: "gender" });
+          if (objWeight.value !== null) {
+            weight = parseFloat(objWeight?.value);
+          }
+          if (objHeight.value !== null) {
+            height = parseFloat(objHeight?.value);
+          }
+          if (objAge.value !== null) {
+            age = parseFloat(objAge?.value);
+          }
+          if (objGender.value !== null) {
+            gender = objGender?.value;
+          }
 
           // get the user of selected diet programme
           const getDietProgramme = async () => {
@@ -69,7 +88,7 @@ const HealthNutrition = () => {
           if (dietProgramme === "") {
             carbsDailyIntake = Math.round((caloriesDailyIntake * 0.65) / 4);
             proteinDailyIntake = Math.round(weight * 0.8);
-            fatDailyIntake = Math.round(caloriesDailyIntake * 0.2);
+            fatDailyIntake = Math.round((caloriesDailyIntake * 0.2) / 9);
           } else if (dietProgramme === "Low Carbs") {
             carbsDailyIntake = 57;
             proteinDailyIntake = Math.round(weight * 0.8);

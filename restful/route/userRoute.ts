@@ -20,5 +20,7 @@ userRoutes.post("/weight", currentUserController.updateWeight);
 userRoutes.post("/height", currentUserController.updateHeight);
 userRoutes.post("/age", currentUserController.updateAge);
 userRoutes.post("/gender", currentUserController.updateGender);
+userRoutes.post("/fortune", currentUserController.updateFortune);
+
 
 userRoutes.post("/:field", currentUserController.updateField);

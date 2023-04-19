@@ -32,8 +32,8 @@ import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
-import { ReactElement, useEffect } from "react";
-import { setName } from "./service/LocalStorage/LocalStorage";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import { getName, setName } from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
 import { PushNotifications } from "@capacitor/push-notifications";
@@ -57,6 +57,7 @@ function ProtectedRoute(props: {
 }) {
   const [token] = useToken();
   const [age] = useAge();
+
   return (
     <Route path={props.path} exact={props.exact}>
       {!token ? <Login /> : !age ? <LoginSetup /> : props.children}

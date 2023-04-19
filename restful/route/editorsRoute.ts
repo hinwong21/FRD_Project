@@ -25,7 +25,7 @@ editorsRoutes.post("/new-diary", isLoggedInAPI, editorsController.newDiary);
 //     editorsController.getDiary
 //   );
 
-editorsRoutes.post("/new-todo", isLoggedInAPI, editorsController.newTodo);
+editorsRoutes.post("/new-todo", editorsController.newTodo);
 
 editorsRoutes.put(
   "/update-diary",

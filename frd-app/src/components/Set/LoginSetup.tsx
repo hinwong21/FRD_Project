@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./LoginSetup.module.css";
-import { getName } from "../../service/LocalStorage/LocalStorage";
+import { getName, setName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
 import { useIonRouter } from "@ionic/react";
 
@@ -25,7 +25,6 @@ export const LoginSetup = () => {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
 
-  // const history = useHistory();
   const [ageGolbal, setAgeGolbal] = useAge();
 
   const handleSubmit = async () => {
@@ -68,15 +67,20 @@ export const LoginSetup = () => {
     });
 
     // save data to local storage
-    await Preferences.set({
-      key: "userData",
-      value: JSON.stringify({
-        height,
-        gender,
-        age,
-        weight,
-      }),
-    });
+    await setName("height", height);
+    await setName("weight", weight);
+    await setName("age", age);
+    await setName("gender", gender);
+
+    // await Preferences.set({
+    //   key: "userData",
+    //   value: JSON.stringify({
+    //     height,
+    //     gender,
+    //     age,
+    //     weight,
+    //   }),
+    // });
 
     // history.push("/page/Calender");
 

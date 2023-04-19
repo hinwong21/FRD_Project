@@ -61,11 +61,11 @@ function Piechart() {
         {/* <h3 className="mt-3">Welcome to Piechart </h3> */}
         <Chart
           type="pie"
-          width={400}
+          width={350}
           height={300}
           series={studentMarks}
           options={{
-            title: { text: "Monthly Summary" },
+            // title: { text: "Monthly Summary" },
             noData: { text: "Empty Data" },
             // colors:["#f90000","#f0f"],
             labels: studentSubject,

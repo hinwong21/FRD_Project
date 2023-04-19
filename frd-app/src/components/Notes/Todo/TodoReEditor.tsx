@@ -1,9 +1,14 @@
 import {
+  IonAvatar,
     IonButton,
+    IonButtons,
+    IonCard,
     IonCheckbox,
     IonContent,
     IonDatetime,
     IonDatetimeButton,
+    IonHeader,
+    IonImg,
     IonInput,
     IonItem,
     IonItemGroup,
@@ -17,19 +22,21 @@ import {
     IonPopover,
     IonReorder,
     IonReorderGroup,
+    IonTitle,
     IonToast,
     IonToolbar,
     ItemReorderEventDetail,
   } from "@ionic/react";
-  import { KeyboardEvent, SetStateAction, useEffect, useState } from "react";
+  import { KeyboardEvent, SetStateAction, useEffect, useRef, useState } from "react";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import { faPlus, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
   import { v4 as uuidv4 } from "uuid";
   import styles from "./TodoEditor.module.css";
   import { getName } from "../../../service/LocalStorage/LocalStorage";
   import { Preferences } from "@capacitor/preferences";
+  import "./modal.css"
   
-  //NOTE: Three React.FC-- NewTodoItem, TodoEditor, MemoTodo
+  //NOTE: Three React.FC in this file-- NewTodoItem, TodoEditor, MemoTodo
   
   interface NewTodoItemProps {
     data: {
@@ -314,6 +321,20 @@ import {
             <MemosTodo handleMemoTodoLinkCallback={handleMemoTodoLinkCallback} content={memoIdRelated}/>
           </div>
         </IonPopover>
+
+        {/* <IonModal id="example-modal" isOpen={true} className={styles.memoModal}>
+          <IonContent>
+            <IonToolbar>
+              <IonTitle>Memo</IonTitle>
+              <IonButtons slot="end">
+                <IonButton color="light" >
+                  Close
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+            
+          </IonContent>
+        </IonModal> */}
   
         <IonDatetimeButton
           color="light"
@@ -379,7 +400,7 @@ import {
           <div className={styles.hashtagAndUseremailWrapper}>
             <div className={styles.hashtagGroupWrapper}>
               <IonInput
-                placeholder="@User email"
+                placeholder="People"
                 className={styles.useremail}
                 type="email"
                 value={sharedEmailInput}
@@ -473,6 +494,8 @@ import {
             ))}
           </IonReorderGroup>
         </div>
+
+        
   
         <IonToast
           isOpen={showAlertNewHashtag}
@@ -486,13 +509,9 @@ import {
   interface handleMemoTodoLinkProps {
     handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[], memosToDelete: string[] }) => void;
     content:string[]
-  }
+  } 
   
-  export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
-    handleMemoTodoLinkCallback, content
-  }) => {
-
-    type MemoType = {
+  export type MemoType = {
       id: string;
       content: string;
       created_at: string;
@@ -500,6 +519,12 @@ import {
       updated_at: string;
       user_id: number;
     };
+  
+  export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
+    handleMemoTodoLinkCallback, content
+  }) => {
+
+   
   
     const [memoContent, setMemoContent] = useState<MemoType[]>([]);
     const [memoTodoLink, setMemoTodoLink] = useState(content);
@@ -600,12 +625,23 @@ import {
     useEffect(() => {
       getMemo();
     }, []);
+
+
+
+     //for deletion
+  let timer: any;
+  function handlePointerDown(id: string) {
+    timer = setTimeout(() => {
+      console.log("123")
+    }, 500);
+  }
+
   
     return (
       <>
         <IonItemGroup className={styles.memoTodoScrollGroup}>
           {memoContent.map((item, index) => (
-            <div
+            <IonCard
               className={
                 memoTodoLink.includes(item.id)
                   ? styles.selectedMemoTodo
@@ -615,16 +651,26 @@ import {
               onClick={() => {
                 handleMemoSelection(item.id);
               }}
-            >
+              onPointerDown={() => handlePointerDown(item.id)}>
               <div className={styles.memoBlockTodo}>
                     {previewArr[index]}
               </div>
-            </div>
+            </IonCard>
           ))}
         </IonItemGroup>
       </>
     );
   };
+
+
+  // const SelectMemoShowing: React.FC = () => {
+  //   const modal = useRef<HTMLIonModalElement>(null);
+  
+  //   return (
+      
+        
+  //   );
+  // };
   
   export default TodoReEditor;
   

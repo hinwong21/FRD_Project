@@ -137,4 +137,40 @@ export class PeriodService {
       periodStatus,
     };
   };
+
+  getPeriodTableCalendar = async (userId:string)=>{
+      try{
+        let periodData = await this.knex
+        .from("period")
+        .select("*")
+        .where("user_id", userId)
+
+        return{
+          success:true,
+          periodData: periodData
+        }
+        
+      }catch (error) {
+        throw new Error((error as Error).message);
+      }
+  }
+
+  getLatestUpcoming = async (userId:string)=>{
+      try{
+        let periodData = await this.knex
+        .from("period")
+        .select("upcoming_at")
+        .where("user_id", userId)
+        .orderBy("upcoming_at","desc")
+        .first()
+
+        return{
+          success:true,
+          periodData: periodData
+        }
+        
+      }catch (error) {
+        throw new Error((error as Error).message);
+      }
+  }
 }
