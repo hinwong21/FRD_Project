@@ -15,6 +15,7 @@ import { api_origin } from "../../../service/api";
 import { useToken } from "../../../hooks/useToken";
 import Datebox from "./Datebox";
 import { useGet } from "../../../hooks/useGet";
+import { uuidv4 } from "@firebase/util";
 
 const DAY = 1000 * 60 * 60 * 24;
 
@@ -229,8 +230,12 @@ function TopBox(
       props.ovu_start_at &&
       props.ovu_end_at
     ) {
+      console.log("tt", start);
+      console.log("tt", end);
+      console.log("tt", props.upcoming_date_id);
+
       fetch(props.upcoming_date_id ? "PUT" : "POST", "/period/periodData", {
-        id: props.upcoming_date_id,
+        id: props.upcoming_date_id ? props.upcoming_date_id : uuidv4(),
         start_at: dateToString(start),
         end_at: dateToString(end),
         upcoming_at: dateToString(new Date(props.up_coming_period_start_at)),
@@ -317,8 +322,8 @@ function TopBox(
       />
       <Datebox
         subTitle="fertile period"
-        startDate={new Date(props.ovu_start_at!).toISOString().slice(0, 10)}
-        endDate={new Date(props.ovu_end_at!).toISOString().slice(0, 10)}
+        startDate={dateToString(new Date(props.ovu_start_at!))}
+        endDate={dateToString(new Date(props.ovu_end_at!))}
       />
     </div>
   );
