@@ -194,7 +194,7 @@ export const Calendar_zh = () => {
   }
 
   const getPeriodDB = async () => {
-    // try {
+    // try{
     const res = await fetch(`${api_origin}/period/period_calendar`, {
       method: "GET",
       headers: {
@@ -205,14 +205,13 @@ export const Calendar_zh = () => {
     const res_json = await res.json();
     console.log(res_json);
     setPeriod(res_json.result.periodData);
-    // } catch (error) {
-    //   // getPeriodLS();
-    //   console.log(error);
+    // }catch{
+    //   getPeriodLS()
     // }
   };
 
   const getUpcomingDate = async () => {
-    // try {
+    // try{
     const res = await fetch(`${api_origin}/period/upcomingDateLatest`, {
       method: "GET",
       headers: {
@@ -223,15 +222,14 @@ export const Calendar_zh = () => {
     const res_json = await res.json();
     console.log(res_json);
     setPeriodUpcomingDate(res_json.result.periodData.upcoming_at);
-    // } catch (error) {
-    //   // const { value } = await Preferences.get({ key: "period" });
-    //   // if (value !== null) {
-    //   //   const periodData = JSON.parse(value);
-    //   //   const latestPeriod = periodData[periodData.length - 1]; // get the latest period object
-    //   //   const upcomingAt = latestPeriod.upcoming_at;
-    //   //   setPeriodUpcomingDate(upcomingAt); // get the end_date of the latest period object as the upcoming_at
-    //   // }
-    //   console.log(error);
+    //   }catch{
+    //     const { value } = await Preferences.get({ key: "period" });
+    //     if (value !== null) {
+    //     const periodData = JSON.parse(value);
+    //     const latestPeriod = periodData[periodData.length - 1]; // get the latest period object
+    //     const upcomingAt = latestPeriod.upcoming_at;
+    //     setPeriodUpcomingDate(upcomingAt)// get the end_date of the latest period object as the upcoming_at
+    // }
     // }
   };
 
@@ -244,7 +242,7 @@ export const Calendar_zh = () => {
         setPeriodList([
           ...periodList,
           {
-            title: "🩸Period",
+            title: "🩸Peiord",
             start: item.start_at,
             end: item.end_at,
             extendedProps: { description: "Upcoming at " + item.upcoming_at },
@@ -323,7 +321,6 @@ export const Calendar_zh = () => {
     //     (isAfter(clickedDate, parseISO(event.start as string)) &&
     //       isBefore(clickedDate, parseISO(event.end as string)))
     // );
-
     const clickedTodoList = todoList.filter((todo: any) =>
       isSameDay(parseISO(todo.due_date as string), clickedDate)
     );

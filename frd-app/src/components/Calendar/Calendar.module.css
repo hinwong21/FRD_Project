@@ -128,23 +128,27 @@ h2{
 
 .emptyMsg{
     margin-left:25px;
+    margin-right:25px;
     color: rgb(98, 5, 2);
     font-weight: bold;
 }
 
 .reminderMsg{
     margin-left:25px;
+    margin-right:25px;
     color:rgb(213, 126, 19);
 }
 
 .periodMsg{
     margin-left:25px;
+    margin-right:25px;
     color:rgb(201, 41, 116);
     text-decoration: none;
 }
 
 .periodMsgUpcoming{
   margin-left:25px;
+  margin-right:25px;
     color:rgb(192, 28, 63);
     text-decoration: none;
 }
