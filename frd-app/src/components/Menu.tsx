@@ -114,7 +114,7 @@ const Menu: React.FC = () => {
     await signOut();
     setToken("");
   }
-  console.log("location.pathname:", location.pathname);
+  // console.log("location.pathname:", location.pathname);
 
   const [user] = useGet<User|null>("/user/user", null);
 
