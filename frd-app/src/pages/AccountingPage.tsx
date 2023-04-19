@@ -108,13 +108,19 @@ const AccountingPage: React.FC = () => {
                 </IonList> */}
               </div>
               <IonList>
-                {dailyTransactions.map((calculateResult: any) => (
-                  <IonItem key={calculateResult.id}>
-                    {calculateResult.category + " "}
-                    {calculateResult.description} - $
-                    {calculateResult.amount.toLocaleString()}
-                  </IonItem>
-                ))}
+                {dailyTransactions.length < 1 ? (
+                  <div>You have made no transaction today.</div>
+                ) : (
+                  <div className={style.dailyTransaction}>
+                    {dailyTransactions.map((calculateResult: any) => (
+                      <IonItem key={calculateResult.id}>
+                        {calculateResult.category + " "}
+                        {calculateResult.description} - $
+                        {calculateResult.amount.toLocaleString()}
+                      </IonItem>
+                    ))}
+                  </div>
+                )}
               </IonList>
               <div className={style.button}>
                 <IonButton
