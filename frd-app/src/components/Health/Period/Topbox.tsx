@@ -230,10 +230,6 @@ function TopBox(
       props.ovu_start_at &&
       props.ovu_end_at
     ) {
-      console.log("tt", start);
-      console.log("tt", end);
-      console.log("tt", props.upcoming_date_id);
-
       fetch(props.upcoming_date_id ? "PUT" : "POST", "/period/periodData", {
         id: props.upcoming_date_id ? props.upcoming_date_id : uuidv4(),
         start_at: dateToString(start),
