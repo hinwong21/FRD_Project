@@ -7,6 +7,7 @@ import {
   IonToolbar,
   IonTitle,
 } from "@ionic/react";
+// import styles from "./main.module.css";
 import "./main.css";
 import { ShakeAnimation } from "./ShakeAnimation";
 import "animate.css";
@@ -62,8 +63,9 @@ function Popup() {
 
   return (
     <>
+      {/* <div className={styles.popupContainer}> */}
       <IonModal
-        id="example-modal"
+        id="example-modal2"
         ref={modal}
         trigger="open-modal"
         isOpen={isOpen}
@@ -90,6 +92,7 @@ function Popup() {
           )}
         </IonContent>
       </IonModal>
+      {/* </div> */}
     </>
   );
 }
