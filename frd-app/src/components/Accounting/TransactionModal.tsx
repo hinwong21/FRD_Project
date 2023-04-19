@@ -20,6 +20,7 @@ import { getName } from "../../service/LocalStorage/LocalStorage";
 import AccountingChart from "./AccountingChart";
 import { Method } from "ionicons/dist/types/stencil-public-runtime";
 import { useToken } from "../../hooks/useToken";
+import styles from "./TransactionModal.module.css"
 
 export interface Genre {
   id: number;
@@ -207,8 +208,10 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
           />
         )}
 
-        <IonButton onClick={getTransaction}>submit</IonButton>
+        <div className={styles.submitBtn}><IonButton color="light" size="default" onClick={getTransaction} >submit</IonButton></div>
+        <div className={styles.actChartDiv}>
         <AccountingChart />
+        </div>
       </IonContent>
     </IonModal>
   );
