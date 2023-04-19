@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styles from "./LoginSetup.module.css";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { useIonRouter } from "@ionic/react";
+
 import { useHistory } from "react-router";
 import {
   IonContent,
@@ -12,14 +14,19 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { api_origin } from "../../service/api";
+import { useAge } from "../../hooks/useAge";
 
 export const LoginSetup = () => {
+  const routerIon = useIonRouter();
+
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
 
-  const history = useHistory();
+  // const history = useHistory();
+  const [ageGolbal, setAgeGolbal] = useAge();
 
   const handleSubmit = async () => {
     if (gender === "") {
@@ -39,9 +46,14 @@ export const LoginSetup = () => {
       return;
     }
 
+    console.log(gender, age, height, weight);
+
     // insert to db
     let token = await getName("token");
-    fetch(`${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/data`, {
+
+    console.log("token", token);
+
+    fetch(`${api_origin}/user/data`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,
@@ -66,8 +78,12 @@ export const LoginSetup = () => {
       }),
     });
 
+    // history.push("/page/Calender");
+
+    setAgeGolbal(+age);
+    routerIon.push("/page/Calender");
+
     // fetch page to calendar
-    history.push("/");
   };
 
   return (

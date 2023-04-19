@@ -6,7 +6,6 @@ export async function seed(knex: Knex): Promise<void> {
   await knex("fortune").del();
   await knex("transaction").del();
   await knex("finance").del();
-  await knex("period_period_status").del();
   await knex("period_status").del();
   await knex("period").del();
   await knex("nutrition").del();
@@ -86,72 +85,48 @@ export async function seed(knex: Knex): Promise<void> {
     ])
     .returning("id");
 
-  let [febStatusOne, febStatusTwo, febStatusThree, marStatusOne, marStatusTwo] =
-    await knex("period_status")
-      .insert([
-        {
-          id: `${uuidv4()}`,
-          type: "menstrual flow",
-          content: "3",
-          created_at: "2023-02-07",
-          updated_at: "2023-02-07",
-        },
-        {
-          id: `${uuidv4()}`,
-          type: "lower back pain",
-          content: "1",
-          created_at: "2023-02-07",
-          updated_at: "2023-02-07",
-        },
-        {
-          id: `${uuidv4()}`,
-          type: "headache",
-          content: "1",
-          created_at: "2023-02-07",
-          updated_at: "2023-02-07",
-        },
-        {
-          id: `${uuidv4()}`,
-          type: "headache",
-          content: "1",
-          created_at: "2023-03-08",
-          updated_at: "2023-03-08",
-        },
-        {
-          id: `${uuidv4()}`,
-          type: "fatigue",
-          content: "2",
-          created_at: "2023-03-08",
-          updated_at: "2023-03-08",
-        },
-      ])
-      .returning("id");
-
-  await knex("period_period_status").insert([
-    {
-      id: `${uuidv4()}`,
-      period_id: namiFeb.id,
-      period_status_id: febStatusOne.id,
-    },
-    {
-      id: `${uuidv4()}`,
-      period_id: namiFeb.id,
-      period_status_id: febStatusTwo.id,
-    },
-    {
-      id: `${uuidv4()}`,
-      period_id: namiFeb.id,
-      period_status_id: febStatusThree.id,
-    },
-    {
-      id: `${uuidv4()}`,
-      period_id: namiMar.id,
-      period_status_id: marStatusOne.id,
-    },
-    {
-      id: `${uuidv4()}`,
-      period_id: namiMar.id,
-      period_status_id: marStatusTwo.id,
-    },
-  ]);
+  await knex("period_status")
+    .insert([
+      {
+        id: `${uuidv4()}`,
+        type: "menstrual flow",
+        content: "3",
+        created_at: "2023-02-07",
+        updated_at: "2023-02-07",
+        period_id: namiFeb.id,
+      },
+      {
+        id: `${uuidv4()}`,
+        type: "lower back pain",
+        content: "1",
+        created_at: "2023-02-07",
+        updated_at: "2023-02-07",
+        period_id: namiFeb.id,
+      },
+      {
+        id: `${uuidv4()}`,
+        type: "headache",
+        content: "1",
+        created_at: "2023-02-07",
+        updated_at: "2023-02-07",
+        period_id: namiFeb.id,
+      },
+      {
+        id: `${uuidv4()}`,
+        type: "headache",
+        content: "1",
+        created_at: "2023-03-08",
+        updated_at: "2023-03-08",
+        period_id: namiMar.id,
+      },
+      {
+        id: `${uuidv4()}`,
+        type: "fatigue",
+        content: "2",
+        created_at: "2023-03-08",
+        updated_at: "2023-03-08",
+        period_id: namiMar.id,
+      },
+    ])
+    .returning("id");
 }

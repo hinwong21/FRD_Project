@@ -5,8 +5,8 @@ import styles from "./PeriodDate.module.scss";
 
 function Datebox(props: {
   subTitle: string;
-  startDate: string;
-  endDate: string;
+  startDate: string | undefined;
+  endDate: string | undefined;
 }) {
   return (
     <div className={styles.card}>

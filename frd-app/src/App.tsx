@@ -32,17 +32,14 @@ import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useEffect } from "react";
 import { setName } from "./service/LocalStorage/LocalStorage";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { Edit } from "./components/Set/Edit";
-import Memos, { EditMemo } from "./components/Notes/Memo/Memos";
-import { TextEditor } from "./components/Notes/TextEditor/TextEditor";
-// import {NewMemo} from "./components/Notes/AddNotePopup"
+import Memos from "./components/Notes/Memo/Memos";
 import AddNotePopup from "./components/Notes/AddNotePopup";
-import { AccountingSetup } from "./components/Accounting/AccountingSetup";
 import { DietProgramme } from "./components/Health/Nutrient/DietProgramme";
 import { useGet } from "./hooks/useGet";
 import { useToken } from "./hooks/useToken";
@@ -51,15 +48,7 @@ import { useAge } from "./hooks/useAge";
 import { EditGender } from "./components/Set/EditGender";
 import { LoginSetup } from "./components/Set/LoginSetup";
 
-// import { Device } from "@capacitor/device";
 setupIonicReact();
-// const logDeviceInfo = async () => {
-//   const info = await Device.getInfo();
-//   if (info.platform === "web") {
-
-//   }
-// };
-// logDeviceInfo();
 
 function ProtectedRoute(props: {
   path: string;
@@ -93,6 +82,10 @@ const App: React.FC = () => {
   if (verifyState.ok === false) {
     setToken("");
   }
+
+  useEffect(() => {
+    console.log("verifyState", verifyState);
+  }, [verifyState]);
 
   useEffect(() => {
     const main = async () => {
@@ -151,11 +144,6 @@ const App: React.FC = () => {
     await PushNotifications.register();
   };
 
-  // const cbLoginFunc = useCallback(() => changeLogin, []);
-  // function changeLogin() {
-  //   setIsLogin(true);
-  // }
-
   return (
     <IonApp>
       <IonReactRouter>
@@ -174,10 +162,6 @@ const App: React.FC = () => {
               <ProtectedRoute path="/page/:name" exact={true}>
                 <Page />
               </ProtectedRoute>
-
-              {/* <Route path="/Transaction" exact={true}>
-                < Transaction />
-              </Route> */}
 
               <ProtectedRoute path="/Accounting" exact={true}>
                 <AccountingPage />

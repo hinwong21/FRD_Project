@@ -85,10 +85,12 @@ export class CurrentUserController {
   updateData = async (req: Request, res: Response) => {
     try {
       let userId = getJWT(req).userId;
+
       let height = req.body.height;
       let gender = req.body.gender;
       let age = req.body.age;
       let weight = req.body.weight;
+
       const result = await this.currentUserService.updateData(
         userId,
         height,

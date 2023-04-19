@@ -99,11 +99,13 @@ const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
 
 const Menu: React.FC = () => {
   const location = useLocation();
+
   const [token, setToken] = useToken();
   async function handleSignOut() {
     await signOut();
     setToken("");
   }
+
   console.log("location.pathname:", location.pathname);
 
   return (
@@ -139,17 +141,6 @@ const Menu: React.FC = () => {
           })}
           <button onClick={handleSignOut}>Sign out</button>
         </IonList>
-
-        {/* TODO Label Part, PENDING...Maybe Delete?  */}
-        {/* <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon aria-hidden="true" slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList> */}
       </IonContent>
     </IonMenu>
   );
