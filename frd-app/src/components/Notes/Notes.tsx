@@ -18,6 +18,7 @@ import {
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 import ReEditTextEditor from "./Memo/ReEditTextEditor";
 import { useLocation } from "react-router-dom";
+import { api_origin } from "../../service/api";
 
 type MemoType = {
   id: string;
@@ -32,7 +33,7 @@ export const Notes: React.FC = () => {
   const [memoContent, setMemoContent] = useState<MemoType[]>([]);
 
   async function getMemo() {
-    const res = await fetch("http://localhost:8090/editors/memo", {
+    const res = await fetch(`${api_origin}/editors/memo`, {
       method: "GET",
     });
     const memos = await res.json();
@@ -69,7 +70,7 @@ export const EditMemo = () => {
     const memoContent = document.querySelector(
       ".ContentEditable__root"
     )?.innerHTML;
-    const res = await fetch("http://localhost:8090/editors/update-memo", {
+    const res = await fetch(`${api_origin}/editors/update-memo`, {
       method: "PUT",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({

@@ -28,6 +28,7 @@ import { setNotesAlertMsg } from "../../../redux/Notes/notesAlertMsgSlice";
 import { setNotesAlertShow } from "../../../redux/Notes/notesAlertSlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../redux/store/store";
+import { api_origin } from "../../../service/api";
 
 
 export type MemoType = {
@@ -274,7 +275,7 @@ updateMemoLS(memoEditorId, memoContent);
     
     
     //update db
-    const res = await fetch("http://localhost:8090/editors/update-memo", {
+    const res = await fetch(`${api_origin}/editors/update-memo`, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + token,

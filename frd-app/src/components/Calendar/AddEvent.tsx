@@ -34,6 +34,7 @@ import { useDispatch } from "react-redux";
 import { setShouldGetDataEvent } from "../../redux/Calendar/eventSlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../redux/store/store";
+import { api_origin } from "../../service/api";
 
 const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined | number, role?: string) => void;}) => {
 
@@ -80,7 +81,7 @@ const NewEventForm = ({onDismiss}: {onDismiss: (data?: string | null | undefined
 
     //update db
     let token = await getName("token")
-    const res= await fetch("http://localhost:8090/calendar/new-local-event",{
+    const res= await fetch(`${api_origin}/calendar/new-local-event`,{
       method: "POST",
       headers:{
         Authorization:"Bearer " + token,
