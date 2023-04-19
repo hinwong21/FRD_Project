@@ -193,7 +193,7 @@ export const Calendar_zh = () => {
   }
 
 const getPeriodDB = async()=>{
-  try{
+  // try{
     const res = await fetch (`${api_origin}/period/period_calendar`,{
       method: "GET",
       headers: {
@@ -204,13 +204,13 @@ const getPeriodDB = async()=>{
     const res_json = await res.json()
     console.log(res_json)
     setPeriod(res_json.result.periodData)
-  }catch{
-    getPeriodLS()
-  }
+  // }catch{
+  //   getPeriodLS()
+  // }
 }
 
 const getUpcomingDate = async ()=>{
-  try{
+  // try{
     const res = await fetch(`${api_origin}/period/upcomingDateLatest`,{
       method: "GET",
       headers: {
@@ -221,20 +221,22 @@ const getUpcomingDate = async ()=>{
     const res_json = await res.json();
     console.log(res_json)
     setPeriodUpcomingDate(res_json.result.periodData.upcoming_at)
-  }catch{
-    const { value } = await Preferences.get({ key: "period" });
-if (value !== null) {
-  const periodData = JSON.parse(value);
-  const latestPeriod = periodData[periodData.length - 1]; // get the latest period object
-  const upcomingAt = latestPeriod.upcoming_at; 
-  setPeriodUpcomingDate(upcomingAt)// get the end_date of the latest period object as the upcoming_at
-}
-}
+//   }catch{
+//     const { value } = await Preferences.get({ key: "period" });
+//     if (value !== null) {
+//     const periodData = JSON.parse(value);
+//     const latestPeriod = periodData[periodData.length - 1]; // get the latest period object
+//     const upcomingAt = latestPeriod.upcoming_at; 
+//     setPeriodUpcomingDate(upcomingAt)// get the end_date of the latest period object as the upcoming_at
+// } 
+// }
+  
 }
 
 
   function configPeriodList() {
     console.log("period", period);
+    setPeriodList([])
     // console.log("periodList", periodList);
     if (period.length>0)
     {period.forEach((item: any, index) =>
@@ -325,17 +327,17 @@ if (value !== null) {
     );
 
     const clickedPeriod = periodList.filter((period: any) =>
-      isWithinInterval(clickedDate, {
-        start: parseISO(period.start as string),
-        end: parseISO(period.end as string),
-      })
+    isSameDay(parseISO(period.start as string), clickedDate) ||
+    isSameDay(parseISO(period.end as string), clickedDate) ||
+    (isAfter(clickedDate, parseISO(period.start as string)) &&
+      isBefore(clickedDate, parseISO(period.end as string)))
     );
 
     const clickedOvu = ovuList.filter((period: any) =>
-      isWithinInterval(clickedDate, {
-        start: parseISO(period.start as string),
-        end: parseISO(period.end as string),
-      })
+    isSameDay(parseISO(period.start as string), clickedDate) ||
+    isSameDay(parseISO(period.end as string), clickedDate) ||
+    (isAfter(clickedDate, parseISO(period.start as string)) &&
+      isBefore(clickedDate, parseISO(period.end as string)))
     );
 
     const calendarApi = arg.view.calendar;
