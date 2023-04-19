@@ -73,9 +73,9 @@ import {
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import { useGet } from "../../hooks/useGet";
-import {useToken} from "../../hooks/useToken"
+import { useToken } from "../../hooks/useToken";
 import AccountingChart from "../Accounting/AccountingChart";
-import isSameDayOrBefore from "date-fns"
+import isSameDayOrBefore from "date-fns";
 import { MainHeader } from "../Main/MainHeader";
 import { api_origin } from "../../service/api";
 
@@ -99,8 +99,10 @@ export const Calendar_zh = () => {
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState("");
   const [weatherData, setWeatherData] = useState<WeatherDataType>();
-  const [periodUpcomingDate, setPeriodUpcomingDate] = useState("")
-  const [periodUpcomingDateList, setPeriodUpcomingDateList] = useState({} as {})
+  const [periodUpcomingDate, setPeriodUpcomingDate] = useState("");
+  const [periodUpcomingDateList, setPeriodUpcomingDateList] = useState(
+    {} as {}
+  );
   const [fortune, setFortune] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
@@ -121,13 +123,13 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
-    getUpcomingDate()
+    getUpcomingDate();
   }, [shouldGetDataEvent]);
 
   useEffect(() => {
     configPeriodList();
     configOvuList();
-    configPeriodUpcomingDate()
+    configPeriodUpcomingDate();
   }, [period, periodUpcomingDate]);
 
   async function getGoogleCalendarEvents() {
@@ -176,7 +178,6 @@ export const Calendar_zh = () => {
     getDiaryLS();
   }
 
-
   const getPeriodLS = async () => {
     const { value } = await Preferences.get({ key: "period" });
     // console.log(value)
@@ -192,87 +193,85 @@ export const Calendar_zh = () => {
     await getPeriodDB();
   }
 
-const getPeriodDB = async()=>{
-  // try{
-    const res = await fetch (`${api_origin}/period/period_calendar`,{
+  const getPeriodDB = async () => {
+    // try{
+    const res = await fetch(`${api_origin}/period/period_calendar`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
       },
-    })
-    const res_json = await res.json()
-    console.log(res_json)
-    setPeriod(res_json.result.periodData)
-  // }catch{
-  //   getPeriodLS()
-  // }
-}
-
-const getUpcomingDate = async ()=>{
-  // try{
-    const res = await fetch(`${api_origin}/period/upcomingDateLatest`,{
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-    })
+    });
     const res_json = await res.json();
-    console.log(res_json)
-    setPeriodUpcomingDate(res_json.result.periodData.upcoming_at)
-//   }catch{
-//     const { value } = await Preferences.get({ key: "period" });
-//     if (value !== null) {
-//     const periodData = JSON.parse(value);
-//     const latestPeriod = periodData[periodData.length - 1]; // get the latest period object
-//     const upcomingAt = latestPeriod.upcoming_at; 
-//     setPeriodUpcomingDate(upcomingAt)// get the end_date of the latest period object as the upcoming_at
-// } 
-// }
-  
-}
+    console.log(res_json);
+    setPeriod(res_json.result.periodData);
+    // }catch{
+    //   getPeriodLS()
+    // }
+  };
 
+  const getUpcomingDate = async () => {
+    // try{
+    const res = await fetch(`${api_origin}/period/upcomingDateLatest`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+    const res_json = await res.json();
+    console.log(res_json);
+    setPeriodUpcomingDate(res_json.result.periodData.upcoming_at);
+    //   }catch{
+    //     const { value } = await Preferences.get({ key: "period" });
+    //     if (value !== null) {
+    //     const periodData = JSON.parse(value);
+    //     const latestPeriod = periodData[periodData.length - 1]; // get the latest period object
+    //     const upcomingAt = latestPeriod.upcoming_at;
+    //     setPeriodUpcomingDate(upcomingAt)// get the end_date of the latest period object as the upcoming_at
+    // }
+    // }
+  };
 
   function configPeriodList() {
     console.log("period", period);
-    setPeriodList([])
+    setPeriodList([]);
     // console.log("periodList", periodList);
-    if (period.length>0)
-    {period.forEach((item: any, index) =>
-      setPeriodList([
-        ...periodList,
-        {
-          title: "🩸Peiord",
-          start: item.start_at,
-          end: item.end_at,
-          extendedProps: { description: "Upcoming at " + item.upcoming_at },
-          backgroundColor: "pink",
-          textColor: "white",
-        },
-      ])
-    );
-    console.log("periodList", periodList);
-  }else{
-    return;
-  }}
+    if (period.length > 0) {
+      period.forEach((item: any, index) =>
+        setPeriodList([
+          ...periodList,
+          {
+            title: "🩸Peiord",
+            start: item.start_at,
+            end: item.end_at,
+            extendedProps: { description: "Upcoming at " + item.upcoming_at },
+            backgroundColor: "pink",
+            textColor: "white",
+          },
+        ])
+      );
+      console.log("periodList", periodList);
+    } else {
+      return;
+    }
+  }
 
   function configPeriodUpcomingDate() {
     console.log("period", period);
     // console.log("periodList", periodList);
-    if (periodUpcomingDate!==""){
-      
+    if (periodUpcomingDate !== "") {
       setPeriodUpcomingDateList({
-          title: "🩸Next Period Start",
-          start: periodUpcomingDate,
-          end: periodUpcomingDate,
-          backgroundColor: "purple",
-          textColor: "white",
-        }
-      )
-  }else{
-    return;
-  }}
+        title: "🩸Next Period Start",
+        start: periodUpcomingDate,
+        end: periodUpcomingDate,
+        backgroundColor: "purple",
+        textColor: "white",
+      });
+    } else {
+      return;
+    }
+  }
 
   function configOvuList() {
     period.forEach((item: any, index) =>
@@ -326,18 +325,20 @@ const getUpcomingDate = async ()=>{
       isSameDay(parseISO(todo.due_date as string), clickedDate)
     );
 
-    const clickedPeriod = periodList.filter((period: any) =>
-    isSameDay(parseISO(period.start as string), clickedDate) ||
-    isSameDay(parseISO(period.end as string), clickedDate) ||
-    (isAfter(clickedDate, parseISO(period.start as string)) &&
-      isBefore(clickedDate, parseISO(period.end as string)))
+    const clickedPeriod = periodList.filter(
+      (period: any) =>
+        isSameDay(parseISO(period.start as string), clickedDate) ||
+        isSameDay(parseISO(period.end as string), clickedDate) ||
+        (isAfter(clickedDate, parseISO(period.start as string)) &&
+          isBefore(clickedDate, parseISO(period.end as string)))
     );
 
-    const clickedOvu = ovuList.filter((period: any) =>
-    isSameDay(parseISO(period.start as string), clickedDate) ||
-    isSameDay(parseISO(period.end as string), clickedDate) ||
-    (isAfter(clickedDate, parseISO(period.start as string)) &&
-      isBefore(clickedDate, parseISO(period.end as string)))
+    const clickedOvu = ovuList.filter(
+      (period: any) =>
+        isSameDay(parseISO(period.start as string), clickedDate) ||
+        isSameDay(parseISO(period.end as string), clickedDate) ||
+        (isAfter(clickedDate, parseISO(period.start as string)) &&
+          isBefore(clickedDate, parseISO(period.end as string)))
     );
 
     const calendarApi = arg.view.calendar;
@@ -351,7 +352,8 @@ const getUpcomingDate = async ()=>{
     );
     // console.log(publicHolidays)
 
-    setClickedEventList([...clickedEvents
+    setClickedEventList([
+      ...clickedEvents,
       // , ...clickedGoogleEvents
     ]);
     setClickedTodoList(clickedTodoList);
@@ -374,7 +376,6 @@ const getUpcomingDate = async ()=>{
   //     html: true,
   //   });
   // };
-
 
   //for deletion
   let timer: any;
@@ -457,7 +458,6 @@ const getUpcomingDate = async ()=>{
     icon: string;
   };
 
-
   useEffect(() => {
     const todayWeather = async () => {
       let res = await fetch(
@@ -482,18 +482,32 @@ const getUpcomingDate = async ()=>{
         humidity: json.humidity.data[0].value,
         uvindexValue: uvIndex,
         uvindexdesc: uvLevel,
-        icon: json.icon
+        icon: json.icon,
       });
-    }
-      todayWeather()
-    },[])
+    };
+    todayWeather();
+  }, []);
 
-    function isWithin5DaysBefore(dayA: any, dayB:any) {
-      const timeDiff = new Date(dayB).getTime() - new Date(dayA).getTime(); // get the time difference in milliseconds
-      const dayDiff = timeDiff / (1000 * 3600 * 24); // convert milliseconds to days
-      return dayDiff <= 5 && dayDiff >= 0;
+  function isWithin5DaysBefore(dayA: any, dayB: any) {
+    const timeDiff = new Date(dayB).getTime() - new Date(dayA).getTime(); // get the time difference in milliseconds
+    const dayDiff = timeDiff / (1000 * 3600 * 24); // convert milliseconds to days
+    return dayDiff <= 5 && dayDiff >= 0;
+  }
+
+  function calDate(current: string, start: string): number {
+    const startDateMs = new Date(start).getTime();
+    const currentDateMs = new Date(current).getTime();
+
+    if (Number.isNaN(startDateMs) || Number.isNaN(currentDateMs)) {
+      throw new Error("Invalid date string");
     }
 
+    const diffDays =
+      Math.floor(Math.abs(startDateMs - currentDateMs) + 2) /
+      (1000 * 60 * 60 * 24);
+
+    return Math.ceil(diffDays);
+  }
 
   return (
     <>
@@ -531,7 +545,7 @@ const getUpcomingDate = async ()=>{
             googleCalendarEvent,
             periodList,
             ovuList,
-            [periodUpcomingDateList]
+            [periodUpcomingDateList],
           ]}
           // eventDidMount={handleEventDidMount}
           eventClick={(event: any) => {
@@ -560,54 +574,105 @@ const getUpcomingDate = async ()=>{
           </IonHeader>
           <div className={styles.contentContainer}>
             <div className={styles.modalContentStyle}>
-             { isToday(new Date(modalDate)) && <MainHeader/>}
+              {isToday(new Date(modalDate)) && <MainHeader />}
               <IonItemGroup>
                 <IonItemDivider>
                   <IonLabel className={styles.dayViewLabel}>
-                    {isToday(new Date(modalDate))? ("📢 About Today"):
-                    ("📢 About this day")}
+                    {isToday(new Date(modalDate))
+                      ? "📢 About Today"
+                      : "📢 About this day"}
                   </IonLabel>
                 </IonItemDivider>
                 <ul className={styles.reminderMsg}>
-                {isToday(new Date(modalDate)) && 
-                (weatherData?.icon == "53"||weatherData?.icon == "54"||weatherData?.icon == "62"||weatherData?.icon == "63"||weatherData?.icon == "64"||weatherData?.icon == "65")?
-                  (<li>There's a high probability of rain today, so don't forget to bring your umbrella with you.</li>):
-                  (weatherData?.icon == "50"||weatherData?.icon == "51")?
-                  (<li>It's sunny for most of the day today, so don't forget to apply sunscreen.</li>):
-                  (weatherData?.icon == "90"||weatherData?.icon == "91")?
-                  (<li>It's quite hot today, so remember to drink plenty of water and avoid staying outdoors for extended periods of time.</li>):
-                  <div></div>
-                }
-                {
-                  (clickedPeriod.length > 0 )?
-                  (<Link
-                     to={{
-                    pathname: "./Health"
-                  }}
-                  className={styles.periodMsg}
-                  ><li> Stay healthy and happy during your period. You may watch some advice in Health page. </li></Link>):<div></div>
-                }
-                {(isWithin5DaysBefore(modalDate, periodUpcomingDate))?
-                (<li className={styles.periodMsgUpcoming}>Your next menstrual period is coming, please be prepared with enough medicine and menstrual products.</li>):
-                <div></div>
-                }
-
-              </ul>
+                  {isToday(new Date(modalDate)) &&
+                  (weatherData?.icon == "53" ||
+                    weatherData?.icon == "54" ||
+                    weatherData?.icon == "62" ||
+                    weatherData?.icon == "63" ||
+                    weatherData?.icon == "64" ||
+                    weatherData?.icon == "65") ? (
+                    <li>
+                      There's a high probability of rain today, so don't forget
+                      to bring your umbrella with you.
+                    </li>
+                  ) : weatherData?.icon == "50" || weatherData?.icon == "51" ? (
+                    <li>
+                      It's sunny for most of the day today, so don't forget to
+                      apply sunscreen.
+                    </li>
+                  ) : weatherData?.icon == "90" || weatherData?.icon == "91" ? (
+                    <li>
+                      It's quite hot today, so remember to drink plenty of water
+                      and avoid staying outdoors for extended periods of time.
+                    </li>
+                  ) : (
+                    <div></div>
+                  )}
+                  {clickedPeriod.length > 0 ? (
+                    <Link
+                      to={{
+                        pathname: "./Health",
+                      }}
+                      className={styles.periodMsg}
+                    >
+                      <li>
+                        {" "}
+                        Stay healthy and happy during your period. You may watch
+                        some advice in Health page.{" "}
+                      </li>
+                    </Link>
+                  ) : (
+                    <div></div>
+                  )}
+                  {isWithin5DaysBefore(modalDate, periodUpcomingDate) ? (
+                    <li className={styles.periodMsgUpcoming}>
+                      Your next menstrual period is coming, please be prepared
+                      with enough medicine and menstrual products.
+                    </li>
+                  ) : (
+                    <div></div>
+                  )}
+                </ul>
               </IonItemGroup>
 
-              {publicHoliday.length > 0 &&
-              (<IonItemGroup>
-                <IonItemDivider>
-                  <IonLabel className={styles.dayViewLabel}>
-                    🔥 Public Holiday
-                  </IonLabel>
-                </IonItemDivider>
+              {publicHoliday.length > 0 && (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🔥 Public Holiday
+                    </IonLabel>
+                  </IonItemDivider>
                   {publicHoliday.map((holiday: any, index) => (
-                    <div key={uuidv4()} className={styles.emptyMsg}>{holiday.title}</div>
+                    <div key={uuidv4()} className={styles.emptyMsg}>
+                      {holiday.title}
+                    </div>
                   ))}
-              </IonItemGroup>
+                </IonItemGroup>
               )}
 
+              {clickedPeriod.length < 1 ? (
+                <div></div>
+              ) : (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🩸 Period
+                    </IonLabel>
+                  </IonItemDivider>
+                </IonItemGroup>
+              )}
+
+              {clickedOvu.length < 1 ? (
+                <div></div>
+              ) : (
+                <IonItemGroup>
+                  <IonItemDivider>
+                    <IonLabel className={styles.dayViewLabel}>
+                      🌸 Ovulation Period
+                    </IonLabel>
+                  </IonItemDivider>
+                </IonItemGroup>
+              )}
 
               <IonItemGroup>
                 <IonItemDivider>
@@ -734,89 +799,26 @@ const getUpcomingDate = async ()=>{
                   ))
                 )}
               </IonItemGroup>
-              {clickedPeriod.length < 1 ? (
-                <div></div>
-              ) : (
-                <IonItemGroup>
-                  <IonItemDivider>
-                    <IonLabel className={styles.dayViewLabel}>
-                      🩸 Period
-                    </IonLabel>
-                  </IonItemDivider>
-                  {clickedPeriod.map((period: any, index) => (
-                    <div key={uuidv4()} className={styles.emptyMsg}>
-                      <div>
-                        {"Day " +
-                          Math.min(
-                            Math.max(
-                              differenceInDays(
-                                new Date(modalDate),
-                                new Date(period.start)
-                              ) + 2,
-                              1
-                            ),
-                            differenceInDays(
-                              new Date(period.end),
-                              new Date(period.start)
-                            ) + 1
-                          )
-                          }
-                      </div>
-                    </div>
-                  ))}
-                </IonItemGroup>
-              )}
-              {clickedOvu.length < 1 ? (
-                <div></div>
-              ) : (
-                <IonItemGroup>
-                  <IonItemDivider>
-                    <IonLabel className={styles.dayViewLabel}>
-                      🌸 Ovulation Period
-                    </IonLabel>
-                  </IonItemDivider>
-                  {clickedOvu.map((period: any, index) => (
-                    <div key={uuidv4()} className={styles.emptyMsg}>
-                      {"Day " +
-                        Math.min(
-                          Math.max(
-                            differenceInDays(
-                              new Date(modalDate),
-                              new Date(period.start)
-                            ) + 2,
-                            1
-                          ),
-                          differenceInDays(
-                            new Date(period.end),
-                            new Date(period.start)
-                          ) + 1
-                        )
-                        // {Math.ceil((new Date(modalDate).getTime() - new Date(period.start).getTime()) / (1000 * 60 * 60 * 24))}
-                        }
-                    </div>
-                  ))}
-                </IonItemGroup>
-              )}
 
               {isToday(new Date(modalDate)) && (
                 <IonItemGroup>
-                <IonItemDivider>
-                  <IonLabel className={styles.dayViewLabel}>
-                    📢 Finance
-                  </IonLabel>
-                </IonItemDivider>
-                <div className={styles.chartInCalendar}><AccountingChart/></div>
+                  <IonItemDivider>
+                    <IonLabel className={styles.dayViewLabel}>
+                      📢 Finance
+                    </IonLabel>
+                  </IonItemDivider>
+                  <div className={styles.chartInCalendar}>
+                    <AccountingChart />
+                  </div>
                 </IonItemGroup>
               )}
-
-                
 
               {isToday(new Date(modalDate)) && (
                 <div>
                   <IonItemGroup>
                     <IonItemDivider>
                       <IonLabel className={styles.dayViewLabel}>
-                      🍔 Nutrition
+                        🍔 Nutrition
                       </IonLabel>
                     </IonItemDivider>
                   </IonItemGroup>
