@@ -121,3 +121,17 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.signoutBtn{
+  background-color: #c9cdd2;
+  padding: 2px;
+  border-radius: 5px;
+  margin-left: 15px;
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.menuDivStyle{
+  display: flex;
+  flex-direction: column;
+}
