@@ -317,8 +317,8 @@ function TopBox(
       />
       <Datebox
         subTitle="fertile period"
-        startDate={new Date(props.ovu_start_at!).toISOString().slice(0, 10)}
-        endDate={new Date(props.ovu_end_at!).toISOString().slice(0, 10)}
+        startDate={dateToString(new Date(props.ovu_start_at!))}
+        endDate={dateToString(new Date(props.ovu_end_at!))}
       />
     </div>
   );

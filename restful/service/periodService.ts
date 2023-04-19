@@ -31,6 +31,8 @@ export class PeriodService {
     ovu_end_at: string
   ) => {
     try {
+      console.log(id,userId,);
+      
       await this.knex("period").insert({
         //TODO 要在frontend 先gen個id先
         id: id,
