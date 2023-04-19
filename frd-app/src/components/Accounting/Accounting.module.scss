@@ -64,8 +64,44 @@
   background-color: #a3b7cb;
 }
 
+.AccountingHeaderWrapper {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
 .AccountingHeaderContainer {
+  width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #e0cca8;
+  border-radius: 15px;
+  margin: 20px;
+  padding: 20px;
+}
+
+.monthlyTitle{
+  font-weight: bold;
+  font-size: 28px;
+  color: rgb(151, 98, 1);
+}
+
+.date{
+  color:rgb(106, 16, 16);
+  font-size: 20px;
+}
+
+.dayLeft{
+  color:rgb(149, 122, 24);
+  font-size: 18px;
+}
+
+.budget{
+  color:rgb(225, 56, 56);
+}
+
+.bugetedAmount{
+  font-weight: bolder;
+  color:red;
 }

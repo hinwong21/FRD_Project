@@ -37,11 +37,9 @@ export class AccountingController {
   getTransaction = async (req: Request, res: Response) => {
     try {
       let userId = getJWT(req).userId;
-      console.log(userId);
 
       const tranResult = await this.accountingService.getTransaction(userId!);
       // const tranResult = await this.accountingService.getTransaction(req.session.userId as number)
-      console.log(tranResult);
       res.json(tranResult);
 
       return;

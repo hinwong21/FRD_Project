@@ -15,7 +15,8 @@ import { api_origin } from "../../../service/api";
 import { useToken } from "../../../hooks/useToken";
 import Datebox from "./Datebox";
 import { useGet } from "../../../hooks/useGet";
-import { uuidv4 } from "@firebase/util";
+
+import { v4 as uuidv4 } from "uuid";
 
 const DAY = 1000 * 60 * 60 * 24;
 
