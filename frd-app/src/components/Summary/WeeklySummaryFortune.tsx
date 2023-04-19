@@ -112,7 +112,7 @@ export const WeeklySummaryFortune = () => {
           height={250}
         />
       </div>
-      <div>Your fortune in this week: {weeklyFortune}</div>
+      <div className={style.weeklySummaryFortuneResult}>Your fortune in this week: {weeklyFortune}</div>
     </>
   );
 };

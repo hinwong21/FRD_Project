@@ -1,17 +1,10 @@
-import React, { useEffect } from "react";
-import { getName } from "../../service/LocalStorage/LocalStorage";
+import React from "react";
+import TodoLists from "../Notes/Todo/TodoLists";
 
 export const WeeklySummaryTodo = () => {
-  useEffect(() => {
-    getTodoData();
-  }, []);
-
-  const getTodoData = async () => {
-    let getData: any = await getName("todolist");
-    let data: any = JSON.parse(getData);
-
-    let checked = data[0].task.checked
-  };
-
-  return <div>WeeklySummaryTodo</div>;
+  return (
+    <>
+      <TodoLists />
+    </>
+  );
 };

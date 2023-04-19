@@ -160,6 +160,20 @@ export class CurrentUserController {
     }
   };
 
+  updateFortune = async (req: Request, res: Response) => {
+    try {
+      let userId = getJWT(req).userId;
+      let fortune = req.body.fortune;
+      const result = await this.currentUserService.updateFortune(
+        userId,
+        fortune
+      );
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
   updateField = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let userId = getJWT(req).userId;

@@ -1,5 +1,6 @@
 import { Knex } from "knex";
 import { User, updateUserByUID } from "../firebaseAdmin";
+import { v4 as uuidv4 } from "uuid";
 
 export class CurrentUserService {
   constructor(private knex: Knex) {
@@ -107,6 +108,21 @@ export class CurrentUserService {
   updateGender = async (userId: string | undefined, gender: string) => {
     try {
       await this.knex("users").update({ gender }).where({ id: userId });
+    } catch (err) {
+      throw new Error(`${err.message}`);
+    }
+  };
+
+  updateFortune = async (userId: string | undefined, fortune: string) => {
+    try {
+      let id = uuidv4();
+      let date = new Date();
+      await this.knex("fortune").insert({
+        id,
+        fortune,
+        date,
+        user_id: userId,
+      });
     } catch (err) {
       throw new Error(`${err.message}`);
     }

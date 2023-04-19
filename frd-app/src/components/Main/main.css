@@ -1,0 +1,56 @@
+ion-modal#example-modal {
+  --height: 50%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal#example-modal::part(backdrop) {
+  background: rgba(209, 213, 219);
+  opacity: 1;
+}
+
+ion-modal#example-modal ion-toolbar {
+  --background: #c1222b;
+  --color: white;
+}
+
+.shakeFortuneContainer {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  /* height: calc(100vh - 56px); */
+  margin-top: 30px;
+}
+
+.shakeFortuneOutline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 320px;
+  width: 320px;
+  border-radius: 50%;
+  outline: 5px solid #c1222b;
+}
+
+.shakeFortuneBorder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 8px solid #c1222b;
+  border-radius: 50%;
+  height: 300px;
+  width: 300px;
+}
+
+.shakeFortune {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #c1222b;
+  font-size: 135px;
+  font-weight: bold;
+  line-height: 1;
+  font-family: "Times New Roman", Times, serif;
+}
