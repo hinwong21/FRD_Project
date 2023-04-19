@@ -10,9 +10,9 @@ const periodController = new PeriodController(periodService);
 
 periodRoutes.get("/upcomingDate", periodController.getUpcomingDate);
 periodRoutes.get("/periodStatus", periodController.getStatus);
+periodRoutes.get("/period_calendar", periodController.getPeriodTableCalendar);
 periodRoutes.post("/periodData", periodController.inputPeriodData);
 periodRoutes.put("/periodData", periodController.updatePeriod);
 periodRoutes.post("/periodStatus", periodController.inputStatus);
 periodRoutes.put("/periodStatus", periodController.updateStatus);
-
 // periodRoutes.get("/period/:id/status");

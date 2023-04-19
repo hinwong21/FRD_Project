@@ -126,5 +126,19 @@ export class PeriodController {
     } catch (err) {
       errorHandler(err, req, res);
     }
+
+  };
+  
+  getPeriodTableCalendar = async (req: Request, res: Response) => {
+    try {
+      const userId = getJWT(req).userId;
+      console.log("Controller userID:", userId);
+
+      const result = await this.periodService.getPeriodTableCalendar(userId);
+
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
   };
 }
