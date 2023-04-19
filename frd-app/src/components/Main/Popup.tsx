@@ -48,11 +48,10 @@ function Popup() {
 
   // upload DB and local storage
   async function updateStorage() {
-    await setName("fortune", fortune);
-    await fetch("post", "/user/fortune", { fortune });
-
     let today = new Date().getDate();
     await setName("dailyShake", today.toString());
+    await setName("fortune", fortune);
+    await fetch("post", "/user/fortune", { fortune });
   }
 
   const handleDailyShake = async () => {
