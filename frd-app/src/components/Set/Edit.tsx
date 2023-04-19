@@ -3,7 +3,7 @@ import styles from "./Edit.module.css";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
 import { useHistory, useLocation } from "react-router";
 import { chevronBackOutline, closeOutline } from "ionicons/icons";
-import { getName } from "../../service/LocalStorage/LocalStorage";
+import { setName } from "../../service/LocalStorage/LocalStorage";
 import { useFetch } from "../../hooks/useFetch";
 
 export const Edit = () => {
@@ -30,6 +30,8 @@ export const Edit = () => {
       return;
     } else {
       await fetch("POST", "/user/" + item, { input });
+      setName(`${item}`, input)
+
       history.goBack();
     }
   };
