@@ -269,3 +269,7 @@ h2{
     font-size: 13px;
     color: gray
   }
+
+  .chartInCalendar{
+    width: 85vw;
+  }

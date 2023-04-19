@@ -87,7 +87,7 @@ export const MainHeader = () => {
 
   return (
     <header className={style.mainHeaderContainer}>
-      <div className={style.mainDate}>{today}</div>
+      {/* <div className={style.mainDate}>{today}</div> */}
       <div className={style.mainHeader}>
         <div className={style.leftMainHeader}>
           <div className={style.mainGreeting}>
