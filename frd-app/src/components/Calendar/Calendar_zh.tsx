@@ -77,6 +77,7 @@ import {useToken} from "../../hooks/useToken"
 import AccountingChart from "../Accounting/AccountingChart";
 import isSameDayOrBefore from "date-fns"
 import { MainHeader } from "../Main/MainHeader";
+import { api_origin } from "../../service/api";
 
 export const Calendar_zh = () => {
   const shouldGetDataEvent = useSelector(
@@ -191,7 +192,7 @@ export const Calendar_zh = () => {
   }
 
 const getPeriodDB = async()=>{
-  const res = await fetch ("http://localhost:8090/period/period_calendar",{
+  const res = await fetch (`${api_origin}/period/period_calendar`,{
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -204,7 +205,7 @@ const getPeriodDB = async()=>{
 }
 
 const getUpcomingDate = async ()=>{
-  const res = await fetch("http://localhost:8090/period/upcomingDateLatest",{
+  const res = await fetch(`${api_origin}/period/upcomingDateLatest`,{
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,

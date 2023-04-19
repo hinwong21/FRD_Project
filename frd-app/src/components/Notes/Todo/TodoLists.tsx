@@ -33,6 +33,7 @@ import { setShouldGetDataTodo } from '../../../redux/Notes/todoSlice';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../../redux/store/store';
 import { MemoType } from "./TodoReEditor";
+import {api_origin} from "../../../service/api"
 
 export interface TodoListLSItem {
   id: string;
@@ -428,7 +429,7 @@ export const EditTodo = () => {
 
     //update db
     let token = await getName("token");
-    const res = await fetch("http://localhost:8090/editors/update-todo", {
+    const res = await fetch(`${api_origin}/editors/update-todo`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,

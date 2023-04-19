@@ -42,6 +42,7 @@ import { setNotesAlertShow } from "../../redux/Notes/notesAlertSlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../redux/store/store";
 import { useFetch } from "../../hooks/useFetch";
+import { api_origin } from "../../service/api";
 
 export const AddNotePopup: React.FC = () => {
   const [diaryOpen, setDiaryOpen] = useState(false);
@@ -180,7 +181,7 @@ export const NewDiary = (props: {
 
     //updated db
     let token = await getName("token");
-    const res = await fetch("http://localhost:8090/editors/new-diary", {
+    const res = await fetch(`${api_origin}/editors/new-diary`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,
@@ -300,7 +301,7 @@ export const NewMemo = (props: {
 
     //updated DB
     let token = await getName("token");
-    const res = await fetch("http://localhost:8090/editors/new-memo", {
+    const res = await fetch(`${api_origin}/editors/new-memo`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,

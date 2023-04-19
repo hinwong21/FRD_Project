@@ -37,6 +37,7 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../../../redux/store/store";
 import { setNotesAlertMsg } from "../../../redux/Notes/notesAlertMsgSlice";
 import { setNotesAlertShow } from "../../../redux/Notes/notesAlertSlice";
+import { api_origin } from "../../../service/api";
 
 export type DiaryType = {
   id: string;
@@ -508,7 +509,7 @@ export const EditDiary = () => {
     // });
 
     //update db
-    const res = await fetch("http://localhost:8090/editors/update-diary", {
+    const res = await fetch(`${api_origin}/editors/update-diary`, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + token,
