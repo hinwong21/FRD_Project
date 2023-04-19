@@ -141,4 +141,17 @@ export class PeriodController {
       errorHandler(err, req, res);
     }
   };
+  
+  getLatestUpcoming = async (req: Request, res: Response) => {
+    try {
+      const userId = getJWT(req).userId;
+      console.log("Controller userID:", userId);
+
+      const result = await this.periodService.getLatestUpcoming(userId);
+
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
 }

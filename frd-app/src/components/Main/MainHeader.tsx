@@ -97,7 +97,7 @@ export const MainHeader = () => {
     getUser();
     getFortune();
     todayWeather();
-  }, []);
+  }, [fortune]);
 
   return (
     <header className={style.mainHeaderContainer}>

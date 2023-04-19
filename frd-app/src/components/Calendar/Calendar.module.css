@@ -128,6 +128,8 @@ h2{
 
 .emptyMsg{
     margin-left:25px;
+    color: rgb(98, 5, 2);
+    font-weight: bold;
 }
 
 .reminderMsg{
@@ -135,65 +137,17 @@ h2{
     color:rgb(213, 126, 19);
 }
 
-/* .todoListWrapper{
-    text-decoration: none; 
-  }
-  
-  .todoListWrapper2{
-    width:85vw;
-    background-color: rgba(255, 255, 255, 0.702);
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    border-radius: 5px;
-    color: black;
+.periodMsg{
+    margin-left:25px;
+    color:rgb(201, 41, 116);
     text-decoration: none;
-  }
-  
-  .todoProgressIcon{
-    font-size: 18px;
-  }
-  
-  .todoPreviewHashtagStyle{
-    background-color: rgb(227, 198, 188);
-    padding-left:2px;
-    padding-right:2px;
-    margin-left:1.5px;
-    margin-right:1.5px;
-    border-radius: 3px;
-    font-size: 13px;
-  }
-  
-  .todoPreviewHashtag{
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    width:30vw;
-  }
-  
-  .titleAndHashtagContainer{
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .todoListContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 15px;
-    overflow: scroll;
-  }
-  
-  .todoListTitle{
-    word-wrap: break-word; 
-    word-break: break-all;
-  } */
+}
+
+.periodMsgUpcoming{
+  margin-left:25px;
+    color:rgb(192, 28, 63);
+    text-decoration: none;
+}
 
   .todoListWrapper{
     text-decoration: none; 
@@ -278,3 +232,9 @@ h2{
   .chartInCalendar{
     width: 85vw;
   }
+
+  ion-item-group{
+    margin-bottom: 10px;
+  }
+
+  

@@ -98,6 +98,8 @@ export const Calendar_zh = () => {
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState("");
   const [weatherData, setWeatherData] = useState<WeatherDataType>();
+  const [periodUpcomingDate, setPeriodUpcomingDate] = useState("")
+  const [periodUpcomingDateList, setPeriodUpcomingDateList] = useState({} as {})
   const [fortune, setFortune] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
@@ -118,12 +120,14 @@ export const Calendar_zh = () => {
     getTodoList();
     getDiary();
     getPeriod();
+    getUpcomingDate()
   }, [shouldGetDataEvent]);
 
   useEffect(() => {
     configPeriodList();
     configOvuList();
-  }, [period]);
+    configPeriodUpcomingDate()
+  }, [period, periodUpcomingDate]);
 
   async function getGoogleCalendarEvents() {
     const getGoogleCalendarLS = async () => {
@@ -182,28 +186,42 @@ export const Calendar_zh = () => {
     }
   };
   async function getPeriod() {
-    await getPeriodLS();
-    // await getPeriodDB();
+    // await getPeriodLS();
+    await getPeriodDB();
   }
 
-// const getPeriodDB = async()=>{
-//   const res = await fetch ("http://localhost:8090/period/period_calendar",{
-//     method: "GET",
-//     headers: {
-//       Authorization: "Bearer " + token,
-//       "Content-type": "application/json",
-//     },
-//   })
-//   const res_json = await res.json()
-//   console.log(res_json)
-//   setPeriod(res_json)
-// }
+const getPeriodDB = async()=>{
+  const res = await fetch ("http://localhost:8090/period/period_calendar",{
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-type": "application/json",
+    },
+  })
+  const res_json = await res.json()
+  console.log(res_json)
+  setPeriod(res_json.result.periodData)
+}
+
+const getUpcomingDate = async ()=>{
+  const res = await fetch("http://localhost:8090/period/upcomingDateLatest",{
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-type": "application/json",
+    },
+  })
+  const res_json = await res.json();
+  console.log(res_json)
+  setPeriodUpcomingDate(res_json.result.periodData.upcoming_at)
+}
 
 
   function configPeriodList() {
     console.log("period", period);
     // console.log("periodList", periodList);
-    period.forEach((item: any, index) =>
+    if (period.length>0)
+    {period.forEach((item: any, index) =>
       setPeriodList([
         ...periodList,
         {
@@ -217,7 +235,26 @@ export const Calendar_zh = () => {
       ])
     );
     console.log("periodList", periodList);
-  }
+  }else{
+    return;
+  }}
+
+  function configPeriodUpcomingDate() {
+    console.log("period", period);
+    // console.log("periodList", periodList);
+    if (periodUpcomingDate!==""){
+      
+      setPeriodUpcomingDateList({
+          title: "🩸Next Period Start",
+          start: periodUpcomingDate,
+          end: periodUpcomingDate,
+          backgroundColor: "purple",
+          textColor: "white",
+        }
+      )
+  }else{
+    return;
+  }}
 
   function configOvuList() {
     period.forEach((item: any, index) =>
@@ -270,12 +307,14 @@ export const Calendar_zh = () => {
     const clickedTodoList = todoList.filter((todo: any) =>
       isSameDay(parseISO(todo.due_date as string), clickedDate)
     );
+
     const clickedPeriod = periodList.filter((period: any) =>
       isWithinInterval(clickedDate, {
         start: parseISO(period.start as string),
         end: parseISO(period.end as string),
       })
     );
+
     const clickedOvu = ovuList.filter((period: any) =>
       isWithinInterval(clickedDate, {
         start: parseISO(period.start as string),
@@ -431,6 +470,12 @@ export const Calendar_zh = () => {
       todayWeather()
     },[])
 
+    function isWithin5DaysBefore(dayA: any, dayB:any) {
+      const timeDiff = new Date(dayB).getTime() - new Date(dayA).getTime(); // get the time difference in milliseconds
+      const dayDiff = timeDiff / (1000 * 3600 * 24); // convert milliseconds to days
+      return dayDiff <= 5 && dayDiff >= 0;
+    }
+
 
   return (
     <>
@@ -468,6 +513,7 @@ export const Calendar_zh = () => {
             googleCalendarEvent,
             periodList,
             ovuList,
+            [periodUpcomingDateList]
           ]}
           // eventDidMount={handleEventDidMount}
           eventClick={(event: any) => {
@@ -496,21 +542,36 @@ export const Calendar_zh = () => {
           </IonHeader>
           <div className={styles.contentContainer}>
             <div className={styles.modalContentStyle}>
-              <MainHeader/>
+             { isToday(new Date(modalDate)) && <MainHeader/>}
               <IonItemGroup>
                 <IonItemDivider>
                   <IonLabel className={styles.dayViewLabel}>
-                    📢 About Today
+                    {isToday(new Date(modalDate))? ("📢 About Today"):
+                    ("📢 About this day")}
                   </IonLabel>
                 </IonItemDivider>
                 <ul className={styles.reminderMsg}>
-                {(weatherData?.icon == "53"||weatherData?.icon == "54"||weatherData?.icon == "62"||weatherData?.icon == "63"||weatherData?.icon == "64"||weatherData?.icon == "65")?
+                {isToday(new Date(modalDate)) && 
+                (weatherData?.icon == "53"||weatherData?.icon == "54"||weatherData?.icon == "62"||weatherData?.icon == "63"||weatherData?.icon == "64"||weatherData?.icon == "65")?
                   (<li>There's a high probability of rain today, so don't forget to bring your umbrella with you.</li>):
                   (weatherData?.icon == "50"||weatherData?.icon == "51")?
                   (<li>It's sunny for most of the day today, so don't forget to apply sunscreen.</li>):
                   (weatherData?.icon == "90"||weatherData?.icon == "91")?
                   (<li>It's quite hot today, so remember to drink plenty of water and avoid staying outdoors for extended periods of time.</li>):
                   <div></div>
+                }
+                {
+                  (clickedPeriod.length > 0 )?
+                  (<Link
+                     to={{
+                    pathname: "./Health"
+                  }}
+                  className={styles.periodMsg}
+                  ><li> Stay healthy and happy during your period. You may watch some advice in Health page. </li></Link>):<div></div>
+                }
+                {(isWithin5DaysBefore(modalDate, periodUpcomingDate))?
+                (<li className={styles.periodMsgUpcoming}>Your next menstrual period is coming, please be prepared with enough medicine and menstrual products.</li>):
+                <div></div>
                 }
 
               </ul>

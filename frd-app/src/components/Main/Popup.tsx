@@ -13,45 +13,57 @@ import { ShakeAnimation } from "./ShakeAnimation";
 import "animate.css";
 import { useFetch } from "../../hooks/useFetch";
 import { setName } from "../../service/LocalStorage/LocalStorage";
+import { storage } from "googleapis/build/src/apis/storage";
 
 function Popup() {
   const modal = useRef<HTMLIonModalElement>(null);
   const [shaking, setShaking] = useState(true);
   const [isOpen] = useState(true);
+  const [fortune,setFortune] = useState("")
   const fetch = useFetch();
 
   function dismiss() {
     modal.current?.dismiss();
   }
 
-  // calc the lucky number
-  const todayLuckyNumber: number = Math.random() * 101;
-  let fortune: any;
-  if (todayLuckyNumber > 97.5) {
-    fortune = "大吉";
-  } else if (todayLuckyNumber > 87.5 && todayLuckyNumber <= 97.5) {
-    fortune = "中吉";
-  } else if (todayLuckyNumber > 67.5 && todayLuckyNumber <= 87.5) {
-    fortune = "小吉";
-  } else if (todayLuckyNumber > 32.5 && todayLuckyNumber <= 67.5) {
-    fortune = "吉";
-  } else if (todayLuckyNumber > 12.5 && todayLuckyNumber <= 32.5) {
-    fortune = "末吉";
-  } else if (todayLuckyNumber > 2.5 && todayLuckyNumber <= 12.5) {
-    fortune = "凶";
-  } else {
-    fortune = "大凶";
-  }
+
 
   const handleFortune = async () => {
+     // calc the lucky number
+  const todayLuckyNumber: number = Math.random() * 101;
+ 
+  if (todayLuckyNumber > 97.5) {
+    setFortune("大吉");
+  } else if (todayLuckyNumber > 87.5 && todayLuckyNumber <= 97.5) {
+    setFortune("中吉");
+  } else if (todayLuckyNumber > 67.5 && todayLuckyNumber <= 87.5) {
+    setFortune("小吉");
+  } else if (todayLuckyNumber > 32.5 && todayLuckyNumber <= 67.5) {
+    setFortune("吉");
+  } else if (todayLuckyNumber > 12.5 && todayLuckyNumber <= 32.5) {
+    setFortune("末吉");
+  } else if (todayLuckyNumber > 2.5 && todayLuckyNumber <= 12.5) {
+    setFortune("凶");
+  } else {
+    setFortune("大凶");
+  }
+  };
+
+  // upload DB and local storage
+
+  async function updateStorage () {
     await setName("fortune", fortune);
     await fetch("post", "/user/fortune", { fortune });
-  };
+  }
 
   // insert to db and local
   useEffect(() => {
     handleFortune();
   }, []);
+
+  useEffect(()=>{
+    updateStorage ()
+  },[fortune])
 
   useEffect(() => {
     if (shaking) {

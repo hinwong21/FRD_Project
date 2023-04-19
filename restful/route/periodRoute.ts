@@ -15,4 +15,5 @@ periodRoutes.post("/periodData", periodController.inputPeriodData);
 periodRoutes.put("/periodData", periodController.updatePeriod);
 periodRoutes.post("/periodStatus", periodController.inputStatus);
 periodRoutes.put("/periodStatus", periodController.updateStatus);
+periodRoutes.get("/upcomingDateLatest", periodController.getLatestUpcoming);
 // periodRoutes.get("/period/:id/status");
