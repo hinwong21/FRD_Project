@@ -20,7 +20,8 @@ import { getName } from "../../service/LocalStorage/LocalStorage";
 import AccountingChart from "./AccountingChart";
 import { Method } from "ionicons/dist/types/stencil-public-runtime";
 import { useToken } from "../../hooks/useToken";
-import styles from "./TransactionModal.module.css"
+import styles from "./TransactionModal.module.css";
+import { useGet } from "../../hooks/useGet";
 
 export interface Genre {
   id: number;
@@ -93,32 +94,38 @@ export type Data3 = {
   totalIncome: number;
   totalExpense: number;
 };
-
+type DailyTransaction = {
+  category: string;
+  amount: string;
+};
 function TransactionModal(props: { isTran: boolean; close: () => void }) {
   // const [selectedGenre, setSelectedGenre] = useState(0);
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
   const [amount, setAmount] = useState<string>("");
   const [data3, setData3] = useState<Data3[]>([]);
   const [token] = useToken();
-
+  const [json, setJson] = useGet<DailyTransaction[]>(
+    "/account/getTransaction",
+    []
+  );
   const getTransaction = async () => {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
     // TODO ajax
 
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-type": "application/json",
-        },
-      }
-    );
-    let json = await res.json();
-    console.log(json, 1);
+    // const res = await fetch(
+    //   `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: "Bearer " + token,
+    //       "Content-type": "application/json",
+    //     },
+    //   }
+    // );
+    // let json = await res.json();
+    // console.log(json, 1);
 
     let selectedCategoryAmount = json.filter(
       (item: { category: string | undefined }) => item.category === type
@@ -208,9 +215,13 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
           />
         )}
 
-        <div className={styles.submitBtn}><IonButton color="light" size="default" onClick={getTransaction} >submit</IonButton></div>
+        <div className={styles.submitBtn}>
+          <IonButton color="light" size="default" onClick={getTransaction}>
+            submit
+          </IonButton>
+        </div>
         <div className={styles.actChartDiv}>
-        <AccountingChart />
+          <AccountingChart />
         </div>
       </IonContent>
     </IonModal>
