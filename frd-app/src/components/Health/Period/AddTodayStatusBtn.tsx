@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   IonButtons,
   IonButton,
@@ -8,6 +8,7 @@ import {
   IonTitle,
   IonPage,
   useIonModal,
+  IonMenuButton,
 } from "@ionic/react";
 import { OverlayEventDetail } from "@ionic/core/components";
 import styles from "./PeriodDate.module.scss";
@@ -23,14 +24,16 @@ import {
 } from "ionicons/icons";
 
 import { useHistory } from "react-router";
+import { useFetch } from "../../../hooks/useFetch";
+import { async, uuidv4 } from "@firebase/util";
 
 type OtherStatus = {
   content: string;
 };
 
 export type ItemInfo = {
-  type: string;
-  lv: number;
+  type?: string;
+  lv?: number;
   content?: string;
 };
 
@@ -42,38 +45,66 @@ const ModalPeriod = ({
   onDismiss: (data?: string | null | undefined | number, role?: string) => void;
 }) => {
   const inputRef = useRef<HTMLIonInputElement>(null);
+
   // Submit Form
   //For Input other status
-  const { register, handleSubmit } = useForm<OtherStatus>();
+  const { register, handleSubmit } = useForm<ItemInfo>();
+  const fetch = useFetch();
+  // const { register, handleSubmit } = useForm<OtherStatus>();
   const formSubmitBtnRef = useRef<any>(null);
-  const [otherInfo, setOtherInfo] = useState<Array<OtherStatus>>([]);
+  // const [otherInfo, setOtherInfo] = useState<Array<OtherStatus>>([]);
+  const [otherInfo, setOtherInfo] = useState<Array<ItemInfo>>([]);
+  const [periodId, setPeriodId] = useState<string>(uuidv4());
+  const [statusId, setStatusId] = useState<string>();
+  const [checkDate, setCheckDate] = useState<Date>(new Date());
 
   //For StatusItems
   const [statusInfo, setStatusInfo] = useState<Array<ItemInfo>>([]);
   const [item, setItem] = useState<ItemInfo>({
     type: "",
     lv: 0,
+    content: "",
   });
-  const [newItem, setNewItem] = useState<ItemInfo>({
-    type: "",
-    lv: 0,
-  });
+
+  // const periodId = useMemo(
+  //   () =>
+  //     ,[]);
 
   useEffect(() => {
-    console.log("Data Object", statusInfo);
+    //TODO fetch to backend & group with input text
+    // insert to db
   }, [statusInfo]);
 
-  const submitHandler = (data: OtherStatus /*item:  OtherStatus*/) => {
-    console.log("submitHandler ", data);
-    // const newOtherInfo = [...otherInfo];
-    const newItemInfo = [...statusInfo];
+  // if()
 
-    // newOtherInfo.push(data);
-    // console.log("newOtherInfo After:", newOtherInfo);
-    // setOtherInfo(newOtherInfo);
-    newItemInfo.push(item);
-    console.log("newItemInfo After:", newItemInfo);
-    setStatusInfo(newItemInfo);
+  async function insertDB() {
+    setStatusId(uuidv4());
+    for (let index = 0; index < statusInfo.length; index++) {
+      await fetch("post", "/period/periodStatus", {
+        statusId,
+        periodId,
+        type: statusInfo[index].type,
+        content: statusInfo[index].content
+          ? statusInfo[index].content
+          : statusInfo[index].lv + " ",
+      });
+
+      console.log("insertDB run");
+    }
+  }
+
+  async function updateDB() {
+    await fetch("put", "/period/periodStatus", {
+      statusId,
+      type: item.type,
+      content: item.content ? item.content : item.lv + " ",
+    });
+    console.log("updateDB run");
+  }
+
+  const submitHandler = (data: ItemInfo) => {
+    const newData = { type: "other", ...data };
+    setStatusInfo([...statusInfo, newData]);
   };
 
   const submitControl = () => {
@@ -81,41 +112,23 @@ const ModalPeriod = ({
   };
 
   const handleLevelChange = (newItem: ItemInfo) => {
-    console.log("newLevel:", newItem);
-    console.log("newLevel type:", newItem.type);
-    console.log("item type:", item.type);
-    console.log(item);
+    const existingItem = statusInfo.find((item) => item.type === newItem.type);
 
-    const newLevelInfo = [];
-    if (statusInfo.length === 0) {
-      newLevelInfo.push(newItem);
-      setStatusInfo(newLevelInfo);
-      setItem(newItem);
-      console.log("look ITEM", item);
-    } else if (statusInfo.length > 0) {
-      for (let index = 0; index < statusInfo.length; index++) {
-        if (newItem.type === statusInfo[index].type && newItem.lv !== 0) {
-          statusInfo[index].lv = newItem.lv;
-          console.log("if ", statusInfo);
-        } else {
-          newLevelInfo.push(newItem);
-          setStatusInfo(newLevelInfo);
-        }
+    if (existingItem) {
+      if (newItem.lv === 0) {
+        const updatedStatusInfo = statusInfo.filter(
+          (item) => item.type !== newItem.type
+        );
+        setStatusInfo(updatedStatusInfo);
+      } else {
+        existingItem.lv = newItem.lv;
+        setStatusInfo([...statusInfo]);
       }
+    } else {
+      // if (newItem.lv !== 0) {
+      setStatusInfo([...statusInfo, newItem]);
+      // }
     }
-
-    // if (newLevel.type === item.type) {
-    //   console.log("Here");
-
-    //   const newLevelInfo = [...statusInfo];
-    //   const newLevelInfo = [];
-    //   newLevelInfo.push(newLevel);
-    //   setStatusInfo(newLevelInfo);
-    // } else if (newLevel.type !== item.type) {
-    //   const newLevelInfo = [...statusInfo];
-    //   newLevelInfo.push(newLevel);
-    //   setStatusInfo(newLevelInfo);
-    // }
   };
 
   return (

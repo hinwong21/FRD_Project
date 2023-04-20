@@ -61,7 +61,7 @@ function Piechart() {
         {/* <h3 className="mt-3">Welcome to Piechart </h3> */}
         <Chart
           type="pie"
-          width={400}
+          width={350}
           height={300}
           series={studentMarks}
           options={{
