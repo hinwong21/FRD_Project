@@ -13,7 +13,7 @@ export class PeriodController {
 
       const result = await this.periodService.getUpcomingAt(userId);
 
-      res.json({ result });
+      res.json(result);
     } catch (err) {
       errorHandler(err, req, res);
     }
@@ -122,6 +122,33 @@ export class PeriodController {
         period_id,
         user_id,
       });
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+
+  };
+  
+  getPeriodTableCalendar = async (req: Request, res: Response) => {
+    try {
+      const userId = getJWT(req).userId;
+      console.log("Controller userID:", userId);
+
+      const result = await this.periodService.getPeriodTableCalendar(userId);
+
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+  
+  getLatestUpcoming = async (req: Request, res: Response) => {
+    try {
+      const userId = getJWT(req).userId;
+      console.log("Controller userID:", userId);
+
+      const result = await this.periodService.getLatestUpcoming(userId);
+
       res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);

@@ -32,6 +32,8 @@ import { useDispatch } from 'react-redux';
 import { setShouldGetDataTodo } from '../../../redux/Notes/todoSlice';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../../redux/store/store';
+import { MemoType } from "./TodoReEditor";
+import {api_origin} from "../../../service/api"
 
 export interface TodoListLSItem {
   id: string;
@@ -61,12 +63,20 @@ export const TodoLists: React.FC = () => {
     const { value } = await Preferences.get({ key: "todolist" });
     if (value !== null) {
       // console.log(value);
-      
-      setTodoListLS(JSON.parse(value));
+  const sortTodoListsByDueDate = (a:any, b:any) => {
+    const aDueDate = new Date(b.due_date) as any;
+    const bDueDate = new Date(a.due_date) as any;
+    return aDueDate - bDueDate;
+  };      
+      setTodoListLS(JSON.parse(value).sort(sortTodoListsByDueDate));
     }
     console.log(JSON.parse(value as string));
     dispatch(setShouldGetDataTodo(false))
   };
+
+
+ 
+
 
   useEffect(() => {
     getTodoListLS();
@@ -137,13 +147,18 @@ export const TodoLists: React.FC = () => {
         onDidDismiss={() => setPresentAlert(false)}
       ></IonAlert>
 
+       
+        
+        
+
         <div className={styles.todoListContainer}>
+         
           {todoListLS.map((todo, index) => (
             <Link
               key={index}
               to={{
                 pathname: "./EditTodo",
-                state: { data: todo, id: todo.id },
+                state: { data: todo, id: todo.id, memo:todo.memo },
               }}
               className={styles.todoListWrapper}
             ><IonCard className={styles.todoListWrapper2} onPointerDown={()=>handlePointerDown(todo.id)} onPointerUp={handlePointerUp} >
@@ -160,13 +175,13 @@ export const TodoLists: React.FC = () => {
                 <div key={index} className={styles.todoPreviewHashtagStyle}>{item}</div>
               ))}</div>
               </div>
-              <div className={styles.todoListDate}>
+              <div className={styles.todoListDate} >
                 Due on: {todo.due_date.slice(0, 10)}
               </div>
               </IonCard>
             </Link>
           ))}
-        </div>
+          </div>
       </IonItemGroup>
     </>
   );
@@ -191,6 +206,7 @@ export const EditTodo = () => {
   const [todoMemoDeleted, setTodoMemoDeleted] = useState([] as string[]);
   const [deleteHashtagArr, setDeleteHashtagArr] = useState([] as string[]);
   const [deleteEmailArr, setDeleteEmailArr] = useState([] as string[]);
+  const [memoModalContent, setMemoModalContent] = useState<MemoType[]>([]);
   // const [submitConfirmed, setSubmitConfirmed] = useState(false)
 
   function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
@@ -199,10 +215,36 @@ export const EditTodo = () => {
     }
   }
 
+
+  // async function getMemoModal(memoIds: string[]) {
+  //   const getMemoLS = async (memoId: string) => {
+  //     const { value } = await Preferences.get({ key: memoId });
+  //     if (value !== null) {
+  //       return JSON.parse(value);
+  //     }
+  //     return null;
+  //   };
+  
+  //   const memoContents = [];
+  //   for (const memoId of memoIds) {
+  //     const memoContent = await getMemoLS(memoId);
+  //     if (memoContent !== null) {
+  //       memoContents.push(memoContent);
+  //     }
+  //   }
+  //   setMemoModalContent(memoContents);
+  // }
+
   useEffect(()=>{
-    console.log("the state has change", todoListTitle, todoDueDate, todoHashtag, todoNewHashtag, todoEmail, todoTask, todoMemoRelated, todoMemoDeleted, deleteHashtagArr, deleteEmailArr )
+    console.log("the state has change", todoListTitle, todoDueDate, todoHashtag, todoNewHashtag, todoEmail, todoTask, todoMemoRelated, todoMemoDeleted, deleteHashtagArr, deleteEmailArr,memoModalContent)
+    // console.log(memoModalContent)
   },[todoListTitle, todoDueDate, todoHashtag, todoNewHashtag, todoEmail, todoTask, todoMemoRelated, todoMemoDeleted, deleteHashtagArr, deleteEmailArr])
   
+// useEffect(()=>{
+//   getMemoModal(todoMemoRelated)
+// },[todoMemoRelated])
+
+
     const handleCallback = (childData: any) => {
       setTodoListTitle(childData.todoTitle);
       setTodoDueDate(childData.todoDate);
@@ -387,7 +429,7 @@ export const EditTodo = () => {
 
     //update db
     let token = await getName("token");
-    const res = await fetch("http://localhost:8090/editors/update-todo", {
+    const res = await fetch(`${api_origin}/editors/update-todo`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + token,
@@ -406,10 +448,12 @@ export const EditTodo = () => {
   type dataType = {
     data: string;
     id: string;
+    memo:MemoType[];
   };
 
   const location = useLocation();
   const data = location.state as dataType;
+
 
 
   
@@ -418,6 +462,7 @@ export const EditTodo = () => {
 
   setMemoEditorContent(data.data);
   setMemoEditorId(data.id);
+  setMemoModalContent(data.memo)
     
   }, []);
 
@@ -451,8 +496,23 @@ export const EditTodo = () => {
               content={memoEditorContent}
               handleCallback={handleCallback}
             />
+
           </IonContent>
         </IonModal>
+
+        {/* <IonModal
+            isOpen={true}
+            initialBreakpoint={0.25}
+            breakpoints={[0.25, 0.5, 0.75]}
+            backdropDismiss={false}
+            backdropBreakpoint={0.5}
+            className={styles.memoModal}
+          >
+            {data.memo.map((item,index)=>(
+              <div>{item.updated_at}</div>
+            ))}
+        </IonModal> */}
+
       </IonPage>
     </>
   );

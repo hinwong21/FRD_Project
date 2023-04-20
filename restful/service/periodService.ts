@@ -3,35 +3,17 @@ import { Knex } from "knex";
 export class PeriodService {
   constructor(private knex: Knex) {}
 
-  // getUpcomingAt = async (userId: string) => {
-  //   try {
-  //     const upcomingDate = await this.knex("period")
-  //       .select("upcoming_at")
-  //       .where("user_id", userId);
-
-  //     console.log("upcomingDate::", upcomingDate);
-
-  //     return {
-  //       success: true,
-  //       upcomingDate,
-  //     };
-  //   } catch (error) {
-  //     throw new Error((error as Error).message);
-  //   }
-  // };
   getUpcomingAt = async (userId: string) => {
     try {
       const upcomingDate = await this.knex("period")
         .select("*")
         .where("user_id", userId)
-        .orderBy("updated_at", "asc");
+        .orderBy("updated_at", "desc")
+        .first();
 
-      console.log("All Period data::", upcomingDate);
+      console.log("upcoming Period data::", upcomingDate);
 
-      return {
-        success: true,
-        upcomingDate,
-      };
+      return upcomingDate;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -49,10 +31,8 @@ export class PeriodService {
     ovu_end_at: string
   ) => {
     try {
-      console.log(id);
-      console.log(upcoming_at);
-      console.log(userId);
-
+      console.log(id,userId,);
+      
       await this.knex("period").insert({
         //TODO 要在frontend 先gen個id先
         id: id,
@@ -100,9 +80,10 @@ export class PeriodService {
       .where("id", input.period_id)
       .first();
 
-    if (!period) throw new Error("period not found");
+    if (!period.user_id) throw new Error("period not found");
 
-    if (period !== input.user_id) throw new Error("the period is not yours");
+    if (period.user_id !== input.user_id)
+      throw new Error("the period is not yours");
   }
 
   //For the first time to insert period status
@@ -123,7 +104,6 @@ export class PeriodService {
   };
 
   //For update the period status
-  //TODO 大眼仔error，但controller hard code先得，但唔識update update_at
   updatePeriodStatus = async (input: {
     user_id: string;
     type: string;
@@ -158,5 +138,39 @@ export class PeriodService {
       success: true,
       periodStatus,
     };
+  };
+
+  getPeriodTableCalendar = async (userId: string) => {
+    try {
+      let periodData = await this.knex
+        .from("period")
+        .select("*")
+        .where("user_id", userId);
+
+      return {
+        success: true,
+        periodData: periodData,
+      };
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  };
+
+  getLatestUpcoming = async (userId: string) => {
+    try {
+      let periodData = await this.knex
+        .from("period")
+        .select("upcoming_at")
+        .where("user_id", userId)
+        .orderBy("upcoming_at", "desc")
+        .first();
+
+      return {
+        success: true,
+        periodData: periodData,
+      };
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
   };
 }

@@ -4,13 +4,19 @@
   align-items: center;
   padding-top: 60px;
   font-family: "Times New Roman", Times, serif;
-  height: 100vh;
-  width: 100vw;
+  // height: 85vh;
+  width: 85vw;
+  
 }
 
 .mainHeaderContainer {
   display: flex;
   flex-direction: column;
+  background-color: #9eb6c181;
+  padding: 3px;
+  border-radius: 5px;
+  color:white;
+  margin-top: 10px;
 }
 
 .mainDate {
@@ -27,6 +33,7 @@
   height: 10vh;
   width: 90vw;
   margin-top: 10px;
+  color:white;
 }
 
 .mainGreeting {
@@ -36,7 +43,7 @@
 }
 
 .mainFortune {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -145,12 +152,14 @@
 .shakeContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
+  // align-items: center;
   width: 100vw;
   height: 100vh;
 }
 
 .shakingCylinder {
+  margin-top: 50px;
+  height: 35vh;
   animation: shake 2s infinite;
 }
 

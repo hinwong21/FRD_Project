@@ -65,7 +65,7 @@ function Piechart() {
           height={300}
           series={studentMarks}
           options={{
-            title: { text: "Monthly Summary" },
+            // title: { text: "Monthly Summary" },
             noData: { text: "Empty Data" },
             // colors:["#f90000","#f0f"],
             labels: studentSubject,

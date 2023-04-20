@@ -43,7 +43,6 @@
   align-items: center;
   justify-content: center;
   color: #222222;
-  margin-top: 40px;
 }
 
 .headerCaloriesContainer {
@@ -146,8 +145,8 @@
 .waterBalanceContainer {
   width: 300px;
   height: 120px;
-  background-color: #08c4ff;
-  color: white;
+  background-color: #a8bab4;
+  color: #32393f;
   border-radius: 10px;
   border: 1px solid rgb(202, 199, 199);
 }
@@ -192,7 +191,8 @@
   height: 20px;
   margin: 10px;
   color: white;
-  background-color: #08c4ff;
+  background-color: #a8bab4;
+  padding-bottom: 2px;
   border: transparent;
   border-radius: 5px;
   font-size: 20px;
@@ -232,20 +232,20 @@
 .selectMealType {
   width: 120px;
   font-size: 12px;
-  padding: 2px;
+  padding: 3px;
+  color: black;
 }
 
 .addMealBtn {
   font-size: 10px;
-  background-color: white;
-  width: 60px;
+  width: 70px;
   height: 20px;
   border-radius: 15px;
   border: 1px solid;
 }
 
 .mealContainer {
-  background-color: #c7d9cd;
+  background-color: #bac4b8;
 }
 
 .mealType {
@@ -257,7 +257,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .foodSearchResult {
@@ -266,6 +266,12 @@
   position: relative;
   width: 200px;
   margin: 10px 10px 10px 0px;
+}
+
+#foodSearchBarInput {
+  background-color: transparent;
+  border: 0px;
+  border-bottom: 1px solid black;
 }
 
 .foodSearchBar {
@@ -306,8 +312,9 @@
   width: 25px;
   height: 25px;
   margin: 10px;
+  padding-bottom: 2px;
   font-size: 20px;
-  background-color: white;
+  background-color: transparent;
   border-radius: 5px;
   border: 1px solid black;
 }

@@ -20,6 +20,9 @@ import { getName } from "../../service/LocalStorage/LocalStorage";
 import AccountingChart from "./AccountingChart";
 import { useGet } from "../../hooks/useGet";
 import styles from "./TransactionModal.module.scss";
+import { Method } from "ionicons/dist/types/stencil-public-runtime";
+import { useToken } from "../../hooks/useToken";
+
 export interface Genre {
   id: number;
   name: string;
@@ -104,15 +107,27 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     "/account/getTransaction",
     []
   );
+  const [token] = useToken();
 
-  async function getTransaction() {
+  const getTransaction = async () => {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
-
     if (!type) return;
 
     // TODO ajax
 
     // let token = await getName("token");
+    const res = await fetch(
+      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-type": "application/json",
+        },
+      }
+    );
+    let json = await res.json();
+    console.log(json, 1);
 
     // const res = await fetch(
     //   `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
@@ -124,7 +139,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     // );
     // let json = await res.json();
     // console.log(json);
-    let json = typeData;
+
     let selectedCategoryAmount = json.filter(
       (item: { category: string | undefined }) => item.category === type
     );
@@ -144,7 +159,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     );
 
     let expensesArray = json.filter(
-      (item: { category: string | undefined }) => item.category != "Income"
+      (item: { category: string | undefined }) => item.category !== "Income"
     );
 
     let totalExpense = expensesArray.reduce(
@@ -159,7 +174,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
         totalExpense: totalExpense,
       },
     ]);
-  }
+  };
 
   return (
     <IonModal isOpen={props.isTran} class={styles.close}>
@@ -215,8 +230,14 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
           />
         )}
 
-        <IonButton onClick={getTransaction}>submit</IonButton>
-        <AccountingChart />
+        <div className={styles.submitBtn}>
+          <IonButton color="light" size="default" onClick={getTransaction}>
+            submit
+          </IonButton>
+        </div>
+        <div className={styles.actChartDiv}>
+          <AccountingChart />
+        </div>
       </IonContent>
     </IonModal>
   );

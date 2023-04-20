@@ -161,7 +161,7 @@ export async function up(knex: Knex): Promise<void> {
   if (!(await knex.schema.hasTable("fortune"))) {
     await knex.schema.createTable("fortune", (table) => {
       table.text("id").notNullable().unique();
-      table.integer("fortune").notNullable();
+      table.text("fortune").notNullable();
       table.timestamp("date").notNullable();
       table.text("user_id").unsigned();
       table.foreign("user_id").references("users.id");

@@ -85,10 +85,12 @@ export class CurrentUserController {
   updateData = async (req: Request, res: Response) => {
     try {
       let userId = getJWT(req).userId;
+
       let height = req.body.height;
       let gender = req.body.gender;
       let age = req.body.age;
       let weight = req.body.weight;
+
       const result = await this.currentUserService.updateData(
         userId,
         height,
@@ -154,6 +156,20 @@ export class CurrentUserController {
       let userId = getJWT(req).userId;
       let gender = req.body.selectGender;
       const result = await this.currentUserService.updateGender(userId, gender);
+      res.json({ result });
+    } catch (err) {
+      errorHandler(err, req, res);
+    }
+  };
+
+  updateFortune = async (req: Request, res: Response) => {
+    try {
+      let userId = getJWT(req).userId;
+      let fortune = req.body.fortune;
+      const result = await this.currentUserService.updateFortune(
+        userId,
+        fortune
+      );
       res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);

@@ -1,7 +1,7 @@
-body {
-  background-color: #ecedef;
-  text-transform: capitalize;
-}
+// body {
+//   background-color: #ecedef;
+//   text-transform: capitalize;
+// }
 
 .pBar {
   background-color: #c17a85;
@@ -26,9 +26,24 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-transform: capitalize;
+}
+
+.miniContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
 }
 
 // **** Topbox.tsx ***///
+.bigBox {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .topBox {
   // background-color: #e4bbbb;
   background-color: #e4bbbbc4;
@@ -37,7 +52,7 @@ h1 {
   justify-content: center;
   align-items: center;
   margin-bottom: 5%;
-  width: 75%;
+
   padding: 8%;
   // border: 3px solid #efcaca;
   border-radius: 10px;

@@ -356,7 +356,7 @@ button.item-native::after{
 
 .todoListTitle{
   word-wrap: break-word; 
-  word-break: break-all;
+
 }
 
 .memoBlock img {
@@ -365,7 +365,7 @@ button.item-native::after{
 }
 
 .todoListDate{
-  font-size: 13px;
+  font-size: 11px;
   color: gray
 }
 
@@ -378,6 +378,7 @@ button.item-native::after{
   margin-top: 10px;
   font-size: 12px;
   border-radius: 5px;
+  width: 25vw;
 }
 
 .filterBtnGroup{

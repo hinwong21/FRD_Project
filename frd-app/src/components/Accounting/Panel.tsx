@@ -37,7 +37,7 @@ export function Panel(props: PanelProps) {
 
   function clickSubmit() {
     // setEnter(true);
-    history.push("./Accounting");
+    history.push("/Accounting");
     console.log("clickSubmit");
   }
 

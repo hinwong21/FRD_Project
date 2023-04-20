@@ -8,6 +8,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { Calendar_zh } from "./Calendar_zh";
+import Popup from "../Main/Popup";
 import styles from "./Calendar.module.css";
 
 export const Calendar: React.FC = () => {
@@ -24,6 +25,7 @@ export const Calendar: React.FC = () => {
 
       <IonContent fullscreen>
         <div className={styles.calendarWrapper}>
+          <Popup />
           <Calendar_zh />
         </div>
       </IonContent>

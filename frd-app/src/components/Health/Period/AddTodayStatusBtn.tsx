@@ -65,10 +65,13 @@ const ModalPeriod = ({
     lv: 0,
     content: "",
   });
+<<<<<<< HEAD
 
   // const periodId = useMemo(
   //   () =>
   //     ,[]);
+=======
+>>>>>>> origin
 
   useEffect(() => {
     //TODO fetch to backend & group with input text

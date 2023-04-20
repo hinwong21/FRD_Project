@@ -59,6 +59,12 @@ h2{
     background-color: red;
 }
 
+
+.dayViewLabel{
+    width:85vw;
+    margin-top: 5px;
+}
+
 .calendarEventDayViewWrapper{
     /* border-style: solid; */
     width:85vw;
@@ -66,8 +72,172 @@ h2{
     margin-top:8px;
     color:black;
     text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    padding:8px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-height: 120px;
 }
 
-.dayViewLabel{
-    width:85vw;
+.calendarPreviewTimeWrapper{
+    display: flex;
+    flex-direction: row;
+    width:100%;
+    /* justify-content: space-between; */
+    margin-bottom: 5px;
+    background-color: #c1d9f1;
+    border-radius: 5px;
 }
+
+.calendarPreviewTextWrapper{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    /* justify-content: space-around; */
+}
+
+.calendarPreviewStartTime{
+    text-decoration: none;
+    font-size: 14px;
+    padding-left:2px;
+}
+
+.calendarPreviewEndTime{
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.calendarPreviewTitle{
+    text-decoration: none;
+    width:100%;
+    word-wrap: break-word; 
+    word-break: break-all;
+}
+
+.calendarPreviewDescription{
+    text-decoration: none;
+    width:100%;
+    word-wrap: break-word; 
+    word-break: break-all;
+}
+
+.emptyMsg{
+    margin-left:25px;
+    margin-right:25px;
+    color: rgb(98, 5, 2);
+    font-weight: bold;
+}
+
+.reminderMsg{
+    margin-left:25px;
+    margin-right:25px;
+    color:rgb(213, 126, 19);
+}
+
+.periodMsg{
+    margin-left:25px;
+    margin-right:25px;
+    color:rgb(201, 41, 116);
+    text-decoration: none;
+}
+
+.periodMsgUpcoming{
+  margin-left:25px;
+  margin-right:25px;
+    color:rgb(192, 28, 63);
+    text-decoration: none;
+}
+
+  .todoListWrapper{
+    text-decoration: none; 
+  }
+  
+  .todoListWrapper2{
+    width:85vw;
+    background-color: rgba(255, 255, 255, 0.702);
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 5px;
+    color: black;
+    text-decoration: none;
+  }
+  
+  .todoProgressIcon{
+    font-size: 18px;
+  }
+  
+  .todoPreviewHashtagStyle{
+    background-color: rgb(227, 198, 188);
+    padding-left:2px;
+    padding-right:2px;
+    margin-left:1.5px;
+    margin-right:1.5px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+  
+  .todoPreviewHashtag{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    width:30vw;
+  }
+  
+  .titleAndHashtagContainer{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .todoListContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    overflow: scroll;
+  }
+  
+  .todoListTitle{
+    word-wrap: break-word; 
+  
+  }
+  
+  .memoBlock img {
+    max-width: 100%; 
+    max-height: 100%; 
+  }
+  
+  .todoListDate{
+    font-size: 10px;
+    color: gray
+  }
+  
+  .memoBlock img {
+    max-width: 100%; 
+    max-height: 100%; 
+  }
+  
+  .todoListDate{
+    font-size: 13px;
+    color: gray
+  }
+
+  .chartInCalendar{
+    width: 85vw;
+  }
+
+  ion-item-group{
+    margin-bottom: 10px;
+  }
+
+  
