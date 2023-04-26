@@ -25,55 +25,87 @@ import { useToken } from "../../hooks/useToken";
 
 export interface Genre {
   id: number;
+  category: string;
   name: string;
   type: string;
+  amount: number;
+  description?: string;
+  // user_id: string;
+  // created_at: string;
 }
 
 export const Genres: Genre[] = [
   {
     id: 1,
+    category: "Income",
     name: "Income",
     type: "income",
+    amount: 100,
+    description: "",
   },
   {
     id: 2,
+    category: "Food",
     name: "Food",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 3,
+    category: "Drink",
     name: "Drink",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 4,
+    category: "Transport",
     name: "Transport",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 5,
+    category: "Entertainment",
     name: "Entertainment",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 6,
+    category: "Bill",
     name: "Bill",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 7,
+    category: "Consumption",
     name: "Consumption",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 8,
+    category: "Medical",
     name: "Medical",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 9,
+    category: "Electronic",
     name: "Electronic",
     type: "expense",
+    amount: 100,
+    description: "",
   },
 ];
 
@@ -103,7 +135,7 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
   const [amount, setAmount] = useState<string>("");
   const [data3, setData3] = useState<Data3[]>([]);
-  const [typeData, setTypeData] = useGet<DailyTransaction[]>(
+  const [json, setJson] = useGet<DailyTransaction[]>(
     "/account/getTransaction",
     []
   );
@@ -116,18 +148,18 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
     // TODO ajax
 
     // let token = await getName("token");
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-type": "application/json",
-        },
-      }
-    );
-    let json = await res.json();
-    console.log(json, 1);
+    // const res = await fetch(
+    //   `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: "Bearer " + token,
+    //       "Content-type": "application/json",
+    //     },
+    //   }
+    // );
+    // let json = await res.json();
+    // console.log(json, 1);
 
     // const res = await fetch(
     //   `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,

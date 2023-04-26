@@ -28,14 +28,14 @@ import { useGet } from "../hooks/useGet";
 //   return <div>Accounting</div>;
 // };
 
-interface TransactionTypeTemp {
+export interface TransactionTypeTemp {
   id: number;
   category: string;
   type: string;
-  amount: number;
-  description?: any;
-  user_id: string;
-  created_at: string;
+  amount: number | string;
+  description?: string;
+  user_id?: string;
+  created_at?: string;
 }
 
 const AccountingPage: React.FC = () => {
@@ -56,8 +56,8 @@ const AccountingPage: React.FC = () => {
   >("/account/getDailyTransaction", []);
 
   const addCalculator = useCallback(
-    (transaction: TransactionType) =>
-      setCalculateResult((calculateResult) => {
+    (transaction: TransactionTypeTemp) =>
+      setDailyTransactions((calculateResult) => {
         let newTodo = [...calculateResult];
         console.log(transaction, newTodo);
         newTodo.push(transaction);
@@ -112,7 +112,7 @@ const AccountingPage: React.FC = () => {
                   <div>You have made no transaction today.</div>
                 ) : (
                   <div className={style.dailyTransaction}>
-                    {dailyTransactions.map((calculateResult: any) => (
+                    {dailyTransactions.map((calculateResult) => (
                       <IonItem key={calculateResult.id}>
                         {calculateResult.category + " "}
                         {calculateResult.description} - $

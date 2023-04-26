@@ -23,11 +23,13 @@ import { useHistory } from "react-router";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useFetch } from "../../hooks/useFetch";
 import styles from "./Calculator.module.scss";
+import { TransactionTypeTemp } from "../../pages/AccountingPage";
+// import { TransactionTypeTemp } from "../../pages/AccountingPage";
 
 const Calculator: React.FC<{
   isOpen: boolean;
   close: () => void;
-  addCalculator: (transaction: TransactionType) => void;
+  addCalculator: (transaction: TransactionTypeTemp) => void;
 }> = ({ isOpen, close, addCalculator }) => {
   const fetch = useFetch();
   const [description, setDescription] = useState("");
