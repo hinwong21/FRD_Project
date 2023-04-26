@@ -54,8 +54,7 @@ schedule.scheduleJob("0 6 * * * *", async () => {
   let title = "myTitle";
   let body = "myBody";
   let path = "mypath";
-  let myApiKey =
-    "AAAADIjgNZk:APA91bG7UwsXM5-aq7Eo09tFD-lmIL-MgfrcjrVGJP7Dht7-iATV_gEEM-vmFsgo1PyXB75hlDPCIdtdRS_TLh3yTQjbUBXkt8FxBdpE5fdbOi_jGugRHLKzLUwgxU_qB-zmDoLf1m9x";
+  let myApiKey = env.myApiKey;
   let tokens: string[] =
     await nutritionService.getAllFirebasePushNotificationTokens();
   const { data } = await axios.post(

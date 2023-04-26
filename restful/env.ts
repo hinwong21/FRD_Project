@@ -13,6 +13,7 @@ export let env = {
   DB_HOST: "",
   DB_PORT: "",
   SEREST: "",
+  myApiKey: "",
 };
 
 populateEnv(env, { mode: "halt" });
