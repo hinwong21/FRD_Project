@@ -135,12 +135,11 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
   const [amount, setAmount] = useState<string>("");
   const [data3, setData3] = useState<Data3[]>([]);
+  const [token] = useToken();
   const [json, setJson] = useGet<DailyTransaction[]>(
     "/account/getTransaction",
     []
   );
-  const [token] = useToken();
-
   const getTransaction = async () => {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;

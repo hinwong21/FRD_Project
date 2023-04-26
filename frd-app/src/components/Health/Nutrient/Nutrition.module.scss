@@ -320,7 +320,6 @@
 }
 
 .intakeHistoryContainer {
-  width: 300px;
   min-height: 20px;
   max-height: 120px;
   overflow: scroll;
@@ -393,4 +392,12 @@
   width: 90vw;
   height: 40px;
   margin: 10px;
+}
+
+.nutritionIonItem {
+  background-color: #a8bab4 !important;
+}
+
+.nutritionIonItem ion-label {
+  color: black !important;
 }

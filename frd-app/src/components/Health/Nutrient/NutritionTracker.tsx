@@ -4,7 +4,15 @@ import { useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { v4 as uuidv4 } from "uuid";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
-import { IonButton, IonSelect, IonSelectOption } from "@ionic/react";
+import {
+  IonAccordion,
+  IonAccordionGroup,
+  IonButton,
+  IonItem,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+} from "@ionic/react";
 
 const API_KEY = "nohVmcYxyGXqKGGIEAVyKDfes1fYC8prMvht7gJC";
 
@@ -61,6 +69,8 @@ export const NutritionTracker = () => {
   const getNutrientLocal = async () => {
     const { value } = await Preferences.get({ key: "nutrient" });
     if (value !== null) {
+      console.log(value);
+
       setNutrients(JSON.parse(value));
     }
   };
@@ -73,7 +83,7 @@ export const NutritionTracker = () => {
 
   const setMealsLocal = async (
     meals: Meals[],
-    mealSelect: HTMLSelectElement
+    mealSelect: HTMLIonSelectElement
   ) => {
     const now = new Date();
     const resetTime = new Date(
@@ -89,30 +99,42 @@ export const NutritionTracker = () => {
       // If the current time is past the reset time, set the reset time to tomorrow
       resetTime.setDate(resetTime.getDate() + 1);
     }
+
+    if (mealSelect.value === "") {
+      await Preferences.set({
+        key: "meals",
+        value: JSON.stringify([
+          ...meals,
+          { id: meals.length + 1, meal: mealSelect.value, date: resetTime },
+        ]),
+      });
+    }
+
     await Preferences.set({
       key: "meals",
       value: JSON.stringify([
         ...meals,
-        { id: meals.length + 1, meal: mealSelect?.value, date: resetTime },
+        { id: meals.length + 1, meal: mealSelect.value, date: resetTime },
       ]),
     });
   };
 
   let mealSelectRef = useRef<HTMLIonSelectElement>(null);
 
-  const handleAddMeal = () => {
+  const handleAddMeal = async () => {
     let mealSelect = mealSelectRef.current as HTMLIonSelectElement;
 
     // if no choose meal type, it will return nothing
-    if (mealSelect.value === "") {
+    if ((mealSelect.value === "") || (mealSelect.value === undefined)) {
       return;
     }
 
     setMeals([...meals, { id: meals.length + 1, meal: mealSelect.value }]);
 
     const newMeals = [...meals];
+    console.log(mealSelect.value, 1);
 
-    setMealsLocal(newMeals, mealSelect.value);
+    setMealsLocal(newMeals, mealSelect);
 
     // reset the select tag value
     mealSelect.value = "";
@@ -343,74 +365,79 @@ export const NutritionTracker = () => {
           </IonButton>
         </header>
 
-        {/* show each meal and the intake food */}
-        {meals.map((meal) => (
-          <div className={style.mealContainer} key={meal.id}>
-            <div className={style.mealType}>{meal.meal}</div>
-            <div className={style.foodSearchContainer}>
-              <div className={style.foodSearchResult}>
-                <input
-                  className={`food-search-bar-${meal.id}`}
-                  id={style.foodSearchBarInput}
-                  placeholder="Enter food name"
-                  type="text"
-                  key={meal.id}
-                  onChange={(event) =>
-                    foodSearch(meal.id, event.target.value as string)
-                  }
-                />
-                <ul className={style.nutrientUl}>
-                  {foodItems[meal.id] &&
-                    foodItems[meal.id].map((food: Food) => (
-                      <li
-                        className={style.nutrientLi}
-                        key={food.fdcId}
-                        onClick={(event) =>
-                          handleSearchResultClick(meal.id, event)
-                        }
-                      >
-                        {food.description}
-                      </li>
-                    ))}
-                </ul>
-              </div>
-              <button
-                className={style.nutrientAddBtn}
-                onClick={nutrientSearch(meal.id)}
-              >
-                +
-              </button>
-            </div>
-
-            <div className={style.intakeHistoryContainer}>
-              {nutrients[meal.id] &&
-                nutrients[meal.id].map((nutrient) => (
-                  <div className={style.intakeHistory} key={nutrient.id}>
-                    <div className={style.foodNameCaloriesContainer}>
-                      <div className={style.foodName}>
-                        Food: {nutrient.foodName}
-                      </div>
-                      <div className={style.nutrient}>
-                        Calories: {nutrient?.calories} kcal
-                      </div>
-                    </div>
-
-                    <div className={style.foodNutrient}>
-                      <div className={style.nutrient}>
-                        Carbs: {nutrient?.carbs}g
-                      </div>
-                      <div className={style.nutrient}>
-                        Protein: {nutrient?.protein}g
-                      </div>
-                      <div className={style.nutrient}>
-                        Fat: {nutrient?.fat}g
-                      </div>
-                    </div>
+        <IonAccordionGroup>
+          {meals.map((meal) => (
+            <IonAccordion className={style.nutritionIonAccordion}>
+              <IonItem slot="header" className={style.nutritionIonItem}>
+                <IonLabel>{meal.meal}</IonLabel>
+              </IonItem>
+              <div className="ion-padding" slot="content">
+                <div className={style.foodSearchContainer}>
+                  <div className={style.foodSearchResult}>
+                    <input
+                      className={`food-search-bar-${meal.id}`}
+                      id={style.foodSearchBarInput}
+                      placeholder="Enter food name"
+                      type="text"
+                      key={meal.id}
+                      onChange={(event) =>
+                        foodSearch(meal.id, event.target.value as string)
+                      }
+                    />
+                    <ul className={style.nutrientUl}>
+                      {foodItems[meal.id] &&
+                        foodItems[meal.id].map((food: Food) => (
+                          <li
+                            className={style.nutrientLi}
+                            key={food.fdcId}
+                            onClick={(event) =>
+                              handleSearchResultClick(meal.id, event)
+                            }
+                          >
+                            {food.description}
+                          </li>
+                        ))}
+                    </ul>
                   </div>
-                ))}
-            </div>
-          </div>
-        ))}
+                  <button
+                    className={style.nutrientAddBtn}
+                    onClick={nutrientSearch(meal.id)}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div className={style.intakeHistoryContainer}>
+                  {nutrients[meal.id] &&
+                    nutrients[meal.id].map((nutrient) => (
+                      <div className={style.intakeHistory} key={nutrient.id}>
+                        <div className={style.foodNameCaloriesContainer}>
+                          <div className={style.foodName}>
+                            Food: {nutrient.foodName}
+                          </div>
+                          <div className={style.nutrient}>
+                            Calories: {nutrient?.calories} kcal
+                          </div>
+                        </div>
+
+                        <div className={style.foodNutrient}>
+                          <div className={style.nutrient}>
+                            Carbs: {nutrient?.carbs}g
+                          </div>
+                          <div className={style.nutrient}>
+                            Protein: {nutrient?.protein}g
+                          </div>
+                          <div className={style.nutrient}>
+                            Fat: {nutrient?.fat}g
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </IonAccordion>
+          ))}
+        </IonAccordionGroup>
       </div>
     </div>
   );
