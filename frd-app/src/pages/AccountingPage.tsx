@@ -88,14 +88,7 @@ const AccountingPage: React.FC = () => {
           ) : (
             <>
               <AccountingHeader />
-              <div className={style.demo}>{/* <Finance_summary /> */}</div>
-              {/* <div className={style.main}><Finance /></div> */}
-              {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
-            {/* <Link to="/Calculator"></Link> */}
-              {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
-              {/* <Transaction isTran={isTran} tr_set={setIsTran} /> */}
-              {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
-              {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
+              <div className={style.demo}></div>
               <h1 className={style.h1}>{date}</h1>
               <div className={style.list}>
                 {/* <IonList>
