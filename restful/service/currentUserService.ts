@@ -1,6 +1,13 @@
 import { Knex } from "knex";
-import { User, updateUserByUID } from "../firebaseAdmin";
 import { v4 as uuidv4 } from "uuid";
+
+export type User = {
+  username: string;
+  height: number;
+  weight: number;
+  age: number;
+  gender: string;
+};
 
 export class CurrentUserService {
   constructor(private knex: Knex) {
@@ -27,105 +34,66 @@ export class CurrentUserService {
   };
 
   updateUser = async (userId: string, user: User) => {
-    let txn = await this.knex.transaction();
-    try {
-      await txn("users").update(user).where("id", userId);
-      await updateUserByUID(userId, user);
-      await txn.commit();
-    } catch (err) {
-      await txn.rollback();
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users").update(user).where("id", userId);
   };
 
   getUser = async (userId: string | undefined) => {
-    try {
-      let user = await this.knex("users")
-        .select("*") // age,
-        .where({ id: userId })
-        .first();
-      if (!user) {
-        throw new Error("User not found");
-      }
-      return user;
-    } catch (err) {
-      throw new Error(`${err.message}`);
+    let user = await this.knex("users")
+      .select("*") // age,
+      .where({ id: userId })
+      .first();
+    if (!user) {
+      throw new Error("User not found");
     }
+    return user;
   };
 
-  updateData = async (
+  updateSetting = async (
     userId: string | undefined,
     height: number,
     gender: string,
     age: number,
     weight: number
   ) => {
-    try {
-      await this.knex("users")
-        .update({
-          height,
-          gender,
-          age,
-          weight,
-        })
-        .where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users")
+      .update({
+        height,
+        gender,
+        age,
+        weight,
+      })
+      .where({ id: userId });
   };
+
   updateUsername = async (userId: string | undefined, username: string) => {
-    try {
-      await this.knex("users").update({ username }).where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users").update({ username }).where({ id: userId });
   };
 
   updateWeight = async (userId: string | undefined, weight: number) => {
-    try {
-      await this.knex("users").update({ weight }).where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users").update({ weight }).where({ id: userId });
   };
 
   updateHeight = async (userId: string | undefined, height: number) => {
-    try {
-      await this.knex("users").update({ height }).where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users").update({ height }).where({ id: userId });
   };
 
   updateAge = async (userId: string | undefined, age: number) => {
-    try {
-      await this.knex("users").update({ age }).where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users").update({ age }).where({ id: userId });
   };
 
   updateGender = async (userId: string | undefined, gender: string) => {
-    try {
-      await this.knex("users").update({ gender }).where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users").update({ gender }).where({ id: userId });
   };
 
   updateFortune = async (userId: string | undefined, fortune: string) => {
-    try {
-      let id = uuidv4();
-      let date = new Date();
-      await this.knex("fortune").insert({
-        id,
-        fortune,
-        date,
-        user_id: userId,
-      });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    let id = uuidv4();
+    let date = new Date();
+    await this.knex("fortune").insert({
+      id,
+      fortune,
+      date,
+      user_id: userId,
+    });
   };
 
   updateField = async (
@@ -133,12 +101,8 @@ export class CurrentUserService {
     field: string,
     value: string | number
   ) => {
-    try {
-      await this.knex("users")
-        .update({ [field]: value })
-        .where({ id: userId });
-    } catch (err) {
-      throw new Error(`${err.message}`);
-    }
+    await this.knex("users")
+      .update({ [field]: value })
+      .where({ id: userId });
   };
 }

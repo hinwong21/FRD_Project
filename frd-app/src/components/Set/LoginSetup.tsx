@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./LoginSetup.module.css";
-import { getName, setName } from "../../service/LocalStorage/LocalStorage";
-import { Preferences } from "@capacitor/preferences";
 import { useIonRouter } from "@ionic/react";
 
-import { useHistory } from "react-router";
 import {
   IonContent,
   IonHeader,
@@ -14,18 +11,20 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { api_origin } from "../../service/api";
-import { useAge } from "../../hooks/useAge";
+import { useUserSetting } from "../../hooks/useUserSetting";
+import { useFetch } from "../../hooks/useFetch";
 
 export const LoginSetup = () => {
   const routerIon = useIonRouter();
+
+  const fetch = useFetch();
+
+  const [userSetting, setUserSetting] = useUserSetting();
 
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-
-  const [ageGolbal, setAgeGolbal] = useAge();
 
   const handleSubmit = async () => {
     if (gender === "") {
@@ -48,43 +47,24 @@ export const LoginSetup = () => {
     console.log(gender, age, height, weight);
 
     // insert to db
-    let token = await getName("token");
 
-    console.log("token", token);
-
-    fetch(`${api_origin}/user/data`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        height,
-        gender,
-        age,
-        weight,
-      }),
+    await fetch("POST", "/user/setting", {
+      username: userSetting?.username || "",
+      height,
+      gender,
+      age,
+      weight,
     });
 
     // save data to local storage
-    await setName("height", height);
-    await setName("weight", weight);
-    await setName("age", age);
-    await setName("gender", gender);
+    setUserSetting({
+      username: userSetting?.username || "",
+      height: +height,
+      weight: +weight,
+      age: +age,
+      gender,
+    });
 
-    // await Preferences.set({
-    //   key: "userData",
-    //   value: JSON.stringify({
-    //     height,
-    //     gender,
-    //     age,
-    //     weight,
-    //   }),
-    // });
-
-    // history.push("/page/Calender");
-
-    setAgeGolbal(+age);
     routerIon.push("/page/Calender");
 
     // fetch page to calendar

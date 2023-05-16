@@ -11,7 +11,7 @@ type Weather = {
 export const MainHeader = () => {
   const [weather, setWeather] = useState<Weather>();
   const [username, setUsername] = useState("");
-  const [fortune, setFortune] = useState("")
+  const [fortune, setFortune] = useState("");
 
   const today = new Date().toLocaleDateString("en-Us", {
     weekday: "short",
@@ -53,26 +53,10 @@ export const MainHeader = () => {
   //   fortune = "大凶";
   // }
 
-  const getUser = async () => {
-    let token = await getName("token");
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/user/user`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const json = await res.json();
-    setUsername(json.result[0].username);
-  };
-
   async function getFortune() {
     const getFortuneLS = async () => {
       const { value } = await Preferences.get({ key: "fortune" });
-      console.log(value)
+      console.log(value);
       if (value !== null) {
         setFortune(value);
       }
@@ -94,7 +78,6 @@ export const MainHeader = () => {
   };
 
   useEffect(() => {
-    getUser();
     getFortune();
     todayWeather();
   }, [fortune]);

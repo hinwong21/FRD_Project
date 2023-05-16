@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Edit.module.css";
 import { IonPage, IonContent, IonIcon } from "@ionic/react";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { chevronBackOutline, closeOutline } from "ionicons/icons";
-import { setName } from "../../service/LocalStorage/LocalStorage";
 import { useFetch } from "../../hooks/useFetch";
+import { UserSetting, useUserSetting } from "../../hooks/useUserSetting";
 
 export const Edit = () => {
-  const location = useLocation();
-  const state: any = location.state;
-  let item = state.item;
-  const value = state.value.toString();
+  const { field } = useParams<{ field: keyof UserSetting }>();
+
+  const [userSetting, setUserSetting] = useUserSetting();
+
+  const value = userSetting?.[field];
 
   const [input, setInput] = useState(value);
   const [textStyle, setTextStyle] = useState({ color: "#74777a" });
@@ -29,8 +30,8 @@ export const Edit = () => {
     if (input === value) {
       return;
     } else {
-      await fetch("POST", "/user/" + item, { input });
-      setName(`${item}`, input)
+      await fetch("POST", "/user/" + field, { input });
+      setUserSetting({ ...userSetting!, [field]: input });
 
       history.goBack();
     }
@@ -59,7 +60,7 @@ export const Edit = () => {
                 className={styles.headerBack}
                 onClick={goBack}
               />
-              <div>{item}</div>
+              <div>{field}</div>
               <div style={textStyle} onClick={editFinish}>
                 finish
               </div>
@@ -67,7 +68,7 @@ export const Edit = () => {
           </header>
 
           <div className={styles.editContainer}>
-            <div>{item}</div>
+            <div>{field}</div>
 
             <div className={styles.editItemContainer}>
               <input

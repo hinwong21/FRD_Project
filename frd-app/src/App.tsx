@@ -32,8 +32,7 @@ import PeriodMain from "./components/Health/Period/PeriodMain";
 import { Nutrition } from "./components/Health/Nutrient/Nutrition";
 import PeriodCalendar from "./components/Health/Period/PeriodCanlender";
 import Notepad from "./components/Notes/Notepad";
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import { getName, setName } from "./service/LocalStorage/LocalStorage";
+import { ReactElement, useEffect } from "react";
 import PeriodRecord from "./components/Health/Period/PeriodRecord";
 import PeriodDay from "./components/Health/Period/PeriodDay";
 import { PushNotifications } from "@capacitor/push-notifications";
@@ -44,9 +43,10 @@ import { DietProgramme } from "./components/Health/Nutrient/DietProgramme";
 import { useGet } from "./hooks/useGet";
 import { useToken } from "./hooks/useToken";
 import { Login } from "./pages/Login/Login";
-import { useAge } from "./hooks/useAge";
 import { EditGender } from "./components/Set/EditGender";
 import { LoginSetup } from "./components/Set/LoginSetup";
+import { useIsProfileCompleted } from "./hooks/useUserSetting";
+import { usePushNotificationToken } from "./hooks/usePushNotificationToken";
 
 setupIonicReact();
 
@@ -56,25 +56,25 @@ function ProtectedRoute(props: {
   children?: ReactElement;
 }) {
   const [token] = useToken();
-  const [age] = useAge();
+  const isProfileCompleted = useIsProfileCompleted();
 
   return (
     <Route path={props.path} exact={props.exact}>
-      {!token ? <Login /> : !age ? <LoginSetup /> : props.children}
+      {!token ? (
+        <Login />
+      ) : !isProfileCompleted ? (
+        <LoginSetup />
+      ) : (
+        props.children
+      )}
     </Route>
   );
 }
 
-type User = { age?: number } | "loading";
-
 const App: React.FC = () => {
   const [token, setToken] = useToken();
-  const [user] = useGet<User>(token ? "/user/user" : "", "loading");
-  const [age, setAge] = useAge();
-
-  useEffect(() => {
-    setAge(user === "loading" ? "loading" : user.age);
-  }, [user]);
+  const [pushNotificationToken, setPushNotificationToken] =
+    usePushNotificationToken();
 
   const [verifyState] = useGet<{ ok: boolean | "loading" }>(
     token ? "/user/verifyToken" : "",
@@ -99,7 +99,7 @@ const App: React.FC = () => {
   const reg_push_notification_listeners = async () => {
     await PushNotifications.addListener("registration", async (token) => {
       console.log("Registration token: ", token.value);
-      await setName("push_notification_token", token.value);
+      setPushNotificationToken(token.value);
     });
 
     await PushNotifications.addListener("registrationError", (err) => {
@@ -205,12 +205,12 @@ const App: React.FC = () => {
               </ProtectedRoute>
 
               {/* Setting page: edit personal information */}
-              <ProtectedRoute path="/Edit" exact={true}>
+              <ProtectedRoute path="/Edit/gender" exact={true}>
+                <EditGender />
+              </ProtectedRoute>
+              <ProtectedRoute path="/Edit/:field" exact={true}>
                 <Edit />
               </ProtectedRoute>
-              <Route path="/EditGender" exact={true}>
-                <EditGender />
-              </Route>
 
               <ProtectedRoute path="*" exact={true}>
                 <div>404 not found</div>

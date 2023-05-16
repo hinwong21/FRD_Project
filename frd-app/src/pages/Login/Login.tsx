@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "./Login.module.scss";
 import { logoApple } from "ionicons/icons";
-import { IonContent, IonIcon, IonPage } from "@ionic/react";
+import { IonContent, IonIcon, IonPage, useIonToast } from "@ionic/react";
 
 import {
   googleSignIn,
@@ -12,13 +12,17 @@ import { useToken } from "../../hooks/useToken";
 import { usePushNotificationToken } from "../../hooks/usePushNotificationToken";
 import { User } from "@capacitor-firebase/authentication";
 import { useFetch } from "../../hooks/useFetch";
-import { setName } from "../../service/LocalStorage/LocalStorage";
+import { get } from "../../hooks/useGet";
+import { useUserSetting } from "../../hooks/useUserSetting";
 
 export const Login = () => {
   const [token, setToken] = useToken();
   const fetch = useFetch();
   const [pushNotificationToken, setPushNotificationToken] =
     usePushNotificationToken();
+  const ionToast = useIonToast();
+
+  const [userSetting, setUserSetting] = useUserSetting();
 
   const [error, setError] = useState("");
 
@@ -48,8 +52,17 @@ export const Login = () => {
       });
 
       if (json.ok) {
-        setToken(json.data);
-        setName("token", json.data);
+        const token = json.data;
+        get({
+          url: "/user/setting",
+          token: json.data,
+          ionToast,
+          onResult: (json) => {
+            console.log("set user setting:", json);
+            setToken(token);
+            setUserSetting(json);
+          },
+        });
       } else {
         await signOut();
         setToken("");

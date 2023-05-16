@@ -7,19 +7,14 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
-  IonButton,
 } from "@ionic/react";
 
 import { useLocation } from "react-router-dom";
 import {
-  bookmarkOutline,
   calendarOutline,
   calendarSharp,
   cashOutline,
   cashSharp,
-  diamondOutline,
-  diamondSharp,
   listCircleOutline,
   listCircleSharp,
   medkitOutline,
@@ -32,7 +27,7 @@ import {
 import "./Menu.css";
 import { signOut } from "../service/firebaseConfig";
 import { useToken } from "../hooks/useToken";
-import { useGet } from "../hooks/useGet";
+import { useUserSetting } from "../hooks/useUserSetting";
 
 interface AppPage {
   id: number;
@@ -111,9 +106,12 @@ const Menu: React.FC = () => {
   const location = useLocation();
 
   const [token, setToken] = useToken();
+  const [userSetting, setUserSetting] = useUserSetting();
+
   async function handleSignOut() {
     await signOut();
     setToken("");
+    setUserSetting(null);
   }
 
   console.log("location.pathname:", location.pathname);

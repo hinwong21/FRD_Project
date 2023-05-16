@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { errorHandler } from "../error";
-import { User, getUserByUID } from "../firebaseAdmin";
+import { getUserByUID } from "../firebaseAdmin";
 import { CurrentUserService } from "../service/currentUserService";
 import { encodeJWT, getJWT } from "../jwt";
 
@@ -54,51 +54,37 @@ export class CurrentUserController {
     }
   };
 
-  updateUser = async (req: Request, res: Response) => {
+  updateSetting = async (req: Request, res: Response) => {
     try {
       // must checked userId is valid firebase uid
       let userId = req.body.userId;
-      let user = req.body.user as User;
-      await this.currentUserService.updateUser(userId, user);
+      let { username, age, height, weight, gender } = req.body.user;
 
-      res.json({
-        ok: true,
-        isErr: null,
-        errMess: null,
-        data: null,
+      if (!username) throw new Error("missing username");
+      if (!age) throw new Error("missing age");
+      if (!height) throw new Error("missing height");
+      if (!weight) throw new Error("missing weight");
+      if (!gender) throw new Error("missing gender");
+
+      await this.currentUserService.updateUser(userId, {
+        username,
+        age,
+        height,
+        weight,
+        gender,
       });
+
+      res.json({});
     } catch (err) {
       errorHandler(err, req, res);
     }
   };
 
-  getUser = async (req: Request, res: Response) => {
+  getSetting = async (req: Request, res: Response) => {
     try {
       let userId = getJWT(req).userId;
       const user = await this.currentUserService.getUser(userId);
       res.json(user);
-    } catch (err) {
-      errorHandler(err, req, res);
-    }
-  };
-
-  updateData = async (req: Request, res: Response) => {
-    try {
-      let userId = getJWT(req).userId;
-
-      let height = req.body.height;
-      let gender = req.body.gender;
-      let age = req.body.age;
-      let weight = req.body.weight;
-
-      const result = await this.currentUserService.updateData(
-        userId,
-        height,
-        gender,
-        age,
-        weight
-      );
-      res.json({ result });
     } catch (err) {
       errorHandler(err, req, res);
     }

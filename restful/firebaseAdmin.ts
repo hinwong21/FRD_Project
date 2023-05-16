@@ -23,14 +23,4 @@ export let getUserByUID = async (uid: string) => {
   }
 };
 
-export type User = {
-  gender?: string;
-  age?: number;
-  height?: number;
-  weight?: number;
-};
-export let updateUserByUID = async (uid: string, user: User) => {
-  admin.auth().setCustomUserClaims(uid, user);
-};
-
 // getUserByUID("V5YacZZdVQN8xPwVoJXmhI3te8v1")
