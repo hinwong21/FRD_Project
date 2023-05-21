@@ -7,14 +7,27 @@ export function useFetch<T>() {
   const [present, dismiss] = useIonToast();
 
   return async function (method: string, url: string, body: object) {
-    let res = await fetch(api_origin + url, {
-      method,
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    let res: Response;
+
+    try {
+      res = await fetch(api_origin + url, {
+        method,
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      present({
+        message: "Network Error: " + error,
+        duration: 3500,
+        buttons: [{ text: "Dismiss", role: "cancel", handler: dismiss }],
+        color: "danger",
+      });
+      throw new Error("Network Error: " + error);
+    }
+
     let json = await res.json();
     if (json.error) {
       console.error("post error:", json.error);

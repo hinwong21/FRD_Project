@@ -13,6 +13,7 @@ import {
 } from "@ionic/react";
 import { useUserSetting } from "../../hooks/useUserSetting";
 import { useFetch } from "../../hooks/useFetch";
+import { api_origin } from "../../service/api";
 
 export const LoginSetup = () => {
   const routerIon = useIonRouter();
@@ -57,26 +58,27 @@ export const LoginSetup = () => {
 
     // insert to db
 
-    await fetch("POST", "/user/setting", {
-      username,
-      height,
-      gender,
-      age,
-      weight,
-    });
+    try {
+      await fetch("POST", "/user/setting", {
+        username,
+        height,
+        gender,
+        age,
+        weight,
+      });
 
-    // save data to local storage
-    setUserSetting({
-      username: username,
-      height: +height,
-      weight: +weight,
-      age: +age,
-      gender,
-    });
+      // save data to local storage
+      setUserSetting({
+        username: username,
+        height: +height,
+        weight: +weight,
+        age: +age,
+        gender,
+      });
 
-    routerIon.push("/page/Calender");
-
-    // fetch page to calendar
+      // move to calendar page
+      routerIon.push("/page/Calender");
+    } catch (error) {}
   };
 
   return (
@@ -159,6 +161,9 @@ export const LoginSetup = () => {
           <div className={styles.loginSettingFinish} onClick={handleSubmit}>
             finish
           </div>
+
+          <p>api origin: {api_origin}</p>
+          <p>app origin: {window.location.origin}</p>
         </div>
       </IonContent>
     </IonPage>

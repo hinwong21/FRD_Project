@@ -7,3 +7,7 @@ if (window.location.origin === "http://localhost:3000") {
 } else {
   api_origin = "https://api.karaoke-gcat.me";
 }
+
+if (window.location.origin.includes("capacitor")) {
+  // api_origin = "http://192.168.80.57:8090";
+}
