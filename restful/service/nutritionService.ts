@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
 export class NutritionService {
-  constructor(private knex: Knex) { }
+  constructor(private knex: Knex) {}
 
   getDailyIntake = async (userId: string, date: Date) => {
     try {
@@ -58,9 +58,8 @@ export class NutritionService {
     }
   };
   getAllFirebasePushNotificationTokens = async () => {
-
-    let tokens = await this.knex()
-    return tokens
-  }
-
+    // let tokens = await this.knex()
+    let tokens: any[] = [];
+    return tokens;
+  };
 }
