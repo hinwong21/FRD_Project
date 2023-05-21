@@ -38,7 +38,7 @@ export const AccountingHeader = () => {
 
   useEffect(() => {
     // getBudget();
-    // getMonthlyTran();
+    getMonthlyTran();
   }, []);
 
   return (
@@ -46,12 +46,21 @@ export const AccountingHeader = () => {
       <div className={styles.AccountingHeaderContainer}>
         <div className={styles.monthlyTitle}>MONTHLY</div>
         <div className={styles.date}>📅 {today}</div>
-        <div className={styles.budgeted}>Budgeted Amount $ {budgetedAmountThisMonth}</div>
-        <div className={styles.budget}>Remaining budget: <span className={styles.bugetedAmount}>$ {budgetedAmount}</span></div>
+        <div className={styles.budgeted}>
+          Budgeted Amount $ {budgetedAmountThisMonth}
+        </div>
+        <div className={styles.budget}>
+          Remaining budget:{" "}
+          <span className={styles.bugetedAmount}>$ {budgetedAmount}</span>
+        </div>
         {daysLeftInMonth === 1 ? (
-          <div className={styles.dayLeft}>{daysLeftInMonth} day left in this month</div>
+          <div className={styles.dayLeft}>
+            {daysLeftInMonth} day left in this month
+          </div>
         ) : (
-          <div className={styles.dayLeft}>{daysLeftInMonth} days left in this month</div>
+          <div className={styles.dayLeft}>
+            {daysLeftInMonth} days left in this month
+          </div>
         )}
       </div>
     </div>

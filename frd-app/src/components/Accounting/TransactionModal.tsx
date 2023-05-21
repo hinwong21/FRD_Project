@@ -18,61 +18,94 @@ import React, { useState } from "react";
 import Finance, { TransactionType } from "./Finance";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import AccountingChart from "./AccountingChart";
+import { useGet } from "../../hooks/useGet";
+import styles from "./TransactionModal.module.scss";
 import { Method } from "ionicons/dist/types/stencil-public-runtime";
 import { useToken } from "../../hooks/useToken";
-import styles from "./TransactionModal.module.css"
 
 export interface Genre {
   id: number;
+  category: string;
   name: string;
   type: string;
+  amount: number;
+  description?: string;
+  // user_id: string;
+  // created_at: string;
 }
 
 export const Genres: Genre[] = [
   {
     id: 1,
+    category: "Income",
     name: "Income",
     type: "income",
+    amount: 100,
+    description: "",
   },
   {
     id: 2,
+    category: "Food",
     name: "Food",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 3,
+    category: "Drink",
     name: "Drink",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 4,
+    category: "Transport",
     name: "Transport",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 5,
+    category: "Entertainment",
     name: "Entertainment",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 6,
+    category: "Bill",
     name: "Bill",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 7,
+    category: "Consumption",
     name: "Consumption",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 8,
+    category: "Medical",
     name: "Medical",
     type: "expense",
+    amount: 100,
+    description: "",
   },
   {
     id: 9,
+    category: "Electronic",
     name: "Electronic",
     type: "expense",
+    amount: 100,
+    description: "",
   },
 ];
 
@@ -93,32 +126,50 @@ export type Data3 = {
   totalIncome: number;
   totalExpense: number;
 };
-
+type DailyTransaction = {
+  category: string;
+  amount: string;
+};
 function TransactionModal(props: { isTran: boolean; close: () => void }) {
   // const [selectedGenre, setSelectedGenre] = useState(0);
   const [selectedGenre, setSelectedGenre] = useState<null | string>(null);
-  const [amount, setAmount] = useState<string>("");
+  // const [amount, setAmount] = useState<string>("");
   const [data3, setData3] = useState<Data3[]>([]);
   const [token] = useToken();
-
+  const [json, setJson] = useGet<DailyTransaction[]>(
+    "/account/getTransaction",
+    []
+  );
   const getTransaction = async () => {
     let type = Genres.find((obj) => obj.name === selectedGenre)?.name;
     if (!type) return;
 
     // TODO ajax
 
-    const res = await fetch(
-      `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-type": "application/json",
-        },
-      }
-    );
-    let json = await res.json();
-    console.log(json, 1);
+    // let token = await getName("token");
+    // const res = await fetch(
+    //   `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: "Bearer " + token,
+    //       "Content-type": "application/json",
+    //     },
+    //   }
+    // );
+    // let json = await res.json();
+    // console.log(json, 1);
+
+    // const res = await fetch(
+    //   `${process.env.REACT_APP_EXPRESS_SERVER_URL}/account/getTransaction`,
+    //   {
+    //     headers: {
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   }
+    // );
+    // let json = await res.json();
+    // console.log(json);
 
     let selectedCategoryAmount = json.filter(
       (item: { category: string | undefined }) => item.category === type
@@ -157,13 +208,15 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
   };
 
   return (
-    <IonModal isOpen={props.isTran}>
+    <IonModal isOpen={props.isTran} class={styles.close}>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color={styles.close} class={styles.close}>
           <IonButtons slot="start">
-            <IonButton onClick={props.close}>Close</IonButton>
+            <IonButton onClick={props.close} class={styles.close}>
+              Close
+            </IonButton>
           </IonButtons>
-          <IonTitle>Review</IonTitle>
+          <IonTitle class={styles.close}>Review</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -208,9 +261,13 @@ function TransactionModal(props: { isTran: boolean; close: () => void }) {
           />
         )}
 
-        <div className={styles.submitBtn}><IonButton color="light" size="default" onClick={getTransaction} >submit</IonButton></div>
+        <div className={styles.submitBtn}>
+          <IonButton color="light" size="default" onClick={getTransaction}>
+            submit
+          </IonButton>
+        </div>
         <div className={styles.actChartDiv}>
-        <AccountingChart />
+          <AccountingChart />
         </div>
       </IonContent>
     </IonModal>

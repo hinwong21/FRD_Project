@@ -129,4 +129,17 @@ export class AccountingService {
       );
     }
   };
+  getSpecificDateTransaction = async (userId: string, date: Date) => {
+    try {
+      let row = await this.knex("transaction")
+        .select("*")
+        .where("user_id", userId)
+        .whereRaw("created_at::date = ?", [date]);
+      return row;
+    } catch (error) {
+      throw new Error(
+        `Error occurred while getting Specific dates in accountingService: ${error.message}`
+      );
+    }
+  };
 }

@@ -786,7 +786,7 @@ export const Calendar_zh = () => {
                   {clickedPeriod.map((period: any, index) => (
                     <div key={uuidv4()} className={styles.emptyMsg}>
                       <div>
-                        {"Day " +
+                        {/* {"Day " +
                           Math.min(
                             Math.max(
                               differenceInDays(
@@ -800,7 +800,7 @@ export const Calendar_zh = () => {
                               new Date(period.start)
                             ) + 1
                           )
-                          }
+                          } */}
                       </div>
                     </div>
                   ))}
@@ -817,7 +817,7 @@ export const Calendar_zh = () => {
                   </IonItemDivider>
                   {clickedOvu.map((period: any, index) => (
                     <div key={uuidv4()} className={styles.emptyMsg}>
-                      {"Day " +
+                      {/* {"Day " +
                         Math.min(
                           Math.max(
                             differenceInDays(
@@ -832,7 +832,7 @@ export const Calendar_zh = () => {
                           ) + 1
                         )
                         // {Math.ceil((new Date(modalDate).getTime() - new Date(period.start).getTime()) / (1000 * 60 * 60 * 24))}
-                        }
+                        } */}
                     </div>
                   ))}
                 </IonItemGroup>

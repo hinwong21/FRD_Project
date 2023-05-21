@@ -88,6 +88,8 @@ user_id text NULL FK >- users.id
 description text NULL
 category enum('Income','Food','Drink','Transport','Entertainment','Bill','Consumption','Medical','Electronic')
 type enum('income','expense')
+effective_time timestamp NULL
+test uuid null
 
 
 calendar

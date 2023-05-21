@@ -33,10 +33,10 @@ import "./Notes.module.css";
 import { OverlayEventDetail } from "@ionic/react/dist/types/components/react-component-lib/interfaces";
 import { getName } from "../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
-import { useDispatch } from 'react-redux';
-import { setShouldGetDataMemo } from '../../redux/Notes/memoSlice';
-import { setShouldGetDataTodo } from '../../redux/Notes/todoSlice';
-import { setShouldGetDataDiary } from '../../redux/Notes/diarySlice';
+import { useDispatch } from "react-redux";
+import { setShouldGetDataMemo } from "../../redux/Notes/memoSlice";
+import { setShouldGetDataTodo } from "../../redux/Notes/todoSlice";
+import { setShouldGetDataDiary } from "../../redux/Notes/diarySlice";
 import { setNotesAlertMsg } from "../../redux/Notes/notesAlertMsgSlice";
 import { setNotesAlertShow } from "../../redux/Notes/notesAlertSlice";
 import { useSelector } from "react-redux";
@@ -132,9 +132,13 @@ export const NewDiary = (props: {
   const [diaryWeather, setDiaryWeather] = useState("");
   const [title, setTitle] = useState("");
   const [mood, setMood] = useState("");
-  const [diaryContent, setDiaryContent] = useState("")
-  const notesAlertShow = useSelector((state:IRootState)=> state.alert.errMsgShow)
-  const notesAlertMsg = useSelector((state:IRootState)=> state.alertMsg.errMsg)
+  const [diaryContent, setDiaryContent] = useState("");
+  const notesAlertShow = useSelector(
+    (state: IRootState) => state.alert.errMsgShow
+  );
+  const notesAlertMsg = useSelector(
+    (state: IRootState) => state.alertMsg.errMsg
+  );
 
   function onWillDismiss_diary(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -160,43 +164,46 @@ export const NewDiary = (props: {
       title: title,
       mood: mood,
     };
-    try{
+    try {
       const existingValue = await Preferences.get({ key });
-    const existingData = existingValue.value
-      ? JSON.parse(existingValue.value)
-      : [];
-    const value = JSON.stringify([...existingData, data]);
-    await Preferences.set({ key, value });
-    dispatch(setShouldGetDataDiary(true))
-    }catch{
-      dispatch(setNotesAlertShow(true))
-      dispatch(setNotesAlertMsg("Exceeded size limit. Please try inserting fewer images."))
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+      const value = JSON.stringify([...existingData, data]);
+      await Preferences.set({ key, value });
+      dispatch(setShouldGetDataDiary(true));
+    } catch {
+      dispatch(setNotesAlertShow(true));
+      dispatch(
+        setNotesAlertMsg(
+          "Exceeded size limit. Please try inserting fewer images."
+        )
+      );
       //reset the alert show value to false
       const timer = setTimeout(() => {
-        dispatch(setNotesAlertShow(false))
+        dispatch(setNotesAlertShow(false));
       }, 5000);
-      return () => clearTimeout(timer);  
+      return () => clearTimeout(timer);
     }
-    
 
     //updated db
-    let token = await getName("token");
-    const res = await fetch(`${api_origin}/editors/new-diary`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        content: diaryContent,
-        weather: diaryWeather,
-        title: title,
-        mood: mood,
-      }),
-    });
-    const json = await res.json();
-    console.log(json);
+    // let token = await getName("token");
+    // const res = await fetch(`${api_origin}/editors/new-diary`, {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + token,
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     id: id,
+    //     content: diaryContent,
+    //     weather: diaryWeather,
+    //     title: title,
+    //     mood: mood,
+    //   }),
+    // });
+    // const json = await res.json();
+    // console.log(json);
   }
 
   function handleCallbackWeather(childData: any) {
@@ -232,7 +239,11 @@ export const NewDiary = (props: {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-        <IonToast isOpen={notesAlertShow} message={notesAlertMsg} duration={5000}></IonToast>
+          <IonToast
+            isOpen={notesAlertShow}
+            message={notesAlertMsg}
+            duration={5000}
+          ></IonToast>
           <DiaryEditor
             handleCallbackWeather={handleCallbackWeather}
             handleCallbackTitleAndMoodAndContent={
@@ -253,8 +264,12 @@ export const NewMemo = (props: {
   const input = useRef<HTMLIonInputElement>(null);
   const dispatch = useDispatch();
   const [memoContent, setMemoContent] = useState("");
-  const notesAlertShow = useSelector((state:IRootState)=> state.alert.errMsgShow)
-  const notesAlertMsg = useSelector((state:IRootState)=> state.alertMsg.errMsg)
+  const notesAlertShow = useSelector(
+    (state: IRootState) => state.alert.errMsgShow
+  );
+  const notesAlertMsg = useSelector(
+    (state: IRootState) => state.alertMsg.errMsg
+  );
 
   async function onWillDismiss_memo(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === "confirm") {
@@ -279,41 +294,43 @@ export const NewMemo = (props: {
       updated_at: JSON.stringify(new Date()),
       deleted: false,
     };
-    try{
+    try {
       const existingValue = await Preferences.get({ key });
-    const existingData = existingValue.value
-      ? JSON.parse(existingValue.value)
-      : [];
-    const value = JSON.stringify([...existingData, data]);
-    await Preferences.set({ key, value });
-    dispatch(setShouldGetDataMemo(true))
-    }catch{
-      dispatch(setNotesAlertShow(true))
-      dispatch(setNotesAlertMsg("Exceeded size limit. Please try inserting fewer images."))
+      const existingData = existingValue.value
+        ? JSON.parse(existingValue.value)
+        : [];
+      const value = JSON.stringify([...existingData, data]);
+      await Preferences.set({ key, value });
+      dispatch(setShouldGetDataMemo(true));
+    } catch {
+      dispatch(setNotesAlertShow(true));
+      dispatch(
+        setNotesAlertMsg(
+          "Exceeded size limit. Please try inserting fewer images."
+        )
+      );
       //reset the alert show value to false
       const timer = setTimeout(() => {
-        dispatch(setNotesAlertShow(false))
+        dispatch(setNotesAlertShow(false));
       }, 5000);
-      return () => clearTimeout(timer);   
+      return () => clearTimeout(timer);
     }
-    
-
 
     //updated DB
-    let token = await getName("token");
-    const res = await fetch(`${api_origin}/editors/new-memo`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        content: memoContent,
-      }),
-    });
-    const json = await res.json();
-    console.log(json);
+    // let token = await getName("token");
+    // const res = await fetch(`${api_origin}/editors/new-memo`, {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + token,
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     id: id,
+    //     content: memoContent,
+    //   }),
+    // });
+    // const json = await res.json();
+    // console.log(json);
   }
 
   function handleEditorCallback(childData: any) {
@@ -343,7 +360,11 @@ export const NewMemo = (props: {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-        <IonToast isOpen={notesAlertShow} message={notesAlertMsg} duration={5000}></IonToast>
+        <IonToast
+          isOpen={notesAlertShow}
+          message={notesAlertMsg}
+          duration={5000}
+        ></IonToast>
         <IonContent className="ion-padding">
           <TextEditor handleEditorCallback={handleEditorCallback} />
         </IonContent>

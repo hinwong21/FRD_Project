@@ -22,20 +22,21 @@ import Calculator from "../components/Accounting/Calculator";
 import { AccountingSetup } from "../components/Accounting/AccountingSetup";
 import { AccountingHeader } from "../components/Accounting/AccountingHeader";
 import { useGet } from "../hooks/useGet";
+import TimePicker from "../components/Accounting/Timepick";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
 //   return <div>Accounting</div>;
 // };
 
-interface TransactionTypeTemp {
+export interface TransactionTypeTemp {
   id: number;
   category: string;
   type: string;
-  amount: number;
-  description?: any;
-  user_id: string;
-  created_at: string;
+  amount: number | string;
+  description?: string;
+  user_id?: string;
+  created_at?: string;
 }
 
 const AccountingPage: React.FC = () => {
@@ -56,10 +57,10 @@ const AccountingPage: React.FC = () => {
   >("/account/getDailyTransaction", []);
 
   const addCalculator = useCallback(
-    (transaction: TransactionType) =>
-      setCalculateResult((calculateResult) => {
+    async (transaction: TransactionTypeTemp) =>
+      setDailyTransactions((calculateResult) => {
         let newTodo = [...calculateResult];
-        console.log(transaction, newTodo);
+        // let newTodo = [];
         newTodo.push(transaction);
 
         return newTodo;
@@ -88,14 +89,7 @@ const AccountingPage: React.FC = () => {
           ) : (
             <>
               <AccountingHeader />
-              <div className={style.demo}>{/* <Finance_summary /> */}</div>
-              {/* <div className={style.main}><Finance /></div> */}
-              {/* <div className={style.cal}>{<Calculator isOpen={isOpen} bigState={() => setIsOpen(!isOpen)} />}
-            {/* <Link to="/Calculator"></Link> */}
-              {/* <IonButton onClick={() => { setIsOpen(true) }}>Add Transaction</IonButton></div>  */}
-              {/* <Transaction isTran={isTran} tr_set={setIsTran} /> */}
-              {/* <Calculator isOpen={isOpen} cb_set={setIsOpen} /> */}
-              {/* <IonButton onClick={goToTransaction}>Review</IonButton> */}
+              <div className={style.demo}></div>
               <h1 className={style.h1}>{date}</h1>
               <div className={style.list}>
                 {/* <IonList>
@@ -112,7 +106,7 @@ const AccountingPage: React.FC = () => {
                   <div>You have made no transaction today.</div>
                 ) : (
                   <div className={style.dailyTransaction}>
-                    {dailyTransactions.map((calculateResult: any) => (
+                    {dailyTransactions.map((calculateResult) => (
                       <IonItem key={calculateResult.id}>
                         {calculateResult.category + " "}
                         {calculateResult.description} - $
@@ -122,6 +116,9 @@ const AccountingPage: React.FC = () => {
                   </div>
                 )}
               </IonList>
+
+              <TimePicker />
+
               <div className={style.button}>
                 <IonButton
                   color={style.reviewBtn}

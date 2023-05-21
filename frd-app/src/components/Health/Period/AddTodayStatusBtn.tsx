@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   IonButtons,
   IonButton,
@@ -8,6 +8,7 @@ import {
   IonTitle,
   IonPage,
   useIonModal,
+  IonMenuButton,
 } from "@ionic/react";
 import { OverlayEventDetail } from "@ionic/core/components";
 import styles from "./PeriodDate.module.scss";
