@@ -139,6 +139,7 @@ export class PeriodService {
   };
 
   getPeriodTableCalendar = async (userId: string) => {
+    console.log("getPeriodTableCalendar", { userId });
     try {
       let periodData = await this.knex
         .from("period")

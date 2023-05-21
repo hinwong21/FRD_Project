@@ -399,7 +399,6 @@ export const NewTodo = (props: {
   isOpenStatus: boolean | undefined;
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
-  const input = useRef<HTMLIonInputElement>(null);
   const dispatch = useDispatch();
   const [todoListTitle, setTodoListTitle] = useState("");
   const [todoDate, setTodoDate] = useState("");
@@ -418,7 +417,6 @@ export const NewTodo = (props: {
   }
 
   async function confirm_todo() {
-    let token = await getName("token");
     modal.current?.dismiss("", "confirm");
     props.handleTodoDismiss(false);
 

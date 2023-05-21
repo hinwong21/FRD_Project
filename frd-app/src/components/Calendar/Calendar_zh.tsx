@@ -80,16 +80,16 @@ import { MainHeader } from "../Main/MainHeader";
 import { api_origin } from "../../service/api";
 import { TodoListLS } from "../Notes/AddNotePopup";
 
-type CalendarItem = {
+export type CalendarItem = {
+  id: string;
   title: string;
   start: string;
   end: string;
   extendedProps: {
-    id: string;
     description: string;
   };
   backgroundColor: string;
-  textColor: string;
+  textColor?: string;
 };
 
 type Period = {
@@ -103,6 +103,18 @@ type Period = {
   ovu_start_at: string;
   ovu_end_at: string;
 };
+
+export function isBetween(
+  event: { start: string; end: string },
+  clickedDate: Date
+): boolean {
+  return (
+    isSameDay(parseISO(event.start), clickedDate) ||
+    isSameDay(parseISO(event.end), clickedDate) ||
+    (isAfter(clickedDate, parseISO(event.start)) &&
+      isBefore(clickedDate, parseISO(event.end)))
+  );
+}
 
 export const Calendar_zh = () => {
   const shouldGetDataEvent = useSelector(
@@ -269,11 +281,11 @@ export const Calendar_zh = () => {
         setPeriodList([
           ...periodList,
           {
+            id: item.id,
             title: "🩸Peiord",
             start: item.start_at,
-            end: item.end_at,
+            end: item.end_at + " 23:59",
             extendedProps: {
-              id: item.id,
               description: "Upcoming at " + item.upcoming_at,
             },
             backgroundColor: "pink",
@@ -308,11 +320,11 @@ export const Calendar_zh = () => {
       setOvuList([
         ...periodList,
         {
+          id: item.id,
           title: "🌸Ovulation Period",
           start: item.ovu_start_at,
           end: item.ovu_end_at,
           extendedProps: {
-            id: item.id,
             description: "Ovulation Period",
           },
           backgroundColor: "#4d86d2",
@@ -330,14 +342,22 @@ export const Calendar_zh = () => {
 
   // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [clickedEventList, setClickedEventList] = useState<CalendarItem[]>([]);
-  const [clickedTodoList, setClickedTodoList] = useState<TodoListLS[]>([]);
   const [clickedDiary, setClickedDiary] = useState([] as {}[]);
-  const [clickedPeriod, setClickedPeriod] = useState<CalendarItem[]>([]);
   const [clickedOvu, setClickedOvu] = useState<CalendarItem[]>([]);
   const [publicHoliday, setPublicHoliday] = useState<EventApi[]>([]);
 
+  const [clickedDate, setClickedDate] = useState<Date>();
+
+  const clickedPeriod = clickedDate
+    ? periodList.find((item) => isBetween(item, clickedDate))
+    : undefined;
+  const clickedTodoList = clickedDate
+    ? todoList.filter((item) => isSameDay(parseISO(item.due_date), clickedDate))
+    : [];
+
   const handleDateClick = (arg: DateClickArg) => {
     const clickedDate = arg.date;
+    setClickedDate(clickedDate);
     const clickedEvents = localCalendarEvent.filter(
       (event) =>
         isSameDay(parseISO(event.start as string), clickedDate) ||
@@ -354,18 +374,6 @@ export const Calendar_zh = () => {
     //     (isAfter(clickedDate, parseISO(event.start as string)) &&
     //       isBefore(clickedDate, parseISO(event.end as string)))
     // );
-    const clickedTodoList = todoList.filter((todo) =>
-      isSameDay(parseISO(todo.due_date as string), clickedDate)
-    );
-
-    const clickedPeriod = periodList.filter(
-      (period) =>
-        isSameDay(parseISO(period.start as string), clickedDate) ||
-        isSameDay(parseISO(period.end as string), clickedDate) ||
-        (isAfter(clickedDate, parseISO(period.start as string)) &&
-          isBefore(clickedDate, parseISO(period.end as string)))
-    );
-
     const clickedOvu = ovuList.filter(
       (period) =>
         isSameDay(parseISO(period.start as string), clickedDate) ||
@@ -389,9 +397,7 @@ export const Calendar_zh = () => {
       ...clickedEvents,
       // , ...clickedGoogleEvents
     ]);
-    setClickedTodoList(clickedTodoList);
     setClickedDiary(clickedDiary);
-    setClickedPeriod(clickedPeriod);
     setClickedOvu(clickedOvu);
     setPublicHoliday(publicHolidays);
     setModalState(true);
@@ -429,9 +435,7 @@ export const Calendar_zh = () => {
         const existingData: CalendarItem[] = existingValue.value
           ? JSON.parse(existingValue.value)
           : [];
-        const newData = existingData.filter(
-          (memo) => memo.extendedProps.id !== id
-        );
+        const newData = existingData.filter((memo) => memo.id !== id);
         const value = JSON.stringify(newData);
         await Preferences.set({ key, value });
         dispatch(setShouldGetDataEvent(true));
@@ -626,7 +630,7 @@ export const Calendar_zh = () => {
                   ) : (
                     <div></div>
                   )}
-                  {clickedPeriod.length > 0 ? (
+                  {clickedPeriod ? (
                     <Link
                       to={{
                         pathname: "./Health",
@@ -693,17 +697,15 @@ export const Calendar_zh = () => {
                   clickedEventList.map((event, index) => (
                     <div>
                       <Link
-                        key={event.extendedProps.id}
+                        key={event.id}
                         to={{
                           pathname: "./ModifyEvent",
-                          state: { data: event, id: event.extendedProps.id },
+                          state: { data: event, id: event.id },
                         }}
                       >
                         <IonCard
                           className={styles.calendarEventDayViewWrapper}
-                          onPointerDown={() =>
-                            handlePointerDownEvent(event.extendedProps.id)
-                          }
+                          onPointerDown={() => handlePointerDownEvent(event.id)}
                           onPointerUp={handlePointerUpEvent}
                         >
                           <div className={styles.calendarPreviewTimeWrapper}>
@@ -788,39 +790,38 @@ export const Calendar_zh = () => {
                   ))
                 )}
               </IonItemGroup>
-              {clickedPeriod.length < 1 ? (
-                <div></div>
-              ) : (
+              {!clickedPeriod ? null : (
                 <IonItemGroup>
                   <IonItemDivider>
                     <IonLabel className={styles.dayViewLabel}>
                       🩸 Period
                     </IonLabel>
                   </IonItemDivider>
-                  {clickedPeriod.map((period, index) => (
-                    <div
-                      key={period.extendedProps.id}
-                      className={styles.emptyMsg}
-                    >
-                      <div>
-                        {/* {"Day " +
-                          Math.min(
-                            Math.max(
-                              differenceInDays(
-                                new Date(modalDate),
-                                new Date(period.start)
-                              ) + 2,
-                              1
-                            ),
-                            differenceInDays(
-                              new Date(period.end),
-                              new Date(period.start)
-                            ) + 1
-                          )
-                          } */}
-                      </div>
+                  <div className={styles.emptyMsg}>
+                    <div>
+                      {
+                        "Day " +
+                          (differenceInDays(
+                            new Date(modalDate),
+                            parseISO(clickedPeriod.start)
+                          ) +
+                            1)
+                        // Math.min(
+                        //   Math.max(
+                        //     differenceInDays(
+                        //       new Date(modalDate),
+                        //       new Date(period.start)
+                        //     ) + 2,
+                        //     1
+                        //   ),
+                        //   differenceInDays(
+                        //     new Date(period.end),
+                        //     new Date(period.start)
+                        //   ) + 1
+                        // )
+                      }
                     </div>
-                  ))}
+                  </div>
                 </IonItemGroup>
               )}
               {clickedOvu.length < 1 ? (
@@ -833,10 +834,7 @@ export const Calendar_zh = () => {
                     </IonLabel>
                   </IonItemDivider>
                   {clickedOvu.map((period, index) => (
-                    <div
-                      key={period.extendedProps.id}
-                      className={styles.emptyMsg}
-                    >
+                    <div key={period.id} className={styles.emptyMsg}>
                       {/* {"Day " +
                         Math.min(
                           Math.max(
