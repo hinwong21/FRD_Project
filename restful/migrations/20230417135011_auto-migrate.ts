@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
@@ -28,6 +29,7 @@ export async function down(knex: Knex): Promise<void> {
   let rows = await knex("period_status").select("id", "period_id");
   for (let row of rows) {
     await knex("period_period_status").insert({
+      id: randomUUID(),
       period_id: row.period_id,
       period_status_id: row.id,
     });
