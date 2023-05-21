@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./LoginSetup.module.css";
 import { useIonRouter } from "@ionic/react";
 
@@ -21,12 +21,23 @@ export const LoginSetup = () => {
 
   const [userSetting, setUserSetting] = useUserSetting();
 
+  const [username, setUsername] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
 
+  useEffect(() => {
+    if (userSetting?.username) {
+      setUsername(userSetting.username);
+    }
+  }, [userSetting?.username]);
+
   const handleSubmit = async () => {
+    if (username === "") {
+      alert("Username is missed!");
+      return;
+    }
     if (gender === "") {
       alert("Gender is missed!");
       return;
@@ -44,12 +55,10 @@ export const LoginSetup = () => {
       return;
     }
 
-    console.log(gender, age, height, weight);
-
     // insert to db
 
     await fetch("POST", "/user/setting", {
-      username: userSetting?.username || "",
+      username,
       height,
       gender,
       age,
@@ -58,7 +67,7 @@ export const LoginSetup = () => {
 
     // save data to local storage
     setUserSetting({
-      username: userSetting?.username || "",
+      username: username,
       height: +height,
       weight: +weight,
       age: +age,
@@ -87,6 +96,16 @@ export const LoginSetup = () => {
             Fill out your information for your new account. You can always
             change your information later.
           </p>
+
+          <div className={styles.loginSettingItem}>
+            <input
+              className={styles.loginSettingItemInput}
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            ></input>
+          </div>
 
           <div className={styles.loginSettingItem}>
             <IonSelect

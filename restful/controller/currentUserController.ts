@@ -57,8 +57,8 @@ export class CurrentUserController {
   updateSetting = async (req: Request, res: Response) => {
     try {
       // must checked userId is valid firebase uid
-      let userId = req.body.userId;
-      let { username, age, height, weight, gender } = req.body.user;
+      let userId = getJWT(req).userId;
+      let { username, age, height, weight, gender } = req.body;
 
       if (!username) throw new Error("missing username");
       if (!age) throw new Error("missing age");
