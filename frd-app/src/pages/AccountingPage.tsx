@@ -22,6 +22,7 @@ import Calculator from "../components/Accounting/Calculator";
 import { AccountingSetup } from "../components/Accounting/AccountingSetup";
 import { AccountingHeader } from "../components/Accounting/AccountingHeader";
 import { useGet } from "../hooks/useGet";
+import TimePicker from "../components/Accounting/Timepick";
 // import Transaction from "./Transaction";
 
 // export const Accounting = () => {
@@ -56,10 +57,10 @@ const AccountingPage: React.FC = () => {
   >("/account/getDailyTransaction", []);
 
   const addCalculator = useCallback(
-    (transaction: TransactionTypeTemp) =>
+    async (transaction: TransactionTypeTemp) =>
       setDailyTransactions((calculateResult) => {
         let newTodo = [...calculateResult];
-        console.log(transaction, newTodo);
+        // let newTodo = [];
         newTodo.push(transaction);
 
         return newTodo;
@@ -115,6 +116,9 @@ const AccountingPage: React.FC = () => {
                   </div>
                 )}
               </IonList>
+
+              <TimePicker />
+
               <div className={style.button}>
                 <IonButton
                   color={style.reviewBtn}

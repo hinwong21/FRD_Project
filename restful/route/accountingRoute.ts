@@ -22,3 +22,4 @@ accountingRoutes.get(
   "/getDailyTransaction",
   accountingController.getDailyTransaction
 );
+accountingRoutes.get("/getSpecificDate", accountingController.getSpecificDate);

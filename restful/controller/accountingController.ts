@@ -105,4 +105,18 @@ export class AccountingController {
       errorHandler(error, req, res);
     }
   };
+  getSpecificDate = async (req: Request, res: Response) => {
+    try {
+      let userId = getJWT(req).userId;
+      let { date } = req.body;
+      console.log(userId);
+      const getSpecificDate =
+        await this.accountingService.getSpecificDateTransaction(userId, date);
+      console.log("accountingController : ", getSpecificDate);
+      res.json(getSpecificDate);
+      return;
+    } catch (error) {
+      errorHandler(error, req, res);
+    }
+  };
 }
