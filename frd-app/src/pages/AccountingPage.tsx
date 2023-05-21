@@ -117,7 +117,7 @@ const AccountingPage: React.FC = () => {
                 )}
               </IonList>
 
-              <TimePicker />
+              {/* <TimePicker /> */}
 
               <div className={style.button}>
                 <IonButton
