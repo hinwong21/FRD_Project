@@ -59,8 +59,8 @@ export const Login = () => {
           ionToast,
           onResult: (json) => {
             console.log("set user setting:", json);
-            setToken(token);
             setUserSetting(json);
+            setToken(token);
           },
         });
       } else {

@@ -110,6 +110,7 @@ const Menu: React.FC = () => {
 
   async function handleSignOut() {
     await signOut();
+    localStorage.clear();
     setToken("");
     setUserSetting(null);
   }
