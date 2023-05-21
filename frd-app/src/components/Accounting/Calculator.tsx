@@ -34,13 +34,20 @@ const Calculator: React.FC<{
   const fetch = useFetch();
   const [description, setDescription] = useState("");
   const [result, setResult] = useState("");
-  const name: string = "";
   const [lhs, setLHS] = useState("");
   const [operator, setOperator] = useState<string | undefined>(undefined);
   const [selectedGenre, setSelectedGenre] = useState(0);
   const history = useHistory();
 
   const [transactions, setTransactions] = useTransactions();
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedGenre(0);
+      setDescription("");
+      clearResult();
+    }
+  }, [isOpen]);
 
   /* Confirm button function */
   async function markCalculator() {
