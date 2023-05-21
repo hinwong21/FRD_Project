@@ -36,13 +36,13 @@ function formatDaysLate(ms: number) {
   return days + " day late";
 }
 
-function dateToString(date: Date | null | undefined) {
-  return date
-    ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-        2,
-        "0"
-      )}-${String(date.getDate()).padStart(2, "0")}`
-    : "";
+function dateToString(date: Date | number | null | undefined): string {
+  if (!date) return "";
+  date = new Date(date);
+  let y = date.getFullYear();
+  let m = String(date.getMonth() + 1).padStart(2, "0");
+  let d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 export function calcTopBox(
@@ -319,8 +319,8 @@ function TopBox(
       />
       <Datebox
         subTitle="fertile period"
-        startDate={dateToString(new Date(props.ovu_start_at!))}
-        endDate={dateToString(new Date(props.ovu_end_at!))}
+        startDate={dateToString(props.ovu_start_at)}
+        endDate={dateToString(props.ovu_end_at)}
       />
     </div>
   );
