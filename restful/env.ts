@@ -13,7 +13,8 @@ export let env = {
   DB_HOST: "",
   DB_PORT: "",
   SEREST: "",
-  myApiKey: "",
+  // for push notice
+  FIREBASE_API_KEY: "",
 };
 
 populateEnv(env, { mode: "halt" });

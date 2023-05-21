@@ -54,7 +54,6 @@ schedule.scheduleJob("0 6 * * * *", async () => {
   let title = "myTitle";
   let body = "myBody";
   let path = "mypath";
-  let myApiKey = env.myApiKey;
   let tokens: string[] =
     await nutritionService.getAllFirebasePushNotificationTokens();
   const { data } = await axios.post(
@@ -74,7 +73,7 @@ schedule.scheduleJob("0 6 * * * *", async () => {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `key=${myApiKey}`,
+        Authorization: `key=${env.FIREBASE_API_KEY}`,
       },
     }
   );
