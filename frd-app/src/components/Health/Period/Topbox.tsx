@@ -222,7 +222,7 @@ function TopBox(
   const fetch = useFetch();
 
   const handleDateChange = (start: Date | null, end: Date | null) => {
-    console.log("%%%%%%", start);
+    console.log("%%%%%%", { start, end, props });
 
     if (
       start &&
