@@ -28,6 +28,7 @@ import { v4 as uuidv4 } from "uuid";
 import styles from "./TodoEditor.module.css";
 import { getName } from "../../../service/LocalStorage/LocalStorage";
 import { Preferences } from "@capacitor/preferences";
+import { TodoListTask } from "../AddNotePopup";
 
 //NOTE: Three React.FC-- NewTodoItem, TodoEditor, MemoTodo
 
@@ -86,21 +87,22 @@ const NewTodoItem: React.FC<NewTodoItemProps> = ({
 };
 
 export function TodoEditor(props: {
-  handleCallback: (arg0: { todoTitle: string,
-    todoDate: string,
-    todoHashtag: string[],
-    todoNewHashtag: string[],
-    todoEmail: string[],
-    todoTask: {}[],
-    todoMemoRelated: string[] 
+  handleCallback: (arg0: {
+    todoTitle: string;
+    todoDate: string;
+    todoHashtag: string[];
+    todoNewHashtag: string[];
+    todoEmail: string[];
+    todoTask: TodoListTask[];
+    todoMemoRelated: string[];
   }) => void;
 }) {
   const [todoListTitle, setTodoListTitle] = useState("New Todo");
-  const [elements, setElements] = useState<
-    { id: string; content: string; checked: boolean }[]
-  >([]);
+  const [tasks, setTasks] = useState<TodoListTask[]>([]);
   const [newItemInputValue, setNewItemInputValue] = useState("");
-  const [selectedDate, setSelectedDate] = useState<string>(JSON.stringify(new Date()).slice(1,11));
+  const [selectedDate, setSelectedDate] = useState<string>(
+    JSON.stringify(new Date()).slice(1, 11)
+  );
   const [hashtags, setHashtags] = useState([] as string[]);
   const [searchTextHashtag, setSearchTextHashtag] = useState<string>("");
   const [hashTagShow, setHashTagShow] = useState(false);
@@ -115,13 +117,14 @@ export function TodoEditor(props: {
   >("");
   const [sharedEmailInput, setSharedEmailInput] = useState("");
   const [sharedEmailArr, setSharedEmailArr] = useState([] as string[]);
-  const [showAlertMsg, setShowAlertMsg] =useState("")
-  const [newlyCreatedHashtagArr, setNewlyCreatedHashtagArr] = useState([] as string[])
+  const [showAlertMsg, setShowAlertMsg] = useState("");
+  const [newlyCreatedHashtagArr, setNewlyCreatedHashtagArr] = useState(
+    [] as string[]
+  );
 
-
-  useEffect(()=>{
+  useEffect(() => {
     getHashtags();
-  },[])
+  }, []);
 
   const handleAddNewItem = () => {
     const uuid = uuidv4();
@@ -131,25 +134,25 @@ export function TodoEditor(props: {
       checked: false,
     };
     setNewItemInputValue("");
-    setElements([...elements, newItem]);
+    setTasks([...tasks, newItem]);
   };
 
   const handleReorder = (event: CustomEvent<ItemReorderEventDetail>) => {
-    setElements(event.detail.complete(elements));
+    setTasks(event.detail.complete(tasks));
   };
 
   const handleSearchChange = (event: CustomEvent) => {
     setSearchTextHashtag(event.detail.value);
   };
 
-  const getHashtags= async()=>{
+  const getHashtags = async () => {
     const { value } = await Preferences.get({ key: "hashtags" });
     if (value !== null) {
-      const value_json = JSON.parse(value)
+      const value_json = JSON.parse(value);
       const data = value_json.map((obj: { name: any }) => obj.name);
       setHashtags(data);
     }
-}
+  };
 
   useEffect(() => {
     setFilteredHashtags(
@@ -159,7 +162,6 @@ export function TodoEditor(props: {
           : hashtag.toLowerCase().includes(searchTextHashtag.toLowerCase())
       )
     );
-    
 
     if (filteredHashtags.length > 0) {
       setHashTagShow(true);
@@ -175,7 +177,7 @@ export function TodoEditor(props: {
   const handleCheckChange = (id: string) => {
     console.log("isReordering", isReordering);
     if (isReordering) return;
-    const updatedTodos = elements.map((todo) => {
+    const updatedTodos = tasks.map((todo) => {
       if (todo.id === id) {
         return {
           ...todo,
@@ -184,12 +186,12 @@ export function TodoEditor(props: {
       }
       return todo;
     });
-    setElements(updatedTodos);
+    setTasks(updatedTodos);
   };
 
   const handleDelete = (id: string) => {
-    const filteredTodos = elements.filter((element) => element.id !== id);
-    setElements(filteredTodos);
+    const filteredTodos = tasks.filter((element) => element.id !== id);
+    setTasks(filteredTodos);
   };
 
   const handleDateChange = (e: CustomEvent) => {
@@ -206,7 +208,7 @@ export function TodoEditor(props: {
       setHashtagSelected([...hashTagSelected, hashtag]);
     } else {
       setShowAlertNewHashtag(true);
-      setShowAlertMsg("This hashtag has already been selected.")
+      setShowAlertMsg("This hashtag has already been selected.");
     }
     setSearchTextHashtag("");
   };
@@ -218,21 +220,28 @@ export function TodoEditor(props: {
       todoHashtag: hashTagSelected,
       todoNewHashtag: newlyCreatedHashtagArr,
       todoEmail: sharedEmailArr,
-      todoTask: elements,
-      todoMemoRelated: memoIdRelated
+      todoTask: tasks,
+      todoMemoRelated: memoIdRelated,
     });
-  }, [todoListTitle,selectedDate, hashTagSelected, sharedEmailArr, elements, memoIdRelated]);
+  }, [
+    todoListTitle,
+    selectedDate,
+    hashTagSelected,
+    sharedEmailArr,
+    tasks,
+    memoIdRelated,
+  ]);
 
   const handleEmailInputChange = (event: CustomEvent) => {
     setSharedEmailInput(event.detail.value);
   };
 
-  function handleEmailSubmit(sharedEmailInput:string) {
+  function handleEmailSubmit(sharedEmailInput: string) {
     if (!sharedEmailArr.includes(sharedEmailInput)) {
       setSharedEmailArr([...sharedEmailArr, sharedEmailInput]);
     } else {
       setShowAlertNewHashtag(true);
-      setShowAlertMsg("This email has already been selected.")
+      setShowAlertMsg("This email has already been selected.");
     }
     setSharedEmailInput("");
   }
@@ -260,11 +269,10 @@ export function TodoEditor(props: {
       setNewlyCreatedHashtagArr([...newlyCreatedHashtagArr, text]);
     } else {
       setShowAlertNewHashtag(true);
-      setShowAlertMsg("This hashtag has already been created.")
+      setShowAlertMsg("This hashtag has already been created.");
     }
     setSearchTextHashtag("");
   };
-
 
   return (
     <>
@@ -335,7 +343,6 @@ export function TodoEditor(props: {
             </div>
           )}
 
-
           {createHashTagShow && searchTextHashtag !== "" && (
             <div className={styles.createHashWrapper}>
               <div className={styles.createHashTagItem}>
@@ -344,7 +351,9 @@ export function TodoEditor(props: {
                     size="small"
                     color="light"
                     className={styles.createHashtagBtn}
-                    onClick={()=>{handleNewlyCreatedHashtag(searchTextHashtag)}}
+                    onClick={() => {
+                      handleNewlyCreatedHashtag(searchTextHashtag);
+                    }}
                   >
                     Create #
                   </IonButton>
@@ -380,7 +389,9 @@ export function TodoEditor(props: {
         </div>
       </div>
 
-      {(hashTagSelected.some(Boolean) || sharedEmailArr.some(Boolean) || newlyCreatedHashtagArr.some(Boolean)) && (
+      {(hashTagSelected.some(Boolean) ||
+        sharedEmailArr.some(Boolean) ||
+        newlyCreatedHashtagArr.some(Boolean)) && (
         <div className={styles.hashtagItemSelectedWrapper}>
           {hashTagSelected.filter(Boolean).map((hashtag, index) => (
             <div key={index} className={styles.adjustCancelBtn}>
@@ -405,10 +416,9 @@ export function TodoEditor(props: {
               </button>
             </div>
           ))}
-          
+
           {sharedEmailArr.filter(Boolean).map((email, index) => (
             <div key={index} className={styles.adjustCancelBtn}>
-            
               <div className={styles.hashtagItemSelected}>{email}</div>
               <button
                 className={styles.cancelButton}
@@ -416,14 +426,10 @@ export function TodoEditor(props: {
               >
                 x
               </button>
-            
             </div>
           ))}
-          
         </div>
       )}
-
-
 
       <div className={styles.addTodoDiv}>
         <IonInput
@@ -442,7 +448,7 @@ export function TodoEditor(props: {
 
       <div className={styles.todoWrapper}>
         <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
-          {elements.map((element, index) => (
+          {tasks.map((element, index) => (
             <NewTodoItem
               key={uuidv4()}
               data={{ element: element, index: index }}
@@ -466,7 +472,6 @@ interface handleMemoTodoLinkProps {
   handleMemoTodoLinkCallback: (arg01: { memoTodoLink: string[] }) => void;
 }
 
-
 export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
   handleMemoTodoLinkCallback,
 }) => {
@@ -483,21 +488,20 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
   const [memoTodoLink, setMemoTodoLink] = useState([] as string[]);
   const [previewArr, setPreviewArr] = useState<JSX.Element[]>([]);
 
-
   async function getMemo() {
     const getMemoLS = async () => {
       const { value } = await Preferences.get({ key: "memo" });
-      console.log(value)
+      console.log(value);
       if (value !== null) {
         setMemoContent(JSON.parse(value));
       }
     };
-    getMemoLS()
+    getMemoLS();
   }
 
   function createPreview() {
-    const previewArray: JSX.Element[] = []; 
-    memoContent.map((item, index) => { 
+    const previewArray: JSX.Element[] = [];
+    memoContent.map((item, index) => {
       const parsedContent = JSON.parse(item.content).ops;
       const preview = parsedContent.map((content: any, contentIndex: any) => {
         if (content.insert) {
@@ -507,7 +511,7 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
             if (attrs.bold) style.fontWeight = "bold";
             if (attrs.italic) style.fontStyle = "italic";
             if (attrs.underline) style.textDecoration = "underline";
-            style.color="black";
+            style.color = "black";
             return (
               <span key={contentIndex} style={style}>
                 {content.insert}
@@ -532,22 +536,23 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
         }
         return null;
       });
-      previewArray.push(<div key={index}>{preview}</div>); 
+      previewArray.push(<div key={index}>{preview}</div>);
     });
-  
-    return previewArray; 
+
+    return previewArray;
   }
 
-  useEffect(()=>{
-    setPreviewArr(createPreview())
-  },[memoContent])
-
+  useEffect(() => {
+    setPreviewArr(createPreview());
+  }, [memoContent]);
 
   const handleMemoSelection = (id: string) => {
     const memoLinkContainsId = memoTodoLink.some((memoId) => memoId === id);
-  
+
     if (memoLinkContainsId) {
-      const updatedMemoTodoLink = memoTodoLink.filter((memoId) => memoId !== id);
+      const updatedMemoTodoLink = memoTodoLink.filter(
+        (memoId) => memoId !== id
+      );
       setMemoTodoLink(updatedMemoTodoLink);
     } else {
       setMemoTodoLink([...memoTodoLink, id]);
@@ -573,9 +578,7 @@ export const MemosTodo: React.FC<handleMemoTodoLinkProps> = ({
               handleMemoSelection(item.id);
             }}
           >
-            <div className={styles.memoBlockTodo}>
-                  {previewArr[index]}
-            </div>
+            <div className={styles.memoBlockTodo}>{previewArr[index]}</div>
           </div>
         ))}
       </IonItemGroup>

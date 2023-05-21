@@ -78,6 +78,31 @@ import AccountingChart from "../Accounting/AccountingChart";
 import isSameDayOrBefore from "date-fns";
 import { MainHeader } from "../Main/MainHeader";
 import { api_origin } from "../../service/api";
+import { TodoListLS } from "../Notes/AddNotePopup";
+
+type CalendarItem = {
+  title: string;
+  start: string;
+  end: string;
+  extendedProps: {
+    id: string;
+    description: string;
+  };
+  backgroundColor: string;
+  textColor: string;
+};
+
+type Period = {
+  id: string;
+
+  start_at: string;
+  end_at: string;
+
+  upcoming_at: string;
+
+  ovu_start_at: string;
+  ovu_end_at: string;
+};
 
 export const Calendar_zh = () => {
   const shouldGetDataEvent = useSelector(
@@ -87,13 +112,15 @@ export const Calendar_zh = () => {
   const [modalDate, setModalDate] = useState("");
   const [modalContent, setModalContent] = useState("");
   const [googleCalendarEvent, setGoogleCalendarEvent] = useState([] as {}[]);
-  const [localCalendarEvent, setLocalCalendarEvent] = useState([] as {}[]);
-  const [todoList, setTodoList] = useState([] as {}[]);
+  const [localCalendarEvent, setLocalCalendarEvent] = useState<CalendarItem[]>(
+    []
+  );
+  const [todoList, setTodoList] = useState<TodoListLS[]>([]);
   const [diary, setDiary] = useState([] as {}[]);
-  const [period, setPeriod] = useState([] as {}[]);
-  const [periodList, setPeriodList] = useState([] as {}[]);
+  const [period, setPeriod] = useState<Period[]>([]);
+  const [periodList, setPeriodList] = useState<CalendarItem[]>([]);
   // const [period, sePeriod] = useGet("/period/period_calendar", []);
-  const [ovuList, setOvuList] = useState([] as {}[]);
+  const [ovuList, setOvuList] = useState<CalendarItem[]>([]);
   const [presentAlertTodo, setPresentAlertTodo] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState("");
   const [presentAlertEvent, setPresentAlertEvent] = useState(false);
@@ -238,14 +265,17 @@ export const Calendar_zh = () => {
     setPeriodList([]);
     // console.log("periodList", periodList);
     if (period.length > 0) {
-      period.forEach((item: any, index) =>
+      period.forEach((item, index) =>
         setPeriodList([
           ...periodList,
           {
             title: "🩸Peiord",
             start: item.start_at,
             end: item.end_at,
-            extendedProps: { description: "Upcoming at " + item.upcoming_at },
+            extendedProps: {
+              id: item.id,
+              description: "Upcoming at " + item.upcoming_at,
+            },
             backgroundColor: "pink",
             textColor: "white",
           },
@@ -274,14 +304,17 @@ export const Calendar_zh = () => {
   }
 
   function configOvuList() {
-    period.forEach((item: any, index) =>
+    period.forEach((item, index) =>
       setOvuList([
         ...periodList,
         {
           title: "🌸Ovulation Period",
           start: item.ovu_start_at,
           end: item.ovu_end_at,
-          extendedProps: { description: "Ovulation Period" },
+          extendedProps: {
+            id: item.id,
+            description: "Ovulation Period",
+          },
           backgroundColor: "#4d86d2",
           textColor: "white",
         },
@@ -296,17 +329,17 @@ export const Calendar_zh = () => {
   }
 
   // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [clickedEventList, setClickedEventList] = useState([] as {}[]);
-  const [clickedTodoList, setClickedTodoList] = useState([] as {}[]);
+  const [clickedEventList, setClickedEventList] = useState<CalendarItem[]>([]);
+  const [clickedTodoList, setClickedTodoList] = useState<TodoListLS[]>([]);
   const [clickedDiary, setClickedDiary] = useState([] as {}[]);
-  const [clickedPeriod, setClickedPeriod] = useState([] as {}[]);
-  const [clickedOvu, setClickedOvu] = useState([] as {}[]);
+  const [clickedPeriod, setClickedPeriod] = useState<CalendarItem[]>([]);
+  const [clickedOvu, setClickedOvu] = useState<CalendarItem[]>([]);
   const [publicHoliday, setPublicHoliday] = useState<EventApi[]>([]);
 
   const handleDateClick = (arg: DateClickArg) => {
     const clickedDate = arg.date;
     const clickedEvents = localCalendarEvent.filter(
-      (event: any) =>
+      (event) =>
         isSameDay(parseISO(event.start as string), clickedDate) ||
         isSameDay(parseISO(event.end as string), clickedDate) ||
         (isAfter(clickedDate, parseISO(event.start as string)) &&
@@ -314,19 +347,19 @@ export const Calendar_zh = () => {
     );
 
     // const clickedGoogleEvents = googleCalendarEvent.filter(
-    //   (event: any) =>
+    //   (event) =>
     //     isSameDay(parseISO(event.start as string), clickedDate) ||
     //     isSameDay(parseISO(event.end as string), clickedDate) ||
     //     // isWithinInterval(clickedDate,{ start: new Date(event.start as string), end: new Date(event.end as string) })||
     //     (isAfter(clickedDate, parseISO(event.start as string)) &&
     //       isBefore(clickedDate, parseISO(event.end as string)))
     // );
-    const clickedTodoList = todoList.filter((todo: any) =>
+    const clickedTodoList = todoList.filter((todo) =>
       isSameDay(parseISO(todo.due_date as string), clickedDate)
     );
 
     const clickedPeriod = periodList.filter(
-      (period: any) =>
+      (period) =>
         isSameDay(parseISO(period.start as string), clickedDate) ||
         isSameDay(parseISO(period.end as string), clickedDate) ||
         (isAfter(clickedDate, parseISO(period.start as string)) &&
@@ -334,7 +367,7 @@ export const Calendar_zh = () => {
     );
 
     const clickedOvu = ovuList.filter(
-      (period: any) =>
+      (period) =>
         isSameDay(parseISO(period.start as string), clickedDate) ||
         isSameDay(parseISO(period.end as string), clickedDate) ||
         (isAfter(clickedDate, parseISO(period.start as string)) &&
@@ -345,8 +378,8 @@ export const Calendar_zh = () => {
     const calendarEvents = calendarApi.getEvents();
     console.log(calendarEvents[0].start);
     const publicHolidays = calendarEvents.filter(
-      (event: any) =>
-        event.start.toString().slice(0, 15) ===
+      (event) =>
+        event.start?.toString().slice(0, 15) ===
           clickedDate.toString().slice(0, 15) &&
         event.extendedProps.description === "Public holiday"
     );
@@ -366,7 +399,7 @@ export const Calendar_zh = () => {
     setModalContent("ABC");
   };
 
-  // const handleEventDidMount = (info: any) => {
+  // const handleEventDidMount = (info) => {
   //   return new bootstrap.Popover(info.el, {
   //     title: info.event.title,
   //     placement: "auto",
@@ -393,10 +426,12 @@ export const Calendar_zh = () => {
       const deleteEventFromPreferences = async (id: string) => {
         const key = "calendar";
         const existingValue = await Preferences.get({ key });
-        const existingData = existingValue.value
+        const existingData: CalendarItem[] = existingValue.value
           ? JSON.parse(existingValue.value)
           : [];
-        const newData = existingData.filter((memo: any) => memo.id !== id);
+        const newData = existingData.filter(
+          (memo) => memo.extendedProps.id !== id
+        );
         const value = JSON.stringify(newData);
         await Preferences.set({ key, value });
         dispatch(setShouldGetDataEvent(true));
@@ -429,12 +464,10 @@ export const Calendar_zh = () => {
       const deleteTodoListFromPreferences = async (id: string) => {
         const key = "todolist";
         const existingValue = await Preferences.get({ key });
-        const existingData = existingValue.value
+        const existingData: TodoListLS[] = existingValue.value
           ? JSON.parse(existingValue.value)
           : [];
-        const newData = existingData.filter(
-          (todoList: any) => todoList.id !== id
-        );
+        const newData = existingData.filter((todoList) => todoList.id !== id);
         const value = JSON.stringify(newData);
         await Preferences.set({ key, value });
         dispatch(setShouldGetDataTodo(true));
@@ -488,12 +521,11 @@ export const Calendar_zh = () => {
     todayWeather();
   }, []);
 
-  function isWithin5DaysBefore(dayA: any, dayB: any) {
+  function isWithin5DaysBefore(dayA: string, dayB: string) {
     const timeDiff = new Date(dayB).getTime() - new Date(dayA).getTime(); // get the time difference in milliseconds
     const dayDiff = timeDiff / (1000 * 3600 * 24); // convert milliseconds to days
     return dayDiff <= 5 && dayDiff >= 0;
   }
-
 
   return (
     <>
@@ -534,7 +566,7 @@ export const Calendar_zh = () => {
             [periodUpcomingDateList],
           ]}
           // eventDidMount={handleEventDidMount}
-          eventClick={(event: any) => {
+          eventClick={(event) => {
             // stop from redirecting to Google Calendar onclick
             event.jsEvent.preventDefault();
           }}
@@ -628,14 +660,13 @@ export const Calendar_zh = () => {
                       🔥 Public Holiday
                     </IonLabel>
                   </IonItemDivider>
-                  {publicHoliday.map((holiday: any, index) => (
-                    <div key={uuidv4()} className={styles.emptyMsg}>
+                  {publicHoliday.map((holiday, index) => (
+                    <div key={holiday.id} className={styles.emptyMsg}>
                       {holiday.title}
                     </div>
                   ))}
                 </IonItemGroup>
               )}
-
 
               {clickedOvu.length < 1 ? (
                 <div></div>
@@ -659,18 +690,20 @@ export const Calendar_zh = () => {
                     This day has no scheduled events.
                   </div>
                 ) : (
-                  clickedEventList.map((event: any, index: any) => (
+                  clickedEventList.map((event, index) => (
                     <div>
                       <Link
-                        key={uuidv4()}
+                        key={event.extendedProps.id}
                         to={{
                           pathname: "./ModifyEvent",
-                          state: { data: event, id: event.id },
+                          state: { data: event, id: event.extendedProps.id },
                         }}
                       >
                         <IonCard
                           className={styles.calendarEventDayViewWrapper}
-                          onPointerDown={() => handlePointerDownEvent(event.id)}
+                          onPointerDown={() =>
+                            handlePointerDownEvent(event.extendedProps.id)
+                          }
                           onPointerUp={handlePointerUpEvent}
                         >
                           <div className={styles.calendarPreviewTimeWrapper}>
@@ -686,7 +719,7 @@ export const Calendar_zh = () => {
                               {event.title}
                             </div>
                             <div className={styles.calendarPreviewDescription}>
-                              {event.description}
+                              {event.extendedProps.description}
                             </div>
                           </div>
                         </IonCard>
@@ -707,10 +740,9 @@ export const Calendar_zh = () => {
                     No Todo due on this day.
                   </div>
                 ) : (
-                  clickedTodoList.map((todo: any, index) => (
-                    <div key={uuidv4()}>
+                  clickedTodoList.map((todo, index) => (
+                    <div key={todo.id}>
                       <Link
-                        key={index}
                         to={{
                           pathname: "./EditTodo",
                           state: { data: todo, id: todo.id },
@@ -723,9 +755,7 @@ export const Calendar_zh = () => {
                           onPointerUp={handlePointerUpTodo}
                         >
                           <div className={styles.todoProgressIcon}>
-                            {todo.task.some(
-                              (taskItem: { checked: any }) => !taskItem.checked
-                            ) ? (
+                            {todo.task.some((taskItem) => !taskItem.checked) ? (
                               <FontAwesomeIcon icon={faSpinner} color="red" />
                             ) : (
                               <FontAwesomeIcon
@@ -739,30 +769,14 @@ export const Calendar_zh = () => {
                               {todo.title}
                             </div>
                             <div className={styles.todoPreviewHashtag}>
-                              {todo.hashtag.map(
-                                (
-                                  item:
-                                    | string
-                                    | number
-                                    | boolean
-                                    | ReactElement<
-                                        any,
-                                        string | JSXElementConstructor<any>
-                                      >
-                                    | ReactFragment
-                                    | ReactPortal
-                                    | null
-                                    | undefined,
-                                  index: Key | null | undefined
-                                ) => (
-                                  <div
-                                    key={index}
-                                    className={styles.todoPreviewHashtagStyle}
-                                  >
-                                    {item}
-                                  </div>
-                                )
-                              )}
+                              {todo.hashtag.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className={styles.todoPreviewHashtagStyle}
+                                >
+                                  {item}
+                                </div>
+                              ))}
                             </div>
                           </div>
                           <div className={styles.todoListDate}>
@@ -783,8 +797,11 @@ export const Calendar_zh = () => {
                       🩸 Period
                     </IonLabel>
                   </IonItemDivider>
-                  {clickedPeriod.map((period: any, index) => (
-                    <div key={uuidv4()} className={styles.emptyMsg}>
+                  {clickedPeriod.map((period, index) => (
+                    <div
+                      key={period.extendedProps.id}
+                      className={styles.emptyMsg}
+                    >
                       <div>
                         {/* {"Day " +
                           Math.min(
@@ -815,8 +832,11 @@ export const Calendar_zh = () => {
                       🌸 Ovulation Period
                     </IonLabel>
                   </IonItemDivider>
-                  {clickedOvu.map((period: any, index) => (
-                    <div key={uuidv4()} className={styles.emptyMsg}>
+                  {clickedOvu.map((period, index) => (
+                    <div
+                      key={period.extendedProps.id}
+                      className={styles.emptyMsg}
+                    >
                       {/* {"Day " +
                         Math.min(
                           Math.max(

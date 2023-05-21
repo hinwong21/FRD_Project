@@ -42,7 +42,6 @@ import { setNotesAlertShow } from "../../redux/Notes/notesAlertSlice";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../redux/store/store";
 import { useFetch } from "../../hooks/useFetch";
-import { api_origin } from "../../service/api";
 
 export const AddNotePopup: React.FC = () => {
   const [diaryOpen, setDiaryOpen] = useState(false);
@@ -380,10 +379,15 @@ export type TodoListLS = {
   deleted: boolean;
   title: string;
   due_date: string;
-  hashtag: [];
-  email_shared: [];
-  task: [];
-  memo: [];
+  hashtag: string[];
+  email_shared: string[];
+  task: TodoListTask[];
+  memo: string[];
+};
+export type TodoListTask = {
+  id: string;
+  content: string;
+  checked: boolean;
 };
 
 export type HashtagLS = {
@@ -402,7 +406,7 @@ export const NewTodo = (props: {
   const [todoHashtag, setTodoHashtag] = useState([] as string[]);
   const [todoNewHashtag, setTodoNewHashtag] = useState([] as string[]);
   const [todoEmail, setTodoEmail] = useState([] as string[]);
-  const [todoTask, setTodoTask] = useState([] as {}[]);
+  const [todoTask, setTodoTask] = useState<TodoListTask[]>([]);
   const [todoMemoRelated, setTodoMemoRelated] = useState([] as string[]);
   const fetch = useFetch();
 
@@ -436,11 +440,11 @@ export const NewTodo = (props: {
       todoHashtag: string[],
       todoNewHashtag: string[],
       todoEmail: string[],
-      todoTask: {}[],
+      todoTask: TodoListTask[],
       todoMemoRelated: string[]
     ) => {
       const key = "todolist";
-      const data = {
+      const data: TodoListLS = {
         id: id,
         created_at: JSON.stringify(new Date()),
         updated_at: "",
